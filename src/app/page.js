@@ -4,6 +4,7 @@ import Container from "@/components/UI/Container/container";
 import Categories from "@/components/Categories/categories";
 import SliderBanner from "@/components/SliderBanner/sliderBanner";
 import ListBanner from "@/components/ListBanner/listBanner";
+import SingleBanner from "@/components/SingleBanner/singleBanner";
 // import Image from "next/image";
 
 const creaitveList = [
@@ -76,10 +77,8 @@ export default function Home() {
       <SliderBanner />
       <Categories />
       <ListBanner title="احدث المنتجات" list={creaitveList} isCreative />
-      <ListBanner
-        title="كافة مستلزمات الكمبيوتر "
-        list={defaultList}
-      />
+      <ListBanner title="كافة مستلزمات الكمبيوتر " list={defaultList} />
+      <SingleBanner />
       {/* <Container>
         <h1 className="font-[family-name:var(--font-rubik)]">مرحبا بالجميع</h1>
       </Container> */}
