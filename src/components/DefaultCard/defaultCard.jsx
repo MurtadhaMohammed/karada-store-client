@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { PiStar, PiStarFill } from "react-icons/pi";
 
 const DefaultCard = ({ item }) => {
   return (
@@ -15,17 +16,23 @@ const DefaultCard = ({ item }) => {
         />
       </div>
       <div className="p-4 border-t border-t-[#eee]">
-        <h2 className="font-semih2old text-black text-[18px] font-semibold  whitespace-nowrap overflow-hidden text-ellipsis">
+        <h2 className="font-semih2old text-black text-[16px] font-semibold  whitespace-nowrap overflow-hidden text-ellipsis">
           {item?.name}
         </h2>
-        <p className="text-gray-600 text-[16px] mt-[2px] whitespace-nowrap overflow-hidden text-ellipsis">
+        <p className="text-gray-600 text-[14px] mt-[2px] whitespace-nowrap overflow-hidden text-ellipsis">
           {item?.description}
         </p>
-        <a className="block mt-[8px] underline text-[#4b4383]">كرادة ستور</a>
-        <h4 className="mt-[8px] text-[20px] font-extrabold">
-          {Number(item?.price).toLocaleString("en")}{" "}
-          <span className="text-[12px]">IQD</span>
-        </h4>
+        {/* <a className="block mt-[8px] underline text-[#4b4383]">كرادة ستور</a> */}
+        <div className="flex items-center justify-between mt-[8px]">
+          <h4 className="text-[18px] font-extrabold">
+            {Number(item?.price).toLocaleString("en")}{" "}
+            <span className="text-[12px]">IQD</span>
+          </h4>
+          <div className="flex gap-1 mb-[2px]">
+            <span className="text-[14px] mt-[4.5px]">3.4</span>
+            <PiStarFill className="text-[16px] mt-[6px]  text-[#FCA120]" />
+          </div>
+        </div>
       </div>
     </div>
   );

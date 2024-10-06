@@ -6,7 +6,7 @@ const SliderBanner = () => {
     <div className="pl-[16px] pr-[16px] mt-[16px] mb-[16px] w-full">
       <Container noPadding>
         <div className="flex flex-col justify-center items-center">
-          <div className="w-[100%] h-[120px] relative rounded-[16px] overflow-hidden border border-[#f6f6f6]">
+          <div className="w-[100%] h-[140px] relative rounded-[16px] overflow-hidden  shadow-md">
             <Image
               src={"/images/banner3.png"}
               layout="fill"
