@@ -15,9 +15,9 @@ const ListBanner = ({ title, list, isCreative = false }) => {
           </h3>
           <Button
             size="sm"
-            icon={<IoIosArrowBack className="text-[#717171] text-[18px]" />}
+            icon={<IoIosArrowBack className="text-[#717171] text-[16px]" />}
           >
-            <p className="text-[#717171] -mt-[2px]">عرض المزيد</p>
+            <p className="text-[#717171] text-[14px]">عرض المزيد</p>
           </Button>
         </div>
       </Container>
