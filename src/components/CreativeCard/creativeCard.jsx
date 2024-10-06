@@ -11,7 +11,7 @@ const CreatviceCard = ({ index, item }) => {
       className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden ${
         colors[index % 2 === 2 ? 0 : 1]
       } active:scale-[0.96] transition-all`}
-      style={{ width: 260, height: 350 }}
+      style={{ width: 240, height: 350 }}
     >
       <div className="p-5 pb-0">
         <h2 className="font-semih2old text-black text-[18px] font-semibold  whitespace-nowrap overflow-hidden text-ellipsis">
