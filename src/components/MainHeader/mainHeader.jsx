@@ -10,7 +10,7 @@ const MainHeader = () => {
       <Container>
         <div className="flex items-center justify-between h-[60px]">
           <IconButton icon={<IoMenu />} />
-          <Image src={"/logo.png"} width={40} height={30} />
+          <Image src={"/logo.png"} width={34} height={24} />
         </div>
       </Container>
     </header>
