@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import { ReactQueryProvider } from "./providers";
+import BottomNabar from "@/components/BottomNavbar/bottomNavbar";
 
 const rubikFont = localFont({
   src: [
@@ -37,7 +38,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${rubikFont.variable} antialiased`}>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          {children}
+          <BottomNabar />
+        </ReactQueryProvider>
       </body>
     </html>
   );
