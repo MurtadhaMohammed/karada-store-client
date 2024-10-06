@@ -7,9 +7,9 @@ const SearchBar = () => {
       {/* <div className="bg-gradient-to-r from-violet-600 to-indigo-600 pt-[16px] pb-[16px]"> */}
       <Container>
         <div className="relative">
-          <FiSearch className=" absolute left-[8px] top-[10px] text-[28px] text-[#a5a5a5]" />
+          <FiSearch className=" absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50" />
           <input
-            className="w-[100%] rounded-[8px] h-[48px] pl-[46px] pr-[16px] outline-none border border-[#eee] text-[16px]"
+            className="w-[100%] rounded-[8px] h-[48px] pl-[46px] pr-[16px] outline-none border border-[#eee] text-[18px]"
             placeholder="ابحث عن منتج"
           />
         </div>
