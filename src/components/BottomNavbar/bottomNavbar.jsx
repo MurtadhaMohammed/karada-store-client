@@ -8,7 +8,7 @@ import { BsBox2Heart } from "react-icons/bs";
 
 const BottomNabar = () => {
   return (
-    <div className="h-[78px] fixed bottom-0 left-0 right-0 z-10 bg-white flex gap-4 justify-evenly items-center border-t border-t-[#f0f0f0]">
+    <div className="h-[78px] fixed bottom-0 left-0 right-0 z-10 bg-white flex gap-4 justify-evenly items-center border-t border-t-[#f0f0f0] pb-[8px]">
       <div className="h-[70px] flex flex-col items-center justify-center active:scale-[0.94] transition-all">
         <TbSmartHome className="text-[28px]" />
         <p className="text-[14px] mt-[4px]">الرئيسية</p>
