@@ -1,15 +1,31 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import { ReactQueryProvider } from "./providers";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const rubikFont = localFont({
+  src: [
+    {
+      path: "./fonts/Rubik-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Rubik-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Rubik-SemiBold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Rubik-Bold.ttf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-rubik",
 });
 
 export const metadata = {
@@ -20,10 +36,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${rubikFont.variable} antialiased`}>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );
