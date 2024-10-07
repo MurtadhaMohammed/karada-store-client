@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import {
   TbSmartHome,
   TbCategory,
@@ -20,8 +23,15 @@ const NavItem = ({ isActive = false, icon, label }) => {
 };
 
 const BottomNabar = () => {
+  const pathname = usePathname();
+  const screenView = ["/", "/categories", "/cart", "/faivorates"];
   return (
-    <div className="h-[80px] fixed bottom-0 left-0 right-0 z-10 bg-white flex gap-4 justify-evenly items-center border-t border-t-[#f0f0f0] pb-[12px]">
+    <div
+      className="h-[80px] fixed left-0 right-0 z-10 bg-white flex gap-4 justify-evenly items-center border-t border-t-[#f0f0f0] pb-[12px] transition-all"
+      style={{
+          bottom: screenView?.find(el=> el === pathname) ? 0 : "-80px"
+      }}
+    >
       <NavItem
         icon={<TbSmartHome className="text-[26px]" />}
         label={"الرئيسية"}
