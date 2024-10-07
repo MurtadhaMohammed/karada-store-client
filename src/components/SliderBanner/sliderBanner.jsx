@@ -37,7 +37,7 @@ const SliderBanner = () => {
             ))}
           </Swiper>
 
-          <div className="flex items-center gap-[4px] mt-[12px]">
+          <div className="flex items-center gap-[4px] mt-[4px]">
             {slider?.map((el, i) => (
               <span
                 key={i}

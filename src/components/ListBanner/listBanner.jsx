@@ -1,11 +1,15 @@
+"use client";
 import CreatviceCard from "../CreativeCard/creativeCard";
 import DefaultCard from "../DefaultCard/defaultCard";
 import Button from "../UI/Button/button";
 import Container from "../UI/Container/container";
 
 import { IoIosArrowBack } from "react-icons/io";
+import { useRouter } from "next/navigation";
 
 const ListBanner = ({ title, list, isCreative = false }) => {
+  const router = useRouter();
+
   return (
     <div className="pt-[16px] ">
       <Container>
@@ -16,6 +20,7 @@ const ListBanner = ({ title, list, isCreative = false }) => {
           <Button
             size="sm"
             icon={<IoIosArrowBack className="text-[#717171] text-[16px]" />}
+            onClick={() => router.push("/products")}
           >
             <p className="text-[#717171] text-[14px]">عرض المزيد</p>
           </Button>

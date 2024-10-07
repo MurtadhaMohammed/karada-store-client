@@ -2,7 +2,14 @@
 
 import Ripples from "react-ripples";
 
-const Button = ({ icon, children, size = "md", style }) => {
+const Button = ({
+  icon,
+  children,
+  size = "md",
+  className,
+  rounded = 8,
+  onClick = () => {},
+}) => {
   const sizes = {
     height: {
       md: 48,
@@ -16,21 +23,24 @@ const Button = ({ icon, children, size = "md", style }) => {
 
   return (
     <div
+      className="active:scale-90 transition-all"
       style={{
         display: "inline-flex",
-        borderRadius: 8,
+        borderRadius: rounded,
         overflow: "hidden",
+        height: sizes?.height[size],
       }}
     >
       <Ripples>
         <button
-          className="flex items-center gap-1  active:scale-90 transition-all"
+          className={`flex items-center gap-2 ${className} whitespace-nowrap`}
           style={{
             height: sizes?.height[size],
             fontSize: sizes.font[size],
-            padding: icon ? "0px 12px 0px 4px" : "0px 12px",
-            ...style,
+            padding: icon ? "0px 12px 0px 8px" : "0px 12px",
+            borderRadius: rounded,
           }}
+          onClick={onClick}
         >
           {children} {icon}
         </button>

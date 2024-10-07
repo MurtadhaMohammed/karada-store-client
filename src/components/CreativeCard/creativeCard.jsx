@@ -26,7 +26,7 @@ const CreatviceCard = ({ index, item }) => {
           <span className="text-[12px]">IQD</span>
         </h4>
       </div>
-      <div className="flex-1 flex items-center justify-center relative">
+      <div className="w-[240px] h-[240px] flex items-center justify-center relative">
         <div className="w-full h-full relative">
           <Image src={item.image} layout="fill" objectFit="cover" />
         </div>

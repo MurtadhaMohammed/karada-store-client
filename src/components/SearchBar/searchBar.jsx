@@ -3,7 +3,7 @@ import { FiSearch } from "react-icons/fi";
 
 const SearchBar = () => {
   return (
-    <div className="bg-gradient-to-b from-[#4b438361] to-transparent pt-[16px] pb-[20px] -mb-[12px] sticky top-[60px] z-10">
+    <div className="bg-gradient-to-b from-[#f0eeff] to-transparent pt-[16px] pb-[20px] -mb-[12px] sticky top-[60px] z-10">
       {/* <div className="bg-gradient-to-r from-violet-600 to-indigo-600 pt-[16px] pb-[16px]"> */}
       <Container>
         <div className="relative">

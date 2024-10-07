@@ -1,16 +1,22 @@
+"use client";
 import Image from "next/image";
 import Container from "../UI/Container/container";
 import { IoMenu } from "react-icons/io5";
 
 import IconButton from "../UI/IconButton/iconButton";
+import Motion from "../Motion/motion";
+import { Suspense } from "react";
 
 const MainHeader = () => {
   return (
     <header className="shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
+      <Suspense
+        fallback={<div className="h-[60px] w-[200px] bg-black"></div>}
+      ></Suspense>
       <Container>
         <div className="flex items-center justify-between h-[60px]">
           <IconButton icon={<IoMenu />} />
-          <Image src={"/logo.png"} width={34} height={24} />
+          <Image src={"/logo2.png"} width={110} height={24} />
         </div>
       </Container>
     </header>
