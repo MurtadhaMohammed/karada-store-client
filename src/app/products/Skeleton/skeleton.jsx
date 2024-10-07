@@ -8,6 +8,7 @@ const ProductSkeleton = () => {
         <div className="grid grid-cols-2 gap-4 overflow-x-auto no-scrollbar">
           {[...Array(6)].map((el, i) => (
             <div
+              key={i}
               className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden bg-white active:scale-[0.96] transition-all`}
               style={{ width: "100%" }}
             >
