@@ -13,6 +13,8 @@ const MainHeader = () => {
   const pathname = usePathname();
   const router = useRouter();
 
+  if (pathname.split("/")[1] === "product") return;
+
   if (
     pathname !== "/" &&
     pathname !== "/categories" &&

@@ -2,12 +2,12 @@
 
 import Ripples from "react-ripples";
 
-const IconButton = ({ icon, ...props }) => {
+const IconButton = ({ icon, rounded = 8, ...props }) => {
   return (
     <div
       style={{
         display: "inline-flex",
-        borderRadius: 4,
+        borderRadius: rounded,
         overflow: "hidden",
       }}
     >

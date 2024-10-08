@@ -1,13 +1,18 @@
+"use client";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const CreatviceCard = ({ index, item }) => {
+  const router = useRouter();
   const colors = [
     "bg-gradient-to-br from-gray-100 to-white",
-    "bg-gradient-to-br from-white to-gray-100 ",
+    "bg-gradient-to-br from-white to-gray-100",
   ];
 
   return (
     <div
+      onClick={() => router.push(`/product/${index}`)}
       className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden ${
         colors[index % 2 === 2 ? 0 : 1]
       } active:scale-[0.96] transition-all`}

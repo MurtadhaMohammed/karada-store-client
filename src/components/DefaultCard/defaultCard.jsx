@@ -1,11 +1,15 @@
+"use client";
 import Image from "next/image";
 import { PiStarFill } from "react-icons/pi";
 import { CgClose } from "react-icons/cg";
 import IconButton from "../UI/IconButton/iconButton";
+import { useRouter } from "next/navigation";
 
 const DefaultCard = ({ item, isGrid = false, isFav = false }) => {
+  const router = useRouter();
   return (
     <div
+      onClick={() => router.push(`/product/${12}`)}
       className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden bg-white active:scale-[0.96] transition-all`}
       style={{ width: isGrid ? "100%" : 200 }}
     >
