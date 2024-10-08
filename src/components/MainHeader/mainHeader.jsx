@@ -16,8 +16,8 @@ const MainHeader = () => {
   if (
     pathname !== "/" &&
     pathname !== "/categories" &&
-    pathname !== "catrs" &&
-    pathname !== "faivorates"
+    pathname !== "/cart" &&
+    pathname !== "/faivorates"
   )
     return (
       <header className="h-[60px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">

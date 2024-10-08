@@ -1,6 +1,6 @@
 import SearchBar from "@/components/SearchBar/searchBar";
-import ProductList from "./ProductList/productList";
-// import Image from "next/image";
+import CartList from "./CartList/cartList";
+import ListBanner from "@/components/ListBanner/listBanner";
 
 const defaultList = [
   {
@@ -40,13 +40,11 @@ const defaultList = [
   },
 ];
 
-export default function Products() {
+export default function Cart() {
   return (
     <div className="pb-[100px]">
-      {/* <SubHeader /> */}
-
-      <SearchBar />
-      <ProductList list={defaultList} />
+      <CartList />
+      <ListBanner title="منتجات ذات صلة" list={defaultList} />
     </div>
   );
 }

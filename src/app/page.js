@@ -1,6 +1,4 @@
 import SearchBar from "@/components/SearchBar/searchBar";
-import MainHeader from "@/components/MainHeader/mainHeader";
-import Container from "@/components/UI/Container/container";
 import Categories from "@/components/Categories/categories";
 import SliderBanner from "@/components/SliderBanner/sliderBanner";
 import ListBanner from "@/components/ListBanner/listBanner";

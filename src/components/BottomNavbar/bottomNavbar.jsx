@@ -15,7 +15,7 @@ const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
   const router = useRouter();
 
   let activeStyle = isActive
-    ? "text-violet-600 border-t border-t-violet-600"
+    ? "!text-violet-600 border-t !border-t-violet-600"
     : "";
   return (
     <div
@@ -56,7 +56,7 @@ const BottomNabar = () => {
         isActive={pathname === "/categories"}
       />
       <NavItem
-        to="cart"
+        to="/cart"
         icon={
           pathname === "/cart" ? (
             <TbShoppingCartFilled className="text-[26px]" />
@@ -65,10 +65,11 @@ const BottomNabar = () => {
           )
         }
         label={"سلة التسوق"}
+        isActive={pathname === "/cart"}
       />
 
       <NavItem
-        to="faivorates"
+        to="/faivorates"
         icon={
           pathname === "/faivorates" ? (
             <TbHeartFilled className="text-[26px]" />
@@ -77,6 +78,7 @@ const BottomNabar = () => {
           )
         }
         label={"المفضلة"}
+        isActive={pathname === "/faivorates"}
       />
     </div>
   );

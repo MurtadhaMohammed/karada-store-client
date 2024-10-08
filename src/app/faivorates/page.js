@@ -40,7 +40,7 @@ const defaultList = [
   },
 ];
 
-export default function Products() {
+export default function Faivorates() {
   return (
     <div className="pb-[100px]">
       {/* <SubHeader /> */}

@@ -1,6 +1,5 @@
 import SearchBar from "@/components/SearchBar/searchBar";
 import ProductList from "./ProductsList/productsList";
-import MainHeader from "@/components/MainHeader/mainHeader";
 import Categories from "@/components/Categories/categories";
 // import Image from "next/image";
 
@@ -42,7 +41,7 @@ const defaultList = [
   },
 ];
 
-export default function Products() {
+export default function Category() {
   return (
     <div className="pb-[100px]">
       {/* <MainHeader /> */}
