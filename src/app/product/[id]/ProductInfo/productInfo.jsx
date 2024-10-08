@@ -1,6 +1,8 @@
+"use client";
 import Container from "@/components/UI/Container/container";
 import IconButton from "@/components/UI/IconButton/iconButton";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { IoIosArrowForward } from "react-icons/io";
 import {
   TbHeart,
@@ -30,13 +32,14 @@ const OptionTag = ({ name, active = false }) => {
 };
 
 const ProductInfo = ({ item }) => {
+  const router = useRouter();
   return (
     <div>
       <div className="h-[300px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
           <Image src={"/images/cam.png"} layout="fill" objectFit="cover" />
           <div className="absolute left-0 right-0 mt-[4px]  bottom-[16px]">
-            <Container >
+            <Container>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
@@ -69,6 +72,7 @@ const ProductInfo = ({ item }) => {
                 rounded={"50%"}
                 className="p-2 bg-[#f6f6f6] rounded-full border border-[#eee]"
                 icon={<IoIosArrowForward className="text-[28px]" />}
+                onClick={() => router.back()}
               />
               <div className="flex items-center">
                 <IconButton
