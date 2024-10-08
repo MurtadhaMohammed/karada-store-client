@@ -27,7 +27,7 @@ const Drawer = ({
         transition={{
           type: "spring",
           stiffness: 300,
-          damping: 20,
+          damping: 30,
           duration: 0.2,
         }}
         className={`fixed top-0 ${position}-0 h-full z-20 bg-white shadow-lg`}
