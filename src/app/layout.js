@@ -3,6 +3,7 @@ import "./globals.css";
 import { ReactQueryProvider } from "./providers";
 import BottomNabar from "@/components/BottomNavbar/bottomNavbar";
 import SideMenu from "@/components/SideMenu/sideMenu";
+import MainHeader from "@/components/MainHeader/mainHeader";
 
 const newSansFont = localFont({
   src: [
@@ -58,6 +59,7 @@ export default function RootLayout({ children }) {
         className={`${newSansFont.variable} ${rubikFont.variable} antialiased`}
       >
         <ReactQueryProvider>
+          <MainHeader />
           {children}
           <BottomNabar />
           <SideMenu />

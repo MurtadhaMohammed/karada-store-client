@@ -3,9 +3,25 @@ import Container from "@/components/UI/Container/container";
 
 const CategoriesSkeleton = () => {
   return (
-    <div className="pt-[16px]">
+    <div>
+      <Container noPadding>
+        <div className="flex items-center pt-4 pb-4 gap-6 overflow-auto no-scrollbar pl-[16px] pr-[16px] ">
+          {[...Array(8)].map((el, i) => (
+            <div
+              key={i}
+              className={`flex items-center justify-center flex-col`}
+            >
+              <div className="pure-skeleton !w-[52px] !h-[52px] rounded-full bg-[#eee]"></div>
+              <p
+                className={`mt-[8px] text-[14px] text-nowrap w-[40px] h-[8px] bg-[#eee] rounded-sm`}
+              ></p>
+            </div>
+          ))}
+        </div>
+      </Container>
+
       <Container>
-        <div className="grid grid-cols-2 gap-4 overflow-x-auto no-scrollbar">
+        <div className="grid grid-cols-2 gap-4 overflow-x-auto no-scrollbar pt-[16px]">
           {[...Array(6)].map((el, i) => (
             <div
               key={i}

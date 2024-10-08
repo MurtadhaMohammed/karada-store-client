@@ -80,7 +80,7 @@ const defaultList = [
 export default function Home() {
   return (
     <div className="pb-[100px]">
-      <MainHeader />
+      {/* <MainHeader /> */}
       <SearchBar />
       <SliderBanner />
       <Categories />

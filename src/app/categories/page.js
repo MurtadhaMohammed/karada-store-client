@@ -45,7 +45,7 @@ const defaultList = [
 export default function Products() {
   return (
     <div className="pb-[100px]">
-      <MainHeader />
+      {/* <MainHeader /> */}
       <SearchBar />
       <Categories isBanner={false}  />
       <ProductList list={defaultList} />
