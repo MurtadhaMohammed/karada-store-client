@@ -1,16 +1,29 @@
-.catItem{
-    position: relative;
+.catItem {
+  position: relative;
 }
 
-.catItem::after{
-    content: "";
-    position: absolute;
+.catItem::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  border-radius: 24px;
+  background-color: #7c3aed;
+  box-shadow: 0px 1px 6px #7c3aed3c;
+  bottom: -10px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  0% {
+    width: 0px;
+  }
+  40% {
+    width: 40px;
+  }
+  100% {
     width: 20px;
-    height: 4px;
-    border-radius: 24px;
-    background-color: #7c3aed;
-    box-shadow: 0px 1px 6px #7c3aed3c;
-    bottom: -14px;
-    left: 50%; 
-    transform: translate(-50%, -50%);
+  }
 }

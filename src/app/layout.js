@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ReactQueryProvider } from "./providers";
 import BottomNabar from "@/components/BottomNavbar/bottomNavbar";
+import SideMenu from "@/components/SideMenu/sideMenu";
 
 const newSansFont = localFont({
   src: [
@@ -18,7 +19,6 @@ const newSansFont = localFont({
   ],
   variable: "--font-NeoSans",
 });
-
 
 const rubikFont = localFont({
   src: [
@@ -60,6 +60,7 @@ export default function RootLayout({ children }) {
         <ReactQueryProvider>
           {children}
           <BottomNabar />
+          <SideMenu />
         </ReactQueryProvider>
       </body>
     </html>
