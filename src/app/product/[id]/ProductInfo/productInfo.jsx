@@ -13,6 +13,7 @@ import {
   TbTruckDelivery,
 } from "react-icons/tb";
 import { TiStarHalfOutline, TiStarFullOutline } from "react-icons/ti";
+import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 
 const OptionTag = ({ name, active = false }) => {
   return (
@@ -45,24 +46,25 @@ const ProductInfo = ({ item }) => {
           <div className="absolute left-0 right-0 mt-[4px]  bottom-[16px]">
             <Container>
               <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                  <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                  <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                  <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                  <TiStarHalfOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                </div>
-                <div className="flex items-center gap-[4px]">
+                <div className="flex items-center gap-[4px] mr-1">
                   {[...Array(3)]?.map((el, i) => (
                     <span
                       key={i}
-                      className="block  h-[6px]  rounded-[24px] transition-all"
+                      className="block  h-[8px]  rounded-[24px] transition-all"
                       style={{
-                        width: i == 0 ? 50 : 6,
+                        width: i == 0 ? 60 : 8,
                         background: i == 0 ? "#a855f7" : "#a855f775",
                       }}
                     />
                   ))}
+                </div>
+                <div className="flex items-center">
+                  <p className="mt-1 ml-2">3.6</p>
+                  <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
+                  {/* <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
+                  <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
+                  <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
+                  <TiStarHalfOutline className="ml-[4px] text-[24px] text-[#FCA120]" /> */}
                 </div>
               </div>
             </Container>
@@ -126,6 +128,9 @@ const ProductInfo = ({ item }) => {
       <Container>
         <h4 className="font-bold text-[18px] mt-[16px]">{item?.name}</h4>
         <p className="text-[16px] text-gray-600">{item?.description}</p>
+        <div className="mt-[16px]">
+          <InstallmentBanner />
+        </div>
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px]">
