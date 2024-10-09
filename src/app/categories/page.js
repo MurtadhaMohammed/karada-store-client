@@ -46,7 +46,7 @@ export default function Category() {
     <div className="pb-[100px]">
       {/* <MainHeader /> */}
       <SearchBar />
-      <Categories isBanner={false}  />
+      <Categories isBanner={false} />
       <ProductList list={defaultList} />
     </div>
   );
