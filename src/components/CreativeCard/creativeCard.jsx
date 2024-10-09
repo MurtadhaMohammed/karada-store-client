@@ -33,7 +33,7 @@ const CreatviceCard = ({ index, item }) => {
       </div>
       <div className="w-[240px] h-[240px] flex items-center justify-center relative">
         <div className="w-full h-full relative">
-          <Image src={item.image} layout="fill" objectFit="cover" />
+          <Image src={item.image} layout="fill" objectFit="cover"  alt="image" />
         </div>
       </div>
     </div>

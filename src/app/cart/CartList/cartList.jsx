@@ -74,6 +74,7 @@ const CartItem = ({ item }) => {
             width={80}
             height={80}
             className="border border-[#eee] rounded-[8px]"
+            alt="image"
           />
           <div className=" flex-1 flex flex-col justify-between items-start">
             <div>

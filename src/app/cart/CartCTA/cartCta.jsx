@@ -3,13 +3,13 @@ import Container from "@/components/UI/Container/container";
 import { useSearchParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa6";
 import Ripples from "react-ripples";
-import { Suspense } from "react";
+
 
 const CartCTA = () => {
   const searchParams = useSearchParams();
 
   return (
-    <Suspense fallback={<di>Loading</di>}>
+
       <div
         className="fixed  z-10 w-full"
         style={{
@@ -40,7 +40,7 @@ const CartCTA = () => {
           </div>
         </Container>
       </div>
-    </Suspense>
+
   );
 };
 

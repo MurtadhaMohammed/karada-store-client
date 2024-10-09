@@ -30,7 +30,7 @@ const DefaultCard = ({ item, isGrid = false, isFav = false }) => {
             isGrid ? "aspect-w-1 aspect-h-1" : "h-[200px]"
           }`}
         >
-          <Image src={item.image} layout="fill" objectFit="cover" />
+          <Image src={item.image} layout="fill" objectFit="cover"  alt="image" />
         </div>
       </div>
       <div className="p-4 border-t border-t-[#eee]">

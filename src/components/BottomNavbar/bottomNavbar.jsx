@@ -10,7 +10,7 @@ import {
   TbHeart,
   TbHeartFilled,
 } from "react-icons/tb";
-import { Suspense } from "react";
+
 
 const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
   const router = useRouter();
@@ -34,7 +34,7 @@ const BottomNabar = () => {
   const searchParams = useSearchParams();
   const screenView = ["/", "/categories", "/cart?from=home", "/faivorates"];
   return (
-    <Suspense fallback={<di>Loading</di>}>
+
       <div
         className="h-[80px] fixed left-0 right-0 z-10 bg-white flex gap-4 justify-evenly items-center border-t border-t-[#f0f0f0] pb-[12px] transition-all"
         style={{
@@ -90,7 +90,7 @@ const BottomNabar = () => {
           isActive={pathname === "/faivorates"}
         />
       </div>
-    </Suspense>
+
   );
 };
 

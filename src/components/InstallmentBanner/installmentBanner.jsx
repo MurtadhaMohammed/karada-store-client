@@ -9,6 +9,7 @@ const InstallmentBanner = () => {
       </b>
       <div className="flex items-center">
         <Image
+         alt="image"
           src={"/images/qicard.png"}
           width={30}
           height={20}

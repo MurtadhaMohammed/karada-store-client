@@ -4,6 +4,7 @@ import { ReactQueryProvider } from "./providers";
 import BottomNabar from "@/components/BottomNavbar/bottomNavbar";
 import SideMenu from "@/components/SideMenu/sideMenu";
 import MainHeader from "@/components/MainHeader/mainHeader";
+import { Suspense } from "react";
 
 const newSansFont = localFont({
   src: [
@@ -58,12 +59,14 @@ export default function RootLayout({ children }) {
       <body
         className={`${newSansFont.variable} ${rubikFont.variable} antialiased`}
       >
-        <ReactQueryProvider>
-          <MainHeader />
-          {children}
-          <BottomNabar />
-          <SideMenu />
-        </ReactQueryProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ReactQueryProvider>
+            <MainHeader />
+            {children}
+            <BottomNabar />
+            <SideMenu />
+          </ReactQueryProvider>
+        </Suspense>
       </body>
     </html>
   );

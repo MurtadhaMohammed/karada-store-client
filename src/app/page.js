@@ -72,7 +72,6 @@ const defaultList = [
     price: 135000,
     image: "/images/iphone.png",
   },
-
 ];
 
 export default function Home() {

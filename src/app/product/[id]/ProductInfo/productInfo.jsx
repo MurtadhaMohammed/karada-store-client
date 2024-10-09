@@ -42,7 +42,7 @@ const ProductInfo = ({ item }) => {
     <div>
       <div className="h-[300px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
-          <Image src={"/images/cam.png"} layout="fill" objectFit="cover" />
+          <Image src={"/images/cam.png"} layout="fill" objectFit="cover"  alt="image"/>
           <div className="absolute left-0 right-0 mt-[4px]  bottom-[16px]">
             <Container>
               <div className="flex items-center justify-between">
