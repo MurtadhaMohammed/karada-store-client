@@ -1,5 +1,5 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion"; // Import framer-motion components
+import { motion } from "framer-motion"; // Import framer-motion components
 import Container from "@/components/UI/Container/container";
 import IconButton from "@/components/UI/IconButton/iconButton";
 import { useState } from "react";
@@ -22,7 +22,7 @@ const ProductCTA = () => {
 
   return (
     <div
-      className="fixed bottom-0 z-10 w-full border-t border-[#eee]"
+      className="fixed -bottom-1 z-10 w-full border-t border-t-[#eee]"
       style={{
         background:
           qty === 0 ? "linear-gradient(to right, #4f46e5, #7c3aed)" : "#fff",
@@ -89,7 +89,8 @@ const ProductCTA = () => {
               </div>
               <IconButton
                 onClick={handleClear}
-                className="p-[8px] w-[42px] h-[42px] bg-[#f6f6f6] border border-[#eee] flex items-center justify-center"
+                rounded={8}
+                className="p-[8px] w-[42px] h-[42px] bg-[#f6f6f6] border border-[#eee] rounded-[8px] flex items-center justify-center"
                 icon={<FiTrash2 className="text-[38px]" />}
               />
             </div>
@@ -120,7 +121,7 @@ const ProductCTA = () => {
             >
               <Ripples className="!grid w-full">
                 <button
-                  onClick={() => router.push("cart")}
+                  onClick={() => router.push("/cart?from=product")}
                   className="flex items-center justify-between h-[56px] w-full rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-4"
                 >
                   <span className="text-[18px] text-indigo-600 font-bold flex items-center justify-center w-[30px] h-[30px] rounded-full bg-[#f6f6f6]">

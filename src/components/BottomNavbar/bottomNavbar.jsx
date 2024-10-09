@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   TbSmartHome,
   TbCategory,
@@ -30,12 +30,19 @@ const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
 
 const BottomNabar = () => {
   const pathname = usePathname();
-  const screenView = ["/", "/categories", "/cart", "/faivorates"];
+  const searchParams = useSearchParams();
+  const screenView = ["/", "/categories", "/cart?from=home", "/faivorates"];
   return (
     <div
       className="h-[80px] fixed left-0 right-0 z-10 bg-white flex gap-4 justify-evenly items-center border-t border-t-[#f0f0f0] pb-[12px] transition-all"
       style={{
-        bottom: screenView?.find((el) => el === pathname) ? 0 : "-80px",
+        bottom: screenView?.find(
+          (el) =>
+            el === pathname ||
+            el === `${pathname}?from=${searchParams.get("from")}`
+        )
+          ? 0
+          : "-80px",
       }}
     >
       <NavItem
@@ -56,7 +63,7 @@ const BottomNabar = () => {
         isActive={pathname === "/categories"}
       />
       <NavItem
-        to="/cart"
+        to="/cart?from=home"
         icon={
           pathname === "/cart" ? (
             <TbShoppingCartFilled className="text-[26px]" />

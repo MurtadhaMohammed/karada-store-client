@@ -4,13 +4,14 @@ import Container from "../UI/Container/container";
 import IconButton from "../UI/IconButton/iconButton";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { useAppStore } from "@/lib/store";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Motion from "../Motion/motion";
 import { IoIosArrowForward } from "react-icons/io";
 
 const MainHeader = () => {
   const { setIsMenu } = useAppStore();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   if (pathname.split("/")[1] === "product") return;
@@ -18,14 +19,14 @@ const MainHeader = () => {
   if (
     pathname !== "/" &&
     pathname !== "/categories" &&
-    pathname !== "/cart" &&
+    `${pathname}?from=${searchParams.get("from")}` !== "/cart?from=home" &&
     pathname !== "/faivorates"
   )
     return (
-      <header className="h-[60px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
+      <header className="h-[68px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
         <Motion y={-6}>
           <Container>
-            <div className="flex items-center justify-between h-[60px]">
+            <div className="flex items-center justify-between h-[68px]">
               <div className="flex gap-4 items-center">
                 <IconButton
                   onClick={() => router.back()}
@@ -45,7 +46,7 @@ const MainHeader = () => {
   return (
     <header className="shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
       <Container>
-        <div className="flex items-center justify-between h-[60px]">
+        <div className="flex items-center justify-between h-[68px]">
           <IconButton
             onClick={() => setIsMenu(true)}
             icon={<HiOutlineMenuAlt3 />}

@@ -1,9 +1,11 @@
 "use client";
 import Container from "@/components/UI/Container/container";
 import IconButton from "@/components/UI/IconButton/iconButton";
+import useScrollPosition from "@/hooks/useScrollPosition";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { IoIosArrowForward } from "react-icons/io";
+import { motion } from "framer-motion"; // Import framer-motion components
 import {
   TbHeart,
   TbHeartFilled,
@@ -33,6 +35,8 @@ const OptionTag = ({ name, active = false }) => {
 
 const ProductInfo = ({ item }) => {
   const router = useRouter();
+  const { scrollPosition } = useScrollPosition();
+
   return (
     <div>
       <div className="h-[300px] border-b border-b-[#eee]">
@@ -65,15 +69,43 @@ const ProductInfo = ({ item }) => {
           </div>
           {/* <div className="absolute inset-0 z-10 bg-gradient-to-t from-purple-500 to-transparent"></div> */}
         </div>
-        <div className="absolute top-0 left-0 right-0 pt-[16px]">
+        <div
+          className={`top-0 left-0 right-0 pt-[16px] pb-[16px] transition-all ${
+            scrollPosition > 0
+              ? "fixed bg-white shadow-md border-b border-gray-200"
+              : "absolute"
+          } `}
+        >
           <Container>
             <div className="flex items-start justify-between">
-              <IconButton
-                rounded={"50%"}
-                className="p-3 bg-[#f6f6f6] rounded-full border border-[#eee]"
-                icon={<IoIosArrowForward className="text-[28px]" />}
-                onClick={() => router.back()}
-              />
+              <div className="flex items-center flex-1">
+                <IconButton
+                  rounded={"50%"}
+                  className={`bg-[#f6f6f6] rounded-full border border-[#eee] ${
+                    scrollPosition > 0 ? "p-2 text-[24px]" : "p-3 text-[28px]"
+                  } transition-all flex-1`}
+                  icon={<IoIosArrowForward />}
+                  onClick={() => router.back()}
+                />
+                <motion.b
+                  key={scrollPosition > 100}
+                  initial={{ y: 20, opacity: 0.6 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: 20, opacity: 0.6 }}
+                  transition={{
+                    duration: 0.3,
+                    // ease: [0.42, 0, 0.58, 1],
+                  }}
+                  className="mt-2 mr-[8px] text-[18px] whitespace-nowrap overflow-hidden text-ellipsis"
+                  style={{
+                    maxWidth: 180,
+                    visibility: scrollPosition > 200 ? "visible" : "hidden",
+                  }}
+                >
+                  {item?.name}
+                  {item?.name}
+                </motion.b>
+              </div>
               <div className="flex items-center">
                 <IconButton
                   rounded={"8px"}

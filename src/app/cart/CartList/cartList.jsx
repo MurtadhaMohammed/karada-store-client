@@ -66,7 +66,7 @@ const QtButton = ({ value }) => {
 
 const CartItem = ({ item }) => {
   return (
-    <div className="border-b border-b-[#eee] pt-[16px] pb-[16px]">
+    <div className="border-b border-b-[#eee] pt-[24px] pb-[16px]">
       <Container>
         <div className="flex gap-4">
           <Image
