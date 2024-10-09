@@ -7,6 +7,7 @@ import { useAppStore } from "@/lib/store";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Motion from "../Motion/motion";
 import { IoIosArrowForward } from "react-icons/io";
+import { Suspense } from "react";
 
 const MainHeader = () => {
   const { setIsMenu } = useAppStore();
@@ -23,38 +24,42 @@ const MainHeader = () => {
     pathname !== "/faivorates"
   )
     return (
-      <header className="h-[68px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
-        <Motion y={-6}>
-          <Container>
-            <div className="flex items-center justify-between h-[68px]">
-              <div className="flex gap-4 items-center">
-                <IconButton
-                  onClick={() => router.back()}
-                  icon={<IoIosArrowForward className="text-[26px]" />}
-                />
-                <p className="text-[16px] font-bold mt-[2px]">
-                  كافة مستلزمات الكمبيوتر
-                </p>
+      <Suspense fallback={<di>Loading</di>}>
+        <header className="h-[68px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
+          <Motion y={-6}>
+            <Container>
+              <div className="flex items-center justify-between h-[68px]">
+                <div className="flex gap-4 items-center">
+                  <IconButton
+                    onClick={() => router.back()}
+                    icon={<IoIosArrowForward className="text-[26px]" />}
+                  />
+                  <p className="text-[16px] font-bold mt-[2px]">
+                    كافة مستلزمات الكمبيوتر
+                  </p>
+                </div>
+                {/* <Image src={"/logo2.png"} width={110} height={24} /> */}
               </div>
-              {/* <Image src={"/logo2.png"} width={110} height={24} /> */}
-            </div>
-          </Container>
-        </Motion>
-      </header>
+            </Container>
+          </Motion>
+        </header>
+      </Suspense>
     );
 
   return (
-    <header className="shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
-      <Container>
-        <div className="flex items-center justify-between h-[68px]">
-          <IconButton
-            onClick={() => setIsMenu(true)}
-            icon={<HiOutlineMenuAlt3 />}
-          />
-          <Image src={"/logo2.png"} width={110} height={24} />
-        </div>
-      </Container>
-    </header>
+    <Suspense fallback={<di>Loading</di>}>
+      <header className="shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
+        <Container>
+          <div className="flex items-center justify-between h-[68px]">
+            <IconButton
+              onClick={() => setIsMenu(true)}
+              icon={<HiOutlineMenuAlt3 />}
+            />
+            <Image src={"/logo2.png"} width={110} height={24} />
+          </div>
+        </Container>
+      </header>
+    </Suspense>
   );
 };
 

@@ -10,6 +10,7 @@ import {
   TbHeart,
   TbHeartFilled,
 } from "react-icons/tb";
+import { Suspense } from "react";
 
 const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
   const router = useRouter();
@@ -33,61 +34,63 @@ const BottomNabar = () => {
   const searchParams = useSearchParams();
   const screenView = ["/", "/categories", "/cart?from=home", "/faivorates"];
   return (
-    <div
-      className="h-[80px] fixed left-0 right-0 z-10 bg-white flex gap-4 justify-evenly items-center border-t border-t-[#f0f0f0] pb-[12px] transition-all"
-      style={{
-        bottom: screenView?.find(
-          (el) =>
-            el === pathname ||
-            el === `${pathname}?from=${searchParams.get("from")}`
-        )
-          ? 0
-          : "-80px",
-      }}
-    >
-      <NavItem
-        icon={<TbSmartHome className="text-[26px]" />}
-        label={"الرئيسية"}
-        isActive={pathname === "/"}
-      />
-      <NavItem
-        to="/categories"
-        icon={
-          pathname === "/categories" ? (
-            <TbCategoryFilled className="text-[26px]" />
-          ) : (
-            <TbCategory className="text-[26px]" />
+    <Suspense fallback={<di>Loading</di>}>
+      <div
+        className="h-[80px] fixed left-0 right-0 z-10 bg-white flex gap-4 justify-evenly items-center border-t border-t-[#f0f0f0] pb-[12px] transition-all"
+        style={{
+          bottom: screenView?.find(
+            (el) =>
+              el === pathname ||
+              el === `${pathname}?from=${searchParams.get("from")}`
           )
-        }
-        label={"الاقسام"}
-        isActive={pathname === "/categories"}
-      />
-      <NavItem
-        to="/cart?from=home"
-        icon={
-          pathname === "/cart" ? (
-            <TbShoppingCartFilled className="text-[26px]" />
-          ) : (
-            <TbShoppingCart className="text-[26px]" />
-          )
-        }
-        label={"سلة التسوق"}
-        isActive={pathname === "/cart"}
-      />
+            ? 0
+            : "-80px",
+        }}
+      >
+        <NavItem
+          icon={<TbSmartHome className="text-[26px]" />}
+          label={"الرئيسية"}
+          isActive={pathname === "/"}
+        />
+        <NavItem
+          to="/categories"
+          icon={
+            pathname === "/categories" ? (
+              <TbCategoryFilled className="text-[26px]" />
+            ) : (
+              <TbCategory className="text-[26px]" />
+            )
+          }
+          label={"الاقسام"}
+          isActive={pathname === "/categories"}
+        />
+        <NavItem
+          to="/cart?from=home"
+          icon={
+            pathname === "/cart" ? (
+              <TbShoppingCartFilled className="text-[26px]" />
+            ) : (
+              <TbShoppingCart className="text-[26px]" />
+            )
+          }
+          label={"سلة التسوق"}
+          isActive={pathname === "/cart"}
+        />
 
-      <NavItem
-        to="/faivorates"
-        icon={
-          pathname === "/faivorates" ? (
-            <TbHeartFilled className="text-[26px]" />
-          ) : (
-            <TbHeart className="text-[26px]" />
-          )
-        }
-        label={"المفضلة"}
-        isActive={pathname === "/faivorates"}
-      />
-    </div>
+        <NavItem
+          to="/faivorates"
+          icon={
+            pathname === "/faivorates" ? (
+              <TbHeartFilled className="text-[26px]" />
+            ) : (
+              <TbHeart className="text-[26px]" />
+            )
+          }
+          label={"المفضلة"}
+          isActive={pathname === "/faivorates"}
+        />
+      </div>
+    </Suspense>
   );
 };
 
