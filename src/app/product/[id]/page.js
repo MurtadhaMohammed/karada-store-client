@@ -1,6 +1,6 @@
 import SearchBar from "@/components/SearchBar/searchBar";
 import ProductInfo from "./ProductInfo/productInfo";
-import ProductCTA from "./ProductCTA/productCTA";
+import ProductCTA from "./ProductCTA/ProductCTA";
 import ListBanner from "@/components/ListBanner/listBanner";
 
 const defaultItem = {
