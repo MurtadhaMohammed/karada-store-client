@@ -67,10 +67,10 @@ const ProductInfo = ({ item }) => {
         </div>
         <div className="absolute top-0 left-0 right-0 pt-[16px]">
           <Container>
-            <div className="flex items-center justify-between">
+            <div className="flex items-start justify-between">
               <IconButton
                 rounded={"50%"}
-                className="p-2 bg-[#f6f6f6] rounded-full border border-[#eee]"
+                className="p-3 bg-[#f6f6f6] rounded-full border border-[#eee]"
                 icon={<IoIosArrowForward className="text-[28px]" />}
                 onClick={() => router.back()}
               />

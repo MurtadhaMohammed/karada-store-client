@@ -26,7 +26,7 @@ const ProductCTA = () => {
       style={{
         background:
           qty === 0 ? "linear-gradient(to right, #4f46e5, #7c3aed)" : "#fff",
-        height: qty === 0 ? 64 : 150, // Set consistent height for both states
+        height: qty === 0 ? 64 : 160, // Set consistent height for both states
         transition: ".3s ease-in-out", // Smooth transition
       }}
     >
