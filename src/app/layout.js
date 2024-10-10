@@ -6,6 +6,32 @@ import SideMenu from "@/components/SideMenu/sideMenu";
 import MainHeader from "@/components/MainHeader/mainHeader";
 import { Suspense } from "react";
 
+const IBMFont = localFont({
+  src: [
+    {
+      path: "./fonts/IBMPlexSansArabic-Medium.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/IBMPlexSansArabic-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/IBMPlexSansArabic-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/IBMPlexSansArabic-Bold.ttf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-IBM",
+});
+
 const newSansFont = localFont({
   src: [
     {
@@ -57,7 +83,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${newSansFont.variable} ${rubikFont.variable} antialiased`}
+        className={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}
       >
         <Suspense fallback={<div>Loading...</div>}>
           <ReactQueryProvider>

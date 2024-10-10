@@ -20,7 +20,8 @@
   background: var(--background); */
   /* font-family: var(--font-snpro) !important; */
   /* font-family: var(--font-rubik) !important; */
-  font-family: var(--font-NeoSans) !important;
+  font-family: var(--font-IBM) !important;
+  /* font-family: var(--font-NeoSans) !important;*/
 }
 
 .no-scrollbar::-webkit-scrollbar {

@@ -18,7 +18,7 @@ import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner"
 const OptionTag = ({ name, active = false }) => {
   return (
     <button
-      className="h-[46px] rounded-[24px] pl-[16px] pr-[16px] text-[14px] bg-[#f6f6f6] border border-[#eee] ml-[12px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
+      className="h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[12px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
       style={
         active
           ? {
@@ -42,7 +42,12 @@ const ProductInfo = ({ item }) => {
     <div>
       <div className="h-[300px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
-          <Image src={"/images/cam.png"} layout="fill" objectFit="cover"  alt="image"/>
+          <Image
+            src={"/images/cam.png"}
+            layout="fill"
+            objectFit="cover"
+            alt="image"
+          />
           <div className="absolute left-0 right-0 mt-[4px]  bottom-[16px]">
             <Container>
               <div className="flex items-center justify-between">
@@ -61,10 +66,6 @@ const ProductInfo = ({ item }) => {
                 <div className="flex items-center">
                   <p className="mt-1 ml-2">3.6</p>
                   <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                  {/* <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                  <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                  <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                  <TiStarHalfOutline className="ml-[4px] text-[24px] text-[#FCA120]" /> */}
                 </div>
               </div>
             </Container>
@@ -85,7 +86,7 @@ const ProductInfo = ({ item }) => {
                   rounded={"50%"}
                   className={`bg-[#f6f6f6] rounded-full border border-[#eee] ${
                     scrollPosition > 0 ? "p-2 text-[24px]" : "p-3 text-[28px]"
-                  } transition-all flex-1`}
+                  } transition-all`}
                   icon={<IoIosArrowForward />}
                   onClick={() => router.back()}
                 />
@@ -104,7 +105,6 @@ const ProductInfo = ({ item }) => {
                     visibility: scrollPosition > 200 ? "visible" : "hidden",
                   }}
                 >
-                  {item?.name}
                   {item?.name}
                 </motion.b>
               </div>
@@ -126,8 +126,14 @@ const ProductInfo = ({ item }) => {
         </div>
       </div>
       <Container>
-        <h4 className="font-bold text-[18px] mt-[16px]">{item?.name}</h4>
-        <p className="text-[16px] text-gray-600">{item?.description}</p>
+        <h4 className="text-[18px] mt-[16px]">{item?.name}</h4>
+        <b className="text-[22px]  block">
+          130,000 <span className="text-[14px]">IQD</span>
+        </b>
+
+        <p className="text-[14px] text-gray-600 mt-[8px]">
+          {item?.description}
+        </p>
         <div className="mt-[16px]">
           <InstallmentBanner />
         </div>
@@ -140,7 +146,7 @@ const ProductInfo = ({ item }) => {
       </Container>
       <div className="h-[1px] bg-[#eee] mt-[16px] mb-[16px]" />
       <Container>
-        <p className="text-[#a5a5a5]">خيارات المنتج</p>
+        <p className="text-[#a5a5a5] text-[14px]">خيارات المنتج</p>
         <div className="flex flex-wrap mt-[8px]">
           <OptionTag name="ذاكرة 256 ذهبي" active />
           <OptionTag name="نوع شكاكي" />

@@ -14,7 +14,7 @@ const ListBanner = ({ title, list, isCreative = false }) => {
     <div className="pt-[16px] ">
       <Container>
         <div className="flex items-center justify-between">
-          <h3 className="text-md font-semih2old text-black font-semibold mr-1">
+          <h3 className="text-[16px] font-semih2old text-black font-semibold mr-1">
             {title}
           </h3>
           <Button

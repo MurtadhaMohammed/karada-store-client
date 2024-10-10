@@ -10,7 +10,7 @@ import {
   TbHeart,
   TbHeartFilled,
 } from "react-icons/tb";
-
+import Container from "../UI/Container/container";
 
 const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
   const router = useRouter();
@@ -21,10 +21,10 @@ const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
   return (
     <div
       onClick={() => router.replace(to)}
-      className={`h-[70px] flex flex-col items-center justify-center active:scale-[0.94] mt-[1px] transition-all ${activeStyle}`}
+      className={`h-[70px] flex-1 flex flex-col items-center justify-center active:scale-[0.94] -mt-[1px] transition-all ${activeStyle}`}
     >
       {icon}
-      <p className="text-[14px] mt-[4px]">{label}</p>
+      <p className="text-[14px] mt-[4px] font-bold">{label}</p>
     </div>
   );
 };
@@ -34,19 +34,21 @@ const BottomNabar = () => {
   const searchParams = useSearchParams();
   const screenView = ["/", "/categories", "/cart?from=home", "/faivorates"];
   return (
-
       <div
-        className="h-[80px] fixed left-0 right-0 z-10 bg-white flex gap-4 justify-evenly items-center border-t border-t-[#f0f0f0] pb-[12px] transition-all"
-        style={{
+      className="h-[80px] fixed left-0 right-0 z-10 bg-white  border-t border-t-[#f0f0f0] pb-[12px] transition-all"
+      style={{
           bottom: screenView?.find(
-            (el) =>
+              (el) =>
               el === pathname ||
               el === `${pathname}?from=${searchParams.get("from")}`
           )
             ? 0
             : "-80px",
         }}
-      >
+        >
+          <Container>
+            <div className="flex gap-4 justify-evenly items-center"> 
+
         <NavItem
           icon={<TbSmartHome className="text-[26px]" />}
           label={"الرئيسية"}
@@ -89,8 +91,9 @@ const BottomNabar = () => {
           label={"المفضلة"}
           isActive={pathname === "/faivorates"}
         />
+            </div>
+    </Container>
       </div>
-
   );
 };
 

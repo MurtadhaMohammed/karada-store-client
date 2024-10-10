@@ -11,7 +11,10 @@ module.exports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      lineHeight: {
+        "tight-custom": "1.1",
+      },
     },
   },
-  plugins: [require('@tailwindcss/aspect-ratio')],
+  plugins: [require("@tailwindcss/aspect-ratio")],
 };
