@@ -1,4 +1,3 @@
-import SearchBar from "@/components/SearchBar/searchBar";
 import ProductInfo from "./ProductInfo/productInfo";
 import ProductCTA from "./ProductCTA/ProductCTA";
 import ListBanner from "@/components/ListBanner/listBanner";
@@ -49,13 +48,12 @@ const defaultList = [
   },
 ];
 
-
 export default function ProductOne({ params }) {
   return (
     <div className="pb-[100px]">
       <ProductInfo item={defaultItem} />
       <ListBanner title="قد يعجبك ايضاً" list={defaultList} />
-      <ProductCTA/>
+      <ProductCTA />
     </div>
   );
 }

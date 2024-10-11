@@ -8,7 +8,7 @@ import Ripples from "react-ripples";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 
-const ProductCTA = () => {
+const ProductCTA = ({ disabled = false }) => {
   const [qty, setQty] = useState(0);
   const router = useRouter();
 
@@ -41,7 +41,9 @@ const ProductCTA = () => {
               duration: 0.4,
               ease: [0.42, 0, 0.58, 1],
             }}
-            className="p-4 flex w-full h-full items-center justify-center text-[#fff]"
+            className={`p-4 flex w-full h-full items-center justify-center text-[#fff] ${
+              disabled ? "pointer-events-none" : ""
+            }`}
             onClick={() => setQty(1)}
           >
             <FaPlus className="text-[18px]" />

@@ -5,6 +5,7 @@ import BottomNabar from "@/components/BottomNavbar/bottomNavbar";
 import SideMenu from "@/components/SideMenu/sideMenu";
 import MainHeader from "@/components/MainHeader/mainHeader";
 import { Suspense } from "react";
+import ProgressBar from "./Progreess";
 
 const IBMFont = localFont({
   src: [
@@ -87,6 +88,7 @@ export default function RootLayout({ children }) {
       >
         <Suspense fallback={<div>Loading...</div>}>
           <ReactQueryProvider>
+          <ProgressBar />
             <MainHeader />
             {children}
             <BottomNabar />

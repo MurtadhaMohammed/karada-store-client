@@ -9,7 +9,7 @@ import { BiSupport } from "react-icons/bi";
 
 const MenuItem = ({ title, icon }) => {
   return (
-    <div className="flex items-center mb-[34px] active:scale-[0.96] active:opacity-60 transition-all">
+    <div className="flex items-center mb-[28px] active:scale-[0.96] active:opacity-60 transition-all">
       <div>{icon}</div>
       <p className="mr-[16px] text-[16px]">{title}</p>
     </div>

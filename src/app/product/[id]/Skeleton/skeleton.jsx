@@ -1,53 +1,16 @@
 "use client";
 import Container from "@/components/UI/Container/container";
 import IconButton from "@/components/UI/IconButton/iconButton";
-import useScrollPosition from "@/hooks/useScrollPosition";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { IoIosArrowForward } from "react-icons/io";
-import { motion } from "framer-motion"; // Import framer-motion components
-import {
-  TbHeart,
-  TbHeartFilled,
-  TbShare2,
-  TbTruckDelivery,
-} from "react-icons/tb";
-import { TiStarHalfOutline, TiStarFullOutline } from "react-icons/ti";
-import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+import { TbHeart, TbShare2, TbTruckDelivery } from "react-icons/tb";
+import { TiStarFullOutline } from "react-icons/ti";
+import ProductCTA from "../ProductCTA/ProductCTA";
 
-const OptionTag = ({ name, active = false }) => {
-  return (
-    <button
-      className="h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
-      style={
-        active
-          ? {
-              borderColor: "#7c3aed",
-              color: "#7c3aed",
-              background: "#fff",
-            }
-          : {}
-      }
-    >
-      {name}
-    </button>
-  );
-};
-
-const ProductInfo = ({ item }) => {
-  const router = useRouter();
-  const { scrollPosition } = useScrollPosition();
-
+const ProductSkeleton = () => {
   return (
     <div>
-      <div className="h-[300px] border-b border-b-[#eee]">
+      <div className="h-[300px] border-b border-b-[#eee] pure-skeleton">
         <div className={"w-full h-full relative"}>
-          <Image
-            src={"/images/cam.png"}
-            layout="fill"
-            objectFit="cover"
-            alt="image"
-          />
           <div className="absolute left-0 right-0 mt-[4px]  bottom-[16px]">
             <Container>
               <div className="flex items-center justify-between">
@@ -64,7 +27,7 @@ const ProductInfo = ({ item }) => {
                   ))}
                 </div>
                 <div className="flex items-center">
-                  <p className="mt-1 ml-2">3.6</p>
+                  <p className="mt-1 ml-2">0.0</p>
                   <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
                 </div>
               </div>
@@ -73,11 +36,7 @@ const ProductInfo = ({ item }) => {
           {/* <div className="absolute inset-0 z-10 bg-gradient-to-t from-purple-500 to-transparent"></div> */}
         </div>
         <div
-          className={`top-0 left-0 right-0 pt-[16px] pb-[16px] transition-all ${
-            scrollPosition > 0
-              ? "fixed bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0]"
-              : "absolute"
-          } `}
+          className={`top-0 left-0 right-0 pt-[16px] pb-[16px] absolute transition-all`}
         >
           <Container>
             <div className="flex items-start justify-between">
@@ -86,25 +45,8 @@ const ProductInfo = ({ item }) => {
                   rounded={"50%"}
                   className={`bg-[#f6f6f6] rounded-full border border-[#eee] p-2 text-[24px] transition-all`}
                   icon={<IoIosArrowForward />}
-                  onClick={() => router.back()}
+                  //onClick={() => router.back()}
                 />
-                <motion.b
-                  key={scrollPosition > 100}
-                  initial={{ y: 20, opacity: 0.6 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: 20, opacity: 0.6 }}
-                  transition={{
-                    duration: 0.3,
-                    // ease: [0.42, 0, 0.58, 1],
-                  }}
-                  className="mt-2 mr-[8px] text-[18px] whitespace-nowrap overflow-hidden text-ellipsis"
-                  style={{
-                    maxWidth: 180,
-                    visibility: scrollPosition > 200 ? "visible" : "hidden",
-                  }}
-                >
-                  {item?.name}
-                </motion.b>
               </div>
               <div className="flex items-center">
                 <IconButton
@@ -124,16 +66,15 @@ const ProductInfo = ({ item }) => {
         </div>
       </div>
       <Container>
-        <h4 className="text-[18px] mt-[16px]">{item?.name}</h4>
+        <h4 className="text-[18px] mt-[16px] !w-[120px] h-[18px] pure-skeleton"></h4>
         <b className="text-[22px]  block">
-          130,000 <span className="text-[14px]">IQD</span>
+          000,000 <span className="text-[14px]">IQD</span>
         </b>
 
-        <p className="text-[14px] text-gray-600 mt-[8px]">
-          {item?.description}
-        </p>
+        <p className="text-[14px] text-gray-600 mt-[8px]  h-[12px] pure-skeleton"></p>
+        <p className="text-[14px] text-gray-600 mt-[8px] !w-[80%] h-[12px] pure-skeleton"></p>
         <div className="mt-[16px]">
-          <InstallmentBanner />
+          <div className="h-[60px] rounded-[8px] border border-[#eee] pt-[4px] pb-[4px] pl-[8px] pr-[8px] shadow-md active:scale-[0.96] active:opacity-50 transition-all pure-skeleton"></div>
         </div>
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
@@ -146,14 +87,14 @@ const ProductInfo = ({ item }) => {
       <Container>
         <p className="text-[#a5a5a5] text-[14px]">خيارات المنتج</p>
         <div className="flex flex-wrap mt-[8px]">
-          <OptionTag name="ذاكرة 256 ذهبي" active />
-          <OptionTag name="نوع شكاكي" />
-          <OptionTag name="Green Light" />
+          <div className="pure-skeleton h-[32px] !w-[80px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"></div>
+          <div className="pure-skeleton h-[32px] !w-[80px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"></div>
+          <div className="pure-skeleton h-[32px] !w-[80px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"></div>
         </div>
       </Container>
-      <div className="h-[1px] bg-[#eee] mt-[16px] mb-[16px]" />
+      <ProductCTA disabled />
     </div>
   );
 };
 
-export default ProductInfo;
+export default ProductSkeleton;

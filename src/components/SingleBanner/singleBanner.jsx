@@ -32,7 +32,7 @@ const SingleBanner = () => {
                 size="sm"
                 style={{ background: "red" }}
               >
-                عرض الكل
+                <span className="text-[14px] -mt-[1px]">عرض الكل</span>
               </Button>
             </div>
           </div>
