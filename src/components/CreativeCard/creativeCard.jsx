@@ -16,7 +16,7 @@ const CreatviceCard = ({ index, item }) => {
         // onClick={() => router.push(`/product/${index}`)}
         className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden ${
           colors[index % 2 === 2 ? 0 : 1]
-        } active:scale-[0.96] transition-all`}
+        } active:opacity-50 transition-all`}
         style={{ width: 240, height: 350 }}
       >
         <div className="p-5 pb-0">

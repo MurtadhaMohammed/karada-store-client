@@ -5,10 +5,11 @@ import Button from "../UI/Button/button";
 import Container from "../UI/Container/container";
 
 import { IoIosArrowBack } from "react-icons/io";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const ListBanner = ({ title, list, isCreative = false }) => {
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
     <div className="pt-[16px] ">
@@ -17,13 +18,15 @@ const ListBanner = ({ title, list, isCreative = false }) => {
           <h3 className="text-[16px] font-semih2old text-black font-semibold mr-1">
             {title}
           </h3>
-          <Button
-            size="sm"
-            icon={<IoIosArrowBack className="text-[#717171] text-[16px]" />}
-            onClick={() => router.push("/products")}
-          >
-            <p className="text-[#717171] text-[14px]">عرض المزيد</p>
-          </Button>
+          <Link href={"/products"}>
+            <Button
+              size="sm"
+              icon={<IoIosArrowBack className="text-[#717171] text-[16px]" />}
+              //onClick={() => router.push("/products")}
+            >
+              <p className="text-[#717171] text-[14px]">عرض المزيد</p>
+            </Button>
+          </Link>
         </div>
       </Container>
       <Container noPadding>

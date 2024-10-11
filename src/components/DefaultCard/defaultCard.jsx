@@ -12,7 +12,7 @@ const DefaultCard = ({ item, isGrid = false, isFav = false }) => {
     <Link href={`/product/${12}`}>
       <div
         //onClick={() => router.push(`/product/${12}`)}
-        className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden bg-white active:scale-[0.96] transition-all`}
+        className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden bg-white active:opacity-50 transition-all`}
         style={{ width: isGrid ? "100%" : 200 }}
       >
         {isFav && (

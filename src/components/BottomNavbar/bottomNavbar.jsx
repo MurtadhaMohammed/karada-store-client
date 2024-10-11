@@ -13,6 +13,7 @@ import {
 import Container from "../UI/Container/container";
 import { useEffect } from "react";
 import Link from "next/link";
+import { useAppStore } from "@/lib/store";
 
 const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
   //   const router = useRouter();
@@ -21,7 +22,7 @@ const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
     ? "!text-violet-600 border-t !border-t-violet-600"
     : "";
   return (
-    <Link href={to}>
+    <Link href={to} className="flex-1">
       <div
         //onClick={() => router.replace(to)}
         className={`h-[70px] flex-1 flex flex-col items-center justify-center active:scale-[0.94] -mt-[1px] transition-all ${activeStyle}`}
@@ -37,6 +38,7 @@ const BottomNabar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const {} = useAppStore();
   const screenView = ["/", "/categories", "/cart?from=home", "/faivorates"];
 
   useEffect(() => {
@@ -46,6 +48,7 @@ const BottomNabar = () => {
     router.prefetch("/faivorates");
     router.prefetch("/products");
   }, []);
+
   return (
     <div
       className="h-[80px] fixed left-0 right-0 z-10 bg-white  border-t border-t-[#f0f0f0] pb-[12px] transition-all"

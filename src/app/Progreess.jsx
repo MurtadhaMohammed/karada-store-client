@@ -4,7 +4,7 @@ import NProgress from "nprogress";
 
 export default function ProgressBar() {
   const height = "3px";
-  const color = "#46b276";
+  const color = "#7c3aed";
 
   const styles = (
     <style>
