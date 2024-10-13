@@ -66,7 +66,7 @@ const ProductSkeleton = () => {
         </div>
       </div>
       <Container>
-        <h4 className="text-[18px] mt-[16px] !w-[120px] h-[18px] pure-skeleton"></h4>
+        <h4 className="text-[18px] mt-[16px] !w-[120px] h-[20px] pure-skeleton"></h4>
         <b className="text-[22px]  block">
           000,000 <span className="text-[14px]">IQD</span>
         </b>

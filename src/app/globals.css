@@ -24,6 +24,10 @@
   /* font-family: var(--font-NeoSans) !important;*/
 }
 
+html, body {
+  scroll-behavior: smooth;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -44,7 +48,7 @@
 .pure-skeleton {
   width: -webkit-fill-available;
   /* height: 200px; */
-  background-image: linear-gradient(90deg, #eee 0px, #e8e7e7 200px, #eee 500px);
+  background-image: linear-gradient(90deg, #f6f6f6 0px, #f0f0f0 200px, #f6f6f6 500px);
   background-size: 600px;
   animation-name: skeleton;
   animation-fill-mode: both;

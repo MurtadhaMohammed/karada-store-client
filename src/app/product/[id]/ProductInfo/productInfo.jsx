@@ -73,11 +73,11 @@ const ProductInfo = ({ item }) => {
           {/* <div className="absolute inset-0 z-10 bg-gradient-to-t from-purple-500 to-transparent"></div> */}
         </div>
         <div
-          className={`top-0 left-0 right-0 pt-[16px] pb-[16px] transition-all ${
+          className={`top-0 left-0 right-0 pt-[16px] pb-[16px] ${
             scrollPosition > 0
               ? "fixed bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0]"
               : "absolute"
-          } `}
+          } transition-all`}
         >
           <Container>
             <div className="flex items-start justify-between">

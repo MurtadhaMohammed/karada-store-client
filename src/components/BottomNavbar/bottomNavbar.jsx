@@ -13,7 +13,6 @@ import {
 import Container from "../UI/Container/container";
 import { useEffect } from "react";
 import Link from "next/link";
-import { useAppStore } from "@/lib/store";
 
 const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
   //   const router = useRouter();
@@ -38,7 +37,6 @@ const BottomNabar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const {} = useAppStore();
   const screenView = ["/", "/categories", "/cart?from=home", "/faivorates"];
 
   useEffect(() => {

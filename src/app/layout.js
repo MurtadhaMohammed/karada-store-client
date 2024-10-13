@@ -6,6 +6,7 @@ import SideMenu from "@/components/SideMenu/sideMenu";
 import MainHeader from "@/components/MainHeader/mainHeader";
 import { Suspense } from "react";
 import ProgressBar from "./Progreess";
+import HomeSkeleton from "./Skeleton/skeleton";
 
 const IBMFont = localFont({
   src: [
@@ -86,13 +87,14 @@ export default function RootLayout({ children }) {
       <body
         className={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}
       >
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<HomeSkeleton />}>
           <ReactQueryProvider>
-          <ProgressBar />
+            <ProgressBar />
             <MainHeader />
             {children}
             <BottomNabar />
             <SideMenu />
+            {/* <HomeSkeleton /> */}
           </ReactQueryProvider>
         </Suspense>
       </body>

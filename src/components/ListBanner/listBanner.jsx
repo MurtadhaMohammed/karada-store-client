@@ -18,15 +18,16 @@ const ListBanner = ({ title, list, isCreative = false }) => {
           <h3 className="text-[16px] font-semih2old text-black font-semibold mr-1">
             {title}
           </h3>
-          <Link href={"/products"}>
+          {/* <Link href={"/products"}> */}
             <Button
               size="sm"
               icon={<IoIosArrowBack className="text-[#717171] text-[16px]" />}
-              //onClick={() => router.push("/products")}
+              // onClick={() => router.push("/products")}
+              href={"/products"}
             >
               <p className="text-[#717171] text-[14px]">عرض المزيد</p>
             </Button>
-          </Link>
+          {/* </Link> */}
         </div>
       </Container>
       <Container noPadding>

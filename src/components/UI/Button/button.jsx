@@ -1,6 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import Ripples from "react-ripples";
+
+const Wrapper = ({ children, ...props }) =>
+  props?.href ? (
+    <Link {...props}>{children}</Link>
+  ) : (
+    <button {...props}>{children}</button>
+  );
 
 const Button = ({
   icon,
@@ -9,6 +17,7 @@ const Button = ({
   className,
   rounded = 8,
   onClick = () => {},
+  href = null,
 }) => {
   const sizes = {
     height: {
@@ -32,7 +41,7 @@ const Button = ({
       }}
     >
       <Ripples>
-        <button
+        <Wrapper
           className={`flex items-center gap-2 ${className} whitespace-nowrap`}
           style={{
             height: sizes?.height[size],
@@ -41,9 +50,21 @@ const Button = ({
             borderRadius: rounded,
           }}
           onClick={onClick}
+          href={href}
         >
           {children} {icon}
-        </button>
+        </Wrapper>
+        {/* <button
+          className={`flex items-center gap-2 ${className} whitespace-nowrap`}
+          style={{
+            height: sizes?.height[size],
+            fontSize: sizes.font[size],
+            padding: icon ? "0px 12px 0px 8px" : "0px 12px",
+            borderRadius: rounded,
+          }}
+          onClick={onClick}
+        > */}
+        {/* </button> */}
       </Ripples>
     </div>
   );

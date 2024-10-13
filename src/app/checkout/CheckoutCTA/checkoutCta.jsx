@@ -3,9 +3,11 @@ import Container from "@/components/UI/Container/container";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa6";
+import { GiConfirmed } from "react-icons/gi";
+
 import Ripples from "react-ripples";
 
-const CartCTA = () => {
+const CheckoutCTA = () => {
   const searchParams = useSearchParams();
 
   return (
@@ -28,15 +30,12 @@ const CartCTA = () => {
           <Ripples className="!grid w-full">
             <Link
               href={"/checkout"}
-              className="flex items-center justify-between h-[56px] rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
+              className="flex items-center justify-center  h-[56px] rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
             >
-              <span className="text-[18px] font-bold">
-                140,000 <span className="text-[14px]">IQD</span>
+              <span className="ml-[8px] font-bold text-[18px]">
+                تأكـــيد الطلب
               </span>
-              <div className="flex items-center">
-                <span className="ml-[8px] font-bold text-[18px]">متابعة</span>
-                <FaArrowLeft className="text-[22px]" />
-              </div>
+              <GiConfirmed className="text-[22px]" />
             </Link>
           </Ripples>
         </div>
@@ -45,4 +44,4 @@ const CartCTA = () => {
   );
 };
 
-export default CartCTA;
+export default CheckoutCTA;
