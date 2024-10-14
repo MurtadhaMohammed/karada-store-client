@@ -10,17 +10,17 @@ import { FaCcVisa, FaCcMastercard } from "react-icons/fa6";
 import { BsCreditCard2Front } from "react-icons/bs";
 import Ripples from "react-ripples";
 
-export const MasterCardModal = () => {
+export const InstallmentModal = () => {
   const { colseModal } = useBottomSheetModal();
   return (
     <BottomSheetModal
       title={
         <Container>
-          <b>الدفع باستخدام الماستر او الفيزا كادر</b>
+          <b>الشراء بالتقسيط</b>
         </Container>
       }
       detent={"content-height"}
-      name="paymentModal"
+      name="installmentModal"
       onClose={colseModal}
       footer={
         <Container>
@@ -46,23 +46,30 @@ export const MasterCardModal = () => {
       }
     >
       <Container>
-        <div className="rounded-[8px] border border-[#eee] mt-[16px] mb-[60px]">
-          <div className="flex items-center p-[16px]">
-            <FaCcVisa className="text-[18px]" />
-            <FaCcMastercard className="text-[18px] mr-[6px]" />
-            <p className="mr-[6px]">ادخل معلومات البطاقة</p>
-          </div>
-          <div className="p-[16px] pt-0">
-            <Input hint="اسم حامل البطاقة" />
-            <div className="h-[12px]"></div>
-            <Input
-              hint="رقم البطاقة"
-              prefix={<BsCreditCard2Front className="text-[20px]" />}
-            />
-            <div className="h-[12px]"></div>
-            <div className="flex gap-3 items-center">
-              <Input hint="تاريخ انتهاء الصلاحية" />
-              <Input hint="cvv" />
+        <div className="rounded-[8px]  mt-[16px] mb-[60px]">
+          <div className="pt-0">
+            <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
+              <p>القسط الشهري</p>
+              <p>44,000 IQD</p>
+            </div>
+            <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
+              <p>عدد الاشهر</p>
+              <p>12 شهر</p>
+            </div>
+
+            <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
+              <p className="text-[#666]">المبلغ الاجمالي:</p>
+              <b className="text-[24px]">335,000 IQD</b>
+            </div>
+
+            <div className="mt-[24px]">
+              <p className="mr-[6px]  mb-[8px]">
+                اكتب رقم الجساب المكون من 10 مراتب
+              </p>
+              <Input
+                hint="رقم البطاقة"
+                prefix={<BsCreditCard2Front className="text-[20px]" />}
+              />
             </div>
           </div>
         </div>
