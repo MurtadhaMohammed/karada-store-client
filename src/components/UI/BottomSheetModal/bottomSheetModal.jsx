@@ -1,7 +1,7 @@
 "use client";
 
 import { Sheet } from "react-modal-sheet";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, Suspense } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 export const useBottomSheetModal = () => {
