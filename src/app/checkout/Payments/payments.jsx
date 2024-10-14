@@ -73,7 +73,7 @@ const Payments = () => {
           </div>
         ))}
       </div>
-   <MasterCardModal isOpen={true} onClose={()=> console.log("close")}/>
+   <MasterCardModal isOpen={false} onClose={()=> console.log("close")}/>
      
     </div>
   );
