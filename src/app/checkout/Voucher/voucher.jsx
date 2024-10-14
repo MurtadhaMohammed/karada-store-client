@@ -14,7 +14,7 @@ const Voucher = () => {
             className="rounded-[8px] border border-[#eee] h-[48px] pl-[16px] pr-[16px] bg-[#F6F6F6] text-[16px] outline-none"
             placeholder="ادخل رمز التخفيظ هنا"
             style={{
-                width: "calc(100% - 80px)"
+              width: "calc(100% - 80px)",
             }}
           />
           <Button className="bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] w-[80px] flex items-center justify-center">

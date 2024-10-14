@@ -12,7 +12,8 @@ import {
 import { InstallmentModal } from "./InstallmentModal/InstallmentModal";
 
 const Payments = () => {
-  const [selected] = useState("cash");
+  const [selected, setSelected] = useState("cash");
+  const [cardInfo, setCardInfo] = useState({});
   const { openModal, colseModal } = useBottomSheetModal();
 
   const payments = [
@@ -23,12 +24,10 @@ const Payments = () => {
     {
       value: "master",
       label: "ماستر او فيزا كارد",
-      info: "6330 4909...",
     },
     {
       value: "installment",
       label: "شراء بالتقسيط",
-      info: "6103...",
     },
   ];
 
@@ -36,9 +35,7 @@ const Payments = () => {
     <div className="rounded-[8px] border border-[#eee] mt-[24px]">
       <div className="flex items-center p-[16px]">
         <BsCreditCard2Front className="text-[18px]" />
-        <p className="mr-[6px]">
-          حدد طريقة الدفع
-        </p>
+        <p className="mr-[6px]">حدد طريقة الدفع</p>
       </div>
       <div className="p-[16px] pt-0">
         {payments?.map((el, i) => (
@@ -46,8 +43,13 @@ const Payments = () => {
             key={i}
             // onClick={() => setSelected(el?.value)}
             onClick={() => {
-                if(el?.value === "master") openModal("paymentModal")
-                    else if(el?.value === "installment") openModal("installmentModal")
+              if (el?.value === "master") openModal("paymentModal");
+              else if (el?.value === "installment")
+                openModal("installmentModal");
+              else {
+                setCardInfo({});
+                setSelected("cash");
+              }
             }}
             className={`flex items-start justify-between rounded-[8px] p-[12px] mt-[8px] active:opacity-55 ${
               el?.value === selected
@@ -57,8 +59,10 @@ const Payments = () => {
           >
             <div>
               <p>{el.label}</p>
-              {el?.value === selected && el?.info && (
-                <p className={"text-[#a5a5a5] text-[12px]"}>{el?.info}</p>
+              {el?.value === selected && cardInfo?.number && (
+                <p className={"text-[#a5a5a5] text-[12px]"}>
+                  {cardInfo?.number}
+                </p>
               )}
             </div>
             <div
@@ -75,8 +79,20 @@ const Payments = () => {
           </div>
         ))}
       </div>
-      <MasterCardModal />
-      <InstallmentModal/>
+      <MasterCardModal
+        onFinish={(value) => {
+          setCardInfo(value);
+          setSelected("master");
+          colseModal();
+        }}
+      />
+      <InstallmentModal
+        onFinish={(value) => {
+          setCardInfo(value);
+          setSelected("installment");
+          colseModal();
+        }}
+      />
     </div>
   );
 };

@@ -6,11 +6,10 @@ import {
 } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
-import { FaCcVisa, FaCcMastercard } from "react-icons/fa6";
 import { BsCreditCard2Front } from "react-icons/bs";
 import Ripples from "react-ripples";
 
-export const InstallmentModal = () => {
+export const InstallmentModal = ({ onFinish }) => {
   const { colseModal } = useBottomSheetModal();
   return (
     <BottomSheetModal
@@ -35,7 +34,7 @@ export const InstallmentModal = () => {
           >
             <Ripples className="!grid w-full">
               <button
-                onClick={colseModal}
+                onClick={() => onFinish({ number: "78672..." })}
                 className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r text-violet-600   p-6 border-2 border-violet-600"
               >
                 <span className="ml-[8px] font-bold text-[18px]">متابعة</span>

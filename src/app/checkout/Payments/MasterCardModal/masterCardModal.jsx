@@ -10,7 +10,7 @@ import { FaCcVisa, FaCcMastercard } from "react-icons/fa6";
 import { BsCreditCard2Front } from "react-icons/bs";
 import Ripples from "react-ripples";
 
-export const MasterCardModal = () => {
+export const MasterCardModal = ({ onFinish }) => {
   const { colseModal } = useBottomSheetModal();
   return (
     <BottomSheetModal
@@ -35,7 +35,7 @@ export const MasterCardModal = () => {
           >
             <Ripples className="!grid w-full">
               <button
-                onClick={colseModal}
+                onClick={() => onFinish({ number: "69892..." })}
                 className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r text-violet-600   p-6 border-2 border-violet-600"
               >
                 <span className="ml-[8px] font-bold text-[18px]">متابعة</span>
