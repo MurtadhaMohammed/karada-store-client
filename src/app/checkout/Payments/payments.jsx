@@ -1,7 +1,8 @@
 "use client";
 import { BsCreditCard2Front } from "react-icons/bs";
 import { useState } from "react";
-import BottomSheetModal from "@/components/BottomSheetModal/bottomSheetModal";
+import MasterCardModal from "./MasterCardModal/masterCardModal";
+
 
 const Payments = () => {
   const [selected, setSelected] = useState("cash");
@@ -9,12 +10,12 @@ const Payments = () => {
 
   const openModal = () => {
     setIsModalOpen(true);
-    window.history.pushState(null, "", window.location.href); // Ensure back navigation works
+    window.history.pushState({ modal: true }, "", window.location.href);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    window.history.back(); // Simulate a back action when modal is closed
+    window.history.back();
   };
 
   const payments = [
@@ -72,19 +73,8 @@ const Payments = () => {
           </div>
         ))}
       </div>
-
-      <BottomSheetModal isOpen={isModalOpen} onClose={closeModal} height="40vh">
-        <h2 className="text-lg font-semibold">Custom Content Inside Modal</h2>
-        <p>
-          This content is passed as children to the BottomSheetModal component.
-        </p>
-        <button
-          onClick={closeModal}
-          className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md"
-        >
-          Close Modal
-        </button>
-      </BottomSheetModal>
+   <MasterCardModal isOpen={true} onClose={()=> console.log("close")}/>
+     
     </div>
   );
 };
