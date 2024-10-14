@@ -16,6 +16,7 @@ const Input = ({ hint, value, prefix = null, onChange }) => {
             ? "top-[-10px] text-sm text-black bg-white block pl-[6px] pr-[6px]"
             : "top-[11px] text-[#a5a5a5]"
         }`}
+        style={{ pointerEvents: "none" }}
       >
         {hint}
       </label>
