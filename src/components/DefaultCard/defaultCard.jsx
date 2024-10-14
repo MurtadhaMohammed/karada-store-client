@@ -3,13 +3,12 @@ import Image from "next/image";
 import { PiStarFill } from "react-icons/pi";
 import { CgClose } from "react-icons/cg";
 import IconButton from "../UI/IconButton/iconButton";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { IMAGE_URL } from "@/lib/api";
 
 const DefaultCard = ({ item, isGrid = false, isFav = false }) => {
-  const router = useRouter();
   return (
-    <Link href={`/product/${12}`}>
+    <Link href={`/product/${item?.id}`}>
       <div
         //onClick={() => router.push(`/product/${12}`)}
         className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden bg-white active:opacity-50 transition-all`}
@@ -33,7 +32,7 @@ const DefaultCard = ({ item, isGrid = false, isFav = false }) => {
             }`}
           >
             <Image
-              src={item.image}
+              src={`${IMAGE_URL}/${item?.thumbnail1}`}
               layout="fill"
               objectFit="cover"
               alt="image"
