@@ -39,8 +39,6 @@ export const BottomSheetModal = ({
 }) => {
   const searchParams = useSearchParams();
 
-  if (!searchParams.get(name)) return null;
-
   return (
     <Sheet isOpen={searchParams.get(name)} onClose={onClose} detent={detent}>
       <Sheet.Container>
