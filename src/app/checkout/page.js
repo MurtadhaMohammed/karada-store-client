@@ -49,7 +49,7 @@ export default function Checkout() {
       <Container>
         <Payments />
         <Address />
-        <Voucher />
+        {/* <Voucher /> */}
         <Invoice />
       </Container>
       <CheckoutCTA />

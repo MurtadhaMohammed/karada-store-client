@@ -3,7 +3,7 @@ import { HiOutlineTicket } from "react-icons/hi";
 
 const Voucher = () => {
   return (
-    <div className=" rounded-[8px] border border-[#eee] mt-[20px]">
+    <div className="w-full rounded-[8px] border border-[#eee] mt-[20px]">
       <div className="flex items-center p-[16px]">
         <HiOutlineTicket className="text-[18px]" />
         <p className="mr-[6px]">كود الخصم</p>
@@ -15,7 +15,9 @@ const Voucher = () => {
             placeholder="ادخل رمز التخفيظ هنا"
           />
           <Button className="bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff]">
-            <span className="text-[16px] -mt-[1px] ml-[12px] mr-[12px]">تطبيق</span>
+            <span className="text-[16px] -mt-[1px] ml-[12px] mr-[12px]">
+              تطبيق
+            </span>
           </Button>
         </div>
       </div>
