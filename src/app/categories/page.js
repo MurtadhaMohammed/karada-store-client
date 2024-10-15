@@ -1,53 +1,46 @@
 import SearchBar from "@/components/SearchBar/searchBar";
 import ProductList from "./ProductsList/productsList";
 import Categories from "@/components/Categories/categories";
-// import Image from "next/image";
 
-const defaultList = [
-  {
-    name: "Power Supply",
-    description: "Deepcool DA700 700W Power Supply",
-    store: "كرادة ستور",
-    price: 305000,
-    image: "/images/1.png",
-  },
-  {
-    name: "ريلمي G13",
-    description: "ريلمي 13 برو بلس 5G - دبل سيم - 256/8 كيكابايت - اخضر",
-    store: "كرادة ستور",
-    price: 145000,
-    image: "/images/2.png",
-  },
-  {
-    name: "ريلمي G13",
-    description: "ريلمي 13 برو بلس 5G - دبل سيم - 256/8 كيكابايت - اخضر",
-    store: "كرادة ستور",
-    price: 145000,
-    image: "/images/4.png",
-  },
-  {
-    name: "ASUS Dual GeForce RTX",
-    description: "ASUS Dual GeForce RTX™ 4070 OC Edition 12GB GDDR6X",
-    store: "كرادة ستور",
-    price: 120000,
-    image: "/images/3.png",
-  },
-  {
-    name: "ipone 16 pro max",
-    description: "512 GB,nutureal titanium",
-    store: "كرادة ستور",
-    price: 135000,
-    image: "/images/iphone.png",
-  },
-];
+const IMAGE_URL =
+  "https://drlab.us-east-1.linodeobjects.com/karada-store";
 
-export default function Category() {
+const Category = async () => {
+  const resCategories = await fetch(
+    "http://85.208.51.126:3002/api/client/category/category"
+  );
+  const categoryData = await resCategories.json();
+  const categories = categoryData.categories.map((cat) => ({
+    id: cat.id, 
+    name: cat.title,
+    img: `${IMAGE_URL}/${cat.img}`, 
+  }));
+
+  const resProducts = await fetch("http://85.208.51.126:3002/api/client/product/product");
+  const productData = await resProducts.json();
+  
+  const productsByCategory = categories.map((category) => ({
+    category,
+    products: productData.products
+      .filter((prod) => prod.category_id === category.id) 
+      .map((prod) => ({
+        name: prod.name,
+        image: `${IMAGE_URL}/${prod.thumbnail1}`, 
+        price: prod.price,
+      })),
+  }));
+
   return (
     <div className="pb-[100px]">
-      {/* <MainHeader /> */}
       <SearchBar />
-      <Categories isBanner={false} />
-      <ProductList list={defaultList} />
+      <Categories isBanner={false} list={categories} />
+      {productsByCategory.map(({ category, products }) => (
+        <div key={category.id}>
+          <ProductList list={products} />
+        </div>
+      ))}
     </div>
   );
-}
+};
+
+export default Category;
