@@ -3,26 +3,27 @@ import Container from "../UI/Container/container";
 import Button from "../UI/Button/button";
 import { FaArrowLeft } from "react-icons/fa6";
 
-const SingleBanner = () => {
+const SingleBanner = ({ banner }) => {
+  const IMAGE_URL = "https://drlab.us-east-1.linodeobjects.com/karada-store";
   return (
     <div className="mt-[16px] mb-[16px]">
       <Container>
-        <div className="w-[100%] bg-white relative rounded-[16px] overflow-hidden inline-block  shadow-md">
+      <div className="w-[100%] bg-white relative rounded-[16px] overflow-hidden inline-block shadow-md">
           <div className="w-[100%] h-[140px] relative">
-            <Image
-              src={"/images/banner1.png"}
+            {/* <Image
+              src={`${IMAGE_URL}/${banner.img}`}
               layout="fill"
-              alt={"hello"}
+              alt={banner.title || "Single Banner"}
               objectFit="cover"
-            />
+            /> */}
           </div>
           <div className="p-[12px] pr-[16] relative">
             <div>
               <h4 className="font-bold text-[16px] whitespace-nowrap overflow-hidden text-ellipsis">
-                تخفيضات الموسم
+              {banner.title}
               </h4>
               <p className="text-gray-600 text-[16px]  pl-[120px]">
-                افضل العروض تجدها هنا
+              {banner.description}
               </p>
             </div>
             <div className=" absolute bottom-[16px] left-4">

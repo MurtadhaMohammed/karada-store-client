@@ -15,35 +15,37 @@ import {
 import { TiStarHalfOutline, TiStarFullOutline } from "react-icons/ti";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 
-const OptionTag = ({ name, active = false }) => {
-  return (
-    <button
-      className="h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
-      style={
-        active
-          ? {
-              borderColor: "#7c3aed",
-              color: "#7c3aed",
-              background: "#fff",
-            }
-          : {}
-      }
-    >
-      {name}
-    </button>
-  );
-};
+// const OptionTag = ({ name, active = false }) => {
+//   return (
+//     <button
+//       className="h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
+//       style={
+//         active
+//           ? {
+//               borderColor: "#7c3aed",
+//               color: "#7c3aed",
+//               background: "#fff",
+//             }
+//           : {}
+//       }
+//     >
+//       {name}
+//     </button>
+//   );
+// };
 
 const ProductInfo = ({ item }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
-
+  console.log("ProductInfo",item);
+ const IMAGE_URL =
+  "https://drlab.us-east-1.linodeobjects.com/karada-store";
   return (
     <div>
       <div className="h-[300px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
           <Image
-            src={"/images/cam.png"}
+            src={`${IMAGE_URL}/${item.products?.[0]?.thumbnail1}`}
             layout="fill"
             objectFit="cover"
             alt="image"
@@ -52,7 +54,7 @@ const ProductInfo = ({ item }) => {
             <Container>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-[4px] mr-1">
-                  {[...Array(3)]?.map((el, i) => (
+                  {[...Array(3)]?.map((_el, i) => (
                     <span
                       key={i}
                       className="block  h-[8px]  rounded-[24px] transition-all"
@@ -103,7 +105,7 @@ const ProductInfo = ({ item }) => {
                     visibility: scrollPosition > 200 ? "visible" : "hidden",
                   }}
                 >
-                  {item?.name}
+                  {item.products?.[0]?.name}
                 </motion.b>
               </div>
               <div className="flex items-center">
@@ -124,13 +126,13 @@ const ProductInfo = ({ item }) => {
         </div>
       </div>
       <Container>
-        <h4 className="text-[18px] mt-[16px]">{item?.name}</h4>
+        <h4 className="text-[18px] mt-[16px]">{item.products?.[0]?.name}</h4>
         <b className="text-[22px]  block">
-          130,000 <span className="text-[14px]">IQD</span>
+          {item.products?.[0]?.price} <span className="text-[14px]">IQD</span>
         </b>
 
         <p className="text-[14px] text-gray-600 mt-[8px]">
-          {item?.description}
+          {item.products?.[0]?.description}
         </p>
         <div className="mt-[16px]">
           <InstallmentBanner />

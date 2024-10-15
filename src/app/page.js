@@ -74,16 +74,33 @@ const defaultList = [
   },
 ];
 
+
+const res = await fetch(
+  "http://85.208.51.126:3002/api/client/banner/all-banners",
+  {
+    method: "GET",
+    cache: "no-cache",
+  }
+);
+
+const data = await res.json();
+
+// Filter banners based on their type
+const singleBanners = data.banners.filter((banner) => banner.type === "Single");
+const sliderBanners = data.banners.filter((banner) => banner.type === "Slider");
+
 export default function Home() {
   return (
     <div className="pb-[100px]">
       {/* <MainHeader /> */}
       <SearchBar />
-      <SliderBanner />
+      <SliderBanner data={sliderBanners} />
       <Categories />
       <ListBanner title="احدث المنتجات" list={creaitveList} isCreative />
       <ListBanner title="كافة مستلزمات الكمبيوتر " list={defaultList} />
-      <SingleBanner />
+      {singleBanners.map((banner) => (
+        <SingleBanner key={banner.id} banner={banner} />
+      ))}
       {/* <Container>
         <h1 className="font-[family-name:var(--font-rubik)]">مرحبا بالجميع</h1>
       </Container> */}
