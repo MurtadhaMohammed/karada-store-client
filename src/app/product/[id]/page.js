@@ -47,14 +47,31 @@ const defaultList = [
     image: "/images/iphone.png",
   },
 ];
-let data = await fetch(`http://85.208.51.126:3002/api/client/product/product/`) 
-let product = await data.json()
 // console.log(product)
 
-export default function ProductOne({ params }) {
+export default async function ProductOne({ params }) {
+  let products = await fetch(
+    `http://85.208.51.126:3002/api/client/product/product/${params.id}`
+  );
+  let product = await products.json();
+  console.log(product);
+
+  let brandId = product.brand.id;
+  let categoryId = product.category.id;
+
+  let relatedByBrandResponse = await fetch(`http://85.208.51.126:3002/api/client/brand/brands/${brandId}`);
+  let relatedByBrand = await relatedByBrandResponse.json();
+
+  let relatedByCategoryResponse = await fetch(`http://85.208.51.126:3002/api/client/category/category/${categoryId}`);
+  let relatedByCategory = await relatedByCategoryResponse.json();
+
+  let combinedRelatedProducts = [...relatedByBrand, ...relatedByCategory];
+
+  console.log(combinedRelatedProducts);
+// Log the combined related products
+console.log(combinedRelatedProducts);
   return (
     <div className="pb-[100px]">
-      
       <ProductInfo item={product} />
       <ListBanner title="قد يعجبك ايضاً" list={defaultList} />
       <ProductCTA />
