@@ -87,16 +87,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}
       >
-        <Suspense fallback={<HomeSkeleton />}>
-          <ReactQueryProvider>
-            <ProgressBar />
-            <MainHeader />
-            {children}
-            <BottomNabar />
-            <SideMenu />
-            {/* <HomeSkeleton /> */}
-          </ReactQueryProvider>
-        </Suspense>
+        <ReactQueryProvider>
+          <ProgressBar />
+          <MainHeader />
+          {children}
+          <BottomNabar />
+          <SideMenu />
+        </ReactQueryProvider>
       </body>
     </html>
   );

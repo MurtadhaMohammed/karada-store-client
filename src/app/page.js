@@ -3,6 +3,7 @@ import Categories from "@/components/Categories/categories";
 import SliderBanner from "@/components/SliderBanner/sliderBanner";
 import ListBanner from "@/components/ListBanner/listBanner";
 import SingleBanner from "@/components/SingleBanner/singleBanner";
+import { URL } from "@/lib/api";
 // import Image from "next/image";
 
 const creaitveList = [
@@ -74,19 +75,54 @@ const defaultList = [
   },
 ];
 
-export default function Home() {
+async function getBanners() {
+  const res = await fetch(`${URL}/client/banner/all-banners`);
+  if (!res.ok) throw new Error("Failed to fetch data");
+  return res.json();
+}
+
+export default async function Home() {
+  const banners = await getBanners();
+
+  const renderBanner = (banner) => {
+    switch (banner.type) {
+      case "Single":
+        return <SingleBanner key={banner.id} banner={banner} />;
+      case "Slider":
+        return <SliderBanner key={banner.id} banners={banner.items} />;
+      case "List":
+        return (
+          <ListBanner
+            key={banner.id}
+            title={banner.title}
+            list={banner?.products || []}
+          />
+        );
+      case "Category":
+        return <Categories key={banner.id} categories={banner.items} />;
+      case "CreativeBanner":
+        return (
+          <ListBanner
+            key={banner.id}
+            title="احدث المنتجات"
+            list={creaitveList}
+            isCreative
+          />
+        );
+      default:
+        return null; // Ignore unknown banner types
+    }
+  };
+
   return (
     <div className="pb-[100px]">
-      {/* <MainHeader /> */}
       <SearchBar />
-      <SliderBanner />
+      {/* <SliderBanner />
       <Categories />
       <ListBanner title="احدث المنتجات" list={creaitveList} isCreative />
       <ListBanner title="كافة مستلزمات الكمبيوتر " list={defaultList} />
-      <SingleBanner />
-      {/* <Container>
-        <h1 className="font-[family-name:var(--font-rubik)]">مرحبا بالجميع</h1>
-      </Container> */}
+      <SingleBanner /> */}
+      {banners?.map((banner) => renderBanner(banner))}
     </div>
   );
 }

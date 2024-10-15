@@ -5,10 +5,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "drlab.us-east-1.linodeobjects.com",
-        port: "",
         pathname: "/karada-store/**",
       },
     ],
+  },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
   },
 };
 

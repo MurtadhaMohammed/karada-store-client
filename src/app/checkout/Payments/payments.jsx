@@ -1,22 +1,20 @@
 "use client";
 import { BsCreditCard2Front } from "react-icons/bs";
 import { useState } from "react";
-import MasterCardModal from "./MasterCardModal/masterCardModal";
-
+import {
+  MasterCardModal,
+  useMasterCardModal,
+} from "./MasterCardModal/masterCardModal";
+import {
+  BottomSheetModal,
+  useBottomSheetModal,
+} from "@/components/UI/BottomSheetModal/bottomSheetModal";
+import { InstallmentModal } from "./InstallmentModal/InstallmentModal";
 
 const Payments = () => {
   const [selected, setSelected] = useState("cash");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-    window.history.pushState({ modal: true }, "", window.location.href);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    window.history.back();
-  };
+  const [cardInfo, setCardInfo] = useState({});
+  const { openModal, colseModal } = useBottomSheetModal();
 
   const payments = [
     {
@@ -26,12 +24,10 @@ const Payments = () => {
     {
       value: "master",
       label: "ماستر او فيزا كارد",
-      info: "6330 4909...",
     },
     {
       value: "installment",
       label: "شراء بالتقسيط",
-      info: "6103...",
     },
   ];
 
@@ -46,7 +42,15 @@ const Payments = () => {
           <div
             key={i}
             // onClick={() => setSelected(el?.value)}
-            onClick={openModal}
+            onClick={() => {
+              if (el?.value === "master") openModal("paymentModal");
+              else if (el?.value === "installment")
+                openModal("installmentModal");
+              else {
+                setCardInfo({});
+                setSelected("cash");
+              }
+            }}
             className={`flex items-start justify-between rounded-[8px] p-[12px] mt-[8px] active:opacity-55 ${
               el?.value === selected
                 ? "border border-violet-600"
@@ -55,8 +59,10 @@ const Payments = () => {
           >
             <div>
               <p>{el.label}</p>
-              {el?.value === selected && el?.info && (
-                <p className={"text-[#a5a5a5] text-[12px]"}>{el?.info}</p>
+              {el?.value === selected && cardInfo?.number && (
+                <p className={"text-[#a5a5a5] text-[12px]"}>
+                  {cardInfo?.number}
+                </p>
               )}
             </div>
             <div
@@ -73,8 +79,20 @@ const Payments = () => {
           </div>
         ))}
       </div>
-   <MasterCardModal isOpen={false} onClose={()=> console.log("close")}/>
-     
+      <MasterCardModal
+        onFinish={(value) => {
+          setCardInfo(value);
+          setSelected("master");
+          colseModal();
+        }}
+      />
+      <InstallmentModal
+        onFinish={(value) => {
+          setCardInfo(value);
+          setSelected("installment");
+          colseModal();
+        }}
+      />
     </div>
   );
 };
