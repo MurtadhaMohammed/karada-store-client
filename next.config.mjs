@@ -1,8 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-      domains: ["drlab.us-east-1.linodeobjects.com"],
-    },
-  };
-  
-  export default nextConfig;
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "drlab.us-east-1.linodeobjects.com",
+        pathname: "/karada-store/**",
+      },
+    ],
+  },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
+};
+
+export default nextConfig;

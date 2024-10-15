@@ -12,9 +12,9 @@ const Address = () => {
         <Input hint="العنوان الكامل" />
         {/* <div className="h-[8px]"></div>
         <Input hint="اقرب نقطة دالة" /> */}
-        <div className="h-[8px]"></div>
+        <div className="h-[12px]"></div>
         <Input hint="رقم الهاتف" />
-        <div className="h-[8px]"></div>
+        <div className="h-[12px]"></div>
         <Input hint="ملاحظات" />
       </div>
     </div>

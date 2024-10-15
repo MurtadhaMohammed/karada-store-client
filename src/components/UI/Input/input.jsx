@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const Input = ({ hint, value, onChange }) => {
+const Input = ({ hint, value, prefix = null, onChange }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const handleFocus = () => setIsFocus(true);
@@ -16,6 +16,7 @@ const Input = ({ hint, value, onChange }) => {
             ? "top-[-10px] text-sm text-black bg-white block pl-[6px] pr-[6px]"
             : "top-[11px] text-[#a5a5a5]"
         }`}
+        style={{ pointerEvents: "none" }}
       >
         {hint}
       </label>
@@ -26,6 +27,11 @@ const Input = ({ hint, value, onChange }) => {
         value={value}
         onChange={onChange}
       />
+      {prefix && (
+        <div className="absolute left-[16px] top-1/2 transform -translate-y-1/2 flex items-center">
+          {prefix}
+        </div>
+      )}
     </div>
   );
 };
