@@ -10,10 +10,10 @@ import { useState } from "react";
 
 const slider = [0, 1, 2];
 
-export default async function SliderBanner({ data }) {
+export default async function SliderBanner({ banners }) {
   const [current, setCurrent] = useState(0);
 
- console.log(data, "slider data")
+ console.log(banners, "slider banners")
 
 
   const IMAGE_URL =
@@ -29,15 +29,15 @@ export default async function SliderBanner({ data }) {
             onSlideChange={(e) => setCurrent(e?.activeIndex)}
             className="w-[100%]"
           >
-            {data?.map((el) => (
+            {banners?.map((el) => (
               <SwiperSlide key={el.id} className="pl-[16px] pr-[16px]">
                 <div className="w-[100%] h-[140px] relative rounded-[16px] overflow-hidden pb-[20px] inline-block shadow-md">
-                  {/* <Image
+                  <Image
                     src={`${IMAGE_URL}/${el.img}`}
                     layout="fill"
                     alt={el.title || "Banner"}
                     objectFit="cover"
-                  /> */}
+                  />
                 </div>
               </SwiperSlide>
             ))}
