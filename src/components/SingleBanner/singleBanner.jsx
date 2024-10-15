@@ -6,7 +6,6 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { IMAGE_URL } from "@/lib/api";
 
 const SingleBanner = ({banner}) => {
-  console.log(banner)
   return (
     <div className="mt-[16px] mb-[16px]">
       <Container>
