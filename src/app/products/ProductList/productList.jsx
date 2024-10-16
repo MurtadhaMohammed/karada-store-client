@@ -15,6 +15,7 @@ const ProductList = ({ list }) => {
           </div>
         </Container>
       </Motion>
+      
     </div>
   );
 };

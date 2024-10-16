@@ -4,7 +4,7 @@ import ProductList from "./ProductList/productList";
 
 const defaultList = [
   {
-    name: "Power Supply",
+    name: "Power ",
     description: "Deepcool DA700 700W Power Supply",
     store: "كرادة ستور",
     price: 305000,
