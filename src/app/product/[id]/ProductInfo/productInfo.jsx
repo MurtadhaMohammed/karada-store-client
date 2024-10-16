@@ -4,6 +4,7 @@ import IconButton from "@/components/UI/IconButton/iconButton";
 import useScrollPosition from "@/hooks/useScrollPosition";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { motion } from "framer-motion"; // Import framer-motion components
 import {
@@ -12,49 +13,86 @@ import {
   TbShare2,
   TbTruckDelivery,
 } from "react-icons/tb";
-import { TiStarHalfOutline, TiStarFullOutline } from "react-icons/ti";
+import { TiStarFullOutline } from "react-icons/ti";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+import { IMAGE_URL } from "@/lib/api";
 
-// const OptionTag = ({ name, active = false }) => {
-//   return (
-//     <button
-//       className="h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
-//       style={
-//         active
-//           ? {
-//               borderColor: "#7c3aed",
-//               color: "#7c3aed",
-//               background: "#fff",
-//             }
-//           : {}
-//       }
-//     >
-//       {name}
-//     </button>
-//   );
-// };
+const OptionTag = ({ name, imageUrl, active }) => {
+  console.log(Image);
+  return (
+    <div className="">
+      <button
+        className="flex flex-row align-center justify-between h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
+        style={
+          active
+            ? {
+                borderColor: "#7c3aed",
+                color: "#7c3aed",
+                background: "#fff",
+              }
+            : {}
+        }
+      >
+        <div className="flex flex-row align-center justify-between mt-1">
+          <div className="ml-2 relative h-[24px] w-[24px]">
+            <Image
+              src={imageUrl} // Pass the correct image URL here
+              layout="fill"
+              objectFit="cover"
+              alt={name}
+              className="rounded-5"
+            />
+          </div>
+          <div>{name}</div>
+        </div>
+      </button>
+    </div>
+  );
+};
 
 const ProductInfo = ({ item }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
-  console.log("ProductInfo",item);
- const IMAGE_URL =
-  "https://drlab.us-east-1.linodeobjects.com/karada-store";
+  const [isFavorite, setIsFavorite] = useState(false);
+  const loadFavorites = () => {
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    return favorites;
+  };
+
+  console.log(item);
+  const toggleFavorite = (productId) => {
+    let favorites = loadFavorites();
+    if (favorites.includes(productId)) {
+      favorites = favorites.filter((id) => id !== productId);
+    } else {
+      favorites.push(productId);
+    }
+    localStorage.setItem("favorites_product", JSON.stringify(favorites));
+    setIsFavorite(favorites.includes(productId));
+  };
+
+  useEffect(() => {
+    const favorites = loadFavorites();
+    setIsFavorite(favorites.includes(item.product?.id));
+  }, [item.product?.id]);
+
   return (
     <div>
       <div className="h-[300px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
-          <Image
-            src={`${IMAGE_URL}/${item.products?.[0]?.thumbnail1}`}
-            layout="fill"
-            objectFit="cover"
-            alt="image"
-          />
+          {item.product?.image?.map((image, i) => (
+            <Image
+              src={`${IMAGE_URL}/${image}`}
+              layout="fill"
+              objectFit="cover"
+              alt="image"
+            />
+          ))}
           <div className="absolute left-0 right-0 mt-[4px]  bottom-[16px]">
             <Container>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-[4px] mr-1">
-                  {[...Array(3)]?.map((_el, i) => (
+                  {item.product?.image?.map((image, i) => (
                     <span
                       key={i}
                       className="block  h-[8px]  rounded-[24px] transition-all"
@@ -72,7 +110,6 @@ const ProductInfo = ({ item }) => {
               </div>
             </Container>
           </div>
-          {/* <div className="absolute inset-0 z-10 bg-gradient-to-t from-purple-500 to-transparent"></div> */}
         </div>
         <div
           className={`top-0 left-0 right-0 pt-[16px] pb-[16px] ${
@@ -97,7 +134,6 @@ const ProductInfo = ({ item }) => {
                   exit={{ y: 20, opacity: 0.6 }}
                   transition={{
                     duration: 0.3,
-                    // ease: [0.42, 0, 0.58, 1],
                   }}
                   className="mt-2 mr-[8px] text-[18px] whitespace-nowrap overflow-hidden text-ellipsis"
                   style={{
@@ -105,7 +141,7 @@ const ProductInfo = ({ item }) => {
                     visibility: scrollPosition > 200 ? "visible" : "hidden",
                   }}
                 >
-                  {item.products?.[0]?.name}
+                  {item.product?.name}
                 </motion.b>
               </div>
               <div className="flex items-center">
@@ -118,7 +154,14 @@ const ProductInfo = ({ item }) => {
                 <IconButton
                   rounded={"8px"}
                   className="p-2 bg-[#f6f6f6] rounded-[8px] border border-[#eee]"
-                  icon={<TbHeart className="text-[22px]" />}
+                  icon={
+                    isFavorite ? (
+                      <TbHeartFilled className="text-[22px] text-[#ff5a5f]" />
+                    ) : (
+                      <TbHeart className="text-[22px]" />
+                    )
+                  }
+                  onClick={() => toggleFavorite(item.product?.id)}
                 />
               </div>
             </div>
@@ -126,13 +169,13 @@ const ProductInfo = ({ item }) => {
         </div>
       </div>
       <Container>
-        <h4 className="text-[18px] mt-[16px]">{item.products?.[0]?.name}</h4>
+        <h4 className="text-[18px] mt-[16px]">{item.product?.name}</h4>
         <b className="text-[22px]  block">
-          {item.products?.[0]?.price} <span className="text-[14px]">IQD</span>
+          {item.product?.price} <span className="text-[14px]">IQD</span>
         </b>
 
         <p className="text-[14px] text-gray-600 mt-[8px]">
-          {item.products?.[0]?.description}
+          {item.product?.description}
         </p>
         <div className="mt-[16px]">
           <InstallmentBanner />
@@ -148,9 +191,14 @@ const ProductInfo = ({ item }) => {
       <Container>
         <p className="text-[#a5a5a5] text-[14px]">خيارات المنتج</p>
         <div className="flex flex-wrap mt-[8px]">
-          <OptionTag name="ذاكرة 256 ذهبي" active />
-          <OptionTag name="نوع شكاكي" />
-          <OptionTag name="Green Light" />
+          {item.product?.options.map((option, index) => (
+            <OptionTag
+              key={index}
+              name={option.name}
+              active={index === 0}
+              imageUrl={`${IMAGE_URL}/${option.img}`}
+            />
+          ))}
         </div>
       </Container>
       <div className="h-[1px] bg-[#eee] mt-[16px] mb-[16px]" />

@@ -1,52 +1,37 @@
 "use client";
+
+import { useEffect } from "react";
 import Image from "next/image";
 import Container from "../UI/Container/container";
-import { useState } from "react";
 import style from "./style.module.css";
+import { useAppStore } from "@/lib/store";
 
-const list = [
-  {
-    name: "مايكروفون",
-    img: "/images/micophone.png",
-  },
-  {
-    name: "شاشات",
-    img: "/images/moniter.png",
-  },
-  {
-    name: "تجميعات",
-    img: "/images/pc.png",
-  },
-  {
-    name: "سماعات",
-    img: "/images/speaker.png",
-  },
-  {
-    name: "كامرات",
-    img: "/images/camera.png",
-  },
-  {
-    name: "Smart watch",
-    img: "/images/smart.png",
-  },
-];
+const Categories = ({ isBanner = true, list = [] }) => {
+  const { selectedCategoryId, setSelectedCategoryId } = useAppStore();
 
-const Categories = ({ isBanner = true, categories }) => {
-  const [selected, setSelected] = useState("مايكروفون");
+  useEffect(() => {
+    if (list.length > 0 && !selectedCategoryId) {
+      setSelectedCategoryId(list[0].id);
+    }
+  }, [list, selectedCategoryId, setSelectedCategoryId]);
+
+  const handleCategoryClick = (id) => {
+    setSelectedCategoryId(id);
+  };
 
   return (
     <div className={isBanner ? "border-b border-b-[#f6f6f6]" : ""}>
       <Container noPadding>
-        <div className="flex items-center pt-4 pb-4 gap-6 overflow-auto no-scrollbar pl-[16px] pr-[16px] ">
-          {list.map((el, i) => (
+        <div className="flex items-center pt-4 pb-4 gap-6 overflow-auto no-scrollbar pl-[16px] pr-[16px]">
+          {list.map((el) => (
             <div
-              key={i}
+              key={el.id}
+              onClick={() => handleCategoryClick(el.id)}
               className={`${
-                !isBanner && selected === el.name ? style.catItem : ""
-              } flex items-center justify-center flex-col active:scale-95 transition-all`}
-              onClick={() => setSelected(el?.name)}
+                selectedCategoryId === el.id ? style.catItem : ""
+              } flex items-center justify-center flex-col active:scale-95 transition-all cursor-pointer`}
             >
-              <div className="w-[48px] h-[48px] relative">
+              <div className="w-[48px] h-[48px] rounded-full relative overflow-hidden">
                 <Image
                   src={el.img}
                   alt={el.name}
@@ -56,9 +41,7 @@ const Categories = ({ isBanner = true, categories }) => {
               </div>
               <p
                 className={`mt-[8px] text-[14px] text-nowrap ${
-                  !isBanner && selected === el.name
-                    ? "text-[#7c3aed]"
-                    : "text-gray-700"
+                  !isBanner ? "text-gray-700" : "text-[#7c3aed]"
                 }`}
               >
                 {el.name}

@@ -1,6 +1,7 @@
 import ProductInfo from "./ProductInfo/productInfo";
 import ProductCTA from "./ProductCTA/ProductCTA";
 import ListBanner from "@/components/ListBanner/listBanner";
+import { URL } from "@/lib/api";
 
 const defaultItem = {
   name: "ASUS Dual GeForce RTX",
@@ -47,16 +48,29 @@ const defaultList = [
     image: "/images/iphone.png",
   },
 ];
-let data = await fetch(`http://85.208.51.126:3002/api/client/product/product/`) 
-let product = await data.json()
 // console.log(product)
 
-export default function ProductOne({ params }) {
+export default async function ProductOne({ params }) {
+  let products = await fetch(`${URL}/client/product/product/${params.id}`, {
+    method: "GET",
+    cache: "no-cache",
+  });
+
+  let product = await products.json();
+  let relatedItems = await fetch(
+    `${URL}/client/product/product/${params.id}/related`,
+    {
+      method: "GET",
+      cache: "no-cache",
+    }
+  );
+  let relatedData = await relatedItems.json();
+  let related = relatedData.relatedProducts || [];
+
   return (
     <div className="pb-[100px]">
-      
       <ProductInfo item={product} />
-      <ListBanner title="قد يعجبك ايضاً" list={defaultList} />
+      <ListBanner title="قد يعجبك ايضاً" list={related} />
       <ProductCTA />
     </div>
   );
