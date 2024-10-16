@@ -48,7 +48,6 @@ const defaultList = [
     image: "/images/iphone.png",
   },
 ];
-// console.log(product)
 
 export default async function ProductOne({ params }) {
   let products = await fetch(`${URL}/client/product/product/${params.id}`, {
