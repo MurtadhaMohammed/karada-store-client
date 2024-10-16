@@ -12,6 +12,7 @@ import {
 } from "react-icons/tb";
 import Container from "../UI/Container/container";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
   //   const router = useRouter();
@@ -34,17 +35,17 @@ const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
 
 const BottomNabar = () => {
   const pathname = usePathname();
-  // const router = useRouter();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const screenView = ["/", "/categories", "/cart?from=home", "/faivorates"];
 
-  // useEffect(() => {
-  //   router.prefetch("/");
-  //   router.prefetch("/cart");
-  //   router.prefetch("/categories");
-  //   router.prefetch("/faivorates");
-  //   router.prefetch("/products");
-  // }, []);
+  useEffect(() => {
+    router.prefetch("/");
+    router.prefetch("/cart");
+    router.prefetch("/categories");
+    router.prefetch("/faivorates");
+    router.prefetch("/products");
+  }, []);
 
   return (
     <div
