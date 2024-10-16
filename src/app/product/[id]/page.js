@@ -40,18 +40,22 @@ const defaultList = [
     image: "/images/3.png",
   },
   {
-    name: "ipone 16 pro max",
+    name: "iphone 16 pro max",
     description: "512 GB,nutureal titanium",
     store: "كرادة ستور",
     price: 135000,
     image: "/images/iphone.png",
   },
 ];
+let data = await fetch(`http://85.208.51.126:3002/api/client/product/product/`) 
+let product = await data.json()
+// console.log(product)
 
 export default function ProductOne({ params }) {
   return (
     <div className="pb-[100px]">
-      <ProductInfo item={defaultItem} />
+      
+      <ProductInfo item={product} />
       <ListBanner title="قد يعجبك ايضاً" list={defaultList} />
       <ProductCTA />
     </div>
