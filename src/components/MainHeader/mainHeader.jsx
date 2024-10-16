@@ -7,12 +7,27 @@ import { useAppStore } from "@/lib/store";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Motion from "../Motion/motion";
 import { IoIosArrowForward } from "react-icons/io";
+import { useEffect } from "react";
 
 const MainHeader = () => {
-  const { setIsMenu } = useAppStore();
+  const { setIsMenu, pageTitle, setPageTitle } = useAppStore();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  useEffect(() => {
+    switch (pathname) {
+      case "/cart":
+        setPageTitle("سلة التسوق");
+        break;
+      case "/checkout":
+        setPageTitle("تأكيد الطلب");
+        break;
+
+      default:
+        break;
+    }
+  }, [pathname]);
 
   if (pathname.split("/")[1] === "product") return;
 
@@ -32,9 +47,7 @@ const MainHeader = () => {
                   onClick={() => router.back()}
                   icon={<IoIosArrowForward className="text-[26px]" />}
                 />
-                <p className="text-[16px] font-bold mt-[2px]">
-                  كافة مستلزمات الكمبيوتر
-                </p>
+                <p className="text-[18px] font-bold mt-[2px]">{pageTitle}</p>
               </div>
               {/* <Image src={"/logo2.png"} width={110} height={24} /> */}
             </div>

@@ -95,6 +95,7 @@ export default async function Home() {
       case "List":
         return (
           <ListBanner
+            bannerId={banner.id}
             key={banner.id}
             title={banner.title}
             list={banner?.products || []}
@@ -106,6 +107,7 @@ export default async function Home() {
         return (
           <ListBanner
             key={banner.id}
+            bannerId={banner.id}
             title="احدث المنتجات"
             list={creaitveList}
             isCreative

@@ -8,9 +8,8 @@ import { IoIosArrowBack } from "react-icons/io";
 // import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const ListBanner = ({ title, list, isCreative = false }) => {
+const ListBanner = ({ bannerId, title, list, isCreative = false }) => {
   // const router = useRouter();
-  console.log(list, "list");
   return (
     <div className="pt-[16px] ">
       <Container>
@@ -23,7 +22,7 @@ const ListBanner = ({ title, list, isCreative = false }) => {
             size="sm"
             icon={<IoIosArrowBack className="text-[#717171] text-[16px]" />}
             // onClick={() => router.push("/products")}
-            href={"/products"}
+            href={`/products/${bannerId}`}
           >
             <p className="text-[#717171] text-[14px]">عرض المزيد</p>
           </Button>

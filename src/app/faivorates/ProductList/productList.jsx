@@ -5,17 +5,35 @@ import Container from "@/components/UI/Container/container";
 import { apiCall } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import ProductSkeleton from "../Skeleton/skeleton";
+import { useEffect, useState } from "react";
 
 const ProductList = () => {
+  const [favorites, setFavorites] = useState([]);
+
+  const handleRemoveFav = (id) => {
+    let old = JSON.parse(localStorage.getItem("favorites_product")) || [];
+    let newFav = old.filter((el) => el !== id);
+    setFavorites(newFav);
+    localStorage.setItem("favorites_product", JSON.stringify(newFav));
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedFavorites =
+        JSON.parse(localStorage.getItem("favorites_product")) || [];
+      setFavorites(storedFavorites.map((id) => parseInt(id)));
+    }
+  }, []);
+
   const { data, isLoading } = useQuery({
-    queryKey: ["faivorates"],
+    queryKey: ["favorites", favorites],
     queryFn: () =>
       apiCall({
         pathname: "/client/product/productsByIds",
-        data: {
-          ids: [1, 2, 3, 4],
-        },
+        data: { productIds: favorites },
+        method: "POST",
       }),
+    enabled: favorites?.length !== 0,
   });
 
   if (isLoading) return <ProductSkeleton />;
@@ -27,7 +45,13 @@ const ProductList = () => {
           <div className="grid grid-cols-2 gap-4 overflow-x-auto no-scrollbar">
             {data &&
               data?.products?.map((el, i) => (
-                <DefaultCard isFav isGrid key={i} item={el} />
+                <DefaultCard
+                  isFav
+                  isGrid
+                  key={i}
+                  item={el}
+                  handleRemoveFav={handleRemoveFav}
+                />
               ))}
           </div>
         </Container>

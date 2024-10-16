@@ -5,8 +5,8 @@ import useScrollPosition from "@/hooks/useScrollPosition";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { IoIosArrowForward } from "react-icons/io";
-import { motion } from "framer-motion"; // Import framer-motion components
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { motion } from "framer-motion";
 import {
   TbHeart,
   TbHeartFilled,
@@ -17,36 +17,24 @@ import { TiStarFullOutline } from "react-icons/ti";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { IMAGE_URL } from "@/lib/api";
 
-const OptionTag = ({ name, imageUrl, active }) => {
-  console.log(Image);
+// Updated OptionTag to handle clicks and image changes
+const OptionTag = ({ name, active = false, onClick }) => {
   return (
-    <div className="">
-      <button
-        className="flex flex-row align-center justify-between h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
-        style={
-          active
-            ? {
-                borderColor: "#7c3aed",
-                color: "#7c3aed",
-                background: "#fff",
-              }
-            : {}
-        }
-      >
-        <div className="flex flex-row align-center justify-between mt-1">
-          <div className="ml-2 relative h-[24px] w-[24px]">
-            <Image
-              src={imageUrl} // Pass the correct image URL here
-              layout="fill"
-              objectFit="cover"
-              alt={name}
-              className="rounded-5"
-            />
-          </div>
-          <div>{name}</div>
-        </div>
-      </button>
-    </div>
+    <button
+      onClick={onClick}
+      className="h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
+      style={
+        active
+          ? {
+              borderColor: "#7c3aed",
+              color: "#7c3aed",
+              background: "#fff",
+            }
+          : {}
+      }
+    >
+      {name}
+    </button>
   );
 };
 
@@ -54,12 +42,15 @@ const ProductInfo = ({ item }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeOption, setActiveOption] = useState(null);
+
   const loadFavorites = () => {
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const favorites =
+      JSON.parse(localStorage.getItem("favorites_product")) || [];
     return favorites;
   };
 
-  console.log(item);
   const toggleFavorite = (productId) => {
     let favorites = loadFavorites();
     if (favorites.includes(productId)) {
@@ -76,29 +67,55 @@ const ProductInfo = ({ item }) => {
     setIsFavorite(favorites.includes(item.product?.id));
   }, [item.product?.id]);
 
+  const handleNextImage = () => {
+    if (currentImageIndex < item.product?.image?.length - 1) {
+      setCurrentImageIndex((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex((prev) => prev - 1);
+    }
+  };
+
+  const handleOptionClick = (option, index) => {
+    if (option.image) {
+      const imageIndex = item.product?.image?.findIndex(
+        (img) => img.url === option.image
+      );
+      if (imageIndex !== -1) {
+        setCurrentImageIndex(imageIndex);
+      }
+    }
+    setActiveOption(index);
+  };
+  
+
   return (
     <div>
       <div className="h-[300px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
-          {item.product?.image?.map((image, i) => (
+          {item.product?.image && item.product.image.length > 0 && (
             <Image
-              src={`${IMAGE_URL}/${image}`}
+              src={`${IMAGE_URL}/${item.product.image[currentImageIndex].url}`}
               layout="fill"
               objectFit="cover"
-              alt="image"
+              alt={`product-image-${currentImageIndex}`}
             />
-          ))}
-          <div className="absolute left-0 right-0 mt-[4px]  bottom-[16px]">
+          )}
+          <div className="absolute left-0 right-0 mt-[4px] bottom-[16px]">
             <Container>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-[4px] mr-1">
                   {item.product?.image?.map((image, i) => (
                     <span
                       key={i}
-                      className="block  h-[8px]  rounded-[24px] transition-all"
+                      className="block h-[8px] rounded-[24px] transition-all"
                       style={{
-                        width: i == 0 ? 60 : 8,
-                        background: i == 0 ? "#a855f7" : "#a855f775",
+                        width: i === currentImageIndex ? 60 : 8,
+                        background:
+                          i === currentImageIndex ? "#a855f7" : "#a855f775",
                       }}
                     />
                   ))}
@@ -109,6 +126,23 @@ const ProductInfo = ({ item }) => {
                 </div>
               </div>
             </Container>
+          </div>
+          {/* Scroll buttons */}
+          <div className="absolute left-2 top-1/2 transform -translate-y-1/2">
+            <IconButton
+              icon={<IoIosArrowBack />}
+              className="p-2 rounded-full bg-white border border-[#eee] text-[24px] shadow"
+              onClick={handleNextImage}
+              disabled={currentImageIndex === item.product?.image.length - 1}
+            />
+          </div>
+          <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+            <IconButton
+              icon={<IoIosArrowForward />}
+              className="p-2 rounded-full bg-white border border-[#eee] text-[24px] shadow"
+              onClick={handlePrevImage}
+              disabled={currentImageIndex === 0}
+            />
           </div>
         </div>
         <div
@@ -170,7 +204,7 @@ const ProductInfo = ({ item }) => {
       </div>
       <Container>
         <h4 className="text-[18px] mt-[16px]">{item.product?.name}</h4>
-        <b className="text-[22px]  block">
+        <b className="text-[22px] block">
           {item.product?.price} <span className="text-[14px]">IQD</span>
         </b>
 
@@ -183,25 +217,25 @@ const ProductInfo = ({ item }) => {
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px]">
-            عادة مايتم التوصيل خلال يومين
+            عادة مايتم توصيل المنتجات في 3-5 أيام
           </span>
         </div>
+        {item.product?.options && item.product?.options.length > 0 && (
+          <div className="flex items-center mt-[8px]">
+            <h5 className="text-[16px]">الخيارات</h5>
+            <div className="ml-[12px]">
+              {item.product?.options.map((option, index) => (
+                <OptionTag
+                  key={index}
+                  name={option.name}
+                  active={index === activeOption} 
+                  onClick={() => handleOptionClick(option, index)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </Container>
-      <div className="h-[1px] bg-[#eee] mt-[16px] mb-[16px]" />
-      <Container>
-        <p className="text-[#a5a5a5] text-[14px]">خيارات المنتج</p>
-        <div className="flex flex-wrap mt-[8px]">
-          {item.product?.options.map((option, index) => (
-            <OptionTag
-              key={index}
-              name={option.name}
-              active={index === 0}
-              imageUrl={`${IMAGE_URL}/${option.img}`}
-            />
-          ))}
-        </div>
-      </Container>
-      <div className="h-[1px] bg-[#eee] mt-[16px] mb-[16px]" />
     </div>
   );
 };
