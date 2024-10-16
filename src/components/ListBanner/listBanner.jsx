@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const ListBanner = ({ title, list, isCreative = false }) => {
   // const router = useRouter();
-
+  console.log(list, "list");
   return (
     <div className="pt-[16px] ">
       <Container>

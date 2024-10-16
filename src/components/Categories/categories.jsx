@@ -31,7 +31,7 @@ const list = [
   },
 ];
 
-const Categories = ({ isBanner = true }) => {
+const Categories = ({ isBanner = true, categories }) => {
   const [selected, setSelected] = useState("مايكروفون");
 
   return (

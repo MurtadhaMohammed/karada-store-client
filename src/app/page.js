@@ -103,7 +103,7 @@ export default async function Home() {
           />
         );
       case "Category":
-        return <Categories key={banner.id} categories={banner.items} />;
+        return <Categories key={banner.id} categories={banner.categories} />;
       case "CreativeBanner":
         return (
           <ListBanner
@@ -117,8 +117,7 @@ export default async function Home() {
         return null; 
     }
   };
-
-    
+console.log(banners)
 
   return (
     <div className="pb-[100px]">
