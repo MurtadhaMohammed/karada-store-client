@@ -5,7 +5,7 @@ import useScrollPosition from "@/hooks/useScrollPosition";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io"; // Import the back arrow icon
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { motion } from "framer-motion";
 import {
   TbHeart,
@@ -17,9 +17,11 @@ import { TiStarFullOutline } from "react-icons/ti";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { IMAGE_URL } from "@/lib/api";
 
-const OptionTag = ({ name, active = false }) => {
+// Updated OptionTag to handle clicks and image changes
+const OptionTag = ({ name, active = false, onClick }) => {
   return (
     <button
+      onClick={onClick}
       className="h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
       style={
         active
@@ -40,14 +42,15 @@ const ProductInfo = ({ item }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
   const [isFavorite, setIsFavorite] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // State to track the current image index
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeOption, setActiveOption] = useState(null);
 
   const loadFavorites = () => {
     const favorites =
       JSON.parse(localStorage.getItem("favorites_product")) || [];
     return favorites;
   };
-  console.log(item);
+
   const toggleFavorite = (productId) => {
     let favorites = loadFavorites();
     if (favorites.includes(productId)) {
@@ -76,13 +79,26 @@ const ProductInfo = ({ item }) => {
     }
   };
 
+  const handleOptionClick = (option, index) => {
+    if (option.image) {
+      const imageIndex = item.product?.image?.findIndex(
+        (img) => img.url === option.image
+      );
+      if (imageIndex !== -1) {
+        setCurrentImageIndex(imageIndex);
+      }
+    }
+    setActiveOption(index);
+  };
+  
+
   return (
     <div>
       <div className="h-[300px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
           {item.product?.image && item.product.image.length > 0 && (
             <Image
-              src={`${IMAGE_URL}/${item.product.image[currentImageIndex].url}`} // Show the current image based on the index
+              src={`${IMAGE_URL}/${item.product.image[currentImageIndex].url}`}
               layout="fill"
               objectFit="cover"
               alt={`product-image-${currentImageIndex}`}
@@ -125,7 +141,7 @@ const ProductInfo = ({ item }) => {
               icon={<IoIosArrowForward />}
               className="p-2 rounded-full bg-white border border-[#eee] text-[24px] shadow"
               onClick={handlePrevImage}
-              disabled={currentImageIndex === 0} // Disable if on the first image
+              disabled={currentImageIndex === 0}
             />
           </div>
         </div>
@@ -204,15 +220,21 @@ const ProductInfo = ({ item }) => {
             عادة مايتم توصيل المنتجات في 3-5 أيام
           </span>
         </div>
-        <div className="flex items-center mt-[8px]">
-        {item.product?.options.map((option, index) => (
-            <OptionTag
-              key={index}
-              name={option.name}
-              active={index === 0}
-            />
-          ))}
-        </div>
+        {item.product?.options && item.product?.options.length > 0 && (
+          <div className="flex items-center mt-[8px]">
+            <h5 className="text-[16px]">الخيارات</h5>
+            <div className="ml-[12px]">
+              {item.product?.options.map((option, index) => (
+                <OptionTag
+                  key={index}
+                  name={option.name}
+                  active={index === activeOption} 
+                  onClick={() => handleOptionClick(option, index)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </Container>
     </div>
   );
