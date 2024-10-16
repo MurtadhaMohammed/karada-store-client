@@ -1,7 +1,7 @@
 import SearchBar from "@/components/SearchBar/searchBar";
 import ProductList from "./ProductsList/productsList";
 import Categories from "@/components/Categories/categories";
-import { URL, IMAGE_URL } from "@/lib/api";
+import { URL } from "@/lib/api";
 
 async function getCategories() {
   const res = await fetch(`${URL}/client/category/category`);
@@ -14,7 +14,7 @@ const Category = async () => {
   const categories = category.categories.map((cat) => ({
     id: cat.id,
     name: cat.title,
-    img: `${IMAGE_URL}/${cat.img}`,
+    img: cat.img,
   }));
 
   return (

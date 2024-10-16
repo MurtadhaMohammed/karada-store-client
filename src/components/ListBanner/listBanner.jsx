@@ -9,7 +9,8 @@ import { IoIosArrowBack } from "react-icons/io";
 import Link from "next/link";
 
 const ListBanner = ({ title, list, isCreative = false }) => {
-  console.log(list);
+  // const router = useRouter();
+  console.log(list, "list");
   return (
     <div className="pt-[16px] ">
       <Container>

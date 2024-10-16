@@ -76,12 +76,10 @@ const defaultList = [
 ];
 
 async function getBanners() {
-  const res = await fetch(`${URL}/client/banner/all-banners`,
-    {
-      method: "GET",
-      cache: "no-cache",
-    }
-  );
+  const res = await fetch(`${URL}/client/banner/all-banners`, {
+    method: "GET",
+    cache: "no-cache",
+  });
   if (!res.ok) throw new Error("Failed to fetch data");
   return res.json();
 }
@@ -92,8 +90,8 @@ export default async function Home() {
     switch (banner.type) {
       case "Slider":
         return <SliderBanner key={banner.id} banners={banner} />;
-        case "Single":
-          return <SingleBanner key={banner.id} banner={banner} />;
+      case "Single":
+        return <SingleBanner key={banner.id} banner={banner} />;
       case "List":
         return (
           <ListBanner
@@ -103,7 +101,7 @@ export default async function Home() {
           />
         );
       case "Category":
-        return <Categories key={banner.id} categories={banner.items} />;
+        return <Categories key={banner.id} list={banner.categories} />;
       case "CreativeBanner":
         return (
           <ListBanner
@@ -114,11 +112,9 @@ export default async function Home() {
           />
         );
       default:
-        return null; 
+        return null;
     }
   };
-
-    
 
   return (
     <div className="pb-[100px]">
