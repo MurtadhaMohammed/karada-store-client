@@ -15,39 +15,51 @@ import {
 } from "react-icons/tb";
 import { TiStarFullOutline } from "react-icons/ti";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+import { IMAGE_URL } from "@/lib/api";
 
-const OptionTag = ({ name, active = false }) => {
+const OptionTag = ({ name, imageUrl, active }) => {
+  console.log(Image);
   return (
-    <button
-      className="h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
-      style={
-        active
-          ? {
-              borderColor: "#7c3aed",
-              color: "#7c3aed",
-              background: "#fff",
-            }
-          : {}
-      }
-    >
-      {name}
-    </button>
+    <div className="">
+      <button
+        className="flex flex-row align-center justify-between h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
+        style={
+          active
+            ? {
+                borderColor: "#7c3aed",
+                color: "#7c3aed",
+                background: "#fff",
+              }
+            : {}
+        }
+      >
+        <div className="flex flex-row align-center justify-between mt-1">
+          <div className="ml-2 relative h-[24px] w-[24px]">
+            <Image
+              src={imageUrl} // Pass the correct image URL here
+              layout="fill"
+              objectFit="cover"
+              alt={name}
+              className="rounded-5"
+            />
+          </div>
+          <div>{name}</div>
+        </div>
+      </button>
+    </div>
   );
 };
 
 const ProductInfo = ({ item }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
-  const IMAGE_URL = "https://drlab.us-east-1.linodeobjects.com/karada-store";
-
   const [isFavorite, setIsFavorite] = useState(false);
-
-  // Function to load favorites from localStorage
   const loadFavorites = () => {
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     return favorites;
   };
 
+  console.log(item);
   const toggleFavorite = (productId) => {
     let favorites = loadFavorites();
     if (favorites.includes(productId)) {
@@ -56,10 +68,9 @@ const ProductInfo = ({ item }) => {
       favorites.push(productId);
     }
     localStorage.setItem("favorites_product", JSON.stringify(favorites));
-    setIsFavorite(favorites.includes(productId)); // Update state
+    setIsFavorite(favorites.includes(productId));
   };
 
-  // Load initial favorite status on mount
   useEffect(() => {
     const favorites = loadFavorites();
     setIsFavorite(favorites.includes(item.product?.id));
@@ -69,17 +80,19 @@ const ProductInfo = ({ item }) => {
     <div>
       <div className="h-[300px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
-          <Image
-            src={`${IMAGE_URL}/${item.product?.thumbnail1}`}
-            layout="fill"
-            objectFit="cover"
-            alt="image"
-          />
+          {item.product?.image?.map((image, i) => (
+            <Image
+              src={`${IMAGE_URL}/${image}`}
+              layout="fill"
+              objectFit="cover"
+              alt="image"
+            />
+          ))}
           <div className="absolute left-0 right-0 mt-[4px]  bottom-[16px]">
             <Container>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-[4px] mr-1">
-                  {[...Array(3)]?.map((el, i) => (
+                  {item.product?.image?.map((image, i) => (
                     <span
                       key={i}
                       className="block  h-[8px]  rounded-[24px] transition-all"
@@ -183,7 +196,7 @@ const ProductInfo = ({ item }) => {
               key={index}
               name={option.name}
               active={index === 0}
-              Image={`${IMAGE_URL}/${option.image}`}
+              imageUrl={`${IMAGE_URL}/${option.img}`}
             />
           ))}
         </div>

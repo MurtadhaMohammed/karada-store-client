@@ -1,6 +1,7 @@
 import ProductInfo from "./ProductInfo/productInfo";
 import ProductCTA from "./ProductCTA/ProductCTA";
 import ListBanner from "@/components/ListBanner/listBanner";
+import { URL } from "@/lib/api";
 
 const defaultItem = {
   name: "ASUS Dual GeForce RTX",
@@ -50,30 +51,26 @@ const defaultList = [
 // console.log(product)
 
 export default async function ProductOne({ params }) {
-  let products = await fetch(
-    `http://85.208.51.126:3002/api/client/product/product/${params.id}`
-  );
+  let products = await fetch(`${URL}/client/product/product/${params.id}`, {
+    method: "GET",
+    cache: "no-cache",
+  });
+
   let product = await products.json();
-  console.log(product);
+  let relatedItems = await fetch(
+    `${URL}/client/product/product/${params.id}/related`,
+    {
+      method: "GET",
+      cache: "no-cache",
+    }
+  );
+  let relatedData = await relatedItems.json();
+  let related = relatedData.relatedProducts || [];
 
-  let brandId = product.brand.id;
-  let categoryId = product.category.id;
-
-  let relatedByBrandResponse = await fetch(`http://85.208.51.126:3002/api/client/brand/brands/${brandId}`);
-  let relatedByBrand = await relatedByBrandResponse.json();
-
-  let relatedByCategoryResponse = await fetch(`http://85.208.51.126:3002/api/client/category/category/${categoryId}`);
-  let relatedByCategory = await relatedByCategoryResponse.json();
-
-  let combinedRelatedProducts = [...relatedByBrand, ...relatedByCategory];
-
-  console.log(combinedRelatedProducts);
-// Log the combined related products
-console.log(combinedRelatedProducts);
   return (
     <div className="pb-[100px]">
       <ProductInfo item={product} />
-      <ListBanner title="قد يعجبك ايضاً" list={defaultList} />
+      <ListBanner title="قد يعجبك ايضاً" list={related} />
       <ProductCTA />
     </div>
   );
