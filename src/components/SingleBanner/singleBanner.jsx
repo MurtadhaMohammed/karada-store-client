@@ -6,18 +6,17 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { IMAGE_URL } from "@/lib/api";
 
 const SingleBanner = ({ banner }) => {
-  console.log(banner);
   return (
     <div className="mt-[16px] mb-[16px]">
       <Container>
-        <div className="w-[100%] bg-white relative rounded-[16px] overflow-hidden inline-block  shadow-md">
+      <div className="w-[100%] bg-white relative rounded-[16px] overflow-hidden inline-block shadow-md">
           <div className="w-[100%] h-[140px] relative">
             <Image
               src={`${IMAGE_URL}/${banner?.img}`}
               layout="fill"
-              alt={"hello"}
+              alt={banner.title || "Single Banner"}
               objectFit="cover"
-            />
+            /> 
           </div>
           <div className="p-[12px] pr-[16] relative">
             <div>

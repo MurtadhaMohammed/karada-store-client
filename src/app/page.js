@@ -76,20 +76,24 @@ const defaultList = [
 ];
 
 async function getBanners() {
-  const res = await fetch(`${URL}/client/banner/all-banners`);
+  const res = await fetch(`${URL}/client/banner/all-banners`,
+    {
+      method: "GET",
+      cache: "no-cache",
+    }
+  );
   if (!res.ok) throw new Error("Failed to fetch data");
   return res.json();
 }
 
 export default async function Home() {
   const banners = await getBanners();
-
   const renderBanner = (banner) => {
     switch (banner.type) {
-      case "Single":
-        return <SingleBanner key={banner.id} banner={banner} />;
       case "Slider":
-        return <SliderBanner key={banner.id} banners={banner.items} />;
+        return <SliderBanner key={banner.id} banners={banner} />;
+        case "Single":
+          return <SingleBanner key={banner.id} banner={banner} />;
       case "List":
         return (
           <ListBanner
@@ -110,9 +114,11 @@ export default async function Home() {
           />
         );
       default:
-        return null; // Ignore unknown banner types
+        return null; 
     }
   };
+
+    
 
   return (
     <div className="pb-[100px]">
