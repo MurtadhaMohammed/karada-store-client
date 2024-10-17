@@ -1,4 +1,5 @@
 "use client";
+import { IMAGE_URL } from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -35,7 +36,7 @@ const CreatviceCard = ({ index, item }) => {
         <div className="w-[240px] h-[240px] flex items-center justify-center relative">
           <div className="w-full h-full relative">
             <Image
-              src={item.image}
+              src={`${IMAGE_URL}/${item.thumbnail2}`}
               layout="fill"
               objectFit="cover"
               alt="image"
