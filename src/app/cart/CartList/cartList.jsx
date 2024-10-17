@@ -106,8 +106,8 @@ const CartList = () => {
 
   useEffect(() => {
     router.prefetch("/checkout");
-  }, []);
-  
+  }, [router]);
+
   return (
     <div className="mb-[16px]">
       {defaultList?.map((el, i) => (

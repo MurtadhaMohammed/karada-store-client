@@ -19,7 +19,7 @@ const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
 
   let activeStyle = isActive
     ? "!text-violet-600 border-t !border-t-violet-600"
-    : "";
+    : "border-t border-[#eee]";
   return (
     <Link href={to} className="flex-1">
       <div
