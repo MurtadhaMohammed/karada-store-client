@@ -20,7 +20,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 
-
 // Updated OptionTag to handle clicks and image changes
 const OptionTag = ({ name, active = false, onClick }) => {
   return (
@@ -48,6 +47,8 @@ const ProductInfo = ({ item }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(null);
+  const [swiperInstance, setSwiperInstance] = useState(null);
+
 
   const loadFavorites = () => {
     const favorites =
@@ -71,53 +72,50 @@ const ProductInfo = ({ item }) => {
     setIsFavorite(favorites.includes(item.product?.id));
   }, [item.product?.id]);
 
-  const handleNextImage = () => {
-    if (currentImageIndex < item.product?.image?.length - 1) {
-      setCurrentImageIndex((prev) => prev + 1);
-    }
-  };
-
-  const handlePrevImage = () => {
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex((prev) => prev - 1);
-    }
-  };
-
   const handleOptionClick = (option, index) => {
-    if (option.image) {
-      const imageIndex = item.product?.image?.findIndex(
-        (img) => img.url === option.image
-      );
-      if (imageIndex !== -1) {
-        setCurrentImageIndex(imageIndex);
+    if (index === activeOption) {
+      setActiveOption(null);
+    } else {
+      if (option.img) {
+        const imageIndex = item.product?.image?.findIndex((img) =>
+          img.url.includes(option.img)
+        );
+        if (imageIndex !== -1) {
+          setCurrentImageIndex(imageIndex);
+          if (swiperInstance) {
+            swiperInstance.slideTo(imageIndex);
+          }
+        }
       }
+      setActiveOption(index);
     }
-    setActiveOption(index);
   };
-  
 
   return (
     <div>
       <div className="h-[300px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
           {item.product?.image && item.product.image.length > 0 && (
-          <Swiper
-          spaceBetween={10}
-          slidesPerView={1}
-          onSlideChange={(swiper) => setCurrentImageIndex(swiper.activeIndex)}
-          className="h-full w-full relative z-0"
-        >
-          {item.product.image.map((img, index) => (
-            <SwiperSlide key={index}>
-              <Image
-                src={`${IMAGE_URL}/${img.url}`}
-                layout="fill"
-                objectFit="cover"
-                alt={`product-image-${index}`}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            <Swiper
+              spaceBetween={10}
+              slidesPerView={1}
+              onSlideChange={(swiper) =>
+                setCurrentImageIndex(swiper.activeIndex)
+              }
+              onSwiper={setSwiperInstance} // This gives us access to the swiper instance
+              className="h-full w-full relative z-0"
+            >
+              {item.product.image.map((img, index) => (
+                <SwiperSlide key={index}>
+                  <Image
+                    src={`${IMAGE_URL}/${img.url}`}
+                    layout="fill"
+                    objectFit="cover"
+                    alt={`product-image-${index}`}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           )}
           <div className="absolute left-0 right-0 mt-[4px] bottom-[16px] z-50">
             <Container>
@@ -226,7 +224,7 @@ const ProductInfo = ({ item }) => {
                 <OptionTag
                   key={index}
                   name={option.name}
-                  active={index === activeOption} 
+                  active={index === activeOption}
                   onClick={() => handleOptionClick(option, index)}
                 />
               ))}
