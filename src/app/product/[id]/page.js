@@ -1,15 +1,15 @@
 import ProductInfo from "./ProductInfo/productInfo";
-import ProductCTA from "./ProductCTA/ProductCTA";
+// import ProductCTA from "./ProductCTA/ProductCTA";
 import ListBanner from "@/components/ListBanner/listBanner";
 import { URL } from "@/lib/api";
 
-const defaultItem = {
-  name: "ASUS Dual GeForce RTX",
-  description: "ASUS Dual GeForce RTX™ 4070 OC Edition 12GB GDDR6X",
-  store: "كرادة ستور",
-  price: 120000,
-  image: "/images/3.png",
-};
+// const defaultItem = {
+//   name: "ASUS Dual GeForce RTX",
+//   description: "ASUS Dual GeForce RTX™ 4070 OC Edition 12GB GDDR6X",
+//   store: "كرادة ستور",
+//   price: 120000,
+//   image: "/images/3.png",
+// };
 
 const defaultList = [
   {
@@ -68,9 +68,9 @@ export default async function ProductOne({ params }) {
 
   return (
     <div className="pb-[100px]">
-      <ProductInfo item={product} />
+      <ProductInfo product={product?.product} />
       <ListBanner bannerId={2} title="قد يعجبك ايضاً" list={related} />
-      <ProductCTA />
+      {/* <ProductCTA product={product} /> */}
     </div>
   );
 }

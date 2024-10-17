@@ -9,6 +9,7 @@ import {
   TbShoppingCartFilled,
   TbHeart,
   TbHeartFilled,
+  TbMenuOrder
 } from "react-icons/tb";
 import Container from "../UI/Container/container";
 import Link from "next/link";
@@ -92,6 +93,18 @@ const BottomNabar = () => {
             isActive={pathname === "/cart"}
           />
 
+          {/* <NavItem
+            to="/faivorates"
+            icon={
+              pathname === "/faivorates" ? (
+                <TbHeartFilled className="text-[26px]" />
+              ) : (
+                <TbHeart className="text-[26px]" />
+              )
+            }
+            label={"الطلبات"}
+            isActive={pathname === "/faivorates"}
+          /> */}
           <NavItem
             to="/faivorates"
             icon={

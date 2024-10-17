@@ -15,6 +15,8 @@ const Address = () => {
         <div className="h-[12px]"></div>
         <Input hint="رقم الهاتف" />
         <div className="h-[12px]"></div>
+        <Input hint="الاسم الكامل" />
+        <div className="h-[12px]"></div>
         <Input hint="ملاحظات" />
       </div>
     </div>
