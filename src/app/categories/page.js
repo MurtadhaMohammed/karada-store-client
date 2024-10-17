@@ -11,16 +11,11 @@ async function getCategories() {
 
 const Category = async () => {
   const category = await getCategories();
-  const categories = category.categories.map((cat) => ({
-    id: cat.id,
-    name: cat.title,
-    img: cat.img,
-  }));
 
   return (
     <div className="pb-[100px]">
       <SearchBar />
-      <Categories isBanner={false} list={categories} />
+      <Categories isBanner={false} list={category?.categories} />
       <ProductList />
     </div>
   );

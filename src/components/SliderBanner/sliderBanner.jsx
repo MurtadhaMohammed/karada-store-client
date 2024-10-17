@@ -8,6 +8,7 @@ import { IMAGE_URL } from "@/lib/api";
 // Import Swiper styles
 import "swiper/css";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function SliderBanner({ banners }) {
   const [current, setCurrent] = useState(0);
@@ -25,14 +26,14 @@ export default function SliderBanner({ banners }) {
           >
             {slider?.map((el) => (
               <SwiperSlide key={el.id} className="pl-[16px] pr-[16px]">
-                <div className="w-[100%] h-[140px] relative rounded-[16px] overflow-hidden pb-[20px] inline-block shadow-md">
+                <Link href={`/products/${el?.id}`}  className="w-[100%] h-[140px] relative rounded-[16px] overflow-hidden pb-[20px] inline-block shadow-md active:opacity-50 transition-all">
                   <Image
                     src={`${IMAGE_URL}/${el.img}`}
                     layout="fill"
                     alt={el.title || "Banner"}
                     objectFit="cover"
                   />
-                </div>
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>

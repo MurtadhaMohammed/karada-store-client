@@ -6,33 +6,33 @@ import Motion from "@/components/Motion/motion";
 import Container from "@/components/UI/Container/container";
 import { apiCall } from "@/lib/api";
 import ProductSkeleton from "../Skeleton/skeleton";
-
 const ProductList = () => {
-  const [ids, setIds] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+
+  const handleRemoveFav = (id) => {
+    let old = JSON.parse(localStorage.getItem("favorites_product")) || [];
+    let newFav = old.filter((el) => el !== id);
+    setFavorites(newFav);
+    localStorage.setItem("favorites_product", JSON.stringify(newFav));
+  };
 
   useEffect(() => {
-    const loadFavorites = () => {
-      if (typeof window !== "undefined") {
-        const favorites = JSON.parse(localStorage.getItem("favorites_product")) || [];
-        console.log("Favorites from localStorage:", favorites); // Log the IDs here
-        setIds(favorites);
-      }
-    };
-
-    loadFavorites();
+    if (typeof window !== "undefined") {
+      const storedFavorites =
+        JSON.parse(localStorage.getItem("favorites_product")) || [];
+      setFavorites(storedFavorites.map((id) => parseInt(id)));
+    }
   }, []);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["favorites", ids],
+    queryKey: ["favorites", favorites],
     queryFn: () =>
       apiCall({
-        pathname: "/client/product/getProductsByIds",
-        data: {
-          ids: ids.map((el) => parseInt(el)),
-        },
-        cache: "no-cache",
+        pathname: "/client/product/productsByIds",
+        data: { productIds: favorites },
+        method: "POST",
       }),
-    enabled: ids.length > 0,
+    enabled: favorites?.length !== 0,
   });
 
   if (isLoading) return <ProductSkeleton />;
@@ -42,9 +42,16 @@ const ProductList = () => {
       <Motion>
         <Container>
           <div className="grid grid-cols-2 gap-4 overflow-x-auto no-scrollbar">
-            {data?.products?.map((el, i) => (
-              <DefaultCard isFav isGrid key={i} item={el} />
-            ))}
+            {data &&
+              data?.products?.map((el, i) => (
+                <DefaultCard
+                  isFav
+                  isGrid
+                  key={i}
+                  item={el}
+                  handleRemoveFav={handleRemoveFav}
+                />
+              ))}
           </div>
         </Container>
       </Motion>

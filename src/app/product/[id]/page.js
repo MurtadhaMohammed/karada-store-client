@@ -69,7 +69,7 @@ export default async function ProductOne({ params }) {
   return (
     <div className="pb-[100px]">
       <ProductInfo item={product} />
-      <ListBanner title="قد يعجبك ايضاً" list={related} />
+      <ListBanner bannerId={2} title="قد يعجبك ايضاً" list={related} />
       <ProductCTA />
     </div>
   );

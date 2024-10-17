@@ -1,8 +1,8 @@
 import { jwtDecode } from "jwt-decode";
 import { useAppStore } from "./store";
 
-// export const URL = "http://localhost:3002/api";
-export const URL = "http://85.208.51.126:3002/api";
+export const URL = "http://localhost:3002/api";
+// export const URL = "http://85.208.51.126:3002/api";
 export const IMAGE_URL =
   "https://drlab.us-east-1.linodeobjects.com/karada-store";
 

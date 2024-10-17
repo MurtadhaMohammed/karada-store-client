@@ -1,9 +1,12 @@
+"use client";
 import Container from "@/components/UI/Container/container";
 import IconButton from "@/components/UI/IconButton/iconButton";
 import Image from "next/image";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import CartCTA from "../CartCTA/cartCta";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const defaultList = [
   {
@@ -99,6 +102,12 @@ const CartItem = ({ item }) => {
 };
 
 const CartList = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch("/checkout");
+  }, []);
+  
   return (
     <div className="mb-[16px]">
       {defaultList?.map((el, i) => (
