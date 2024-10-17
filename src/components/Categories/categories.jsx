@@ -5,6 +5,7 @@ import Image from "next/image";
 import Container from "../UI/Container/container";
 import style from "./style.module.css";
 import { useAppStore } from "@/lib/store";
+import { IMAGE_URL } from "@/lib/api";
 
 const Categories = ({ isBanner = true, list = [] }) => {
   const { selectedCategoryId, setSelectedCategoryId } = useAppStore();
@@ -19,6 +20,8 @@ const Categories = ({ isBanner = true, list = [] }) => {
     setSelectedCategoryId(id);
   };
 
+  console.log(list)
+
   return (
     <div className={isBanner ? "border-b border-b-[#f6f6f6]" : ""}>
       <Container noPadding>
@@ -28,12 +31,12 @@ const Categories = ({ isBanner = true, list = [] }) => {
               key={el.id}
               onClick={() => handleCategoryClick(el.id)}
               className={`${
-                selectedCategoryId === el.id ? style.catItem : ""
+                selectedCategoryId === el.id && !isBanner ? style.catItem : ""
               } flex items-center justify-center flex-col active:scale-95 transition-all cursor-pointer`}
             >
               <div className="w-[48px] h-[48px] rounded-full relative overflow-hidden">
                 <Image
-                  src={el.img}
+                  src={`${IMAGE_URL}/${el.img}`}
                   alt={el.name}
                   layout="fill"
                   objectFit="contain"

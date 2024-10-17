@@ -1,18 +1,18 @@
-"use client"
+"use client";
 import Image from "next/image";
 import Container from "../UI/Container/container";
 import Button from "../UI/Button/button";
 import { FaArrowLeft } from "react-icons/fa6";
 import { IMAGE_URL } from "@/lib/api";
 
-const SingleBanner = ({banner}) => {
+const SingleBanner = ({ banner }) => {
   return (
     <div className="mt-[16px] mb-[16px]">
       <Container>
       <div className="w-[100%] bg-white relative rounded-[16px] overflow-hidden inline-block shadow-md">
           <div className="w-[100%] h-[140px] relative">
             <Image
-               src={`${IMAGE_URL}/${banner?.img}`}
+              src={`${IMAGE_URL}/${banner?.img}`}
               layout="fill"
               alt={banner.title || "Single Banner"}
               objectFit="cover"
@@ -21,10 +21,10 @@ const SingleBanner = ({banner}) => {
           <div className="p-[12px] pr-[16] relative">
             <div>
               <h4 className="font-bold text-[16px] whitespace-nowrap overflow-hidden text-ellipsis">
-               {banner?.title}
+                {banner?.title}
               </h4>
               <p className="text-gray-600 text-[16px]  pl-[120px]">
-               {banner?.description}
+                {banner?.description}
               </p>
             </div>
             <div className=" absolute bottom-[16px] left-4">
