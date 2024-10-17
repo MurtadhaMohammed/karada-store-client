@@ -10,7 +10,7 @@ import { useCartStore } from "@/lib/cartStore";
 import { useEffect } from "react";
 
 const ProductCTA = ({ product, disabled = false }) => {
-  const { addItem, getQty, increase, decrease, removeItem } = useCartStore();
+  const { addItem, getQty, increase, decrease, removeItem , getItemsTotal} = useCartStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -130,7 +130,7 @@ const ProductCTA = ({ product, disabled = false }) => {
                   className="flex items-center justify-between h-[56px] w-full rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-4 app-link"
                 >
                   <span className="text-[18px] text-indigo-600 font-bold flex items-center justify-center w-[30px] h-[30px] rounded-full bg-[#f6f6f6]">
-                    {qty}
+                    {getItemsTotal()}
                   </span>
                   <span className="ml-[8px] font-bold text-[18px]">
                     عرض السلة
