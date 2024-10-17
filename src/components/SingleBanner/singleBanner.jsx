@@ -9,14 +9,14 @@ const SingleBanner = ({ banner }) => {
   return (
     <div className="mt-[16px] mb-[16px]">
       <Container>
-      <div className="w-[100%] bg-white relative rounded-[16px] overflow-hidden inline-block shadow-md">
+        <div className="w-[100%] bg-white relative rounded-[16px] overflow-hidden inline-block shadow-md">
           <div className="w-[100%] h-[140px] relative">
             <Image
               src={`${IMAGE_URL}/${banner?.img}`}
               layout="fill"
               alt={banner.title || "Single Banner"}
               objectFit="cover"
-            /> 
+            />
           </div>
           <div className="p-[12px] pr-[16] relative">
             <div>
@@ -30,7 +30,7 @@ const SingleBanner = ({ banner }) => {
             <div className=" absolute bottom-[16px] left-4">
               <Button
                 icon={<FaArrowLeft />}
-                className="bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff]"
+                className="bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] app-link"
                 size="sm"
                 style={{ background: "red" }}
               >

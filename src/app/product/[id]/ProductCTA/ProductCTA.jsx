@@ -2,23 +2,21 @@
 import { motion } from "framer-motion"; // Import framer-motion components
 import Container from "@/components/UI/Container/container";
 import IconButton from "@/components/UI/IconButton/iconButton";
-import { useState } from "react";
 import { FaArrowLeft, FaPlus } from "react-icons/fa6";
 import Ripples from "react-ripples";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import { useCartStore } from "@/lib/cartStore";
 
-const ProductCTA = ({ disabled = false }) => {
-  const [qty, setQty] = useState(0);
+const ProductCTA = ({ product, disabled = false }) => {
+  const { addItem, getQty, increase, decrease, removeItem } = useCartStore();
   const router = useRouter();
 
-  const handleClear = () => setQty(0);
-  const handleIncrease = () => setQty(qty + 1);
-  const handleDecrease = () => {
-    if (qty > 0) {
-      setQty(qty - 1);
-    }
-  };
+  let qty = getQty(product?.id);
+
+  const handleClear = () => removeItem(product);
+  const handleIncrease = () => increase(product);
+  const handleDecrease = () => decrease(product);
 
   return (
     <div
@@ -26,8 +24,8 @@ const ProductCTA = ({ disabled = false }) => {
       style={{
         background:
           qty === 0 ? "linear-gradient(to right, #4f46e5, #7c3aed)" : "#fff",
-        height: qty === 0 ? 64 : 160, // Set consistent height for both states
-        transition: ".3s ease-in-out", // Smooth transition
+        height: qty === 0 ? 64 : 160,
+        transition: ".3s ease-in-out",
       }}
     >
       <Container>
@@ -44,7 +42,7 @@ const ProductCTA = ({ disabled = false }) => {
             className={`p-4 flex w-full h-full items-center justify-center text-[#fff] ${
               disabled ? "pointer-events-none" : ""
             }`}
-            onClick={() => setQty(1)}
+            onClick={() => addItem(product)}
           >
             <FaPlus className="text-[18px]" />
             <b className="mr-[6px] text-[18px]">أضافة الى السلة</b>

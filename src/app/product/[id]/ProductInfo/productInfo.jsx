@@ -19,6 +19,7 @@ import { IMAGE_URL } from "@/lib/api";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
+import ProductCTA from "../ProductCTA/ProductCTA";
 
 // Updated OptionTag to handle clicks and image changes
 const OptionTag = ({ name, active = false, onClick }) => {
@@ -41,7 +42,7 @@ const OptionTag = ({ name, active = false, onClick }) => {
   );
 };
 
-const ProductInfo = ({ item }) => {
+const ProductInfo = ({ product }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
   const [isFavorite, setIsFavorite] = useState(false);
@@ -69,43 +70,49 @@ const ProductInfo = ({ item }) => {
 
   useEffect(() => {
     const favorites = loadFavorites();
-    setIsFavorite(favorites.includes(item.product?.id));
-  }, [item.product?.id]);
+    setIsFavorite(favorites.includes(product?.id));
+  }, [product?.id]);
+
+  const handleNextImage = () => {
+    if (currentImageIndex < product?.image?.length - 1) {
+      setCurrentImageIndex((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex((prev) => prev - 1);
+    }
+  };
 
   const handleOptionClick = (option, index) => {
-    if (index === activeOption) {
-      setActiveOption(null);
-    } else {
-      if (option.img) {
-        const imageIndex = item.product?.image?.findIndex((img) =>
-          img.url.includes(option.img)
-        );
-        if (imageIndex !== -1) {
-          setCurrentImageIndex(imageIndex);
-          if (swiperInstance) {
-            swiperInstance.slideTo(imageIndex);
-          }
-        }
+    if (option.image) {
+      const imageIndex = product?.image?.findIndex(
+        (img) => img.url === option.image
+      );
+      if (imageIndex !== -1) {
+        setCurrentImageIndex(imageIndex);
       }
       setActiveOption(index);
     }
+    setActiveOption(index);
+    product.l1 = product?.options[index];
   };
 
   return (
     <div>
       <div className="h-[300px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
-          {item.product?.image && item.product.image.length > 0 && (
+          {product?.image && product.image.length > 0 && (
             <Swiper
               spaceBetween={10}
               slidesPerView={1}
               onSlideChange={(swiper) =>
                 setCurrentImageIndex(swiper.activeIndex)
               }
-              onSwiper={setSwiperInstance} // This gives us access to the swiper instance
               className="h-full w-full relative z-0"
             >
-              {item.product.image.map((img, index) => (
+              {product.image.map((img, index) => (
                 <SwiperSlide key={index}>
                   <Image
                     src={`${IMAGE_URL}/${img.url}`}
@@ -121,7 +128,7 @@ const ProductInfo = ({ item }) => {
             <Container>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-[4px] mr-1">
-                  {item.product?.image?.map((image, i) => (
+                  {product?.image?.map((image, i) => (
                     <span
                       key={i}
                       className="block h-[8px] rounded-[24px] transition-all"
@@ -171,7 +178,7 @@ const ProductInfo = ({ item }) => {
                     visibility: scrollPosition > 200 ? "visible" : "hidden",
                   }}
                 >
-                  {item.product?.name}
+                  {product?.name}
                 </motion.b>
               </div>
               <div className="flex items-center">
@@ -191,7 +198,7 @@ const ProductInfo = ({ item }) => {
                       <TbHeart className="text-[22px]" />
                     )
                   }
-                  onClick={() => toggleFavorite(item.product?.id)}
+                  onClick={() => toggleFavorite(product?.id)}
                 />
               </div>
             </div>
@@ -199,13 +206,13 @@ const ProductInfo = ({ item }) => {
         </div>
       </div>
       <Container>
-        <h4 className="text-[18px] mt-[16px]">{item.product?.name}</h4>
+        <h4 className="text-[18px] mt-[16px]">{product?.name}</h4>
         <b className="text-[22px] block">
-          {item.product?.price} <span className="text-[14px]">IQD</span>
+          {product?.price} <span className="text-[14px]">IQD</span>
         </b>
 
         <p className="text-[14px] text-gray-600 mt-[8px]">
-          {item.product?.description}
+          {product?.description}
         </p>
         <div className="mt-[16px]">
           <InstallmentBanner />
@@ -216,11 +223,15 @@ const ProductInfo = ({ item }) => {
             عادة مايتم توصيل المنتجات في 3-5 أيام
           </span>
         </div>
-        {item.product?.options && item.product?.options.length > 0 && (
+        <div className="border-t border-t-[#eee] mt-4 pt-4">
+          {product?.options && product?.options.length > 0 && (
+            <h5 className="text-[16px] ">الخيارات</h5>
+          )}
+        </div>
+        {product?.options && product?.options.length > 0 && (
           <div className="flex items-center mt-[8px]">
-            <h5 className="text-[16px]">الخيارات</h5>
             <div className="ml-[12px]">
-              {item.product?.options.map((option, index) => (
+              {product?.options.map((option, index) => (
                 <OptionTag
                   key={index}
                   name={option.name}
@@ -232,6 +243,7 @@ const ProductInfo = ({ item }) => {
           </div>
         )}
       </Container>
+      <ProductCTA product={product} />
     </div>
   );
 };
