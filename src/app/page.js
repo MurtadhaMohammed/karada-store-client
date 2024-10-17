@@ -109,7 +109,7 @@ export default async function Home() {
             key={banner.id}
             bannerId={banner.id}
             title="احدث المنتجات"
-            list={creaitveList}
+            list={banner?.products || []}
             isCreative
           />
         );

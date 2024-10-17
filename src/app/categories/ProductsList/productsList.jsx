@@ -17,6 +17,8 @@ const ProductList = () => {
     queryFn: () =>
       apiCall({
         pathname: `/client/product/product?category_id=${selectedCategoryId}`,
+        method: "GET",
+        cache: "no-store",
       }),
     enabled: !!selectedCategoryId,
   });

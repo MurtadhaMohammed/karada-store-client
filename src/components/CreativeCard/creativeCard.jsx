@@ -1,4 +1,5 @@
 "use client";
+import { IMAGE_URL } from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,6 +10,7 @@ const CreatviceCard = ({ index, item }) => {
     "bg-gradient-to-br from-gray-100 to-white",
     "bg-gradient-to-br from-white to-gray-100",
   ];
+  console.log(item, "itemmmmmmmmm");
 
   return (
     <Link href={`/product/${index}`}>
@@ -35,7 +37,7 @@ const CreatviceCard = ({ index, item }) => {
         <div className="w-[240px] h-[240px] flex items-center justify-center relative">
           <div className="w-full h-full relative">
             <Image
-              src={item.image}
+              src={`${IMAGE_URL}/${item?.thumbnail1}`}
               layout="fill"
               objectFit="cover"
               alt="image"

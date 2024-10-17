@@ -54,7 +54,7 @@ export default async function ProductOne({ params }) {
     method: "GET",
     cache: "no-cache",
   });
-
+  
   let product = await products.json();
   let relatedItems = await fetch(
     `${URL}/client/product/product/${params.id}/related`,
