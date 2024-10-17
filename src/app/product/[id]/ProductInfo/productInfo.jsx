@@ -73,17 +73,6 @@ const ProductInfo = ({ product }) => {
     setIsFavorite(favorites.includes(product?.id));
   }, [product?.id]);
 
-  const handleNextImage = () => {
-    if (currentImageIndex < product?.image?.length - 1) {
-      setCurrentImageIndex((prev) => prev + 1);
-    }
-  };
-
-  const handlePrevImage = () => {
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex((prev) => prev - 1);
-    }
-  };
 
   const handleOptionClick = (option, index) => {
     if (option.image) {
