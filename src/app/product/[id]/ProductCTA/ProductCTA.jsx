@@ -7,10 +7,15 @@ import Ripples from "react-ripples";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/lib/cartStore";
+import { useEffect } from "react";
 
 const ProductCTA = ({ product, disabled = false }) => {
   const { addItem, getQty, increase, decrease, removeItem } = useCartStore();
   const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch("/cart");
+  }, [router]);
 
   let qty = getQty(product?.id);
 
@@ -122,7 +127,7 @@ const ProductCTA = ({ product, disabled = false }) => {
               <Ripples className="!grid w-full">
                 <button
                   onClick={() => router.push("/cart?from=product")}
-                  className="flex items-center justify-between h-[56px] w-full rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-4"
+                  className="flex items-center justify-between h-[56px] w-full rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-4 app-link"
                 >
                   <span className="text-[18px] text-indigo-600 font-bold flex items-center justify-center w-[30px] h-[30px] rounded-full bg-[#f6f6f6]">
                     {qty}
