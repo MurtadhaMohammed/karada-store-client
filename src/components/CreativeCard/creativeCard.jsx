@@ -12,7 +12,7 @@ const CreatviceCard = ({ index, item }) => {
   ];
 
   return (
-    <Link href={`/product/${index}`}>
+    <Link href={`/product/${item?.id}`}>
       <div
         // onClick={() => router.push(`/product/${index}`)}
         className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden ${
