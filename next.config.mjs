@@ -11,8 +11,8 @@ const nextConfig = {
   },
   experimental: {
     missingSuspenseWithCSRBailout: false,
+    crossOrigin: "anonymous",
   },
-  crossOrigin: "anonymous",
 };
 
 export default nextConfig;
