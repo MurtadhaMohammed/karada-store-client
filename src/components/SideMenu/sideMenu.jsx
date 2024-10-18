@@ -6,6 +6,7 @@ import Drawer from "../UI/Drawer/drawer";
 import { CgClose } from "react-icons/cg";
 import { LuUser, LuSettings2, LuLogOut, LuShare2 } from "react-icons/lu";
 import { BiSupport } from "react-icons/bi";
+import Link from "next/link";
 
 const MenuItem = ({ title, icon }) => {
   return (
@@ -46,10 +47,15 @@ const SideMenu = () => {
                   <LuUser className="text-[#666] text-[22px] " />
                 </div>
                 <div className="mr-[8px]">
-                  <b className="text-[16px] text-[#0000ff] underline active:opacity-55 transition-all">
+                  <Link
+                    href={"/login"}
+                    prefetch={true}
+                    onClick={() => setIsMenu(false)}
+                    className="text-[16px] text-[#0000ff] underline active:opacity-55 transition-all"
+                  >
                     تسجيل الدخول
-                  </b>
-                  <p className="text-[14px]">سجل دخولك لتصلك احدث العروض</p>
+                  </Link>
+                  <p className="text-[14px]">سجل دخولك ليصلك كل جديد</p>
                 </div>
               </div>
             )}
