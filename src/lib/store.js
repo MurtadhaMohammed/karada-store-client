@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 
 export const useAppStore = create((set) => ({
@@ -6,8 +7,19 @@ export const useAppStore = create((set) => ({
   platform: null,
   selectedCategoryId: null,
   pageTitle: null,
+  setIsLogin: (isLogin) => set({ isLogin }),
   setPageTitle: (pageTitle) => set({ pageTitle }),
   setPlatform: (platform) => set({ platform }),
   setIsMenu: (isMenu) => set({ isMenu }),
   setSelectedCategoryId: (id) => set({ selectedCategoryId: id }),
+  getUserInfo: () => {
+    // Ensure localStorage access only in the browser
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("karada-token");
+      if (!token) return {};
+      const user = jwtDecode(token);
+      return user;
+    }
+    return {}; // Return an empty object if it's on the server
+  },
 }));

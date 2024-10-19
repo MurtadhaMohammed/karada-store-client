@@ -8,9 +8,12 @@ import { LuUser, LuSettings2, LuLogOut, LuShare2 } from "react-icons/lu";
 import { BiSupport } from "react-icons/bi";
 import Link from "next/link";
 
-const MenuItem = ({ title, icon }) => {
+const MenuItem = ({ title, icon, onClick = () => {} }) => {
   return (
-    <div className="flex items-center mb-[28px] active:scale-[0.96] active:opacity-60 transition-all">
+    <div
+      onClick={onClick}
+      className="flex items-center mb-[28px] active:scale-[0.96] active:opacity-60 transition-all"
+    >
       <div>{icon}</div>
       <p className="mr-[16px] text-[16px]">{title}</p>
     </div>
@@ -18,7 +21,14 @@ const MenuItem = ({ title, icon }) => {
 };
 
 const SideMenu = () => {
-  const { isMenu, setIsMenu, isLogin } = useAppStore();
+  const { isMenu, setIsMenu, isLogin, setIsLogin, getUserInfo } = useAppStore();
+  const user = getUserInfo()
+
+  const logout = () => {
+    localStorage.removeItem("karada-token");
+    localStorage.removeItem("karada-refreshToken");
+    setIsLogin(false);
+  };
 
   return (
     <Drawer position="right" isOpen={isMenu} onClose={() => setIsMenu(false)}>
@@ -37,8 +47,8 @@ const SideMenu = () => {
                   <LuUser className="text-[#666] text-[22px] " />
                 </div>
                 <div className="mr-[8px]">
-                  <b className="text-[16px]">Murtadha M. Abed</b>
-                  <p className="text-[14px]">0771099898</p>
+                  <b className="text-[16px]">{user?.name}</b>
+                  <p className="text-[14px]">{user?.phone}</p>
                 </div>
               </div>
             ) : (
@@ -79,6 +89,7 @@ const SideMenu = () => {
           />
           {isLogin && (
             <MenuItem
+              onClick={logout}
               title={"تسجيل خروج"}
               icon={<LuLogOut className="text-[24px]" />}
             />

@@ -5,8 +5,10 @@ import Ripples from "react-ripples";
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { OtpInput } from "reactjs-otp-input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { apiCall, URL } from "@/lib/api";
+import { useRouter } from "next/navigation";
+import { useAppStore } from "@/lib/store";
 
 const LoginForm = () => {
   const [otp, setOtp] = useState("");
@@ -14,6 +16,8 @@ const LoginForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { setIsLogin, getUserInfo, isLogin } = useAppStore();
 
   const handleChange = (otp) => setOtp(otp);
 
@@ -46,8 +50,22 @@ const LoginForm = () => {
       },
     });
     setLoading(false);
-    console.log(resp);
+    if (resp.accessToken) {
+      localStorage.setItem("karada-token", resp.accessToken);
+      localStorage.setItem("karada-refreshToken", resp.refreshToken);
+      const user = getUserInfo();
+      localStorage.setItem("karada-account-name", user?.name);
+      router.replace("/");
+      setIsLogin(true);
+    }
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const _name = localStorage.getItem("karada-account-name");
+      if (_name) setName(_name);
+    }
+  }, [isLogin]);
 
   if (isOtp)
     return (
@@ -111,6 +129,9 @@ const LoginForm = () => {
     <div>
       <Container>
         <div className="mt-[26px]">
+          <div className="mb-[16px] text-center">
+            {/* <b className="text-[18px]">مرحباً بك.</b> */}
+          </div>
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}

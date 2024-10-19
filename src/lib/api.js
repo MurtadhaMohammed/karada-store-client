@@ -24,9 +24,9 @@ export const apiCall = async ({
   auth = false,
 }) => {
   try {
-    let token = localStorage.getItem("karada_store_client_token");
+    let token = localStorage.getItem("karada-token");
     if (auth && !isTokenValid(token)) {
-      localStorage.removeItem("karada_store_client_token");
+      localStorage.removeItem("karada-token");
       useAppStore.setState({
         isLogin: false,
       });
