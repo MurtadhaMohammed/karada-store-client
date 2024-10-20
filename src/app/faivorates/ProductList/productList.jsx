@@ -1,11 +1,11 @@
 "use client";
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import DefaultCard from "@/components/DefaultCard/defaultCard";
 import Motion from "@/components/Motion/motion";
 import Container from "@/components/UI/Container/container";
 import { apiCall } from "@/lib/api";
-import { useQuery } from "@tanstack/react-query";
 import ProductSkeleton from "../Skeleton/skeleton";
-import { useEffect, useState } from "react";
 
 const ProductList = () => {
   const [favorites, setFavorites] = useState([]);
@@ -27,13 +27,18 @@ const ProductList = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["favorites", favorites],
-    queryFn: () =>
-      apiCall({
+    queryFn: () => {
+      const filteredFavorites = favorites.filter(
+        (id) => id !== null && id !== undefined
+      );
+
+      return apiCall({
         pathname: "/client/product/productsByIds",
-        data: { productIds: favorites },
+        data: { productIds: filteredFavorites },
         method: "POST",
-      }),
-    enabled: favorites?.length !== 0,
+      });
+    },
+    enabled: favorites.length !== 0,
   });
 
   if (isLoading) return <ProductSkeleton />;

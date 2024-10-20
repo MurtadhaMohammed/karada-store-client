@@ -27,6 +27,8 @@ const ProductList = ({ bannerId }) => {
           bannerId === "all"
             ? `/client/product/product?page=${pageParam}&limit=${limit}`
             : `/client/product/getProductsByBanner/${bannerId}?page=${pageParam}&limit=${limit}`,
+        method: "GET",
+        cache: "no-cache",
       }),
     enabled: !!bannerId,
     getNextPageParam: (lastPage, pages) => {

@@ -10,6 +10,7 @@ const CreatviceCard = ({ index, item }) => {
     "bg-gradient-to-br from-gray-100 to-white",
     "bg-gradient-to-br from-white to-gray-100",
   ];
+  console.log(item, "itemmmmmmmmm");
 
   return (
     <Link href={`/product/${item?.id}`}>
