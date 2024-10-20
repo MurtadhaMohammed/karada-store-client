@@ -2,7 +2,8 @@ import { jwtDecode } from "jwt-decode";
 import { useAppStore } from "./store";
 
 // export const URL = "http://localhost:3002/api";
-export const URL = "http://85.208.51.126:3002/api";
+export const URL = "https://store.puretik.com/api";
+// export const URL = "http://85.208.51.126:3002/api";
 export const IMAGE_URL =
   "https://drlab.us-east-1.linodeobjects.com/karada-store";
 
@@ -23,9 +24,9 @@ export const apiCall = async ({
   auth = false,
 }) => {
   try {
-    let token = localStorage.getItem("karada_store_client_token");
+    let token = localStorage.getItem("karada-token");
     if (auth && !isTokenValid(token)) {
-      localStorage.removeItem("karada_store_client_token");
+      localStorage.removeItem("karada-token");
       useAppStore.setState({
         isLogin: false,
       });

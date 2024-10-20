@@ -23,6 +23,9 @@ const MainHeader = () => {
       case "/checkout":
         setPageTitle("تأكيد الطلب");
         break;
+      case "/login":
+        setPageTitle("تسجيل الدخول");
+        break;
 
       default:
         break;

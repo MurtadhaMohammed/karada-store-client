@@ -51,11 +51,11 @@ export const useCartStore = create((set, get) => ({
     });
   },
 
-  // getItemsTotal: () => {
-  //   return get()
-  //     .cart.map((item) => item.qt)
-  //     .reduce((a, b) => a + b, 0);
-  // },
+  getItemsTotal: () => {
+    return get()
+      .cart.map((item) => item.qt)
+      .reduce((a, b) => a + b, 0);
+  },
 
   // getSubTotal: () => {
   //   return get()

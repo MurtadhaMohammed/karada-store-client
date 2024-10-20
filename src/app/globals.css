@@ -26,6 +26,8 @@
 
 html, body {
   scroll-behavior: smooth;
+  overscroll-behavior: none; /* Disable scroll overflow */
+  /* overflow: auto;     */
 }
 
 .no-scrollbar::-webkit-scrollbar {
