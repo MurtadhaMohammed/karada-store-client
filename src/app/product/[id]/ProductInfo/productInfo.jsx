@@ -48,6 +48,8 @@ const ProductInfo = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(null);
+  const [swiperInstance, setSwiperInstance] = useState(null);
+
 
   const loadFavorites = () => {
     const favorites =
@@ -71,17 +73,6 @@ const ProductInfo = ({ product }) => {
     setIsFavorite(favorites.includes(product?.id));
   }, [product?.id]);
 
-  const handleNextImage = () => {
-    if (currentImageIndex < product?.image?.length - 1) {
-      setCurrentImageIndex((prev) => prev + 1);
-    }
-  };
-
-  const handlePrevImage = () => {
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex((prev) => prev - 1);
-    }
-  };
 
   const handleOptionClick = (option, index) => {
     if (option.image) {
@@ -91,6 +82,7 @@ const ProductInfo = ({ product }) => {
       if (imageIndex !== -1) {
         setCurrentImageIndex(imageIndex);
       }
+      setActiveOption(index);
     }
     setActiveOption(index);
     product.l1 = product?.options[index];
