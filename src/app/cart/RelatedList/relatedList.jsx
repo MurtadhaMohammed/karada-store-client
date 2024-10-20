@@ -8,16 +8,16 @@ import { IoIosArrowBack } from "react-icons/io";
 import Link from "next/link";
 import { URL } from "@/lib/api";
 
-const RelatedList = ({ bannerId, isCreative = false }) => {
+const RelatedList = ({ bannerId,params, isCreative = false }) => {
   const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+console.log(params,"paramaaas")
   useEffect(() => {
     const fetchRelatedItems = async () => {
       try {
         let relatedItems = await fetch(
-          `${URL}/client/product/product/${params?.id}/related`,
+          `${URL}/client/product/product/${params}/related`,
           {
             method: "GET",
             cache: "no-cache",
@@ -33,7 +33,7 @@ const RelatedList = ({ bannerId, isCreative = false }) => {
     };
 
     fetchRelatedItems();
-  }, [params?.id]);
+  }, [params]);
 
   return (
     <div className="pt-[16px]">
