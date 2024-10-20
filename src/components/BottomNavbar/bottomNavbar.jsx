@@ -9,8 +9,9 @@ import {
   TbShoppingCartFilled,
   TbHeart,
   TbHeartFilled,
-  TbMenuOrder,
+  TbBrandFirebase,
 } from "react-icons/tb";
+
 import Container from "../UI/Container/container";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -77,8 +78,20 @@ const BottomNabar = () => {
                 <TbCategory className="text-[26px]" />
               )
             }
-            label={"الاقسام"}
+            label={"الفئات"}
             isActive={pathname === "/categories"}
+          />
+          <NavItem
+            to="/brands"
+            icon={
+              pathname === "/brands" ? (
+                <TbBrandFirebase className="text-[26px]" />
+              ) : (
+                <TbBrandFirebase className="text-[26px]" />
+              )
+            }
+            label={"الماركات"}
+            isActive={pathname === "/brands"}
           />
           <NavItem
             to="/cart?from=home"
@@ -89,7 +102,7 @@ const BottomNabar = () => {
                 <TbShoppingCart className="text-[26px]" />
               )
             }
-            label={"سلة التسوق"}
+            label={"السلة"}
             isActive={pathname === "/cart"}
           />
 
