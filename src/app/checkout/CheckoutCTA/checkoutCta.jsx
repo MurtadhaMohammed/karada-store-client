@@ -1,19 +1,33 @@
 "use client";
 import Container from "@/components/UI/Container/container";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { FaArrowLeft } from "react-icons/fa6";
 import { GiConfirmed } from "react-icons/gi";
-
 import Ripples from "react-ripples";
-import { Suspense } from "react";
+import { apiCall, URL } from "@/lib/api";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
 
+  const handleOrderCreation = async () => {
+    try {
+      const resp = await apiCall({
+        pathname: `/client/auth/login`,
+        method: "POST",
+        body:body,
+      });
+      if (resp.ok) {
+        console.log("Order created successfully");
+      } else {
+        console.error("Failed to create order");
+      }
+    } catch (error) {
+      console.error("Error creating order:", error);
+    }
+  };
+
   return (
     <div
-      className="fixed  z-10 w-full"
+      className="fixed z-10 w-full"
       style={{
         bottom: searchParams.get("from") === "home" ? 96 : 20,
       }}
@@ -29,15 +43,15 @@ const CheckoutCTA = () => {
           }}
         >
           <Ripples className="!grid w-full">
-            <Link
-              href={"/checkout"}
-              className="flex items-center justify-center  h-[56px] rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
+            <button
+              className="flex w-full items-center justify-center h-[56px] rounded-[28px] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
+              onClick={handleOrderCreation}
             >
               <span className="ml-[8px] font-bold text-[18px]">
                 تأكـــيد الطلب
               </span>
               <GiConfirmed className="text-[22px]" />
-            </Link>
+            </button>
           </Ripples>
         </div>
       </Container>
