@@ -13,13 +13,12 @@ export const useAppStore = create((set) => ({
   setIsMenu: (isMenu) => set({ isMenu }),
   setSelectedCategoryId: (id) => set({ selectedCategoryId: id }),
   getUserInfo: () => {
-    // Ensure localStorage access only in the browser
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("karada-token");
       if (!token) return {};
       const user = jwtDecode(token);
       return user;
     }
-    return {}; // Return an empty object if it's on the server
+    return {};
   },
 }));
