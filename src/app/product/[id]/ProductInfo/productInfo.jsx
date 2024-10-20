@@ -16,6 +16,10 @@ import {
 import { TiStarFullOutline } from "react-icons/ti";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { IMAGE_URL } from "@/lib/api";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+
 
 // Updated OptionTag to handle clicks and image changes
 const OptionTag = ({ name, active = false, onClick }) => {
@@ -97,14 +101,25 @@ const ProductInfo = ({ item }) => {
       <div className="h-[300px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
           {item.product?.image && item.product.image.length > 0 && (
-            <Image
-              src={`${IMAGE_URL}/${item.product.image[currentImageIndex].url}`}
-              layout="fill"
-              objectFit="cover"
-              alt={`product-image-${currentImageIndex}`}
-            />
+          <Swiper
+          spaceBetween={10}
+          slidesPerView={1}
+          onSlideChange={(swiper) => setCurrentImageIndex(swiper.activeIndex)}
+          className="h-full w-full relative z-0"
+        >
+          {item.product.image.map((img, index) => (
+            <SwiperSlide key={index}>
+              <Image
+                src={`${IMAGE_URL}/${img.url}`}
+                layout="fill"
+                objectFit="cover"
+                alt={`product-image-${index}`}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
           )}
-          <div className="absolute left-0 right-0 mt-[4px] bottom-[16px]">
+          <div className="absolute left-0 right-0 mt-[4px] bottom-[16px] z-50">
             <Container>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-[4px] mr-1">
@@ -127,33 +142,16 @@ const ProductInfo = ({ item }) => {
               </div>
             </Container>
           </div>
-          {/* Scroll buttons */}
-          <div className="absolute left-2 top-1/2 transform -translate-y-1/2">
-            <IconButton
-              icon={<IoIosArrowBack />}
-              className="p-2 rounded-full bg-white border border-[#eee] text-[24px] shadow"
-              onClick={handleNextImage}
-              disabled={currentImageIndex === item.product?.image.length - 1}
-            />
-          </div>
-          <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-            <IconButton
-              icon={<IoIosArrowForward />}
-              className="p-2 rounded-full bg-white border border-[#eee] text-[24px] shadow"
-              onClick={handlePrevImage}
-              disabled={currentImageIndex === 0}
-            />
-          </div>
         </div>
         <div
-          className={`top-0 left-0 right-0 pt-[16px] pb-[16px] ${
+          className={`top-0 left-0 right-0 pt-[16px] pb-[16px] z-50 ${
             scrollPosition > 0
               ? "fixed bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0]"
               : "absolute"
           } transition-all`}
         >
           <Container>
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between z-50">
               <div className="flex items-center flex-1">
                 <IconButton
                   rounded={"50%"}

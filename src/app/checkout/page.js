@@ -18,3 +18,6 @@ export default function Checkout() {
     </div>
   );
 }
+
+
+export const dynamic = "force-dynamic"

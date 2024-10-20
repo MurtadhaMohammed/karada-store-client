@@ -13,7 +13,7 @@ const CreatviceCard = ({ index, item }) => {
   console.log(item, "itemmmmmmmmm");
 
   return (
-    <Link href={`/product/${index}`}>
+    <Link href={`/product/${item?.id}`}>
       <div
         // onClick={() => router.push(`/product/${index}`)}
         className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden ${
@@ -37,7 +37,7 @@ const CreatviceCard = ({ index, item }) => {
         <div className="w-[240px] h-[240px] flex items-center justify-center relative">
           <div className="w-full h-full relative">
             <Image
-              src={`${IMAGE_URL}/${item?.thumbnail1}`}
+              src={`${IMAGE_URL}/${item.thumbnail2}`}
               layout="fill"
               objectFit="cover"
               alt="image"
