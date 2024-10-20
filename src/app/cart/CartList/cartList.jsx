@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useCartStore } from "@/lib/cartStore";
 import { IMAGE_URL } from "@/lib/api";
+import RelatedList from "../RelatedList/relatedList";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -89,6 +90,7 @@ const CartList = () => {
         <CartItem key={i} item={el} />
       ))}
       <CartCTA />
+      <RelatedList params={product.id}/>
     </div>
   );
 };
