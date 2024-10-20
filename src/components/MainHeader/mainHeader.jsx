@@ -26,6 +26,9 @@ const MainHeader = () => {
       case "/login":
         setPageTitle("تسجيل الدخول");
         break;
+      case "/brands":
+        setPageTitle("جميع الماركات");
+        break;
 
       default:
         break;
