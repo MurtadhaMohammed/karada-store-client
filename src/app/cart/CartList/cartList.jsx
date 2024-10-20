@@ -6,9 +6,10 @@ import { FiMinus, FiPlus } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import CartCTA from "../CartCTA/cartCta";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useCartStore } from "@/lib/cartStore";
 import { IMAGE_URL } from "@/lib/api";
+import RelatedList from "../RelatedList/relatedList";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -83,12 +84,17 @@ const CartList = () => {
     router.prefetch("/checkout");
   }, [router]);
 
+  const relatedItems = useMemo(() => {
+    return cart.map((item) => item.product.id);
+  }, [cart]);
+
   return (
     <div className="mb-[16px]">
       {cart?.map((el, i) => (
         <CartItem key={i} item={el} />
       ))}
       <CartCTA />
+      <RelatedList params={relatedItems} />
     </div>
   );
 };
