@@ -1,3 +1,3 @@
 export default function Brands() {
-  return <div className="pb-[100px]">Brand Page</div>;
+  return <div className="pb-[100px]">Brand Pagee</div>;
 }
