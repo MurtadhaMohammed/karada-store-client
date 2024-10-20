@@ -12,7 +12,6 @@ const RelatedList = ({ bannerId,params, isCreative = false }) => {
   const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-console.log(params,"paramaaas")
   useEffect(() => {
     const fetchRelatedItems = async () => {
       try {
