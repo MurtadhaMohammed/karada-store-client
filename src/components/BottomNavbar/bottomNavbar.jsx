@@ -9,6 +9,7 @@ import {
   TbShoppingCartFilled,
   TbHeart,
   TbHeartFilled,
+  TbMenuOrder,
 } from "react-icons/tb";
 import Container from "../UI/Container/container";
 import Link from "next/link";
@@ -19,7 +20,7 @@ const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
 
   let activeStyle = isActive
     ? "!text-violet-600 border-t !border-t-violet-600"
-    : "border-t border-[#eee]";
+    : "border-t border-t-transparent";
   return (
     <Link href={to} className="flex-1">
       <div
@@ -45,7 +46,7 @@ const BottomNabar = () => {
     router.prefetch("/categories");
     router.prefetch("/faivorates");
     router.prefetch("/products");
-  }, []);
+  }, [router]);
 
   return (
     <div
@@ -92,6 +93,18 @@ const BottomNabar = () => {
             isActive={pathname === "/cart"}
           />
 
+          {/* <NavItem
+            to="/faivorates"
+            icon={
+              pathname === "/faivorates" ? (
+                <TbHeartFilled className="text-[26px]" />
+              ) : (
+                <TbHeart className="text-[26px]" />
+              )
+            }
+            label={"الطلبات"}
+            isActive={pathname === "/faivorates"}
+          /> */}
           <NavItem
             to="/faivorates"
             icon={

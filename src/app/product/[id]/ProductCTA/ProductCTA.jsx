@@ -2,23 +2,26 @@
 import { motion } from "framer-motion"; // Import framer-motion components
 import Container from "@/components/UI/Container/container";
 import IconButton from "@/components/UI/IconButton/iconButton";
-import { useState } from "react";
 import { FaArrowLeft, FaPlus } from "react-icons/fa6";
 import Ripples from "react-ripples";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import { useCartStore } from "@/lib/cartStore";
+import { useEffect } from "react";
 
-const ProductCTA = ({ disabled = false }) => {
-  const [qty, setQty] = useState(0);
+const ProductCTA = ({ product, disabled = false }) => {
+  const { addItem, getQty, increase, decrease, removeItem , getItemsTotal} = useCartStore();
   const router = useRouter();
 
-  const handleClear = () => setQty(0);
-  const handleIncrease = () => setQty(qty + 1);
-  const handleDecrease = () => {
-    if (qty > 0) {
-      setQty(qty - 1);
-    }
-  };
+  useEffect(() => {
+    router.prefetch("/cart");
+  }, [router]);
+
+  let qty = getQty(product?.id);
+
+  const handleClear = () => removeItem(product);
+  const handleIncrease = () => increase(product);
+  const handleDecrease = () => decrease(product);
 
   return (
     <div
@@ -26,8 +29,8 @@ const ProductCTA = ({ disabled = false }) => {
       style={{
         background:
           qty === 0 ? "linear-gradient(to right, #4f46e5, #7c3aed)" : "#fff",
-        height: qty === 0 ? 64 : 160, // Set consistent height for both states
-        transition: ".3s ease-in-out", // Smooth transition
+        height: qty === 0 ? 64 : 160,
+        transition: ".3s ease-in-out",
       }}
     >
       <Container>
@@ -44,7 +47,7 @@ const ProductCTA = ({ disabled = false }) => {
             className={`p-4 flex w-full h-full items-center justify-center text-[#fff] ${
               disabled ? "pointer-events-none" : ""
             }`}
-            onClick={() => setQty(1)}
+            onClick={() => addItem(product)}
           >
             <FaPlus className="text-[18px]" />
             <b className="mr-[6px] text-[18px]">أضافة الى السلة</b>
@@ -124,10 +127,10 @@ const ProductCTA = ({ disabled = false }) => {
               <Ripples className="!grid w-full">
                 <button
                   onClick={() => router.push("/cart?from=product")}
-                  className="flex items-center justify-between h-[56px] w-full rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-4"
+                  className="flex items-center justify-between h-[56px] w-full rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-4 app-link"
                 >
                   <span className="text-[18px] text-indigo-600 font-bold flex items-center justify-center w-[30px] h-[30px] rounded-full bg-[#f6f6f6]">
-                    {qty}
+                    {getItemsTotal()}
                   </span>
                   <span className="ml-[8px] font-bold text-[18px]">
                     عرض السلة
