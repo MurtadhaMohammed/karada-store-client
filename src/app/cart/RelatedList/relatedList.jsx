@@ -8,7 +8,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import Link from "next/link";
 import { URL } from "@/lib/api";
 
-const RelatedList = ({ bannerId,params, isCreative = false }) => {
+const RelatedList = ({ bannerId, params, isCreative = false }) => {
   const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,7 +38,9 @@ const RelatedList = ({ bannerId,params, isCreative = false }) => {
     <div className="pt-[16px]">
       <Container>
         <div className="flex items-center justify-between">
-          <h3 className="text-[16px] font-semibold text-black mr-1">قد يعجبك ايضاً"</h3>
+          <h3 className="text-[16px] font-semibold text-black mr-1">
+            قد يعجبك ايضاً
+          </h3>
           <Button
             size="sm"
             icon={<IoIosArrowBack className="text-[#717171] text-[16px]" />}
