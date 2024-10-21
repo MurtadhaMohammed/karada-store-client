@@ -1,13 +1,14 @@
 "use client";
 import Container from "@/components/UI/Container/container";
+import { useCartStore } from "@/lib/cartStore";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa6";
 import Ripples from "react-ripples";
-
 const CartCTA = () => {
   const searchParams = useSearchParams();
-
+  const {getSubTotal} = useCartStore();
+  const subTotal = getSubTotal();
   return (
     <div
       className="fixed  z-10 w-full"
@@ -31,7 +32,7 @@ const CartCTA = () => {
               className="flex items-center justify-between h-[56px] rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
             >
               <span className="text-[18px] font-bold">
-                140,000 <span className="text-[14px]">IQD</span>
+                {subTotal} <span className="text-[14px]">IQD</span>
               </span>
               <div className="flex items-center">
                 <span className="ml-[8px] font-bold text-[18px]">متابعة</span>
