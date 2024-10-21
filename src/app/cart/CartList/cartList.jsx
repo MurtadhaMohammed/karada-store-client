@@ -6,7 +6,7 @@ import { FiMinus, FiPlus } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import CartCTA from "../CartCTA/cartCta";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCartStore } from "@/lib/cartStore";
 import { IMAGE_URL } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
@@ -84,17 +84,18 @@ const CartList = () => {
     router.prefetch("/checkout");
   }, [router]);
 
-  const relatedItems = useMemo(() => {
-    return cart.map((item) => item.product.id);
-  }, [cart]);
+  const productId = useMemo(() => {
+    const randomIndex = Math.floor(Math.random() * cart.length);
+    return cart[randomIndex]?.product?.id;
+  }, [cart?.length]);
 
   return (
     <div className="mb-[16px]">
       {cart?.map((el, i) => (
         <CartItem key={i} item={el} />
       ))}
+      <RelatedList productId={productId} />
       <CartCTA />
-      <RelatedList params={relatedItems} />
     </div>
   );
 };
