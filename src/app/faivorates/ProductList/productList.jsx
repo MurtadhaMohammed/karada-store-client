@@ -47,7 +47,7 @@ const ProductList = () => {
     <div className="pt-[16px]">
       <Motion>
         <Container>
-          <div className="grid grid-cols-2 gap-4 overflow-x-auto no-scrollbar">
+          <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4  gap-4 overflow-x-auto no-scrollbar">
             {data &&
               data?.products?.map((el, i) => (
                 <DefaultCard

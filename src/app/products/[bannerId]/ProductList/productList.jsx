@@ -47,7 +47,7 @@ const ProductList = ({ bannerId }) => {
   return (
     <div className="pt-[16px]">
       <Container>
-        <div className="grid grid-cols-2 gap-4 overflow-x-auto no-scrollbar">
+        <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4  gap-4 overflow-x-auto no-scrollbar">
           {data.pages.map((page) =>
             page.products.map((el, i) => (
               <DefaultCard isGrid key={`${el.id}-${i}`} item={el} />

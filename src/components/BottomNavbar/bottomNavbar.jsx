@@ -59,7 +59,7 @@ const BottomNabar = () => {
 
   return (
     <div
-      className="h-[80px] fixed left-0 right-0 z-10 bg-white  border-t border-t-[#f0f0f0] pb-[12px] transition-all"
+      className="h-[80px] fixed left-0 right-0 z-10 bg-white  border-t border-t-[#f0f0f0] pb-[12px] transition-all md:hidden block"
       style={{
         bottom: screenView?.find(
           (el) =>

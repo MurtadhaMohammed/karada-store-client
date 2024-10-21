@@ -26,7 +26,7 @@ export default function SliderBanner({ banners }) {
           >
             {slider?.map((el) => (
               <SwiperSlide key={el.id} className="pl-[16px] pr-[16px]">
-                <Link href={`/products/${el?.id}`}  className="w-[100%] h-[140px] relative rounded-[16px] overflow-hidden pb-[20px] inline-block shadow-md active:opacity-50 transition-all">
+                <Link href={`/products/${el?.id}`}  className="w-[100%] md:aspect-4 aspect-3 relative rounded-[16px] overflow-hidden pb-[20px] inline-block shadow-md active:opacity-50 transition-all">
                   <Image
                     src={`${IMAGE_URL}/${el.img}`}
                     layout="fill"

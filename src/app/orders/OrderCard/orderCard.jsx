@@ -33,22 +33,22 @@ const ImageGroup = ({ images }) => {
           className="relative h-full grid grid-cols-2 gap-1  overflow-hidden"
           style={{ direction: "ltr" }}
         >
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px]"></div>
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px]"></div>
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px]"></div>
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px]"></div>
+          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px]"></div>
+          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px]"></div>
+          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px]"></div>
+          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px]"></div>
         </div>
       )}
       {images?.length > 4 && (
         <div
-          className="relative h-full grid grid-cols-2 gap-1  overflow-hidden"
+          className="relative h-[100%] grid grid-cols-2 gap-1  overflow-hidden"
           style={{ direction: "ltr" }}
         >
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px]"></div>
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px]"></div>
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px]"></div>
+          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px]"></div>
+          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px]"></div>
+          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px]"></div>
           <div className="relative h-full rounded-[8px] overflow-hidden">
-            <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px]"></div>
+            <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px]"></div>
             <div className=" absolute inset-0 bg-[#0000002e] flex items-center justify-center text-[#fff]">
               +2
             </div>
@@ -89,7 +89,7 @@ const OrderCard = ({ order }) => {
   return (
     <div
       className={`border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px]`}
-      style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
+      style={{    boxShadow: "0px 5px 20px -10px #0000002b"}}
     >
       <div className="flex p-[16px]">
         <ImageGroup images={images} />
