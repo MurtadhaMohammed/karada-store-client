@@ -4,18 +4,31 @@ import { useSearchParams } from "next/navigation";
 import { GiConfirmed } from "react-icons/gi";
 import Ripples from "react-ripples";
 import { apiCall, URL } from "@/lib/api";
+import { useCartStore } from "@/lib/cartStore";
+import { useMemo } from "react";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
+  const cart = useCartStore((state) => state.cart);
+
+  const items = useMemo(() => {
+    return cart.map((item) => item.product.id);
+  }, [cart]);
 
   const handleOrderCreation = async () => {
     try {
-      const resp = await apiCall({
-        pathname: `/client/auth/login`,
+      const response = await apiCall({
+        pathname: `/client/order/create-order`,
         method: "POST",
-        body:body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cart: cart,
+          items: items,
+        }),
       });
-      if (resp.ok) {
+      if (response.ok) {
         console.log("Order created successfully");
       } else {
         console.error("Failed to create order");
