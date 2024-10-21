@@ -9,7 +9,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import Link from "next/link";
 
 const ListBanner = ({ title, list, isCreative = false }) => {
-  // const router = useRouter();
+  if (list.length === 0) return;
   return (
     <div className="pt-[16px] ">
       <Container>
@@ -31,16 +31,12 @@ const ListBanner = ({ title, list, isCreative = false }) => {
       </Container>
       <Container noPadding>
         <div className="flex gap-4 overflow-x-auto no-scrollbar pl-[16px] pr-[16px] pb-[16px] pt-3">
-          {Array.isArray(list) && list.length > 0 ? (
-            list.map((el, i) =>
-              isCreative ? (
-                <CreatviceCard key={i} index={i} item={el} />
-              ) : (
-                <DefaultCard key={i} item={el} />
-              )
+          {list.map((el, i) =>
+            isCreative ? (
+              <CreatviceCard key={i} index={i} item={el} />
+            ) : (
+              <DefaultCard key={i} item={el} />
             )
-          ) : (
-            <p>No items available</p> // Handle case when list is not an array or is empty
           )}
         </div>
       </Container>
