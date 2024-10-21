@@ -39,7 +39,14 @@ const BottomNabar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const screenView = ["/", "/categories", "/cart?from=home", "/faivorates"];
+  const screenView = [
+    "/",
+    "/categories",
+    "/cart?from=home",
+    "/faivorates",
+    "/brands",
+    "/orders",
+  ];
 
   useEffect(() => {
     router.prefetch("/");
@@ -47,6 +54,7 @@ const BottomNabar = () => {
     router.prefetch("/categories");
     router.prefetch("/faivorates");
     router.prefetch("/products");
+    router.prefetch("/brands");
   }, [router]);
 
   return (

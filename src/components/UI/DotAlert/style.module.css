@@ -1,0 +1,12 @@
+.dotAlert {
+  animation: popAnimation 0.8s infinite;
+}
+
+@keyframes popAnimation {
+  0% {
+    transform: scale(0.6);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}

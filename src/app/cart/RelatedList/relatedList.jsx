@@ -14,7 +14,7 @@ const RelatedList = ({ productId }) => {
   });
 
   return (
-    <ListBanner title={"قد يعجبك ايضاً"} list={data?.relatedProducts || []} />
+    <ListBanner noMore title={"قد يعجبك ايضاً"} list={data?.relatedProducts || []} />
   );
 };
 

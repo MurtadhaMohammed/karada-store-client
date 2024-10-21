@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import Input from "@/components/UI/Input/input";
 import { GrLocation } from "react-icons/gr";
@@ -8,9 +8,9 @@ const Address = () => {
   const { getUserInfo } = useAppStore();
   const user = getUserInfo();
 
-  const [address, setAddress] = useState(user.address);
-  const [phone, setPhone] = useState(user.phone);
-  const [name, setName] = useState(user.name);
+  const [address, setAddress] = useState(user?.address || "");
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [name, setName] = useState(user?.name || "");
   const [notes, setNotes] = useState("");
 
   return (

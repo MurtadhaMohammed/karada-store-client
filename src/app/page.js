@@ -4,6 +4,8 @@ import SliderBanner from "@/components/SliderBanner/sliderBanner";
 import ListBanner from "@/components/ListBanner/listBanner";
 import SingleBanner from "@/components/SingleBanner/singleBanner";
 import { URL } from "@/lib/api";
+import OrderCard from "./orders/OrderCard/orderCard";
+import Container from "@/components/UI/Container/container";
 // import Image from "next/image";
 
 // const creaitveList = [
@@ -121,6 +123,15 @@ export default async function Home() {
   return (
     <div className="pb-[100px]">
       <SearchBar />
+      <Container>
+        <OrderCard
+          order={{
+            id: 2,
+            orderStatus: "Processing",
+            images: ["", "", "", "", ""],
+          }}
+        />
+      </Container>
       {/* <SliderBanner />
       <Categories />
       <ListBanner title="احدث المنتجات" list={creaitveList} isCreative />
