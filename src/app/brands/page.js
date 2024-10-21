@@ -1,5 +1,6 @@
 import BrandList from "./BrandsList/brandList";
 import { URL } from "@/lib/api";
+import BrandSkeleton from "./Skeleton/brandSkeleton";
 
 export default async function Brands() {
   const res = await fetch(`${URL}/client/brand/all-brands`, {
