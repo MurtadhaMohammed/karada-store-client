@@ -7,12 +7,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      animation: {
+        'pulse-fast': 'pulse 0.7s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
       boxShadow: {
-        'brand-custom': '0 -2px 4px rgba(122, 57, 235, 0.15), 0 2px 4px rgba(81, 69, 229, 0.15)',
+        'brand-custom': ' 0 -2px 4px rgba(81, 69, 229, 0.10)',
       },
       lineHeight: {
         "tight-custom": "1.1",
