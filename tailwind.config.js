@@ -8,14 +8,15 @@ module.exports = {
   theme: {
     extend: {
       animation: {
-        'pulse-fast': 'pulse 0.7s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        "pulse-fast": "pulse 0.7s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
       boxShadow: {
-        'brand-custom': ' 0 -2px 4px rgba(81, 69, 229, 0.10)',
+        "brand-custom":
+          "rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px",
       },
       lineHeight: {
         "tight-custom": "1.1",
