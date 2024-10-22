@@ -50,7 +50,6 @@ const ProductInfo = ({ product }) => {
   const [activeOption, setActiveOption] = useState(null);
   const [swiperInstance, setSwiperInstance] = useState(null);
 
-
   const loadFavorites = () => {
     const favorites =
       JSON.parse(localStorage.getItem("favorites_product")) || [];
@@ -72,7 +71,6 @@ const ProductInfo = ({ product }) => {
     const favorites = loadFavorites();
     setIsFavorite(favorites.includes(product?.id));
   }, [product?.id]);
-
 
   const handleOptionClick = (option, index) => {
     if (option.image) {
@@ -196,9 +194,22 @@ const ProductInfo = ({ product }) => {
       </div>
       <Container>
         <h4 className="text-[18px] mt-[16px]">{product?.name}</h4>
-        <b className="text-[22px] block">
-          {product?.price} <span className="text-[14px]">IQD</span>
-        </b>
+        {product?.price === product?.endPrice ? (
+          <b className="text-[22px] block">
+            {Number(product?.endPrice).toLocaleString("en")}{" "}
+            <span className="text-[14px]">IQD</span>
+          </b>
+        ) : (
+          <div className="flex items-end">
+            <b className="text-[22px] block">
+              {Number(product?.endPrice).toLocaleString("en")}{" "}
+              <span className="text-[14px]">IQD</span>
+            </b>
+            <p className="text-[18px] block mr-[16px] line-through text-[#a5a5a5] italic">
+              {Number(product?.price).toLocaleString("en")}
+            </p>
+          </div>
+        )}
 
         <p className="text-[14px] text-gray-600 mt-[8px]">
           {product?.description}

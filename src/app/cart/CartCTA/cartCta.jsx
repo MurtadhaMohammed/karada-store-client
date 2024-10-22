@@ -7,8 +7,11 @@ import { FaArrowLeft } from "react-icons/fa6";
 import Ripples from "react-ripples";
 const CartCTA = () => {
   const searchParams = useSearchParams();
-  const {getSubTotal} = useCartStore();
+  const { getSubTotal, getItemsTotal } = useCartStore();
   const subTotal = getSubTotal();
+
+  if (getItemsTotal() === 0) return;
+  
   return (
     <div
       className="fixed  z-10 w-full"
@@ -32,7 +35,8 @@ const CartCTA = () => {
               className="flex items-center justify-between h-[56px] rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
             >
               <span className="text-[18px] font-bold">
-                {subTotal} <span className="text-[14px]">IQD</span>
+                {Number(subTotal).toLocaleString("en")}{" "}
+                <span className="text-[14px]">IQD</span>
               </span>
               <div className="flex items-center">
                 <span className="ml-[8px] font-bold text-[18px]">متابعة</span>

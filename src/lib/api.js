@@ -1,8 +1,8 @@
 import { jwtDecode } from "jwt-decode";
 import { useAppStore } from "./store";
 
-export const URL = "http://localhost:3002/api";
-// export const URL = "https://store.puretik.com/api";
+// export const URL = "http://localhost:3002/api";
+export const URL = "https://store.puretik.com/api";
 // export const URL = "http://85.208.51.126:3002/api";
 export const IMAGE_URL =
   "https://drlab.us-east-1.linodeobjects.com/karada-store";
@@ -16,14 +16,13 @@ export const isTokenValid = (token) => {
   }
 };
 
-
 //https://example.com/api/check-product-available?productId=2
 
-response :{
-  success: true // if savilable
+response: {
+  success: true; // if savilable
 }
-response :{
-  success: false // if not savilable
+response: {
+  success: false; // if not savilable
 }
 
 export const apiCall = async ({

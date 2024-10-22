@@ -5,7 +5,7 @@ const Container = ({ children, noPadding }) => {
       style={{
         paddingLeft: noPadding ? 0 : 16,
         paddingRight: noPadding ? 0 : 16,
-        maxWidth: noPadding ? 'calc(600px - 32px)' : 600
+        maxWidth: noPadding ? 'calc(1000px - 32px)' : 1000
       }}
     >
       {children}

@@ -1,11 +1,12 @@
 "use client";
 
-import CheckoutCTA from "./CheckoutCTA/checkoutCta";
+import BrandSkeleton from "./Skeleton/brandSkeleton";
+
 
 const Loading = () => {
   return (
     <div className="pb-[100px]">
-      <CheckoutCTA />
+      <BrandSkeleton />
     </div>
   );
 };

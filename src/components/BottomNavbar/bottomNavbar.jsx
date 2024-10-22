@@ -39,7 +39,14 @@ const BottomNabar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const screenView = ["/", "/categories", "/cart?from=home", "/faivorates"];
+  const screenView = [
+    "/",
+    "/categories",
+    "/cart?from=home",
+    "/faivorates",
+    "/brands",
+    "/orders",
+  ];
 
   useEffect(() => {
     router.prefetch("/");
@@ -47,11 +54,12 @@ const BottomNabar = () => {
     router.prefetch("/categories");
     router.prefetch("/faivorates");
     router.prefetch("/products");
+    router.prefetch("/brands");
   }, [router]);
 
   return (
     <div
-      className="h-[80px] fixed left-0 right-0 z-10 bg-white  border-t border-t-[#f0f0f0] pb-[12px] transition-all"
+      className="h-[80px] fixed left-0 right-0 z-10 bg-white  border-t border-t-[#f0f0f0] pb-[12px] transition-all md:hidden block"
       style={{
         bottom: screenView?.find(
           (el) =>

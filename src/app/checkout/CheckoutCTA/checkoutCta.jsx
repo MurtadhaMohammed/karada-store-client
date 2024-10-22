@@ -16,7 +16,7 @@ const CheckoutCTA = () => {
 
   const items = useMemo(() => {
     return cart.map((item) => ({
-      product_id: item.product.id,
+      id: item.product.id,
       quantity: item.qt,
       store_id: item.product.store_id,
       price: item.product.price,
@@ -36,7 +36,6 @@ const CheckoutCTA = () => {
   };
 
  
-  console.log("Orderrrrrrrrrrrrrr", order);
 
   const handleOrderCreation = async () => {
 
@@ -48,7 +47,6 @@ const CheckoutCTA = () => {
         data: order,
       });
       if (response.ok) {
-        console.log("Order created successfully");
       } else {
         console.error("Failed to create order");
       }
