@@ -16,14 +16,23 @@ export const isTokenValid = (token) => {
   }
 };
 
-//https://example.com/api/check-product-available?productId=2
-
-response: {
-  success: true; // if savilable
-}
-response: {
-  success: false; // if not savilable
-}
+export const reNewToken = async () => {
+  try {
+    let refreshToken = localStorage.getItem("karada-refreshToken");
+    const resp = await apiCall({
+      pathname: "/client/auth/refresh",
+      method: "POST",
+      data: {
+        refreshToken,
+      },
+    });
+    if (!resp?.accessToken) return;
+    return resp?.accessToken;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+};
 
 export const apiCall = async ({
   pathname,
@@ -35,11 +44,17 @@ export const apiCall = async ({
   try {
     let token = localStorage.getItem("karada-token");
     if (auth && !isTokenValid(token)) {
-      localStorage.removeItem("karada-token");
-      useAppStore.setState({
-        isLogin: false,
-      });
-      throw Error("refresh token expired");
+      token = await reNewToken();
+      if (!token) {
+        localStorage.removeItem("karada-token");
+        localStorage.removeItem("karada-refreshToken");
+        useAppStore.setState({
+          isLogin: false,
+        });
+        useAppStore.getState().updateUserInfo(token);
+        return;
+      }
+      localStorage.setItem("karada-token", token);
     }
 
     let body = undefined;

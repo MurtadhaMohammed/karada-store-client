@@ -5,12 +5,11 @@ import { GrLocation } from "react-icons/gr";
 import { useAppStore } from "@/lib/store";
 
 const Address = () => {
-  const { getUserInfo } = useAppStore();
-  const user = getUserInfo();
+  const { userInfo } = useAppStore();
 
-  const [address, setAddress] = useState(user?.address || "");
-  const [phone, setPhone] = useState(user?.phone || "");
-  const [name, setName] = useState(user?.name || "");
+  const [address, setAddress] = useState(userInfo?.address || "");
+  const [phone, setPhone] = useState(userInfo?.phone || "");
+  const [name, setName] = useState(userInfo?.name || "");
   const [notes, setNotes] = useState("");
 
   return (
