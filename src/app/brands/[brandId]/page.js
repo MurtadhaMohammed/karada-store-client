@@ -13,7 +13,6 @@ export default async function BrandId({ params }) {
     }
   
     const data = await res.json();
-    console.log(data, "Fetched products");
   
     return (
       <div>

@@ -1,31 +1,40 @@
 "use client";
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Container from "@/components/UI/Container/container";
 import OrderCard from "../OrderCard/orderCard";
 
-const orders = [
-  {
-    id: 1,
-    orderStatus: "Pending",
-    images: [""],
-  },
-  {
-    id: 2,
-    orderStatus: "Processing",
-    images: ["", "", "", "", ""],
-  },
-  {
-    id: 4,
-    orderStatus: "Canceled",
-    images: ["", "", ""],
-  },
-  {
-    id: 5,
-    orderStatus: "Completed",
-    images: [""],
-  },
-];
+const OrderList = ({ params }) => {
+  const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState([]);
+  const [error, setError] = useState(null);
 
-const OrderList = () => {
+  const {
+    data,
+    isLoading,
+    error: queryError,
+  } = useQuery({
+    queryKey: [`orders-${params}`],
+    queryFn: () =>
+      apiCall({
+        pathname: `/client/order/getOrdersByUserId/${params}`,
+        method: "GET",
+        cache: "no-store",
+      }),
+  });
+
+  useEffect(() => {
+    if (data) {
+      setOrders(data.orders || []);
+      console.log(data.orders, "orders");
+      setLoading(false);
+    }
+    if (queryError) {
+      setError("Failed to load related items.");
+      setLoading(false);
+    }
+  }, [data, queryError]);
+
   return (
     <div className="mt-[16px]">
       <Container>
