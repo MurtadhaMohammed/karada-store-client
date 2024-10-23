@@ -8,11 +8,6 @@ import RelatedList from "./RelatedList/relatedList";
 export default function Cart() {
   return (
     <div className="pb-[100px]">
-      <Container>
-        <div className="mt-[16px]">
-          <InstallmentBanner />
-        </div>
-      </Container>
       <CartList />
       {/* <RelatedList/> */}
     </div>

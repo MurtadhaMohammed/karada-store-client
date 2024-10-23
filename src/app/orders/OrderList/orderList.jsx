@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Container from "@/components/UI/Container/container";
 import OrderCard from "../OrderCard/orderCard";
+import Empty from "@/components/Empty/empty";
+import { AiOutlineTruck } from "react-icons/ai";
+
 
 const OrderList = ({ params }) => {
   const [loading, setLoading] = useState(true);
@@ -34,6 +37,18 @@ const OrderList = ({ params }) => {
       setLoading(false);
     }
   }, [data, queryError]);
+
+  if (orders?.length === 0)
+    return (
+      <Empty
+        icon={<AiOutlineTruck className="text-[100px]" />}
+        title="لا توجد طلبات!."
+        msg="ليش ماطالب شي لحد الان ؟"
+        href={"/"}
+        top={14}
+        buttonText={"عودة للرئيسية"}
+      />
+    );
 
   return (
     <div className="mt-[16px]">
