@@ -3,8 +3,10 @@ import Link from "next/link";
 import Container from "@/components/UI/Container/container";
 import { IMAGE_URL } from "@/lib/api";
 import { useState, useEffect } from "react";
+import BrandSkeleton from "../Skeleton/brandSkeleton";
 
 export default function BrandList({ brands }) {
+  console.log(brands, "brands");
   return (
     <Container>
       <div className="grid grid-cols-3 gap-4 mt-10 justify-center">
@@ -48,6 +50,7 @@ function BrandCard({ brand }) {
           </div>
         </Link>
         <div className="mt-2 font-bold text-sm text-black">{brand.name}</div>
+        
       </div>
     )
   );
