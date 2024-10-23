@@ -6,10 +6,16 @@ import Container from "../UI/Container/container";
 
 import { IoIosArrowBack } from "react-icons/io";
 // import { useRouter } from "next/navigation";
-import Link from "next/link";
+// import Link from "next/link";
 
-const ListBanner = ({ title, list, isCreative = false }) => {
-  // const router = useRouter();
+const ListBanner = ({
+  bannerId,
+  title,
+  list,
+  isCreative = false,
+  noMore = false,
+}) => {
+  if (list.length === 0) return;
   return (
     <div className="pt-[16px] ">
       <Container>
@@ -18,29 +24,27 @@ const ListBanner = ({ title, list, isCreative = false }) => {
             {title}
           </h3>
           {/* <Link href={"/products"}> */}
-          <Button
-            size="sm"
-            icon={<IoIosArrowBack className="text-[#717171] text-[16px]" />}
-            // onClick={() => router.push("/products")}
-            href={"/products"}
-          >
-            <p className="text-[#717171] text-[14px]">عرض المزيد</p>
-          </Button>
+          {!noMore && (
+            <Button
+              size="sm"
+              icon={<IoIosArrowBack className="text-[#717171] text-[16px]" />}
+              // onClick={() => router.push("/products")}
+              href={`/products/${bannerId}`}
+            >
+              <p className="text-[#717171] text-[14px]">عرض المزيد</p>
+            </Button>
+          )}
           {/* </Link> */}
         </div>
       </Container>
       <Container noPadding>
         <div className="flex gap-4 overflow-x-auto no-scrollbar pl-[16px] pr-[16px] pb-[16px] pt-3">
-          {Array.isArray(list) && list.length > 0 ? (
-            list.map((el, i) =>
-              isCreative ? (
-                <CreatviceCard key={i} index={i} item={el} />
-              ) : (
-                <DefaultCard key={i} item={el} />
-              )
+          {list.map((el, i) =>
+            isCreative ? (
+              <CreatviceCard key={i} index={i} item={el} />
+            ) : (
+              <DefaultCard key={i} item={el} />
             )
-          ) : (
-            <p>No items available</p> // Handle case when list is not an array or is empty
           )}
         </div>
       </Container>

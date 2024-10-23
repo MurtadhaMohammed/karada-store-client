@@ -8,6 +8,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Motion from "../Motion/motion";
 import { IoIosArrowForward } from "react-icons/io";
 import { useEffect } from "react";
+import DotAlert from "../UI/DotAlert/dotAlert";
 
 const MainHeader = () => {
   const { setIsMenu, pageTitle, setPageTitle } = useAppStore();
@@ -28,6 +29,8 @@ const MainHeader = () => {
         break;
       case "/brands":
         setPageTitle("جميع الماركات");
+      case "/orders":
+        setPageTitle("قائمة الطلبات");
         break;
 
       default:
@@ -41,7 +44,8 @@ const MainHeader = () => {
     pathname !== "/" &&
     pathname !== "/categories" &&
     `${pathname}?from=${searchParams.get("from")}` !== "/cart?from=home" &&
-    pathname !== "/faivorates"
+    pathname !== "/faivorates" &&
+    pathname !== "/brands"
   )
     return (
       <header className="h-[68px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
@@ -66,10 +70,13 @@ const MainHeader = () => {
     <header className="shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
       <Container>
         <div className="flex items-center justify-between h-[68px]">
-          <IconButton
-            onClick={() => setIsMenu(true)}
-            icon={<HiOutlineMenuAlt3 />}
-          />
+          <div className="relative">
+            {/* <DotAlert customStyle="top-[4px] right-[1px]"/> */}
+            <IconButton
+              onClick={() => setIsMenu(true)}
+              icon={<HiOutlineMenuAlt3 />}
+            />
+          </div>
           <Image src={"/logo2.png"} width={110} height={24} alt="image" />
         </div>
       </Container>

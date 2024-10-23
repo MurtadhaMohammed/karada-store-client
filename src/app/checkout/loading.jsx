@@ -1,6 +1,5 @@
 "use client";
 
-import SearchBar from "@/components/SearchBar/searchBar";
 import CheckoutCTA from "./CheckoutCTA/checkoutCta";
 
 const Loading = () => {

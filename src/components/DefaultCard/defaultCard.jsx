@@ -45,7 +45,7 @@ const DefaultCard = ({
             />
           </div>
         </div>
-        <div className="p-4 border-t border-t-[#eee]">
+        <div className="p-3 border-t border-t-[#eee]">
           <h2 className="font-semih2old text-black text-[14px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
             {item?.name}
           </h2>

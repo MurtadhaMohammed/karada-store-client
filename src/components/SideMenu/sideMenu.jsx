@@ -7,22 +7,28 @@ import { CgClose } from "react-icons/cg";
 import { LuUser, LuSettings2, LuLogOut, LuShare2 } from "react-icons/lu";
 import { BiSupport } from "react-icons/bi";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import DotAlert from "../UI/DotAlert/dotAlert";
 
-const MenuItem = ({ title, icon, onClick = () => {} }) => {
+const MenuItem = ({ isDot = false, title, icon, onClick = () => {} }) => {
   return (
     <div
       onClick={onClick}
       className="flex items-center mb-[28px] active:scale-[0.96] active:opacity-60 transition-all"
     >
-      <div>{icon}</div>
+        {icon}
+      <div className="relative">
+       {isDot && <DotAlert customStyle="top-1 -left-4" />}
       <p className="mr-[16px] text-[16px]">{title}</p>
+      </div>
     </div>
   );
 };
 
 const SideMenu = () => {
   const { isMenu, setIsMenu, isLogin, setIsLogin, getUserInfo } = useAppStore();
-  const user = getUserInfo()
+  const user = getUserInfo();
+  const router = useRouter();
 
   const logout = () => {
     localStorage.removeItem("karada-token");
@@ -75,7 +81,11 @@ const SideMenu = () => {
         <div className="p-6">
           {isLogin && (
             <MenuItem
-              title={"معلومات الحساب"}
+              onClick={() => {
+                setIsMenu(false);
+                router.push("/orders");
+              }}
+              title={"قائمة الطلبات"}
               icon={<LuSettings2 className="text-[24px]" />}
             />
           )}

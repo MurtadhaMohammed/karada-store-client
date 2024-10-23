@@ -14,20 +14,23 @@ import { InstallmentModal } from "./InstallmentModal/InstallmentModal";
 const Payments = () => {
   const [selected, setSelected] = useState("cash");
   const [cardInfo, setCardInfo] = useState({});
-  const { openModal, colseModal } = useBottomSheetModal();
+  const { openModal, closeModal } = useBottomSheetModal();
 
   const payments = [
     {
       value: "cash",
       label: "الدفع عند الاستلام",
+      disabled: false,
     },
     {
       value: "master",
       label: "ماستر او فيزا كارد",
+      disabled: true,
     },
     {
       value: "installment",
       label: "شراء بالتقسيط",
+      disabled: true,
     },
   ];
 
@@ -41,8 +44,8 @@ const Payments = () => {
         {payments?.map((el, i) => (
           <div
             key={i}
-            // onClick={() => setSelected(el?.value)}
             onClick={() => {
+              if (el.disabled) return;
               if (el?.value === "master") openModal("paymentModal");
               else if (el?.value === "installment")
                 openModal("installmentModal");
@@ -55,7 +58,7 @@ const Payments = () => {
               el?.value === selected
                 ? "border border-violet-600"
                 : "border border-[#eee]"
-            } transition-all`}
+            } transition-all ${el.disabled ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             <div>
               <p>{el.label}</p>
@@ -83,14 +86,14 @@ const Payments = () => {
         onFinish={(value) => {
           setCardInfo(value);
           setSelected("master");
-          colseModal();
+          closeModal();
         }}
       />
       <InstallmentModal
         onFinish={(value) => {
           setCardInfo(value);
           setSelected("installment");
-          colseModal();
+          closeModal();
         }}
       />
     </div>

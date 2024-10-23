@@ -57,17 +57,17 @@ export const useCartStore = create((set, get) => ({
       .reduce((a, b) => a + b, 0);
   },
 
-  // getSubTotal: () => {
-  //   return get()
-  //     .cart.map((item) => item?.price * item.qt)
-  //     .reduce((a, b) => a + b, 0);
-  // },
+  getSubTotal: () => {
+    return get()
+      .cart.map((item) => item?.product?.price * item.qt)
+      .reduce((a, b) => a + b, 0);
+  },
 
-  // getTotal: () => {
-  //   return get()
-  //     .cart.map((item) => item?.endPrice * item.qt)
-  //     .reduce((a, b) => a + b, 0);
-  // },
+  getTotal: () => {
+    return get()
+      .cart.map((item) => item?.product?.endPrice * item.qt)
+      .reduce((a, b) => a + b, 0);
+  },
 
   getQty: (productId) => {
     return get().cart.find((item) => item?.product?.id === productId)?.qt || 0;

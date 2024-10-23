@@ -1,0 +1,39 @@
+.statusBar30 {
+  width: 30%;
+  animation: effectAnimation30 2s infinite;
+}
+
+@keyframes effectAnimation30 {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 30%;
+  }
+}
+.statusBar60 {
+  width: 60%;
+  animation: effectAnimation60 2s infinite;
+}
+
+@keyframes effectAnimation60 {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 60%;
+  }
+}
+.statusBar100 {
+  width: 100%;
+  animation: effectAnimation100 2s infinite;
+}
+
+@keyframes effectAnimation100 {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}

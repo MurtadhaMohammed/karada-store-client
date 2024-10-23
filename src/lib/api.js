@@ -16,14 +16,13 @@ export const isTokenValid = (token) => {
   }
 };
 
-
 //https://example.com/api/check-product-available?productId=2
 
-response :{
-  success: true // if savilable
+response: {
+  success: true; // if savilable
 }
-response :{
-  success: false // if not savilable
+response: {
+  success: false; // if not savilable
 }
 
 export const apiCall = async ({
