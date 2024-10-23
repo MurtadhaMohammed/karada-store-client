@@ -7,7 +7,6 @@ import { apiCall } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 import { useMemo } from "react";
-import Categories from "@/components/Categories/categories";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
