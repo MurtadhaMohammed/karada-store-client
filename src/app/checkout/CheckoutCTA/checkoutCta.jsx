@@ -7,6 +7,7 @@ import { apiCall } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 import { useMemo } from "react";
+import Categories from "@/components/Categories/categories";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
@@ -15,23 +16,30 @@ const CheckoutCTA = () => {
 
   const items = useMemo(() => {
     return cart.map((item) => ({
-      id: item.product.id,
-      quantity: item.qt,
-      store_id: item.product.store_id,
+      id: item.product.id, // Change from product_id to id
+      name: item.product.name,
+      description: item.description,
       price: item.product.price,
+      options: JSON.stringify(item.options ? JSON.parse(item.options) : []), // Ensure options is a JSON string
+      quantity: item.qt,
+      category_id: item.product.category_id,
+      store_id: item.product.store_id,
+      discount: item.product.discount,
+      brand_id: item.product.brand_id,
+      thumbnail1: item.product.thumbnail1,
+      thumbnail2: item.product.thumbnail2,
       endPrice: item.product.endPrice || item.product.price,
-      options: JSON.parse(item.options || "[]"),
     }));
   }, [cart]);
 
   const order = {
-    user_id: userInfo.id,
-    address: userInfo.address,
-    phone: userInfo.phone,
-    user_name: userInfo.name,
-    items: items,
-    voucher_id: userInfo.voucher_id,
-    store_id: items.length > 0 ? items[0].store_id : null,
+    user_id: user.id,
+    user_name: user.name,
+    phone: user.phone,
+    address: user.address,
+    items, // No need to stringify, send as an array
+    voucher_id: user.voucher_id,
+    store_id: items.length > 0 ? items[0].store_id : null, // Default store_id from first item
   };
 
   const handleOrderCreation = async () => {
@@ -39,10 +47,10 @@ const CheckoutCTA = () => {
       const response = await apiCall({
         pathname: `/client/order/create-order`,
         method: "POST",
-
         data: order,
       });
       if (response.ok) {
+        // Handle success (e.g., redirect to order confirmation page)
       } else {
         console.error("Failed to create order");
       }
