@@ -1,32 +1,69 @@
 "use client";
 import Container from "@/components/UI/Container/container";
+import { IoMdTime } from "react-icons/io";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+
+const OrderCard = () => {
+  return (
+    <div
+      className={`border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px]`}
+      style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
+    >
+      <div className="flex p-[16px]">
+        <div className="w-[100px] h-[100px]  relative ">
+          <div
+            className="relative h-full grid grid-cols-2 gap-1  overflow-hidden"
+            style={{ direction: "ltr" }}
+          >
+            <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative pure-skeleton"></div>
+            <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative pure-skeleton"></div>
+            <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative pure-skeleton"></div>
+            <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative pure-skeleton"></div>
+          </div>
+        </div>
+
+        <div className="mr-[12px] flex flex-col justify-evenly flex-1">
+          <b
+            className={`text-[18px] h-[14px] rounded-sm  pure-skeleton !w-[160px]`}
+          ></b>
+          <div className="flex items-center text-[14px] text-[#666]">
+            <IoMdTime className="opacity-20" />
+            <p className="mr-[4px] h-[8px] rounded-sm  pure-skeleton !w-[100px]"></p>
+          </div>
+          <div className="flex items-center text-[14px] text-[#666]">
+            <HiOutlineLocationMarker className="opacity-20" />
+            <p className="mr-[4px] h-[8px] rounded-sm  pure-skeleton !w-[100px]"></p>
+          </div>
+          <div className="h-[4px] rounded-[24px] bg-[#eee]">
+            <div className={`h-[4px] rounded-[24px]`}></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const OrdersSkeleton = () => {
   return (
-    <div className="pt-[16px]">
+    <div className="mt-[16px]">
       <Container>
-        <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 gap-4 overflow-x-auto no-scrollbar">
-          {[...Array(5)].map((el, i) => (
-            <div
-              key={i}
-              className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden bg-white active:scale-[0.96] transition-all`}
-              style={{ width: "100%" }}
-            >
-              <div className={`flex items-center justify-center`}>
-                <div
-                  className={`w-full relative aspect-w-1 aspect-h-1 bg-[#f6f6f6] pure-skeleton`}
-                ></div>
-              </div>
-              <div className="p-4 border-t border-t-[#eee]">
-                <h2 className="font-semih2old text-black text-[14px] font-semibold  whitespace-nowrap overflow-hidden text-ellipsis w-[120px] h-[8px] bg-[#f6f6f6] rounded-md"></h2>
-                <p className="text-gray-600 text-[14px] mt-[6px] h-[8px] bg-[#f6f6f6] rounded-md"></p>
-                <div className="flex items-center justify-between mt-[8px]">
-                  <h4 className="text-[16px] font-extrabold w-[30px] h-[14px] bg-[#f6f6f6] rounded-md"></h4>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="flex gap-4 items-center mb-[16px] text-[16px]">
+          <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
+          <div className="text-[#666]">الطلبات النشطة</div>
+          <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
         </div>
+
+        {[...new Array(2)].map((el, i) => (
+          <OrderCard key={i} order={el} />
+        ))}
+        <div className="flex gap-4 items-center mb-[16px] text-[16px]">
+          <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
+          <div className="text-[#666]">الطلبات السابقة</div>
+          <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
+        </div>
+        {[...new Array(5)].map((el, i) => (
+          <OrderCard key={i} order={el} />
+        ))}
       </Container>
     </div>
   );

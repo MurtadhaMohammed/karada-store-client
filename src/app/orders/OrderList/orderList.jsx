@@ -6,6 +6,7 @@ import Empty from "@/components/Empty/empty";
 import { AiOutlineTruck } from "react-icons/ai";
 import { useAppStore } from "@/lib/store";
 import { apiCall } from "@/lib/api";
+import OrdersSkeleton from "../Skeleton/skeleton";
 
 const OrderList = () => {
   const { userInfo } = useAppStore();
@@ -22,7 +23,7 @@ const OrderList = () => {
     enabled: !!userInfo?.id,
   });
 
-  if (isLoading) return <p>Loading..</p>;
+  if (isLoading) return <OrdersSkeleton/>;
 
   if (data?.orders?.length === 0)
     return (

@@ -5,7 +5,6 @@ import { IMAGE_URL } from "@/lib/api";
 import Image from "next/image";
 
 const ImageGroup = ({ thumbnails }) => {
-  console.log(thumbnails, "thumbnails in groupssssssss");
   return (
     <div className="w-[100px] h-[100px]  relative ">
       {thumbnails?.length === 1 && (
@@ -173,7 +172,6 @@ const OrderCard = ({ order }) => {
 
   const date = getDate(order);
 
-  console.log(order, "order");
   const statusTheme = {
     Pending: {
       color: "text-[#faad14]",
