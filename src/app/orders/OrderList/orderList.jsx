@@ -24,15 +24,6 @@ const OrderList = ({ params }) => {
       }),
   });
 
-  console.log("Orders Data:", orders);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Failed to load orders.</div>;
-  }
 
   return (
     <div className="mt-[16px]">
