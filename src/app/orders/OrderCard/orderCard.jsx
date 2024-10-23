@@ -20,7 +20,6 @@ const ImageGroup = ({ thumbnails }) => {
       {thumbnails?.length === 2 && (
         <div className="relative h-full border border-[#eee] rounded-[8px] overflow-hidden">
           <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative">
-            {" "}
             <Image
               src={`${IMAGE_URL}/${thumbnails[0]}`}
               layout="fill"
@@ -167,7 +166,6 @@ const OrderCard = ({ order }) => {
   const thumbnails = order?.items?.map((item) => item.thumbnail1);
   console.log(thumbnails, "thumbnails");
 
-
   const address = order?.address;
 
   const date = getDate(order);
@@ -219,7 +217,7 @@ const OrderCard = ({ order }) => {
           </div>
           <div className="flex items-center text-[14px] text-[#666]">
             <HiOutlineLocationMarker />
-              <p className="mr-[4px]">{address}</p>
+            <p className="mr-[4px]">{address}</p>
           </div>
           <div className="h-[4px] rounded-[24px] bg-[#eee]">
             <div
