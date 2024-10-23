@@ -29,16 +29,13 @@ const BrandIdList = ({ brandId }) => {
       return lastPage.products.length === limit ? pages.length + 1 : undefined;
     },
   });
-  console.log(data, "brandList");
 
-  if (error) {
-    return <div>Error loading products.</div>;
-  }
   useEffect(() => {
     if (data && data?.pages[0]?.products[0]?.brand?.name) {
       setPageTitle(data.pages[0].products[0].brand.name);
     }
   }, [data]);
+
   return (
     <div className="pt-[16px]">
       <Motion>
