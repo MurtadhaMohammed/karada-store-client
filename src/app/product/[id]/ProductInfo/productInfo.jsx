@@ -20,6 +20,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import ProductCTA from "../ProductCTA/ProductCTA";
+import { useCartStore } from "@/lib/cartStore";
 
 // Updated OptionTag to handle clicks and image changes
 const OptionTag = ({ name, active = false, onClick }) => {
@@ -49,6 +50,7 @@ const ProductInfo = ({ product }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(null);
   const [swiperInstance, setSwiperInstance] = useState(null);
+  const { addItem } = useCartStore();
 
   const loadFavorites = () => {
     const favorites =
@@ -84,6 +86,10 @@ const ProductInfo = ({ product }) => {
     }
     setActiveOption(index);
     product.l1 = product?.options[index];
+  };
+
+  const handleAddToCart = () => {
+    addItem(product, product.l1);
   };
 
   return (
@@ -243,7 +249,7 @@ const ProductInfo = ({ product }) => {
           </div>
         )}
       </Container>
-      <ProductCTA product={product} />
+      <ProductCTA product={product} onAddToCart={handleAddToCart} />
     </div>
   );
 };

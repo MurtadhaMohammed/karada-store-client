@@ -72,6 +72,12 @@ export const useCartStore = create((set, get) => ({
   getQty: (productId) => {
     return get().cart.find((item) => item?.product?.id === productId)?.qt || 0;
   },
+
+  geVoucherValue: () =>{
+    return
+  }
 }));
+
+
 
 useCartStore.subscribe(console.log);

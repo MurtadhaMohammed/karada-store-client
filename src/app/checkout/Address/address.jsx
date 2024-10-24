@@ -5,12 +5,36 @@ import { GrLocation } from "react-icons/gr";
 import { useAppStore } from "@/lib/store";
 
 const Address = () => {
-  const { userInfo } = useAppStore();
+  const { userInfo, setUserInfo } = useAppStore();
 
   const [address, setAddress] = useState(userInfo?.address || "");
   const [phone, setPhone] = useState(userInfo?.phone || "");
   const [name, setName] = useState(userInfo?.name || "");
   const [notes, setNotes] = useState("");
+
+  const handleAddressChange = (e) => {
+    const newAddress = e.target.value;
+    setAddress(newAddress);
+    setUserInfo({ ...userInfo, address: newAddress });
+  };
+
+  const handlePhoneChange = (e) => {
+    const newPhone = e.target.value;
+    setPhone(newPhone);
+    setUserInfo({ ...userInfo, phone: newPhone });
+  };
+
+  const handleNameChange = (e) => {
+    const newName = e.target.value;
+    setName(newName);
+    setUserInfo({ ...userInfo, name: newName });
+  };
+
+  const handleNotesChange = (e) => {
+    const newNotes = e.target.value;
+    setNotes(newNotes);
+    setUserInfo({ ...userInfo, notes: newNotes });
+  };
 
   return (
     <div className="rounded-[8px] border border-[#eee] mt-[20px]">
@@ -22,25 +46,25 @@ const Address = () => {
         <Input
           hint="العنوان الكامل"
           value={address}
-          onChange={(e) => setAddress(e.target.value)}
+          onChange={handleAddressChange}
         />
         <div className="h-[12px]"></div>
         <Input
           hint="رقم الهاتف"
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={handlePhoneChange}
         />
         <div className="h-[12px]"></div>
         <Input
           hint="الاسم الكامل"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleNameChange}
         />
         <div className="h-[12px]"></div>
         <Input
           hint="ملاحظات"
           value={notes}
-          onChange={(e) => setNotes(e.target.value)}
+          onChange={handleNotesChange}
         />
       </div>
     </div>

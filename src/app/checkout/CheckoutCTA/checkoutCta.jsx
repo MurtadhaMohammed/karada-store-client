@@ -12,7 +12,7 @@ const CheckoutCTA = () => {
   const searchParams = useSearchParams();
   const { userInfo } = useAppStore();
   const cart = useCartStore((state) => state.cart);
-
+  const user = userInfo
   const items = useMemo(() => {
     return cart.map((item) => ({
       id: item.product.id, // Change from product_id to id
@@ -36,6 +36,7 @@ const CheckoutCTA = () => {
     user_name: user.name,
     phone: user.phone,
     address: user.address,
+    note:user.note,
     items, // No need to stringify, send as an array
     voucher_id: user.voucher_id,
     store_id: items.length > 0 ? items[0].store_id : null, // Default store_id from first item

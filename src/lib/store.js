@@ -19,4 +19,6 @@ export const useAppStore = create((set) => ({
     const userInfo = jwtDecode(token);
     return set({ userInfo });
   },
+  setUserInfo: (newUserInfo) => set({ userInfo: newUserInfo }),
+
 }));
