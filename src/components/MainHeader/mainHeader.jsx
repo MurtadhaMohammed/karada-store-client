@@ -9,12 +9,14 @@ import Motion from "../Motion/motion";
 import { IoIosArrowForward } from "react-icons/io";
 import { useEffect } from "react";
 import DotAlert from "../UI/DotAlert/dotAlert";
+import useScrollPosition from "@/hooks/useScrollPosition";
 
 const MainHeader = () => {
   const { setIsMenu, pageTitle, setPageTitle } = useAppStore();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { scrollDirection, scrollPosition } = useScrollPosition();
 
   useEffect(() => {
     switch (pathname) {
@@ -67,11 +69,22 @@ const MainHeader = () => {
     );
 
   return (
-    <header className="shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
+    <header
+      className={`shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] bg-white z-10 transition-all duration-300 ${
+        scrollDirection === "up" && scrollPosition !== 0
+          ? "sticky top-0"
+          : "relative"
+      }`}
+      style={{
+        transform:
+          scrollDirection === "up" || scrollPosition <= 70
+            ? "translateY(0)"
+            : "translateY(-100%)",
+      }}
+    >
       <Container>
         <div className="flex items-center justify-between h-[68px]">
           <div className="relative">
-            {/* <DotAlert customStyle="top-[4px] right-[1px]"/> */}
             <IconButton
               onClick={() => setIsMenu(true)}
               icon={<HiOutlineMenuAlt3 />}
