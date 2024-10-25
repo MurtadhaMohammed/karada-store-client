@@ -63,13 +63,13 @@ const DefaultCard = ({
             <div>
               {item?.price !== item?.endPrice && (
                 <h4 className="text-[14px] font-normal text-[#a5a5a5] line-through">
-                  {Number(item?.price).toLocaleString("en")}{" "}
+                  {Number(item?.price).toLocaleString("en")}
                   <span className="text-[12px]">IQD</span>
                 </h4>
               )}
 
-              <h4 className="text-[16px] font-extrabold">
-                {Number(item?.endPrice).toLocaleString("en")}{" "}
+              <h4 className="text-[16px] font-extrabold -mt-1">
+                {Number(item?.endPrice).toLocaleString("en")}
                 <span className="text-[12px]">IQD</span>
               </h4>
             </div>
