@@ -32,12 +32,12 @@ const CheckoutCTA = () => {
   }, [cart]);
 
   const order = {
-    user_id: user.id,
-    user_name: user.name,
-    phone: user.phone,
-    address: user.address,
+    user_id: userInfo.id,
+    user_name: userInfo.name,
+    phone: userInfo.phone,
+    address: userInfo.address,
     items, // No need to stringify, send as an array
-    voucher_id: user.voucher_id,
+    voucher_id: userInfo.voucher_id,
     store_id: items.length > 0 ? items[0].store_id : null, // Default store_id from first item
   };
 

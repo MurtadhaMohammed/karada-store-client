@@ -8,10 +8,17 @@ import ProductSkeleton from "../Skeleton/skeleton";
 import { useAppStore } from "@/lib/store";
 import Empty from "@/components/Empty/empty";
 import { VscSearchStop } from "react-icons/vsc";
+import { useEffect } from "react";
 
-const ProductList = () => {
-  const { querySearch, queryString } = useAppStore();
+const ProductList = ({ groupId, groupName }) => {
+  const { querySearch, queryString, setPageTitle } = useAppStore();
   const limit = 10;
+
+  const getUrl = (pageParam) => ({
+    search: `/client/product/product?page=${pageParam}&limit=${limit}&q=${querySearch}${queryString}`,
+    banner: `/client/product/getProductsByBanner/${groupId}?page=${pageParam}&limit=${limit}`,
+    brand: `/client/product/product?brand_id=${groupId}`,
+  });
 
   const {
     data,
@@ -22,17 +29,32 @@ const ProductList = () => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [`products-${querySearch}`, querySearch, queryString],
+    queryKey: [
+      `products_${groupName}_${groupId}_${querySearch}`,
+      querySearch,
+      queryString,
+    ],
     queryFn: ({ pageParam = 1 }) =>
       apiCall({
-        pathname: `/client/product/product?page=${pageParam}&limit=${limit}&q=${querySearch}${queryString}`,
+        pathname: getUrl(pageParam)[groupName],
         method: "GET",
       }),
     getNextPageParam: (lastPage, pages) => {
       return lastPage?.products?.length ? pages?.length + 1 : undefined;
     },
-    // enabled: !!querySearch,
+    enabled: !!groupId,
   });
+
+  useEffect(() => {
+    if (data && data?.pages[0] && groupName !== "search" && groupId !== "all")
+      setPageTitle(data?.pages[0]?.bannerTitle);
+    else if (
+      data &&
+      data?.pages[0]?.products?.length > 0 &&
+      groupName === "banner"
+    )
+      setPageTitle(data.pages[0]?.products[0]?.brand?.name);
+  }, [data]);
 
   if (isLoading) return <ProductSkeleton />;
   if (isError || error) return <div>Error loading products.</div>;

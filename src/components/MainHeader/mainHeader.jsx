@@ -34,7 +34,7 @@ const MainHeader = () => {
       case "/orders":
         setPageTitle("قائمة الطلبات");
         break;
-      case "/search":
+      case "/products/search/all":
         setPageTitle("البحث");
         break;
 

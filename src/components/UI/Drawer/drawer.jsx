@@ -30,7 +30,7 @@ const Drawer = ({
           damping: 30,
           duration: 0.2,
         }}
-        className={`fixed top-0 ${position}-0 h-full z-20 bg-white shadow-lg`}
+        className={`fixed top-0 ${position}-0 h-full z-30 bg-white shadow-lg`}
         style={{
           width: `${width}px`,
           [position === "left" ? "paddingLeft" : "paddingRight"]: 40,
@@ -49,7 +49,7 @@ const Drawer = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.5 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black z-10"
+          className="fixed inset-0 bg-black z-20"
         />
       )}
     </>

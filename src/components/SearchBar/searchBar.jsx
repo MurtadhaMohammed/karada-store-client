@@ -5,6 +5,7 @@ import { FiSearch, FiX } from "react-icons/fi";
 import { useEffect, useRef, useState } from "react";
 import IconButton from "../UI/IconButton/iconButton";
 import { useAppStore } from "@/lib/store";
+import { usePathname } from "next/navigation";
 
 const filtersTags = [
   {
@@ -25,12 +26,18 @@ const filtersTags = [
   },
 ];
 
-const SearchBar = ({ isSearch = false }) => {
+const SearchBar = () => {
   const inputRef = useRef(null);
   const [historyList, setHistoryList] = useState([]);
+  const [isSearch, setIsSearch] = useState(false);
   const [filters, setFilters] = useState(["all"]);
   const [search, setSearch] = useState("");
   const { querySearch, setQuerySearch, setQueryString } = useAppStore();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === "/products/search/all") setIsSearch(true);
+  }, []);
 
   useEffect(() => {
     if (isSearch && inputRef.current) {
@@ -93,7 +100,7 @@ const SearchBar = ({ isSearch = false }) => {
   const unactiveTagStyle = "border border-[#eee] bg-[#fff]";
 
   return (
-    <Link href={"/search"}>
+    <Link href={"/products/search/all"}>
       <div className="bg-gradient-to-b from-[#f0eeff] to-transparent pt-[16px] pb-[16px] -mb-[12px] z-10 md:hidden">
         <Container>
           <div className="relative">
