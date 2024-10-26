@@ -1,12 +1,12 @@
 "use client";
 import Container from "@/components/UI/Container/container";
 
-const ProductSkeleton = () => {
+const ProductSkeleton = ({ size = 6 }) => {
   return (
     <div className="pt-[16px]">
       <Container>
         <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 gap-4 overflow-x-auto no-scrollbar">
-          {[...Array(6)].map((el, i) => (
+          {[...Array(size)].map((el, i) => (
             <div
               key={i}
               className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden bg-white active:scale-[0.96] transition-all`}

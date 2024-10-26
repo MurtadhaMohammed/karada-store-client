@@ -80,17 +80,21 @@ const ProductList = ({ groupId, groupName }) => {
             ))
           )}
         </div>
-        {/* <Button
-          onClick={() => fetchNextPage()}
-          disabled={!hasNextPage || isFetchingNextPage}
-        >
-          {isFetchingNextPage
-            ? "Loading..."
-            : hasNextPage
-            ? "Next"
-            : "No More Products"}
-        </Button> */}
       </Container>
+      {isFetchingNextPage && <ProductSkeleton size={4} />}
+      {hasNextPage && (
+        <Container>
+          <button
+            className={
+              "w-full h-[48px] rounded-[8px] border border-[#eee] mt-[16px]"
+            }
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+          >
+            عرض المزيد
+          </button>
+        </Container>
+      )}
     </div>
   );
 };
