@@ -16,18 +16,8 @@ const CheckoutCTA = () => {
   const items = useMemo(() => {
     return cart.map((item) => ({
       id: item.product.id,
-      name: item.product.name,
-      description: item.description,
-      price: item.product.price,
-      options: JSON.stringify(item.options ? JSON.parse(item.options) : []), // Ensure options is a JSON string
       quantity: item.qt,
-      category_id: item.product.category_id,
       store_id: item.product.store_id,
-      discount: item.product.discount,
-      brand_id: item.product.brand_id,
-      thumbnail1: item.product.thumbnail1,
-      thumbnail2: item.product.thumbnail2,
-      endPrice: item.product.endPrice || item.product.price,
     }));
   }, [cart]);
 
@@ -36,9 +26,9 @@ const CheckoutCTA = () => {
     user_name: userInfo.name,
     phone: userInfo.phone,
     address: userInfo.address,
-    items, // No need to stringify, send as an array
+    items,
     voucher_id: userInfo.voucher_id,
-    store_id: items.length > 0 ? items[0].store_id : null, // Default store_id from first item
+    store_id: items.length > 0 ? items[0].store_id : null,
   };
 
   const handleOrderCreation = async () => {

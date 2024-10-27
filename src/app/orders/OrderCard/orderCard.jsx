@@ -171,9 +171,14 @@ const OrderCard = ({ order }) => {
   const date = getDate(order);
 
   const statusTheme = {
-    Pending: {
+    Recived: {
       color: "text-[#faad14]",
       text: "طلبك قيد الموافقة",
+      bar: `bg-gradient-to-r from-[#faad14] to-[#faca69] ${styles.statusBar30}`,
+    },
+    Pending: {
+      color: "text-[#faad14]",
+      text: "طلبك قيد ألانتظار",
       bar: `bg-gradient-to-r from-[#faad14] to-[#faca69] ${styles.statusBar30}`,
     },
     Canceled: {

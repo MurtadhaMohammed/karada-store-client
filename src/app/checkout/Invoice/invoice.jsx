@@ -1,17 +1,21 @@
-"use client"
+"use client";
 import { PiInvoice } from "react-icons/pi";
 import { useCartStore } from "@/lib/cartStore";
 
 const Invoice = () => {
   const { getSubTotal, getTotal } = useCartStore();
-  
+
   const subTotal = getSubTotal();
   const discount = 20000;
-  const deliveryCost = 5350; 
+  const deliveryCost = 5350;
   const realTotal = subTotal - discount + deliveryCost;
 
   const roundToNearest250 = (num) => {
-    return Math.ceil(num / 250) * 250;
+    let total = Math.ceil(num / 250) * 250;
+    if (total < 0) {
+      total = 0;
+    }
+    return total;
   };
 
   const roundedTotal = roundToNearest250(realTotal);
