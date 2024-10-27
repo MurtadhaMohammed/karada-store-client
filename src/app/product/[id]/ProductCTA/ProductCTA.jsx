@@ -101,6 +101,45 @@ const ProductCTA = ({ product, disabled = false, onAddToCart }) => {
           </motion.div>
         )}
       </Container>
+      {qty > 0 && (
+        <Container>
+          <motion.div
+            key={"cart"}
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.6 }}
+            transition={{
+              duration: 0.3,
+              // ease: [0.24, 0, 0.58, 1],
+            }}
+          >
+            <div
+              className="h-[56px] active:scale-[0.96]  shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]"
+              style={{
+                display: "inline-flex",
+                borderRadius: 28,
+                overflow: "hidden",
+                width: "100%",
+              }}
+            >
+              <Ripples className="!grid w-full">
+                <button
+                  onClick={() => router.push("/cart?from=product")}
+                  className="flex items-center justify-between h-[56px] w-full rounded-[28px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-4 app-link"
+                >
+                  <span className="text-[18px] text-indigo-600 font-bold flex items-center justify-center w-[30px] h-[30px] rounded-full bg-[#f6f6f6]">
+                    {getItemsTotal()}
+                  </span>
+                  <span className="ml-[8px] font-bold text-[18px]">
+                    عرض السلة
+                  </span>
+                  <FaArrowLeft className="text-[22px]" />
+                </button>
+              </Ripples>
+            </div>
+          </motion.div>
+        </Container>
+      )}
     </div>
   );
 };
