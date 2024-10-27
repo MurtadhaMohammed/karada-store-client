@@ -1,6 +1,6 @@
 "use client";
 import Container from "@/components/UI/Container/container";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { GiConfirmed } from "react-icons/gi";
 import Ripples from "react-ripples";
 import { apiCall } from "@/lib/api";
@@ -10,9 +10,10 @@ import { useMemo } from "react";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { userInfo } = useAppStore();
   const cart = useCartStore((state) => state.cart);
-  const user = userInfo
+  const user = userInfo;
   const items = useMemo(() => {
     return cart.map((item) => ({
       id: item.product.id, // Change from product_id to id
@@ -36,7 +37,7 @@ const CheckoutCTA = () => {
     user_name: user.name,
     phone: user.phone,
     address: user.address,
-    note:user.note,
+    note: user.note,
     items, // No need to stringify, send as an array
     voucher_id: user.voucher_id,
     store_id: items.length > 0 ? items[0].store_id : null, // Default store_id from first item
@@ -50,7 +51,7 @@ const CheckoutCTA = () => {
         data: order,
       });
       if (response.ok) {
-        // Handle success (e.g., redirect to order confirmation page)
+        router.push("/");
       } else {
         console.error("Failed to create order");
       }
