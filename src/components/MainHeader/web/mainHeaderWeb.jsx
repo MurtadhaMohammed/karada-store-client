@@ -7,15 +7,11 @@ import useScrollPosition from "@/hooks/useScrollPosition";
 import { LuUser } from "react-icons/lu";
 import Link from "next/link";
 import { FiSearch } from "react-icons/fi";
-import {
-  TbShoppingCart,
-  TbHeart,
-} from "react-icons/tb";
+import { TbShoppingCart, TbHeart } from "react-icons/tb";
 import { RiShoppingBag3Line } from "react-icons/ri";
 
 const MainHeaderWeb = () => {
-  const {  userInfo } =
-    useAppStore();
+  const { userInfo, isLogin } = useAppStore();
   const pathname = usePathname();
   const { scrollDirection, scrollPosition } = useScrollPosition();
 
@@ -35,15 +31,32 @@ const MainHeaderWeb = () => {
     >
       <Container>
         <div className="flex items-center justify-between h-[68px]">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <div className="w-[28px] h-[28px] flex items-center justify-center bg-[#fff] border border-[#ddd] rounded-full">
               <LuUser className="text-[#666] text-[18px]" />
             </div>
-            <div className="flex items-center gap-4">
-              <b className="text-[16px]">{userInfo?.name}</b>
-              <div className="h-3 w-[1px] bg-[#ccc]"></div>
-              <p className="text-[14px] text-[#a5a5a5]">{userInfo?.phone}</p>
-            </div>
+            {isLogin ? (
+              <div className="flex items-center gap-4">
+                <b className="text-[16px]">{userInfo?.name}</b>
+                <div className="h-3 w-[1px] bg-[#ccc]"></div>
+                <p className="text-[14px] text-[#a5a5a5]">{userInfo?.phone}</p>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4">
+                <Link
+                  href={"/login"}
+                  prefetch={true}
+                  onClick={() => setIsMenu(false)}
+                  className="text-[14px] text-[#0000ff] underline active:opacity-55 transition-all"
+                >
+                  تسجيل الدخول
+                </Link>
+                <div className="h-3 w-[1px] bg-[#ccc]"></div>
+                <p className="text-[14px] text-[#a5a5a5]">
+                  سجل دخولك ليصلك كل جديد
+                </p>
+              </div>
+            )}
           </div>
 
           <Image src={"/logo2.png"} width={110} height={24} alt="image" />
@@ -88,17 +101,26 @@ const MainHeaderWeb = () => {
                 <FiSearch className="text-[18px]" />
               </Link>
               <div className="h-4 w-[1px] bg-[#ccc]"></div>
-              <Link href={"/cart"} className="flex items-center gap-2 transition-all active:scale-95">
+              <Link
+                href={"/cart"}
+                className="flex items-center gap-2 transition-all active:scale-95"
+              >
                 <p className="text-[14px]">السلة</p>
                 <TbShoppingCart className="text-[18px] -mt-[1px]" />
               </Link>
               <div className="h-4 w-[1px] bg-[#ccc]"></div>
-              <Link href={"/faivorates"} className="flex items-center gap-2 transition-all active:scale-95">
+              <Link
+                href={"/faivorates"}
+                className="flex items-center gap-2 transition-all active:scale-95"
+              >
                 <p className="text-[14px]">المفضلة</p>
                 <TbHeart className="text-[18px]" />
               </Link>
               <div className="h-4 w-[1px] bg-[#ccc]"></div>
-              <Link href={"/orders"} className="flex items-center gap-2 transition-all active:scale-95">
+              <Link
+                href={"/orders"}
+                className="flex items-center gap-2 transition-all active:scale-95"
+              >
                 <p className="text-[14px]">الطلبات</p>
                 <RiShoppingBag3Line className="text-[18px] -mt-[1px]" />
               </Link>

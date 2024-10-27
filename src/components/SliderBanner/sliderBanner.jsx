@@ -13,6 +13,8 @@ import Link from "next/link";
 export default function SliderBanner({ banners }) {
   const [current, setCurrent] = useState(0);
 
+  console.log(banners)
+
   const slider = banners?.slider;
   return (
     <div className="mt-[16px] mb-[16px] w-full">
