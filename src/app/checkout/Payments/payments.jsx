@@ -20,16 +20,16 @@ const Payments = () => {
       label: "الدفع عند الاستلام",
       disabled: false,
     },
-    {
-      value: "master",
-      label: "ماستر او فيزا كارد",
-      disabled: true,
-    },
-    {
-      value: "installment",
-      label: "شراء بالتقسيط",
-      disabled: true,
-    },
+    // {
+    //   value: "master",
+    //   label: "ماستر او فيزا كارد",
+    //   disabled: true,
+    // },
+    // {
+    //   value: "installment",
+    //   label: "شراء بالتقسيط",
+    //   disabled: true,
+    // },
   ];
 
   return (

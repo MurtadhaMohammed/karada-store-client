@@ -9,7 +9,7 @@ import ProductCTA from "../ProductCTA/ProductCTA";
 const ProductSkeleton = () => {
   return (
     <div>
-      <div className="h-[300px] border-b border-b-[#eee] pure-skeleton">
+      <div className="h-[400px] border-b border-b-[#eee] pure-skeleton">
         <div className={"w-full h-full relative"}>
           <div className="absolute left-0 right-0 mt-[4px]  bottom-[16px]">
             <Container>
