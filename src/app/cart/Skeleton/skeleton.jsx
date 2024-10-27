@@ -5,11 +5,11 @@ const CartSkeleton = () => {
   return (
     <div className="mt-[16px]">
       <Container>
-        <div className="h-[60px] rounded-[8px] border border-[#eee] pt-[4px] pb-[4px] pl-[8px] pr-[8px] shadow-md active:scale-[0.96] active:opacity-50 transition-all pure-skeleton"></div>
+        {/* <div className="h-[60px] rounded-[8px] border border-[#eee] pt-[4px] pb-[4px] pl-[8px] pr-[8px] shadow-md active:scale-[0.96] active:opacity-50 transition-all pure-skeleton"></div> */}
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="border-b border-b-[#eee] pt-[24px] pb-[16px] w-full"
+            className="border-b border-b-[#eee] pt-[16px] pb-[16px] w-full"
           >
             <div className="flex gap-4 ">
               <div className="pure-skeleton !h-[80px] !w-[80px] rounded-[8px] bg-[#f6f6f6] "></div>

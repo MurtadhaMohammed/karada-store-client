@@ -11,19 +11,19 @@ import OrdersSkeleton from "../Skeleton/skeleton";
 const OrderList = () => {
   const { userInfo } = useAppStore();
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: [`orders-${userInfo?.id}`],
     queryFn: () =>
       apiCall({
         pathname: `/client/order/getOrdersByUserId/${userInfo?.id}`,
         method: "GET",
-        cache: "no-store",
       }),
 
     enabled: !!userInfo?.id,
   });
 
-  if (isLoading) return <OrdersSkeleton/>;
+  if (isLoading) return <OrdersSkeleton />;
+  if (isError || error || data?.error) return "";
 
   if (data?.orders?.length === 0)
     return (
@@ -58,6 +58,7 @@ const OrderList = () => {
           ?.map((el, i) => (
             <OrderCard key={i} order={el} />
           ))}
+
         <div className="flex gap-4 items-center mb-[16px] text-[16px]">
           <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
           <div className="text-[#666]">الطلبات السابقة</div>

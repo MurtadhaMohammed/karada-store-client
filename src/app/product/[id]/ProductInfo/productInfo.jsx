@@ -220,9 +220,9 @@ const ProductInfo = ({ product }) => {
         <p className="text-[14px] text-gray-600 mt-[8px]">
           {product?.description}
         </p>
-        <div className="mt-[16px]">
+        {/* <div className="mt-[16px]">
           <InstallmentBanner />
-        </div>
+        </div> */}
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px]">

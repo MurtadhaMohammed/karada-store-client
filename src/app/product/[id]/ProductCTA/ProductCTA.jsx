@@ -10,7 +10,7 @@ import { useCartStore } from "@/lib/cartStore";
 import { useEffect } from "react";
 
 const ProductCTA = ({ product, disabled = false, onAddToCart }) => {
-  const { getQty, increase, decrease, removeItem, getItemsTotal } = useCartStore();
+  const { getQty, increase, decrease, removeItem, getItemsTotal, cart } = useCartStore();
   const router = useRouter();
 
   useEffect(() => {

@@ -73,11 +73,11 @@ export const useCartStore = create((set, get) => ({
     return get().cart.find((item) => item?.product?.id === productId)?.qt || 0;
   },
 
-  geVoucherValue: () =>{
-    return
-  }
+  geVoucherValue: () => {
+    return;
+  },
 }));
 
-
-
-useCartStore.subscribe(console.log);
+useCartStore.subscribe(({ cart }) =>
+  localStorage.setItem("karada-cart", JSON.stringify(cart))
+);

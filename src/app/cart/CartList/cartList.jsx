@@ -105,11 +105,11 @@ const CartList = () => {
 
   return (
     <div className="mb-[16px]">
-      <Container>
+      {/* <Container>
         <div className="mt-[16px]">
           <InstallmentBanner />
         </div>
-      </Container>
+      </Container> */}
 
       {getItemsTotal() !== 0 &&
         cart?.map((el, i) => <CartItem key={i} item={el} />)}

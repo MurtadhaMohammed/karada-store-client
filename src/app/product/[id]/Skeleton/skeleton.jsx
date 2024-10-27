@@ -73,9 +73,9 @@ const ProductSkeleton = () => {
 
         <p className="text-[14px] text-gray-600 mt-[8px]  h-[12px] pure-skeleton"></p>
         <p className="text-[14px] text-gray-600 mt-[8px] !w-[80%] h-[12px] pure-skeleton"></p>
-        <div className="mt-[16px]">
+        {/* <div className="mt-[16px]">
           <div className="h-[60px] rounded-[8px] border border-[#eee] pt-[4px] pb-[4px] pl-[8px] pr-[8px] shadow-md active:scale-[0.96] active:opacity-50 transition-all pure-skeleton"></div>
-        </div>
+        </div> */}
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px]">

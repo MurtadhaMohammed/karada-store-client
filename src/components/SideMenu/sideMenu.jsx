@@ -10,18 +10,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import DotAlert from "../UI/DotAlert/dotAlert";
 
-const MenuItem = ({ isDot = false, title, icon, onClick = () => {} }) => {
+const MenuItem = ({ isDot = false, title, icon, onClick = () => {} , isLink= false}) => {
   return (
-    <div
+    <button
       onClick={onClick}
-      className="flex items-center mb-[28px] active:scale-[0.96] active:opacity-60 transition-all"
+      className={`flex items-center mb-[28px] active:scale-[0.96] active:opacity-60 transition-all ${isLink ? "app-link" :""}`}
     >
       {icon}
       <div className="relative">
         {isDot && <DotAlert customStyle="top-1 -left-4" />}
         <p className="mr-[16px] text-[16px]">{title}</p>
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -86,6 +86,7 @@ const SideMenu = () => {
                 setIsMenu(false);
                 router.push("/orders");
               }}
+              isLink
               title={"قائمة الطلبات"}
               icon={<LuSettings2 className="text-[24px]" />}
             />

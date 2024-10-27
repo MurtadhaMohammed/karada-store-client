@@ -15,8 +15,9 @@ import {
 import Container from "../UI/Container/container";
 import Link from "next/link";
 import { useEffect } from "react";
+import { useCartStore } from "@/lib/cartStore";
 
-const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
+const NavItem = ({ isActive = false, icon, label, to = "/", count = 0 }) => {
   //   const router = useRouter();
 
   let activeStyle = isActive
@@ -26,16 +27,22 @@ const NavItem = ({ isActive = false, icon, label, to = "/" }) => {
     <Link href={to} className="flex-1">
       <div
         //onClick={() => router.replace(to)}
-        className={`h-[70px] flex-1 flex flex-col items-center justify-center active:scale-[0.94] -mt-[1px] transition-all ${activeStyle}`}
+        className={`h-[70px] flex-1 flex flex-col items-center justify-center active:scale-[0.94] -mt-[1px] transition-all ${activeStyle} relative`}
       >
         {icon}
         <p className="text-[14px] mt-[4px] font-bold">{label}</p>
+        {count !== 0 && (
+          <div className=" absolute top-1 -left-1 flex items-center justify-center h-5 w-5 rounded-full bg-violet-600 text-[#fff] text-[12px]">
+            {count}
+          </div>
+        )}
       </div>
     </Link>
   );
 };
 
 const BottomNabar = () => {
+  const { getItemsTotal } = useCartStore();
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -113,6 +120,7 @@ const BottomNabar = () => {
             }
             label={"السلة"}
             isActive={pathname === "/cart"}
+            count={getItemsTotal() || 0}
           />
 
           {/* <NavItem
