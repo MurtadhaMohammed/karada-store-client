@@ -15,7 +15,7 @@ const CheckoutCTA = () => {
   const cart = useCartStore((state) => state.cart);
   const items = useMemo(() => {
     return cart.map((item) => ({
-      id: item.product.id, // Change from product_id to id
+      id: item.product.id,
       name: item.product.name,
       description: item.description,
       price: item.product.price,

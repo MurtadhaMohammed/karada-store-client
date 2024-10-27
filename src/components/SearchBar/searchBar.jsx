@@ -63,8 +63,8 @@ const SearchBar = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      let hsitory = localStorage.getItem("karada-history");
-      if (hsitory) setHistoryList(JSON.parse(hsitory));
+      let history = localStorage.getItem("karada-history");
+      if (history) setHistoryList(JSON.parse(history));
     }
   }, []);
 
