@@ -91,9 +91,9 @@ export default function RootLayout({ children }) {
         <ReactQueryProvider>
           <ProgressBar />
           <MainHeader />
-         <ErrorBoundary>
+         {/* <ErrorBoundary> */}
          {children}
-         </ErrorBoundary>
+         {/* </ErrorBoundary> */}
           <BottomNabar />
           <SideMenu />
         </ReactQueryProvider>
