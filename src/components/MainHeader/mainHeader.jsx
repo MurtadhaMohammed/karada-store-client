@@ -34,6 +34,9 @@ const MainHeader = () => {
       case "/orders":
         setPageTitle("قائمة الطلبات");
         break;
+      case "/products/search/all":
+        setPageTitle("البحث");
+        break;
 
       default:
         break;
@@ -50,7 +53,7 @@ const MainHeader = () => {
     pathname !== "/brands"
   )
     return (
-      <header className="h-[68px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-10">
+      <header className="h-[68px] shadow-[0_4px_20px_rgb(0,0,0,0.06)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-20">
         <Motion y={-6}>
           <Container>
             <div className="flex items-center justify-between h-[68px]">
@@ -70,7 +73,7 @@ const MainHeader = () => {
 
   return (
     <header
-      className={`shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0] bg-white z-10 transition-all duration-300 ${
+      className={`shadow-[0_4px_20px_rgb(0,0,0,0.06)] border-b border-b-[#f0f0f0] bg-white z-20 transition-all duration-300 ${
         scrollDirection === "up" && scrollPosition !== 0
           ? "sticky top-0"
           : "relative"

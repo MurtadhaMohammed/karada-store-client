@@ -13,7 +13,6 @@ const CheckoutCTA = () => {
   const router = useRouter();
   const { userInfo } = useAppStore();
   const cart = useCartStore((state) => state.cart);
-  const user = userInfo;
   const items = useMemo(() => {
     return cart.map((item) => ({
       id: item.product.id, // Change from product_id to id
@@ -33,13 +32,12 @@ const CheckoutCTA = () => {
   }, [cart]);
 
   const order = {
-    user_id: user.id,
-    user_name: user.name,
-    phone: user.phone,
-    address: user.address,
-    note: user.note,
+    user_id: userInfo.id,
+    user_name: userInfo.name,
+    phone: userInfo.phone,
+    address: userInfo.address,
     items, // No need to stringify, send as an array
-    voucher_id: user.voucher_id,
+    voucher_id: userInfo.voucher_id,
     store_id: items.length > 0 ? items[0].store_id : null, // Default store_id from first item
   };
 

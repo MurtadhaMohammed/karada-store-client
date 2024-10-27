@@ -29,7 +29,7 @@ const ListBanner = ({
               size="sm"
               icon={<IoIosArrowBack className="text-[#717171] text-[16px]" />}
               // onClick={() => router.push("/products")}
-              href={`/products/${bannerId}`}
+              href={`/products/banner/${bannerId}`}
             >
               <p className="text-[#717171] text-[14px]">عرض المزيد</p>
             </Button>

@@ -18,7 +18,10 @@ export default function BrandList({ brands }) {
 
 function BrandCard({ brand }) {
   return (
-    <Link href={`/brands/${brand.id}`} className="cursor-pointer  text-center">
+    <Link
+      href={`/products/brand/${brand.id}`}
+      className="cursor-pointer  text-center"
+    >
       <div className="aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg p-2">
         <div className="relative w-full h-full">
           <Image

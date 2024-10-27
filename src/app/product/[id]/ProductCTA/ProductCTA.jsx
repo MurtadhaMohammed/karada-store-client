@@ -25,7 +25,7 @@ const ProductCTA = ({ product, disabled = false, onAddToCart }) => {
 
   return (
     <div
-      className="fixed -bottom-1 z-10 w-full border-t border-t-[#eee]"
+      className="fixed -bottom-1 z-20 w-full border-t border-t-[#eee]"
       style={{
         background:
           qty === 0 ? "linear-gradient(to right, #4f46e5, #7c3aed)" : "#fff",
