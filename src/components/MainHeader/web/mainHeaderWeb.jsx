@@ -1,35 +1,23 @@
 "use client";
 import Image from "next/image";
 import Container from "../../UI/Container/container";
-import IconButton from "../../UI/IconButton/iconButton";
-import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { useAppStore } from "@/lib/store";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import useScrollPosition from "@/hooks/useScrollPosition";
-import useIsScreenMd from "@/hooks/useIsScreenMd";
 import { LuUser } from "react-icons/lu";
 import Link from "next/link";
-import { FiSearch, FiX } from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
 import {
-  TbSmartHome,
-  TbCategory,
-  TbCategoryFilled,
   TbShoppingCart,
-  TbShoppingCartFilled,
   TbHeart,
-  TbHeartFilled,
-  TbBrandFirebase,
 } from "react-icons/tb";
 import { RiShoppingBag3Line } from "react-icons/ri";
 
 const MainHeaderWeb = () => {
-  const { setIsMenu, pageTitle, setPageTitle, userInfo, querySearch } =
+  const {  userInfo } =
     useAppStore();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const { scrollDirection, scrollPosition } = useScrollPosition();
-  const isScreenMd = useIsScreenMd();
 
   return (
     <header

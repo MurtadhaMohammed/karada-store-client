@@ -20,7 +20,7 @@ const ProductSkeletonWeb = () => {
                 ></div>
               ))}
             </div>
-            <div className="bg-[#f6f6f6] rounded-[16px] !w-[400px] h-[400px] relative overflow-hidden pure-skeleton"></div>
+            <div className="bg-[#f6f6f6] rounded-[16px] !w-[450px] h-[450px] relative overflow-hidden pure-skeleton"></div>
           </section>
 
           <section  className="border-r border-r-[#eee] pr-8">

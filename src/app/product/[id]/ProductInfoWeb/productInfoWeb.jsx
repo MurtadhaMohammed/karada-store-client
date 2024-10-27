@@ -1,25 +1,14 @@
 "use client";
 import Container from "@/components/UI/Container/container";
-import IconButton from "@/components/UI/IconButton/iconButton";
 import useScrollPosition from "@/hooks/useScrollPosition";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { motion } from "framer-motion";
-import {
-  TbHeart,
-  TbHeartFilled,
-  TbShare2,
-  TbTruckDelivery,
-} from "react-icons/tb";
-import { TiStarFullOutline } from "react-icons/ti";
-import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+import { TbTruckDelivery } from "react-icons/tb";
 import { IMAGE_URL } from "@/lib/api";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import ProductCTA from "../ProductCTA/ProductCTA";
 import { useCartStore } from "@/lib/cartStore";
 import ProductCtaWeb from "../ProductCTAWeb/productCtaWeb";
 
@@ -44,14 +33,10 @@ const OptionTag = ({ name, active = false, onClick }) => {
   );
 };
 
-
 const ProductInfoWeb = ({ product }) => {
-  const router = useRouter();
-  const { scrollPosition } = useScrollPosition();
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(null);
-  const [swiperInstance, setSwiperInstance] = useState(null);
   const { addItem } = useCartStore();
 
   const loadFavorites = () => {
@@ -94,7 +79,6 @@ const ProductInfoWeb = ({ product }) => {
     addItem(product, product.l1);
   };
 
-
   return (
     <div className="mt-[48px] ">
       <Container>
@@ -126,7 +110,7 @@ const ProductInfoWeb = ({ product }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-[#f6f6f6] rounded-[16px] w-[400px] h-[400px] relative overflow-hidden"
+              className="bg-[#f6f6f6] rounded-[16px] w-[450px] h-[450px] relative overflow-hidden"
             >
               <Image
                 src={`${IMAGE_URL}/${product?.image[currentImageIndex]?.url}`}
@@ -185,7 +169,7 @@ const ProductInfoWeb = ({ product }) => {
               </div>
             )}
 
-            <ProductCtaWeb product={product} onAddToCart={handleAddToCart}/>
+            <ProductCtaWeb product={product} onAddToCart={handleAddToCart} />
           </section>
         </div>
       </Container>
