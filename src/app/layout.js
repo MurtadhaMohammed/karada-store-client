@@ -7,6 +7,7 @@ import MainHeader from "@/components/MainHeader/mainHeader";
 import { Suspense } from "react";
 import ProgressBar from "./Progreess";
 import HomeSkeleton from "./Skeleton/skeleton";
+import MainHeaderWeb from "@/components/MainHeader/web/mainHeaderWeb";
 
 const IBMFont = localFont({
   src: [
@@ -89,7 +90,12 @@ export default function RootLayout({ children }) {
       >
         <ReactQueryProvider>
           <ProgressBar />
-          <MainHeader />
+          <div className="md:hidden">
+            <MainHeader />
+          </div>
+          <div className="md:block hidden">
+            <MainHeaderWeb />
+          </div>
           {children}
           <BottomNabar />
           <SideMenu />

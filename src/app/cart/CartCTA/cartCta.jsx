@@ -14,14 +14,14 @@ const CartCTA = () => {
   
   return (
     <div
-      className="fixed  z-10 w-full"
+      className="fixed  z-10 w-full text-end"
       style={{
         bottom: searchParams.get("from") === "home" ? 96 : 20,
       }}
     >
       <Container>
         <div
-          className="active:scale-[0.96] transition-all shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]"
+          className="active:scale-[0.96] transition-all shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] md:max-w-[300px] md:mb-[30px]"
           style={{
             display: "inline-flex",
             borderRadius: 28,

@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function BrandList({ brands }) {
   return (
     <Container>
-      <div className="grid md:grid-cols-4 grid-cols-3 gap-4 mt-6 justify-center">
+      <div className="grid md:grid-cols-5 grid-cols-3 gap-4 mt-6 justify-center">
         {brands?.map((brand) => (
           <BrandCard key={brand.id} brand={brand} />
         ))}
@@ -20,7 +20,7 @@ function BrandCard({ brand }) {
   return (
     <Link
       href={`/products/brand/${brand.id}`}
-      className="cursor-pointer  text-center"
+      className="cursor-pointer text-center"
     >
       <div className="aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg p-2">
         <div className="relative w-full h-full">

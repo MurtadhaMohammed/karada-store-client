@@ -1,11 +1,16 @@
+"use client"
+
+import useIsScreenMd from "@/hooks/useIsScreenMd";
+
 const Container = ({ children, noPadding }) => {
+  const isScreenMd = useIsScreenMd()
   return (
     <div
       className="m-auto"
       style={{
-        paddingLeft: noPadding ? 0 : 16,
-        paddingRight: noPadding ? 0 : 16,
-        maxWidth: noPadding ? 'calc(1000px - 32px)' : 1000
+        paddingLeft: noPadding && !isScreenMd ? 0 : 16,
+        paddingRight: noPadding && !isScreenMd ? 0 : 16,
+        maxWidth: noPadding && !isScreenMd ? 'calc(1000px - 32px)' : 1000
       }}
     >
       {children}

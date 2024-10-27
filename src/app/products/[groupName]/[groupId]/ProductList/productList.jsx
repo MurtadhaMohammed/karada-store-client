@@ -9,10 +9,12 @@ import { useAppStore } from "@/lib/store";
 import Empty from "@/components/Empty/empty";
 import { VscSearchStop } from "react-icons/vsc";
 import { useEffect } from "react";
+import useIsScreenMd from "@/hooks/useIsScreenMd";
 
 const ProductList = ({ groupId, groupName }) => {
   const { querySearch, queryString, setPageTitle } = useAppStore();
-  const limit = 10;
+  const isScreenMd = useIsScreenMd();
+  const limit = isScreenMd ? 12 : 10;
 
   const getUrl = (pageParam) => ({
     search: `/client/product/product?page=${pageParam}&limit=${limit}&q=${querySearch}${queryString}`,
@@ -73,7 +75,7 @@ const ProductList = ({ groupId, groupName }) => {
   return (
     <div className="pt-[16px]">
       <Container>
-        <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4  gap-4 overflow-x-auto no-scrollbar">
+        <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 md:gap-6  gap-4 overflow-x-auto no-scrollbar">
           {data?.pages?.map((page) =>
             page?.products?.map((el, i) => (
               <DefaultCard isGrid key={`${el.id}-${i}`} item={el} />
