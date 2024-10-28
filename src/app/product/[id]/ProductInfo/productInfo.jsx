@@ -76,19 +76,19 @@ const ProductInfo = ({ product }) => {
   const handleOptionClick = (option, index) => {
     if (option.img) {
       const imageIndex = product?.image?.findIndex(
-        (img) => img.url === option.img 
+        (img) => img.url === option.img
       );
       if (imageIndex !== -1) {
         setCurrentImageIndex(imageIndex);
         swiperRef.current?.swiper.slideTo(imageIndex);
       }
     }
-  
+
     // Set the active option
     setActiveOption(index);
     product.l1 = product?.options[index];
   };
-  
+
   const handleAddToCart = () => {
     addItem(product, product.l1);
   };
@@ -112,7 +112,7 @@ const ProductInfo = ({ product }) => {
                   <Image
                     src={`${IMAGE_URL}/${img.url}`}
                     fill
-                    style={{ objectFit: "cover" }} 
+                    style={{ objectFit: "cover" }}
                     alt={`product-image-${index}`}
                   />
                 </SwiperSlide>
@@ -241,7 +241,7 @@ const ProductInfo = ({ product }) => {
             />
           ))}
         </div>
-        <ProductCTA onAddToCart={handleAddToCart} price={product?.endPrice} />
+        <ProductCTA product={product} onAddToCart={handleAddToCart} />
       </Container>
     </div>
   );
