@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Container from "../UI/Container/container";
 import style from "./style.module.css";
@@ -9,23 +9,48 @@ import { IMAGE_URL } from "@/lib/api";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-const Wrapper = ({ children, ...props }) =>
+const Wrapper = ({ children, innerRef, ...props }) =>
   props?.href ? (
     <Link {...props}>{children}</Link>
   ) : (
-    <div {...props}>{children}</div>
+    <div ref={innerRef} {...props}>
+      {children}
+    </div>
   );
 
 const Categories = ({ isBanner = true, list = [] }) => {
   const { selectedCategoryId, setSelectedCategoryId } = useAppStore();
   const searchParams = useSearchParams();
+  const categoryRefs = useRef({}); // Store refs for each category item
 
   useEffect(() => {
-    if (list.length > 0 && !selectedCategoryId && !searchParams.get("init"))
-      setSelectedCategoryId(list[0].id);
-    else if (searchParams.get("init"))
-      setSelectedCategoryId(parseInt(searchParams.get("init")));
-  }, [list]);
+    // Initialize selected category based on URL query param or the first item
+    const initCategoryId = searchParams.get("init");
+
+    if (list.length > 0) {
+      if (initCategoryId) {
+        const targetId = parseInt(initCategoryId);
+        setSelectedCategoryId(targetId);
+      } else if (!selectedCategoryId) {
+        setSelectedCategoryId(list[0].id);
+      }
+    }
+  }, [list, searchParams]); // Run when list or search params change
+
+  useEffect(() => {
+    // Scroll the selected category into view when selectedCategoryId changes
+    if (selectedCategoryId && categoryRefs.current[selectedCategoryId]) {
+      categoryRefs.current[selectedCategoryId].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      });
+    }
+  }, [selectedCategoryId]);
+
+  const handleCategoryClick = (id) => {
+    setSelectedCategoryId(id);
+  };
 
   return (
     <div className={isBanner ? "border-b border-b-[#f6f6f6]" : ""}>
@@ -35,8 +60,9 @@ const Categories = ({ isBanner = true, list = [] }) => {
             <Wrapper
               {...(isBanner
                 ? { href: `/categories?init=${el?.id}` }
-                : { onClick: () => setSelectedCategoryId(el.id) })}
+                : { onClick: () => handleCategoryClick(el.id) })}
               key={el.id}
+              innerRef={(elRef) => (categoryRefs.current[el.id] = elRef)} // Assign ref to each Wrapper
               className={`${
                 selectedCategoryId === el.id && !isBanner ? style.catItem : ""
               } flex items-center justify-center flex-col active:scale-95 transition-all cursor-pointer`}
