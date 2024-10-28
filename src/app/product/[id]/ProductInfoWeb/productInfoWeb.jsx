@@ -89,7 +89,7 @@ const ProductInfoWeb = ({ product }) => {
                 <div
                   key={i}
                   onClick={() => setCurrentImageIndex(i)}
-                  className={`w-[80px] h-[80px] rounded-[12px] bg-[#f6f6f6] mb-4 relative overflow-hidden ${
+                  className={`w-[80px] h-[80px] rounded-[12px] mb-4 relative overflow-hidden ${
                     currentImageIndex === i
                       ? "border border-[#975aff] shadow-[0_4px_20px_rgb(0,0,0,0.08)]"
                       : ""
@@ -110,7 +110,7 @@ const ProductInfoWeb = ({ product }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-[#f6f6f6] rounded-[16px] w-[450px] h-[450px] relative overflow-hidden"
+              className="rounded-[16px] w-[450px] h-[450px] relative overflow-hidden"
             >
               <Image
                 src={`${IMAGE_URL}/${product?.image[currentImageIndex]?.url}`}
