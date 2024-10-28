@@ -79,7 +79,7 @@ const ProductInfoWeb = ({ product }) => {
   };
 
   return (
-    <div className="mt-[48px] ">
+    <div className="mt-[48px] md:block hidden">
       <Container>
         <div className="flex gap-10 mb-[40px] pb-[40px] border-b border-b-[#eee]">
           <section className="flex gap-4">

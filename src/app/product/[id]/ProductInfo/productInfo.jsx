@@ -94,7 +94,7 @@ const ProductInfo = ({ product }) => {
   };
 
   return (
-    <div>
+    <div className="md:hidden block">
       <div className="h-[400px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
           {product?.image && product.image.length > 0 && (
