@@ -6,6 +6,7 @@ import SingleBanner from "@/components/SingleBanner/singleBanner";
 import { URL } from "@/lib/api";
 import OrderCard from "./orders/OrderCard/orderCard";
 import Container from "@/components/UI/Container/container";
+import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 // import Image from "next/image";
 
 // const creaitveList = [
