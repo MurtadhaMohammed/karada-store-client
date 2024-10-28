@@ -13,7 +13,7 @@ import Link from "next/link";
 export default function SliderBanner({ banners }) {
   const [current, setCurrent] = useState(0);
 
-  console.log(banners)
+  console.log(banners);
 
   const slider = banners?.slider;
   return (
