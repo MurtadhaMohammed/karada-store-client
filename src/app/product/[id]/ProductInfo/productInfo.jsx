@@ -72,20 +72,23 @@ const ProductInfo = ({ product }) => {
     const favorites = loadFavorites();
     setIsFavorite(favorites.includes(product?.id));
   }, [product?.id]);
+
   const handleOptionClick = (option, index) => {
-    if (option.image) {
+    if (option.img) {
       const imageIndex = product?.image?.findIndex(
-        (img) => img.url === option.image
+        (img) => img.url === option.img 
       );
       if (imageIndex !== -1) {
         setCurrentImageIndex(imageIndex);
         swiperRef.current?.swiper.slideTo(imageIndex);
       }
     }
+  
+    // Set the active option
     setActiveOption(index);
     product.l1 = product?.options[index];
   };
-
+  
   const handleAddToCart = () => {
     addItem(product, product.l1);
   };
@@ -96,7 +99,7 @@ const ProductInfo = ({ product }) => {
         <div className={"w-full h-full relative"}>
           {product?.image && product.image.length > 0 && (
             <Swiper
-              ref={swiperRef} // Set the ref for Swiper
+              ref={swiperRef}
               spaceBetween={10}
               slidesPerView={1}
               onSlideChange={(swiper) =>
