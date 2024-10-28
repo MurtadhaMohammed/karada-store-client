@@ -28,7 +28,11 @@ const ProductCTA = ({ product, disabled = false, onAddToCart }) => {
       className="fixed -bottom-1 z-20 w-full border-t border-t-[#eee]"
       style={{
         background:
-          qty === 0 ? "linear-gradient(to right, #4f46e5, #7c3aed)" : "#fff",
+          qty === 0 
+            ? disabled 
+              ? "linear-gradient(to right, #9ca3af, #d1d5db)" 
+              : "linear-gradient(to right, #4f46e5, #7c3aed)"
+            : "#fff",
         height: qty === 0 ? 64 : 160,
         transition: ".3s ease-in-out",
       }}

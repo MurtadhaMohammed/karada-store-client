@@ -92,6 +92,7 @@ const ProductInfo = ({ product }) => {
     addItem(product, product.l1);
   };
 
+  const isAddToCartDisabled = product?.options?.length > 0 && activeOption === null;
   return (
     <div>
       <div className="h-[400px] border-b border-b-[#eee]">
@@ -249,7 +250,11 @@ const ProductInfo = ({ product }) => {
           </div>
         )}
       </Container>
-      <ProductCTA product={product} onAddToCart={handleAddToCart} />
+      <ProductCTA 
+        product={product} 
+        onAddToCart={handleAddToCart}
+        disabled={isAddToCartDisabled}
+      />
     </div>
   );
 };

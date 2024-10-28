@@ -79,6 +79,8 @@ const ProductInfoWeb = ({ product }) => {
     addItem(product, product.l1);
   };
 
+  const isAddToCartDisabled = product?.options?.length > 0 && activeOption === null;
+
   return (
     <div className="mt-[48px] ">
       <Container>
@@ -151,7 +153,10 @@ const ProductInfoWeb = ({ product }) => {
             </div>
             <div className="mt-4 pt-4">
               {product?.options && product?.options.length > 0 && (
-                <h5 className="text-[16px] ">الخيارات</h5>
+                <div>
+                  <h5 className="text-[16px] ">الخيارات</h5>
+                  <h5 className="text-[14px] text-gray-600">أختر احد الخيارات لاضافتها للسلة</h5>
+                  </div>
               )}
             </div>
             {product?.options && product?.options.length > 0 && (
@@ -169,7 +174,11 @@ const ProductInfoWeb = ({ product }) => {
               </div>
             )}
 
-            <ProductCtaWeb product={product} onAddToCart={handleAddToCart} />
+            <ProductCtaWeb
+              product={product}
+              onAddToCart={handleAddToCart}
+              isAddToCartDisabled={isAddToCartDisabled}
+            />
           </section>
         </div>
       </Container>

@@ -6,7 +6,7 @@ import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import IconButton from "@/components/UI/IconButton/iconButton";
 
-const ProductCtaWeb = ({ product }) => {
+const ProductCtaWeb = ({ product, isAddToCartDisabled }) => {
   const {
     getQty,
     increase,
@@ -31,11 +31,16 @@ const ProductCtaWeb = ({ product }) => {
   const handleDecrease = () => decrease(product);
 
   return (
-    <div className="mt-[24px] flex items-center gap-4">
+       <div className="mt-[24px] flex items-center gap-4">
       {qty === 0 ? (
         <button
           onClick={() => addItem(product)}
-          className="h-[48px] w-[180px] rounded-[24px] bg-[#fff] flex items-center justify-center border border-violet-600 text-violet-600 transition-all active:scale-95"
+          className={`h-[48px] w-[180px] rounded-[24px] flex items-center justify-center transition-all active:scale-95 ${
+            isAddToCartDisabled
+              ? "bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed"
+              : "bg-[#fff] text-violet-600 border border-violet-600"
+          }`}
+          disabled={isAddToCartDisabled}
         >
           <FaPlus className="text-[18px]" />
           <b className="mr-[6px] text-[18px]">أضافة الى السلة</b>
