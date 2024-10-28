@@ -25,7 +25,7 @@ const MainHeaderWeb = () => {
 
   return (
     <header
-      className={`md:shadow-none shadow-[0_4px_20px_rgb(0,0,0,0.06)] bg-white z-20 transition-all duration-300 ${
+      className={`md:block hidden md:shadow-none shadow-[0_4px_20px_rgb(0,0,0,0.06)] bg-white z-20 transition-all duration-300 ${
         scrollDirection === "up" && scrollPosition !== 0
           ? "sticky top-0"
           : "relative"
