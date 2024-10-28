@@ -228,7 +228,7 @@ const ProductInfo = ({ product }) => {
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px] text-[#444]">
-            Delivered within 1-2 days
+          عادة مايتم توصيل المنتجات في 3-5 أيام
           </span>
         </div>
         <div className="mt-[16px] mb-[8px]">
