@@ -35,7 +35,7 @@ const DefaultCard = ({
       )}
 
       {item?.discount?.value && (
-        <div className="absolute top-4 left-4 z-10 p-2 pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#ff000041] bg-gradient-to-r from-[#ff0000] to-[#fb797b] text-[#fff]">
+        <div className="absolute top-4 left-4 z-10 p-2 pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#ff000041] bg-gradient-to-r from-[#ff0000] to-[#fb797b] text-[#fff] text-[12px] discount-effect">
           {item?.discount?.value}%
         </div>
       )}

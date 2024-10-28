@@ -24,7 +24,8 @@
   /* font-family: var(--font-NeoSans) !important;*/
 }
 
-html, body {
+html,
+body {
   scroll-behavior: smooth;
   /* overscroll-behavior: none;  */
   /* overflow: auto;     */
@@ -50,7 +51,12 @@ html, body {
 .pure-skeleton {
   width: -webkit-fill-available;
   /* height: 200px; */
-  background-image: linear-gradient(90deg, #f6f6f6 0px, #f0f0f0 200px, #f6f6f6 500px);
+  background-image: linear-gradient(
+    90deg,
+    #f6f6f6 0px,
+    #f0f0f0 200px,
+    #f6f6f6 500px
+  );
   background-size: 600px;
   animation-name: skeleton;
   animation-fill-mode: both;
@@ -68,7 +74,22 @@ html, body {
   }
 }
 
-
 .no-tap-highlight {
   -webkit-tap-highlight-color: transparent;
+}
+
+.discount-effect {
+  animation: discountEffect 2s infinite;
+}
+
+@keyframes discountEffect {
+  0% {
+    transform: scale(0.9);
+  }
+  80% {
+    transform: scale(1) rotate(2deg);
+  }
+  100% {
+    transform: scale(0.9) rotate(0deg);
+  }
 }
