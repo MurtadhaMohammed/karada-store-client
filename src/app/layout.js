@@ -91,7 +91,6 @@ export default function RootLayout({ children }) {
       >
         <ReactQueryProvider>
           <ProgressBar />
-<<<<<<< HEAD
           <div className="md:hidden">
             <MainHeader />
           </div>
@@ -99,12 +98,6 @@ export default function RootLayout({ children }) {
             <MainHeaderWeb />
           </div>
           {children}
-=======
-          <MainHeader />
-         {/* <ErrorBoundary> */}
-         {children}
-         {/* </ErrorBoundary> */}
->>>>>>> 09cf61fc44bdc486f73542c45faac335be53d02a
           <BottomNabar />
           <SideMenu />
         </ReactQueryProvider>
