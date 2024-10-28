@@ -43,6 +43,7 @@ const MainHeader = () => {
     }
   }, [pathname]);
 
+
   if (pathname.split("/")[1] === "product") return;
 
   if (

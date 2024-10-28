@@ -5,6 +5,7 @@ import { CgClose } from "react-icons/cg";
 import IconButton from "../UI/IconButton/iconButton";
 import Link from "next/link";
 import { IMAGE_URL } from "@/lib/api";
+import useIsScreenMd from "@/hooks/useIsScreenMd";
 
 const DefaultCard = ({
   item,
@@ -12,10 +13,13 @@ const DefaultCard = ({
   isFav = false,
   handleRemoveFav = () => {},
 }) => {
+  const isScreenMd = useIsScreenMd();
   return (
     <div
-      className={`flex-none rounded-xl flex flex-col border border-[#eee] relative overflow-hidden bg-white active:opacity-50 transition-all`}
-      style={{ width: isGrid ? "100%" : 200 }}
+      className={`flex-none rounded-xl flex flex-col border border-[#eee] relative overflow-hidden bg-white active:opacity-50 transition-all ${
+        isGrid ? "w-[100%]" : "md:w-[100%]  w-[200px]"
+      }`}
+      // style={{ width: isGrid || isScreenMd ? "100%" : 200 }}
     >
       {isFav && (
         <div className="absolute top-2 right-2 z-10">

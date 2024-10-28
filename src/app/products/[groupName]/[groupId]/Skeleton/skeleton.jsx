@@ -1,7 +1,7 @@
 "use client";
 import Container from "@/components/UI/Container/container";
 
-const ProductSkeleton = ({ size = 6 }) => {
+const ProductSkeleton = ({ size = 8 }) => {
   return (
     <div className="pt-[16px]">
       <Container>

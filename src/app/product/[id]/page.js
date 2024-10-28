@@ -1,4 +1,5 @@
 import ProductInfo from "./ProductInfo/productInfo";
+import ProductInfoWeb from "./ProductInfoWeb/productInfoWeb";
 import RelatedList from "./RelatedList/relatedList";
 import { URL } from "@/lib/api";
 
@@ -11,7 +12,12 @@ export default async function ProductOne({ params }) {
 
   return (
     <div className="pb-[100px]">
-      <ProductInfo product={product?.product} />
+      <div className="md:hidden block">
+        <ProductInfo product={product?.product} />
+      </div>
+      <div className="md:block hidden">
+        <ProductInfoWeb product={product?.product} />
+      </div>
       <RelatedList productId={product?.product?.id} />
     </div>
   );

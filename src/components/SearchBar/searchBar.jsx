@@ -101,7 +101,7 @@ const SearchBar = () => {
 
   return (
     <Link href={"/products/search/all"}>
-      <div className="bg-gradient-to-b from-[#f0eeff] to-transparent pt-[16px] pb-[16px] -mb-[12px] z-10 md:hidden">
+      <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
         <Container>
           <div className="relative">
             {querySearch && isSearch ? (

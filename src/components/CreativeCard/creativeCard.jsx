@@ -1,9 +1,11 @@
 "use client";
+import useIsScreenMd from "@/hooks/useIsScreenMd";
 import { IMAGE_URL } from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
 
 const CreatviceCard = ({ index, item }) => {
+  const isScreenMd = useIsScreenMd();
   const colors = [
     "bg-gradient-to-br from-gray-100 to-white",
     "bg-gradient-to-br from-white to-gray-100",
@@ -15,8 +17,7 @@ const CreatviceCard = ({ index, item }) => {
         // onClick={() => router.push(`/product/${index}`)}
         className={`flex-none rounded-xl flex flex-col  border border-[#eee] relative overflow-hidden ${
           colors[index % 2 === 2 ? 0 : 1]
-        } active:opacity-50 transition-all`}
-        style={{ width: 240, height: 350 }}
+        } md:w-[100%] md:h-[300px]  w-[240px] h-[350px] active:opacity-50 transition-all`}
       >
         <div className="p-5 pb-0">
           <h2 className="font-semih2old text-black text-[18px] font-semibold  whitespace-nowrap overflow-hidden text-ellipsis">

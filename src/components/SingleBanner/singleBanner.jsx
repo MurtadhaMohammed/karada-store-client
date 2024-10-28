@@ -7,10 +7,10 @@ import { IMAGE_URL } from "@/lib/api";
 
 const SingleBanner = ({ banner }) => {
   return (
-    <div className="mt-[16px] mb-[16px]">
+    <div className="md:mt-[24px] md:mb-[24px] mt-[16px] mb-[16px]">
       <Container>
         <div className="w-[100%] bg-white relative rounded-[16px] overflow-hidden inline-block shadow-md">
-          <div className="w-[100%] h-[140px] relative">
+          <div className="w-[100%] md:aspect-4 aspect-3  relative">
             <Image
               src={`${IMAGE_URL}/${banner?.img}`}
               layout="fill"

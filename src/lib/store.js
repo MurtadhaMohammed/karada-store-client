@@ -19,10 +19,11 @@ export const useAppStore = create((set) => ({
   setSelectedCategoryId: (id) => set({ selectedCategoryId: id }),
 
   updateUserInfo: (token) => {
+    if (typeof window === "undefined") return;
     if (!token) return set({ userInfo: {} });
     const userInfo = jwtDecode(token);
+    localStorage.setItem("karada-account-name", userInfo?.name);
     return set({ userInfo });
   },
   setUserInfo: (newUserInfo) => set({ userInfo: newUserInfo }),
-
 }));

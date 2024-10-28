@@ -55,7 +55,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
   return (
     <div className={isBanner ? "border-b border-b-[#f6f6f6]" : ""}>
       <Container noPadding>
-        <div className="flex items-center pt-4 pb-4 gap-6 overflow-auto no-scrollbar pl-[16px] pr-[16px]">
+        <div className="flex items-center justify-center md:pt-8 md:pb-8 pt-4 pb-4 gap-6 overflow-auto no-scrollbar md:pl-0 md:pr-0 pl-[16px] pr-[16px]">
           {list.map((el) => (
             <Wrapper
               {...(isBanner
@@ -67,7 +67,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
                 selectedCategoryId === el.id && !isBanner ? style.catItem : ""
               } flex items-center justify-center flex-col active:scale-95 transition-all cursor-pointer`}
             >
-              <div className="w-[48px] h-[48px] rounded-[12px] relative overflow-hidden">
+              <div className="md:w-[68px] md:h-[68px] w-[48px] h-[48px] rounded-[12px] relative overflow-hidden">
                 <Image
                   src={`${IMAGE_URL}/${el.img}`}
                   alt={el.title}
