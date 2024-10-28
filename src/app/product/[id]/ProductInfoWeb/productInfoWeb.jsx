@@ -40,8 +40,7 @@ const ProductInfoWeb = ({ product }) => {
   const { addItem } = useCartStore();
 
   const loadFavorites = () => {
-    const favorites =
-      JSON.parse(localStorage.getItem("favorites_product")) || [];
+    const favorites = JSON.parse(localStorage.getItem("favorites_product")) || [];
     return favorites;
   };
 
@@ -62,17 +61,17 @@ const ProductInfoWeb = ({ product }) => {
   }, [product?.id]);
 
   const handleOptionClick = (option, index) => {
-    if (option.image) {
+    if (option.img) {
+      // Find the index of the image that matches the option's img
       const imageIndex = product?.image?.findIndex(
-        (img) => img.url === option.image
+        (img) => img.url === option.img
       );
       if (imageIndex !== -1) {
-        setCurrentImageIndex(imageIndex);
+        setCurrentImageIndex(imageIndex); // Update the current image index state
       }
-      setActiveOption(index);
+      setActiveOption(index); // Set the active option
+      product.l1 = product?.options[index]; // Update the product option
     }
-    setActiveOption(index);
-    product.l1 = product?.options[index];
   };
 
   const handleAddToCart = () => {
@@ -88,7 +87,7 @@ const ProductInfoWeb = ({ product }) => {
               {product?.image?.map((img, i) => (
                 <div
                   key={i}
-                  onClick={() => setCurrentImageIndex(i)}
+                  onClick={() => setCurrentImageIndex(i)} // Click to select image
                   className={`w-[80px] h-[80px] rounded-[12px] mb-4 relative overflow-hidden ${
                     currentImageIndex === i
                       ? "border border-[#975aff] shadow-[0_4px_20px_rgb(0,0,0,0.08)]"
@@ -99,7 +98,6 @@ const ProductInfoWeb = ({ product }) => {
                     src={`${IMAGE_URL}/${img?.url}`}
                     layout="fill"
                     objectFit="cover"
-                    // alt={`product-image-${index}`}
                   />
                 </div>
               ))}
@@ -116,7 +114,6 @@ const ProductInfoWeb = ({ product }) => {
                 src={`${IMAGE_URL}/${product?.image[currentImageIndex]?.url}`}
                 layout="fill"
                 objectFit="cover"
-                // alt={`product-image-${index}`}
               />
             </motion.div>
           </section>
