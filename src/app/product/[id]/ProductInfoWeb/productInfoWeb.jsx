@@ -96,8 +96,8 @@ const ProductInfoWeb = ({ product }) => {
                 >
                   <Image
                     src={`${IMAGE_URL}/${img?.url}`}
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    style={{ objectFit: "cover" }} 
                   />
                 </div>
               ))}
@@ -112,8 +112,8 @@ const ProductInfoWeb = ({ product }) => {
             >
               <Image
                 src={`${IMAGE_URL}/${product?.image[currentImageIndex]?.url}`}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }} 
               />
             </motion.div>
           </section>

@@ -48,8 +48,8 @@ const DefaultCard = ({
           >
             <Image
               src={`${IMAGE_URL}/${item?.thumbnail1}`}
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }} 
               alt="image"
             />
           </div>

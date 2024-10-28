@@ -9,8 +9,8 @@ const InstallmentBanner = () => {
           <Image
             alt="image"
             src={"/images/qicard.png"}
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: "cover" }} 
           />
         </div>
         <div>

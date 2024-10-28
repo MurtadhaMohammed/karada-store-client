@@ -111,8 +111,8 @@ const ProductInfo = ({ product }) => {
                 <SwiperSlide key={index}>
                   <Image
                     src={`${IMAGE_URL}/${img.url}`}
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    style={{ objectFit: "cover" }} 
                     alt={`product-image-${index}`}
                   />
                 </SwiperSlide>
