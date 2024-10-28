@@ -11,9 +11,17 @@ import { TbShoppingCart, TbHeart } from "react-icons/tb";
 import { RiShoppingBag3Line } from "react-icons/ri";
 
 const MainHeaderWeb = () => {
-  const { userInfo, isLogin } = useAppStore();
+  const { userInfo, isLogin, setIsLogin, updateUserInfo } = useAppStore();
   const pathname = usePathname();
   const { scrollDirection, scrollPosition } = useScrollPosition();
+
+  const logout = () => {
+    localStorage.removeItem("karada-token");
+    localStorage.removeItem("karada-refreshToken");
+    updateUserInfo();
+    setIsLogin(false);
+  };
+
 
   return (
     <header
@@ -40,6 +48,8 @@ const MainHeaderWeb = () => {
                 <b className="text-[16px]">{userInfo?.name}</b>
                 <div className="h-3 w-[1px] bg-[#ccc]"></div>
                 <p className="text-[14px] text-[#a5a5a5]">{userInfo?.phone}</p>
+                <div className="h-3 w-[1px] bg-[#ccc]"></div>
+                <button className="text-[14px] text-[#0000ff] underline transition-all active:scale-90" onClick={logout}>تسجيل خروج</button>
               </div>
             ) : (
               <div className="flex items-center gap-4">

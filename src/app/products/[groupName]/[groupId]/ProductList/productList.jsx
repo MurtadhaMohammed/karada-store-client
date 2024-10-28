@@ -88,7 +88,7 @@ const ProductList = ({ groupId, groupName }) => {
         <Container>
           <button
             className={
-              "w-full h-[48px] rounded-[8px] border border-[#eee] mt-[16px]"
+              "w-full h-[48px] rounded-[8px] border border-[#eee] mt-[26px]"
             }
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage}
