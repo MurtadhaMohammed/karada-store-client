@@ -17,7 +17,7 @@ const LoginForm = () => {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { setIsLogin, getUserInfo, isLogin } = useAppStore();
+  const { setIsLogin, userInfo, isLogin } = useAppStore();
 
   const handleChange = (otp) => setOtp(otp);
 
@@ -53,8 +53,7 @@ const LoginForm = () => {
     if (resp.accessToken) {
       localStorage.setItem("karada-token", resp.accessToken);
       localStorage.setItem("karada-refreshToken", resp.refreshToken);
-      const user = getUserInfo();
-      localStorage.setItem("karada-account-name", user?.name);
+      localStorage.setItem("karada-account-name", userInfo?.name);
       router.replace("/");
       setIsLogin(true);
     }

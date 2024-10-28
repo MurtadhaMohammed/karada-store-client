@@ -55,6 +55,7 @@ const BottomNabar = () => {
     router.prefetch("/faivorates");
     router.prefetch("/products");
     router.prefetch("/brands");
+    router.prefetch("/search");
   }, [router]);
 
   return (

@@ -1,46 +1,48 @@
 "use client";
-import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Container from "@/components/UI/Container/container";
 import OrderCard from "../OrderCard/orderCard";
+import Empty from "@/components/Empty/empty";
+import { AiOutlineTruck } from "react-icons/ai";
+import { useAppStore } from "@/lib/store";
+import { apiCall } from "@/lib/api";
+import OrdersSkeleton from "../Skeleton/skeleton";
 
-const OrderList = ({ params }) => {
-  const [loading, setLoading] = useState(true);
-  const [orders, setOrders] = useState([]);
-  const [error, setError] = useState(null);
+const OrderList = () => {
+  const { userInfo } = useAppStore();
 
-  const {
-    data,
-    isLoading,
-    error: queryError,
-  } = useQuery({
-    queryKey: [`orders-${params}`],
+  const { data, isLoading, isError } = useQuery({
+    queryKey: [`orders-${userInfo?.id}`],
     queryFn: () =>
       apiCall({
-        pathname: `/client/order/getOrdersByUserId/${params}`,
+        pathname: `/client/order/getOrdersByUserId/${userInfo?.id}`,
         method: "GET",
         cache: "no-store",
       }),
+
+    enabled: !!userInfo?.id,
   });
 
-  useEffect(() => {
-    if (data) {
-      setOrders(data.orders || []);
-      console.log(data.orders, "orders");
-      setLoading(false);
-    }
-    if (queryError) {
-      setError("Failed to load related items.");
-      setLoading(false);
-    }
-  }, [data, queryError]);
+  if (isLoading) return <OrdersSkeleton/>;
+
+  if (data?.orders?.length === 0)
+    return (
+      <Empty
+        icon={<AiOutlineTruck className="text-[100px]" />}
+        title="لا توجد طلبات!."
+        msg="ليش ماطالب شي لحد الان ؟"
+        href={"/"}
+        top={14}
+        buttonText={"عودة للرئيسية"}
+      />
+    );
 
   return (
     <div className="mt-[16px]">
       <Container>
-        {orders?.filter(
+        {data?.orders?.filter(
           (el) =>
-            el.orderStatus !== "Completed" && el.orderStatus !== "Canceled"
+            el.order_status !== "Completed" && el.order_status !== "Canceled"
         )?.length !== 0 && (
           <div className="flex gap-4 items-center mb-[16px] text-[16px]">
             <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
@@ -48,10 +50,10 @@ const OrderList = ({ params }) => {
             <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
           </div>
         )}
-        {orders
+        {data?.orders
           ?.filter(
             (el) =>
-              el.orderStatus !== "Completed" && el.orderStatus !== "Canceled"
+              el.order_status !== "Completed" && el.order_status !== "Canceled"
           )
           ?.map((el, i) => (
             <OrderCard key={i} order={el} />
@@ -61,10 +63,10 @@ const OrderList = ({ params }) => {
           <div className="text-[#666]">الطلبات السابقة</div>
           <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
         </div>
-        {orders
+        {data?.orders
           ?.filter(
             (el) =>
-              el.orderStatus === "Completed" || el.orderStatus === "Canceled"
+              el.order_status === "Completed" || el.order_status === "Canceled"
           )
           ?.map((el, i) => (
             <OrderCard key={i} order={el} />

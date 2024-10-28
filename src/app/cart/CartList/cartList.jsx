@@ -10,6 +10,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useCartStore } from "@/lib/cartStore";
 import { IMAGE_URL } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
+import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+import Empty from "@/components/Empty/empty";
+import { TbShoppingCartExclamation } from "react-icons/tb";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -78,7 +81,7 @@ const CartItem = ({ item }) => {
 
 const CartList = () => {
   const router = useRouter();
-  const { cart } = useCartStore();
+  const { cart, getItemsTotal } = useCartStore();
 
   useEffect(() => {
     router.prefetch("/checkout");
@@ -89,11 +92,27 @@ const CartList = () => {
     return cart[randomIndex]?.product?.id;
   }, [cart?.length]);
 
+  if (getItemsTotal() === 0)
+    return (
+      <Empty
+        icon={<TbShoppingCartExclamation />}
+        title="لا توجد منتجات!."
+        msg="قم بأظافة منتجات لمتابعة التسوق."
+        href={"/"}
+        buttonText={"عودة للرئيسية"}
+      />
+    );
+
   return (
     <div className="mb-[16px]">
-      {cart?.map((el, i) => (
-        <CartItem key={i} item={el} />
-      ))}
+      <Container>
+        <div className="mt-[16px]">
+          <InstallmentBanner />
+        </div>
+      </Container>
+
+      {getItemsTotal() !== 0 &&
+        cart?.map((el, i) => <CartItem key={i} item={el} />)}
       <RelatedList productId={productId} />
       <CartCTA />
     </div>

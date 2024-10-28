@@ -3,10 +3,8 @@ import { BsCreditCard2Front } from "react-icons/bs";
 import { useState } from "react";
 import {
   MasterCardModal,
-  useMasterCardModal,
 } from "./MasterCardModal/masterCardModal";
 import {
-  BottomSheetModal,
   useBottomSheetModal,
 } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import { InstallmentModal } from "./InstallmentModal/InstallmentModal";

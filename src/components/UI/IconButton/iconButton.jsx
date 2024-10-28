@@ -2,21 +2,22 @@
 
 import Ripples from "react-ripples";
 
-const IconButton = ({ icon, rounded = 8, disabled=false, ...props }) => {
+const IconButton = ({ icon, rounded = 8, disabled = false, ...props }) => {
   return (
     <div
       style={{
         display: "inline-flex",
         borderRadius: rounded,
         overflow: "hidden",
-        opacity : disabled ? .4 : 1
+        opacity: disabled ? 0.4 : 1,
       }}
     >
-      <Ripples>
+      <Ripples onClick={e=> e.preventDefault()}>
         <button
+          type="button"
           className={"p-[2px] text-[36px] active:scale-90 transition-all"}
-          {...props}
           disabled={disabled}
+          {...props}
         >
           {icon}
         </button>

@@ -16,23 +16,24 @@ const MenuItem = ({ isDot = false, title, icon, onClick = () => {} }) => {
       onClick={onClick}
       className="flex items-center mb-[28px] active:scale-[0.96] active:opacity-60 transition-all"
     >
-        {icon}
+      {icon}
       <div className="relative">
-       {isDot && <DotAlert customStyle="top-1 -left-4" />}
-      <p className="mr-[16px] text-[16px]">{title}</p>
+        {isDot && <DotAlert customStyle="top-1 -left-4" />}
+        <p className="mr-[16px] text-[16px]">{title}</p>
       </div>
     </div>
   );
 };
 
 const SideMenu = () => {
-  const { isMenu, setIsMenu, isLogin, setIsLogin, getUserInfo } = useAppStore();
-  const user = getUserInfo();
+  const { isMenu, setIsMenu, isLogin, setIsLogin, userInfo, updateUserInfo } =
+    useAppStore();
   const router = useRouter();
 
   const logout = () => {
     localStorage.removeItem("karada-token");
     localStorage.removeItem("karada-refreshToken");
+    updateUserInfo();
     setIsLogin(false);
   };
 
@@ -53,8 +54,8 @@ const SideMenu = () => {
                   <LuUser className="text-[#666] text-[22px] " />
                 </div>
                 <div className="mr-[8px]">
-                  <b className="text-[16px]">{user?.name}</b>
-                  <p className="text-[14px]">{user?.phone}</p>
+                  <b className="text-[16px]">{userInfo?.name}</b>
+                  <p className="text-[14px]">{userInfo?.phone}</p>
                 </div>
               </div>
             ) : (

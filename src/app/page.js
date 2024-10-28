@@ -123,8 +123,8 @@ export default async function Home() {
 
   return (
     <div className="pb-[100px]">
-     <SearchBar />
-      <div className="md:hidden">
+      <SearchBar />
+      {/* <div className="md:hidden">
       <Container>
         <OrderCard
           order={{
@@ -134,7 +134,7 @@ export default async function Home() {
           }}
         />
       </Container>
-      </div>
+      </div> */}
       {/* <SliderBanner />
       <Categories />
       <ListBanner title="احدث المنتجات" list={creaitveList} isCreative />

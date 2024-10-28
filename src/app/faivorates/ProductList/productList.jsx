@@ -6,6 +6,8 @@ import Motion from "@/components/Motion/motion";
 import Container from "@/components/UI/Container/container";
 import { apiCall } from "@/lib/api";
 import ProductSkeleton from "../Skeleton/skeleton";
+import Empty from "@/components/Empty/empty";
+import { BiBlanket } from "react-icons/bi";
 
 const ProductList = () => {
   const [favorites, setFavorites] = useState([]);
@@ -40,6 +42,18 @@ const ProductList = () => {
     },
     enabled: favorites.length !== 0,
   });
+
+  if (favorites?.length === 0)
+    return (
+      <Empty
+        icon={<BiBlanket className="text-[100px]" />}
+        title="لا توجد منتجات!."
+        msg="قم بأظافة منتجات الى المفضلة"
+        href={"/"}
+        top={14}
+        buttonText={"عودة للرئيسية"}
+      />
+    );
 
   if (isLoading) return <ProductSkeleton />;
 

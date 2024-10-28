@@ -21,6 +21,7 @@ export const InstallmentModal = ({ onFinish }) => {
       detent={"content-height"}
       name="installmentModal"
       onClose={colseModal}
+      
       footer={
         <Container>
           <div

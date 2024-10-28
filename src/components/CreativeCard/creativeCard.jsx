@@ -2,10 +2,8 @@
 import { IMAGE_URL } from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const CreatviceCard = ({ index, item }) => {
-  const router = useRouter();
   const colors = [
     "bg-gradient-to-br from-gray-100 to-white",
     "bg-gradient-to-br from-white to-gray-100",
