@@ -63,7 +63,7 @@ const Voucher = () => {
           </Button>
         </div>
         {error && <p className="text-red-500 mt-2">{error}</p>}
-        <p className="mt-2">Total Price: {totalPrice}</p>
+        {/* <p className="mt-2">Total Price: {totalPrice}</p> */}
       </div>
     </div>
   );
