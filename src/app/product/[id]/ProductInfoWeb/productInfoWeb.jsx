@@ -34,7 +34,7 @@ const OptionTag = ({ name, active = false, onClick }) => {
 };
 
 const ProductInfoWeb = ({ product }) => {
-  const [setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(null);
   const { addItem } = useCartStore();
