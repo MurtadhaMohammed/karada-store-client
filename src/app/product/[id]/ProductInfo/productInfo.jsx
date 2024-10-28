@@ -4,8 +4,8 @@ import IconButton from "@/components/UI/IconButton/iconButton";
 import useScrollPosition from "@/hooks/useScrollPosition";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
-import { IoIosArrowForward } from "react-icons/io";
+import { useState, useEffect } from "react";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { motion } from "framer-motion";
 import {
   TbHeart,
@@ -22,6 +22,7 @@ import "swiper/css/navigation";
 import ProductCTA from "../ProductCTA/ProductCTA";
 import { useCartStore } from "@/lib/cartStore";
 
+// Updated OptionTag to handle clicks and image changes
 const OptionTag = ({ name, active = false, onClick }) => {
   return (
     <button
@@ -48,7 +49,7 @@ const ProductInfo = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(null);
-  const swiperRef = useRef(null);
+  const [swiperInstance, setSwiperInstance] = useState(null);
   const { addItem } = useCartStore();
 
   const loadFavorites = () => {
@@ -72,6 +73,7 @@ const ProductInfo = ({ product }) => {
     const favorites = loadFavorites();
     setIsFavorite(favorites.includes(product?.id));
   }, [product?.id]);
+
   const handleOptionClick = (option, index) => {
     if (option.image) {
       const imageIndex = product?.image?.findIndex(
@@ -79,8 +81,8 @@ const ProductInfo = ({ product }) => {
       );
       if (imageIndex !== -1) {
         setCurrentImageIndex(imageIndex);
-        swiperRef.current?.swiper.slideTo(imageIndex);
       }
+      setActiveOption(index);
     }
     setActiveOption(index);
     product.l1 = product?.options[index];
@@ -96,7 +98,6 @@ const ProductInfo = ({ product }) => {
         <div className={"w-full h-full relative"}>
           {product?.image && product.image.length > 0 && (
             <Swiper
-              ref={swiperRef} // Set the ref for Swiper
               spaceBetween={10}
               slidesPerView={1}
               onSlideChange={(swiper) =>
@@ -224,22 +225,31 @@ const ProductInfo = ({ product }) => {
         </div> */}
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
-          <span className="mr-[8px] text-[14px] text-[#444]">
-            Delivered within 1-2 days
+          <span className="mr-[8px] text-[14px]">
+            عادة مايتم توصيل المنتجات في 3-5 أيام
           </span>
         </div>
-        <div className="mt-[16px] mb-[8px]">
-          {product?.options?.map((option, index) => (
-            <OptionTag
-              key={index}
-              name={option.name}
-              active={index === activeOption}
-              onClick={() => handleOptionClick(option, index)}
-            />
-          ))}
+        <div className="border-t border-t-[#eee] mt-4 pt-4">
+          {product?.options && product?.options.length > 0 && (
+            <h5 className="text-[16px] ">الخيارات</h5>
+          )}
         </div>
-        <ProductCTA onAddToCart={handleAddToCart} price={product?.endPrice} />
+        {product?.options && product?.options.length > 0 && (
+          <div className="flex items-center mt-[8px]">
+            <div className="ml-[12px]">
+              {product?.options.map((option, index) => (
+                <OptionTag
+                  key={index}
+                  name={option.name}
+                  active={index === activeOption}
+                  onClick={() => handleOptionClick(option, index)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </Container>
+      <ProductCTA product={product} onAddToCart={handleAddToCart} />
     </div>
   );
 };

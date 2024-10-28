@@ -12,10 +12,10 @@ export default async function ProductOne({ params }) {
 
   return (
     <div className="pb-[100px]">
-      <div className="md:hidden">
+      <div className="md:hidden block">
         <ProductInfo product={product?.product} />
       </div>
-      <div className="md:block">
+      <div className="md:block hidden">
         <ProductInfoWeb product={product?.product} />
       </div>
       <RelatedList productId={product?.product?.id} />
