@@ -65,7 +65,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
                 selectedCategoryId === el.id && !isBanner ? style.catItem : ""
               } flex items-center justify-center flex-col active:scale-95 transition-all cursor-pointer`}
             >
-              <div className="md:w-[68px] md:h-[68px] w-[48px] h-[48px] rounded-[12px] relative overflow-hidden">
+              <div className="md:w-[68px] md:h-[68px] w-[48px] h-[48px] relative overflow-hidden">
                 <Image
                   src={`${IMAGE_URL}/${el.img}`}
                   alt={el.title}
