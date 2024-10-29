@@ -76,14 +76,14 @@ const ProductInfo = ({ product }) => {
   const handleOptionClick = (option, index) => {
     if (option.img) {
       const imageIndex = product?.image?.findIndex(
-        (img) => img.url === option.img 
+        (img) => img.url === option.img
       );
       if (imageIndex !== -1) {
         setCurrentImageIndex(imageIndex);
         swiperRef.current?.swiper.slideTo(imageIndex);
       }
     }
-  
+
     // Set the active option
     setActiveOption(index);
     product.l1 = product?.options[index];
@@ -94,7 +94,7 @@ const ProductInfo = ({ product }) => {
 
   const isAddToCartDisabled = product?.options?.length > 0 && activeOption === null;
   return (
-    <div>
+    <div className="md:hidden block">
       <div className="h-[400px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
           {product?.image && product.image.length > 0 && (
@@ -111,8 +111,8 @@ const ProductInfo = ({ product }) => {
                 <SwiperSlide key={index}>
                   <Image
                     src={`${IMAGE_URL}/${img.url}`}
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    style={{ objectFit: "cover" }}
                     alt={`product-image-${index}`}
                   />
                 </SwiperSlide>
@@ -228,7 +228,7 @@ const ProductInfo = ({ product }) => {
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px] text-[#444]">
-            Delivered within 1-2 days
+          عادة مايتم توصيل المنتجات في 3-5 أيام
           </span>
         </div>
         <div className="mt-[16px] mb-[8px]">
@@ -241,7 +241,7 @@ const ProductInfo = ({ product }) => {
             />
           ))}
         </div>
-        <ProductCTA product={product} price={product?.endPrice} />
+        <ProductCTA product={product} onAddToCart={handleAddToCart}  />
       </Container>
       <ProductCTA 
         product={product} 

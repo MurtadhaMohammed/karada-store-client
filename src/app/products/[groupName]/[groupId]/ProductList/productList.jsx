@@ -19,7 +19,7 @@ const ProductList = ({ groupId, groupName }) => {
   const getUrl = (pageParam) => ({
     search: `/client/product/product?page=${pageParam}&limit=${limit}&q=${querySearch}${queryString}`,
     banner: `/client/product/getProductsByBanner/${groupId}?page=${pageParam}&limit=${limit}`,
-    brand: `/client/product/product?brand_id=${groupId}`,
+    brand: `/client/product/product?brand_id=${groupId}&page=${pageParam}&limit=${limit}`,
   });
 
   const {
@@ -84,7 +84,7 @@ const ProductList = ({ groupId, groupName }) => {
         </div>
       </Container>
       {isFetchingNextPage && <ProductSkeleton size={4} />}
-      {hasNextPage && (
+      {hasNextPage && data?.pages[0]?.total > limit && (
         <Container>
           <button
             className={

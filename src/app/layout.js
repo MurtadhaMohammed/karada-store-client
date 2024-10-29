@@ -91,12 +91,8 @@ export default function RootLayout({ children }) {
       >
         <ReactQueryProvider>
           <ProgressBar />
-          <div className="md:hidden">
-            <MainHeader />
-          </div>
-          <div className="md:block hidden">
-            <MainHeaderWeb />
-          </div>
+          <MainHeader />
+          <MainHeaderWeb />
           {children}
           <BottomNabar />
           <SideMenu />

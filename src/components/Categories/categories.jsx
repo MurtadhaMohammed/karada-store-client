@@ -9,13 +9,11 @@ import { IMAGE_URL } from "@/lib/api";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-const Wrapper = ({ children, innerRef, ...props }) =>
+const Wrapper = ({ children, ...props }) =>
   props?.href ? (
     <Link {...props}>{children}</Link>
   ) : (
-    <div ref={innerRef} {...props}>
-      {children}
-    </div>
+    <div {...props}>{children}</div>
   );
 
 const Categories = ({ isBanner = true, list = [] }) => {
@@ -58,11 +56,11 @@ const Categories = ({ isBanner = true, list = [] }) => {
         <div className="flex items-center justify-center md:pt-8 md:pb-8 pt-4 pb-4 gap-6 overflow-auto no-scrollbar md:pl-0 md:pr-0 pl-[16px] pr-[16px]">
           {list.map((el) => (
             <Wrapper
+              key={el.id}
               {...(isBanner
                 ? { href: `/categories?init=${el?.id}` }
                 : { onClick: () => handleCategoryClick(el.id) })}
-              key={el.id}
-              innerRef={(elRef) => (categoryRefs.current[el.id] = elRef)} // Assign ref to each Wrapper
+              // innerRef={(elRef) => (categoryRefs?.current[el.id] = elRef)}
               className={`${
                 selectedCategoryId === el.id && !isBanner ? style.catItem : ""
               } flex items-center justify-center flex-col active:scale-95 transition-all cursor-pointer`}
@@ -71,8 +69,8 @@ const Categories = ({ isBanner = true, list = [] }) => {
                 <Image
                   src={`${IMAGE_URL}/${el.img}`}
                   alt={el.title}
-                  layout="fill"
-                  objectFit="contain"
+                  fill
+                  style={{ objectFit: "contain" }} 
                 />
               </div>
               <p
