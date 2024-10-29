@@ -93,6 +93,34 @@ const ProductInfo = ({ product }) => {
     addItem(product, product.l1);
   };
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Check out this page",
+          text: "I found this interesting:",
+          url: window.location.href,
+        });
+        console.log("Content shared successfully");
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      // Fallback for browsers that do not support the Web Share API
+      // alert(
+      //   "Sharing is not supported in this browser. Copying the link instead."
+      // );
+      // navigator.clipboard
+      //   .writeText(window.location.href)
+      //   .then(() => {
+      //     alert("Link copied to clipboard!");
+      //   })
+      //   .catch((err) => {
+      //     console.error("Failed to copy: ", err);
+      //   });
+    }
+  };
+
   return (
     <div className="md:hidden block">
       <div className="h-[400px] border-b border-b-[#eee]">
@@ -180,6 +208,7 @@ const ProductInfo = ({ product }) => {
                 <IconButton
                   rounded={"8px"}
                   className="p-2 bg-[#f6f6f6] rounded-[8px] border border-[#eee]"
+                  onClick={handleShare}
                   icon={<TbShare2 className="text-[22px]" />}
                 />
                 <div className="w-[8px]" />
@@ -228,7 +257,7 @@ const ProductInfo = ({ product }) => {
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px] text-[#444]">
-          عادة مايتم توصيل المنتجات في 3-5 أيام
+            عادة مايتم توصيل المنتجات في 3-5 أيام
           </span>
         </div>
         <div className="mt-[16px] mb-[8px]">
