@@ -88,7 +88,9 @@ const ProductInfo = ({ product }) => {
     setActiveOption(index);
     product.l1 = product?.options[index];
   };
-
+  const handleAddToCart = () => {
+    addItem(product, product.l1);
+  };
 
   const isAddToCartDisabled = product?.options?.length > 0 && activeOption === null;
   return (
