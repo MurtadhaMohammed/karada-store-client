@@ -1,40 +1,49 @@
 "use client";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "@/components/UI/Button/button";
 import { HiOutlineTicket } from "react-icons/hi";
 import { apiCall } from "@/lib/api";
+import { useAppStore } from "@/lib/store";
+import { useCartStore } from "@/lib/cartStore";
 
 const Voucher = () => {
   const [voucherCode, setVoucherCode] = useState("");
-  const [totalPrice, setTotalPrice] = useState(100); // Example initial total price
+  const [totalPrice, setTotalPrice] = useState(100);
   const [error, setError] = useState("");
+  const { userInfo } = useAppStore();
+  const cart = useCartStore((state) => state.cart);
+
+  useEffect(() => {
+    const calculatedTotalPrice = cart.reduce(
+      (total, item) => total + item.product.price * item.qt,
+      0
+    );
+    setTotalPrice(calculatedTotalPrice);
+  }, [cart]);
 
   const applyVoucher = async () => {
+    console.log("Attempting to apply voucher");
     try {
       const response = await apiCall({
-        pathname: `/client/voucher/create-order`,
+        pathname: `/client/voucher/check-voucher`,
         method: "POST",
-        data: order,
+        data: {
+          code: voucherCode,
+          user_id: userInfo.id,
+        },
       });
       if (response.ok) {
-        const voucher = response;
-        if (voucher) {
-          let newTotalPrice = totalPrice;
-          if (voucher.type === "%") {
-            newTotalPrice -= newTotalPrice * (voucher.value / 100);
-          } else if (voucher.type === "#") {
-            newTotalPrice -= voucher.value;
-          }
-          setTotalPrice(newTotalPrice);
-          setError("");
-        }
+        console.log("Voucher applied successfully");
+        setError("");
       } else {
         setError("Invalid voucher code");
       }
     } catch (err) {
+      console.error("Error applying voucher:", err);
       setError("Error applying voucher");
     }
   };
+  
 
   return (
     <div className="w-full rounded-[8px] border border-[#eee] mt-[20px]">
@@ -45,7 +54,7 @@ const Voucher = () => {
       <div className="p-[16px] pt-0 relative">
         <div className="flex gap-2">
           <input
-            className="rounded-[8px] border border-[#eee] h-[48px] pl-[16px] pr-[16px] bg-[#F6F6F6] text-[16px] outline-none"
+            className="rounded-[8px] border border-[#eee] h-[48px]  pl-[16px] pr-[16px] bg-[#F6F6F6] text-[16px] outline-none"
             placeholder="ادخل رمز التخفيظ هنا"
             value={voucherCode}
             onChange={(e) => setVoucherCode(e.target.value)}
@@ -54,8 +63,8 @@ const Voucher = () => {
             }}
           />
           <Button
-            className="bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] w-[80px] flex items-center justify-center"
             onClick={applyVoucher}
+            className="bg-gradient-to-r from-indigo-600 to-violet-600  text-[#fff] w-[80px] flex items-center justify-center"
           >
             <span className="text-[16px] -mt-[1px] ml-[12px] mr-[12px]">
               تطبيق

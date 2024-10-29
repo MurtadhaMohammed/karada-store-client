@@ -48,6 +48,15 @@ const CheckoutCTA = () => {
     }
   };
 
+  const isAddressProvided = useMemo(() => {
+    const { name, phone, address } = userInfo;
+    return (
+      name?.trim() &&
+      phone?.trim() &&
+      address?.trim()
+    );
+  }, [userInfo]);
+  console.log(userInfo)
   return (
     <div
       className="fixed z-10 w-full text-end"
@@ -67,8 +76,13 @@ const CheckoutCTA = () => {
         >
           <Ripples className="!grid w-full">
             <button
-              className="flex w-full items-center justify-center h-[56px] rounded-[28px] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
+              className={`flex w-full items-center justify-center h-[56px] rounded-[28px] p-6 ${
+                isAddressProvided
+                  ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff]"
+                  : "bg-gray-400 text-gray-700 cursor-not-allowed"
+              }`}
               onClick={handleOrderCreation}
+              disabled={!isAddressProvided}
             >
               <span className="ml-[8px] font-bold text-[18px]">
                 تأكـــيد الطلب
@@ -77,6 +91,11 @@ const CheckoutCTA = () => {
             </button>
           </Ripples>
         </div>
+        {!isAddressProvided && (
+          <p className="mt-2 text-red-600 text-center font-semibold">
+            يرجى ملء جميع المعلومات المطلوبة
+          </p>
+        )}
       </Container>
     </div>
   );
