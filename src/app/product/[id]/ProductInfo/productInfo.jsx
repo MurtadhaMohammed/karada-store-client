@@ -14,7 +14,7 @@ import {
   TbTruckDelivery,
 } from "react-icons/tb";
 import { TiStarFullOutline } from "react-icons/ti";
-import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+// import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { IMAGE_URL } from "@/lib/api";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";

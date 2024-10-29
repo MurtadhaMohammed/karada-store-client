@@ -9,12 +9,10 @@ import { useAppStore } from "@/lib/store";
 import Empty from "@/components/Empty/empty";
 import { VscSearchStop } from "react-icons/vsc";
 import { useEffect } from "react";
-import useIsScreenMd from "@/hooks/useIsScreenMd";
 
 const ProductList = ({ groupId, groupName }) => {
   const { querySearch, queryString, setPageTitle } = useAppStore();
-  const isScreenMd = useIsScreenMd();
-  const limit = isScreenMd ? 12 : 10;
+  const limit = 12 
 
   const getUrl = (pageParam) => ({
     search: `/client/product/product?page=${pageParam}&limit=${limit}&q=${querySearch}${queryString}`,
