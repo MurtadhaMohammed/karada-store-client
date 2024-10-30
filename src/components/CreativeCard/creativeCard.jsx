@@ -23,9 +23,9 @@ const CreatviceCard = ({ index, item }) => {
           <h2 className="font-semih2old text-black text-[18px] font-semibold  whitespace-nowrap overflow-hidden text-ellipsis">
             {item?.name}
           </h2>
-          <p className="text-gray-600 text-[14px] mt-[2px] line-clamp-2 overflow-hidden text-ellipsis">
-            {item?.description}
-          </p>
+          <p className="text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis">
+              {item?.description}
+            </p>
           {/* <a className="block mt-[8px] underline text-[#4b4383]">كرادة ستور</a> */}
           <h4 className="mt-[12px] text-[22px] font-extrabold">
             {Number(item?.price).toLocaleString("en")}{" "}
