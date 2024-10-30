@@ -120,6 +120,9 @@ const ProductInfo = ({ product }) => {
     }
   };
 
+  const isAddToCartDisabled =
+    product?.options?.length > 0 && activeOption === null;
+
   return (
     <div className="md:hidden block">
       <div className="h-[400px] border-b border-b-[#eee]">
@@ -269,10 +272,10 @@ const ProductInfo = ({ product }) => {
             />
           ))}
         </div>
-        <ProductCTA product={product} onAddToCart={handleAddToCart}  />
+        <ProductCTA product={product} onAddToCart={handleAddToCart} />
       </Container>
-      <ProductCTA 
-        product={product} 
+      <ProductCTA
+        product={product}
         onAddToCart={handleAddToCart}
         disabled={isAddToCartDisabled}
       />
