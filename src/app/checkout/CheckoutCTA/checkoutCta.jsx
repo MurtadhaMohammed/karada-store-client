@@ -1,3 +1,4 @@
+// CheckoutCTA.jsx
 "use client";
 import Container from "@/components/UI/Container/container";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -13,6 +14,8 @@ const CheckoutCTA = () => {
   const router = useRouter();
   const { userInfo } = useAppStore();
   const cart = useCartStore((state) => state.cart);
+  const voucher = useCartStore((state) => state.voucher); // Retrieve voucher from global state
+
   const items = useMemo(() => {
     return cart.map((item) => ({
       id: item.product.id,
@@ -27,7 +30,7 @@ const CheckoutCTA = () => {
     phone: userInfo.phone,
     address: userInfo.address,
     items,
-    voucher_id: userInfo.voucher_id,
+    voucher_id: voucher ? voucher.id : null,
     store_id: items.length > 0 ? items[0].store_id : null,
   };
 
@@ -38,8 +41,8 @@ const CheckoutCTA = () => {
         method: "POST",
         data: order,
       });
-      if (response.ok) {
-        router.push("/");
+      if (response) {
+        router.push("/orders");
       } else {
         console.error("Failed to create order");
       }
@@ -56,7 +59,7 @@ const CheckoutCTA = () => {
       address?.trim()
     );
   }, [userInfo]);
-  console.log(userInfo)
+
   return (
     <div
       className="fixed z-10 w-full text-end"

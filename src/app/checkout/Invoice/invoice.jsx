@@ -3,19 +3,36 @@ import { PiInvoice } from "react-icons/pi";
 import { useCartStore } from "@/lib/cartStore";
 
 const Invoice = () => {
-  const { getSubTotal, getTotal } = useCartStore();
+  const { getSubTotal, voucher, cart } = useCartStore();
 
   const subTotal = getSubTotal();
-  const discount = 20000;
-  const deliveryCost = 5350;
-  const realTotal = subTotal - discount + deliveryCost;
+  const deliveryCost = 5000;
+
+  // Calculate product discounts
+  const productDiscount = cart.reduce((total, item) => {
+    return total + (item.product.discount ? item.product.discount * item.qt : 0);
+  }, 0);
+
+  // Calculate voucher discount with capping
+  let voucherDiscount = 0;
+  if (voucher) {
+    if (voucher.type === "%") {
+      voucherDiscount = (voucher.value / 100) * subTotal;
+    } else {
+      voucherDiscount = voucher.value;
+    }
+
+    if (voucher.max_amount && voucherDiscount > voucher.max_amount) {
+      voucherDiscount = voucher.max_amount;
+    }
+  }
+
+  const totalDiscount = productDiscount + voucherDiscount;
+  const realTotal = subTotal - (totalDiscount + deliveryCost);
 
   const roundToNearest250 = (num) => {
     let total = Math.ceil(num / 250) * 250;
-    if (total < 0) {
-      total = 0;
-    }
-    return total;
+    return total < 0 ? 0 : total;
   };
 
   const roundedTotal = roundToNearest250(realTotal);
@@ -32,10 +49,18 @@ const Invoice = () => {
             <p>المجموع</p>
             <p>{subTotal.toLocaleString()} IQD</p>
           </div>
-          <div className="flex items-center justify-between mt-[8px]">
-            <p>قيمة الخصم</p>
-            <p>{discount.toLocaleString()} IQD</p>
-          </div>
+          {productDiscount > 0 && (
+            <div className="flex items-center justify-between mt-[8px]">
+              <p>خصم المنتجات</p>
+              <p>{productDiscount.toLocaleString()}- IQD</p>
+            </div>
+          )}
+          {voucherDiscount > 0 && (
+            <div className="flex items-center justify-between mt-[8px]">
+              <p>قيمة الخصم</p>
+              <p>{voucherDiscount.toLocaleString()}- IQD</p>
+            </div>
+          )}
           <div className="flex items-center justify-between mt-[8px]">
             <p>كلفة التوصيل</p>
             <p>{deliveryCost.toLocaleString()} IQD</p>
