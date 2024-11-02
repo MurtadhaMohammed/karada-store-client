@@ -79,7 +79,7 @@ const CheckoutCTA = () => {
           </Ripples>
         </div>
       </Container>
-      <AlertModal/>
+      {/* <AlertModal/> */}
     </div>
   );
 };
