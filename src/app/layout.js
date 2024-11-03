@@ -87,7 +87,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}
+        className={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased bg-[#f6f6f6]`}
       >
         <ReactQueryProvider>
           <ProgressBar />
