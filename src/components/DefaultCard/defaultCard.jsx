@@ -73,14 +73,14 @@ const DefaultCard = ({
               )}
 
               <h4 className="text-[16px] font-extrabold -mt-1">
+                <span className="text-[12px]"> IQD </span>
                 {Number(item?.endPrice).toLocaleString("en")}
-                <span className="text-[12px]">IQD</span>
               </h4>
             </div>
-            <div className="flex gap-1">
+            {/* <div className="flex gap-1">
               <span className="text-[14px] mt-[4.5px]">3.4</span>
               <PiStarFill className="text-[16px] mt-[6px] text-[#FCA120]" />
-            </div>
+            </div> */}
           </div>
         </div>
       </Link>
