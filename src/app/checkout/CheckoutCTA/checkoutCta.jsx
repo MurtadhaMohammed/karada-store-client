@@ -7,7 +7,7 @@ import Ripples from "react-ripples";
 import { apiCall } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
-import { useMemo } from "react";
+import { useMemo, useRef, useState } from "react";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 
 const CheckoutCTA = () => {
@@ -16,6 +16,8 @@ const CheckoutCTA = () => {
   const { userInfo } = useAppStore();
   const cart = useCartStore((state) => state.cart);
   const voucher = useCartStore((state) => state.voucher); // Retrieve voucher from global state
+
+  const [loading, setLoading] = useState(false);
 
   const items = useMemo(() => {
     return cart.map((item) => ({
@@ -38,12 +40,14 @@ const CheckoutCTA = () => {
 
   const handleOrderCreation = async () => {
     try {
+      setLoading(true);
       const response = await apiCall({
         pathname: `/client/order/create-order`,
         method: "POST",
         data: order,
       });
-      if (response) router.push("/orders");
+      if (response) router.replace("/orders");
+      setLoading(false);
     } catch (error) {
       console.error("Error creating order:", error);
     }
@@ -55,7 +59,8 @@ const CheckoutCTA = () => {
       name?.trim() &&
       phone?.trim() &&
       validateIraqiPhoneNumber(phone) &&
-      address?.trim()
+      address?.trim() &&
+      !loading
     )
       return true;
     else false;
@@ -80,7 +85,7 @@ const CheckoutCTA = () => {
         >
           <Ripples className="!grid w-full">
             <button
-              className={`flex w-full items-center justify-center h-[56px] rounded-[28px] p-6 ${
+              className={`flex w-full items-center justify-center h-[56px] rounded-[28px] ${
                 isDataProvided
                   ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff]"
                   : "bg-[#f6f6f6] border border-[#eee] text-[#ccc] cursor-not-allowed"
@@ -88,10 +93,16 @@ const CheckoutCTA = () => {
               onClick={handleOrderCreation}
               disabled={!isDataProvided}
             >
-              <span className="ml-[8px] font-bold text-[18px]">
-                تأكـــيد الطلب
-              </span>
-              <GiConfirmed className="text-[22px]" />
+              {loading ? (
+                <div className="btn-loading"></div>
+              ) : (
+                <>
+                  <span className="ml-[8px] font-bold text-[18px]">
+                    تأكـــيد الطلب
+                  </span>
+                  <GiConfirmed className="text-[22px]" />
+                </>
+              )}
             </button>
           </Ripples>
         </div>

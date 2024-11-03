@@ -8,7 +8,7 @@ const ImageGroup = ({ thumbnails }) => {
   return (
     <div className="w-[100px] h-[100px]  relative ">
       {thumbnails?.length === 1 && (
-        <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative">
+        <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] overflow-hidden relative">
           <Image
             src={`${IMAGE_URL}/${thumbnails[0]}`}
             fill
@@ -38,7 +38,7 @@ const ImageGroup = ({ thumbnails }) => {
           className="relative h-full grid grid-cols-2 gap-1  overflow-hidden"
           style={{ direction: "ltr" }}
         >
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative">
+          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
             {" "}
             <Image
               src={`${IMAGE_URL}/${thumbnails[0]}`}
@@ -46,14 +46,14 @@ const ImageGroup = ({ thumbnails }) => {
               style={{ objectFit: "cover" }} 
             />
           </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative">
+          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
             <Image
               src={`${IMAGE_URL}/${thumbnails[0]}`}
               fill
               style={{ objectFit: "cover" }} 
             />
           </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative">
+          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
             <Image
               src={`${IMAGE_URL}/${thumbnails[0]}`}
               fill
@@ -67,28 +67,28 @@ const ImageGroup = ({ thumbnails }) => {
           className="relative h-full grid grid-cols-2 gap-1  overflow-hidden"
           style={{ direction: "ltr" }}
         >
-          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
+          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden">
             <Image
               src={`${IMAGE_URL}/${thumbnails[0]}`}
               fill
               style={{ objectFit: "cover" }} 
             />
           </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
+          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden">
             <Image
               src={`${IMAGE_URL}/${thumbnails[0]}`}
               fill
               style={{ objectFit: "cover" }} 
             />
           </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
+          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden">
             <Image
               src={`${IMAGE_URL}/${thumbnails[0]}`}
               fill
               style={{ objectFit: "cover" }} 
             />
           </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
+          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden">
             <Image
               src={`${IMAGE_URL}/${thumbnails[0]}`}
               fill
