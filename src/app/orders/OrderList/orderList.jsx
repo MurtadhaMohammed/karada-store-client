@@ -7,11 +7,10 @@ import { AiOutlineTruck } from "react-icons/ai";
 import { useAppStore } from "@/lib/store";
 import { apiCall } from "@/lib/api";
 import OrdersSkeleton from "../Skeleton/skeleton";
+import { TbFaceIdError } from "react-icons/tb";
 
 const OrderList = () => {
   const { userInfo } = useAppStore();
-
-  console.log(userInfo)
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: [`orders-${userInfo?.id}`],
@@ -20,12 +19,21 @@ const OrderList = () => {
         pathname: `/client/order/getOrdersByUserId/${userInfo?.id}`,
         method: "GET",
       }),
-
     enabled: !!userInfo?.id,
   });
 
   if (isLoading) return <OrdersSkeleton />;
-  if (isError || error || data?.error) return "";
+  if (isError || error || data?.error)
+    return (
+      <Empty
+        icon={<TbFaceIdError className="text-[100px]" />}
+        title="مشكلة بالاتصال"
+        msg="يبدو انك تواجة مشكلة بالخادم!."
+        href={"/"}
+        top={14}
+        //buttonText={"عودة للرئيسية"}
+      />
+    );
 
   if (data?.orders?.length === 0)
     return (

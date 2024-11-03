@@ -8,7 +8,7 @@ import { apiCall } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 import { useMemo } from "react";
-import AlertModal from "../AlertModal/alertModal";
+import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
@@ -33,7 +33,7 @@ const CheckoutCTA = () => {
     address: userInfo.address,
     items,
     voucher_id: voucher ? voucher.id : null,
-    store_id: items.length > 0 ? items[0].store_id : null,
+    store_id: 1,
   };
 
   const handleOrderCreation = async () => {
@@ -43,23 +43,22 @@ const CheckoutCTA = () => {
         method: "POST",
         data: order,
       });
-      if (response) {
-        router.push("/orders");
-      } else {
-        console.error("Failed to create order");
-      }
+      if (response) router.push("/orders");
     } catch (error) {
       console.error("Error creating order:", error);
     }
   };
 
-  const isAddressProvided = useMemo(() => {
-    const { name, phone, address } = userInfo;
-    return (
+  const isDataProvided = useMemo(() => {
+    const { name, phone, address } = userInfo || {};
+    if (
       name?.trim() &&
       phone?.trim() &&
+      validateIraqiPhoneNumber(phone) &&
       address?.trim()
-    );
+    )
+      return true;
+    else false;
   }, [userInfo]);
 
   return (
@@ -82,12 +81,12 @@ const CheckoutCTA = () => {
           <Ripples className="!grid w-full">
             <button
               className={`flex w-full items-center justify-center h-[56px] rounded-[28px] p-6 ${
-                isAddressProvided
+                isDataProvided
                   ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff]"
-                  : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                  : "bg-[#f6f6f6] border border-[#eee] text-[#ccc] cursor-not-allowed"
               }`}
               onClick={handleOrderCreation}
-              disabled={!isAddressProvided}
+              disabled={!isDataProvided}
             >
               <span className="ml-[8px] font-bold text-[18px]">
                 تأكـــيد الطلب
@@ -96,13 +95,12 @@ const CheckoutCTA = () => {
             </button>
           </Ripples>
         </div>
-        {!isAddressProvided && (
+        {/* {!isDataProvided && (
           <p className="mt-2 text-red-600 text-center font-semibold">
             يرجى ملء جميع المعلومات المطلوبة
           </p>
-        )}
+        )} */}
       </Container>
-      {/* <AlertModal/> */}
     </div>
   );
 };
