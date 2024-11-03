@@ -11,6 +11,8 @@ import OrdersSkeleton from "../Skeleton/skeleton";
 const OrderList = () => {
   const { userInfo } = useAppStore();
 
+  console.log(userInfo)
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: [`orders-${userInfo?.id}`],
     queryFn: () =>
