@@ -54,7 +54,7 @@ const MainHeader = () => {
     pathname !== "/brands"
   )
     return (
-      <header className="h-[68px] shadow-[0_4px_20px_rgb(0,0,0,0.06)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-20">
+      <header className="md:hidden h-[68px] shadow-[0_4px_20px_rgb(0,0,0,0.06)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-20">
         <Motion y={-6}>
           <Container>
             <div className="flex items-center justify-between h-[68px]">
@@ -74,7 +74,7 @@ const MainHeader = () => {
 
   return (
     <header
-      className={`shadow-[0_4px_20px_rgb(0,0,0,0.06)] border-b border-b-[#f0f0f0] bg-white z-20 transition-all duration-300 ${
+      className={`md:hidden shadow-[0_4px_20px_rgb(0,0,0,0.06)] border-b border-b-[#f0f0f0] bg-white z-20 transition-all duration-300 ${
         scrollDirection === "up" && scrollPosition !== 0
           ? "sticky top-0"
           : "relative"

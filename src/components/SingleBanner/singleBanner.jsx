@@ -13,9 +13,9 @@ const SingleBanner = ({ banner }) => {
           <div className="w-[100%] md:aspect-4 aspect-3  relative">
             <Image
               src={`${IMAGE_URL}/${banner?.img}`}
-              layout="fill"
+              fill
               alt={banner.title || "Single Banner"}
-              objectFit="cover"
+              style={{ objectFit: "cover" }} 
             />
           </div>
           <div className="p-[12px] pr-[16] relative">

@@ -50,7 +50,7 @@ const CartItem = ({ item }) => {
             src={`${IMAGE_URL}/${item?.product?.thumbnail1}`}
             width={80}
             height={80}
-            objectFit="cover"
+            style={{ objectFit: "cover" }} 
             className="border border-[#eee] rounded-[8px]"
             alt="image"
           />

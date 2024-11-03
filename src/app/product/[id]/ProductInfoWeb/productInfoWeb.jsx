@@ -81,7 +81,7 @@ const ProductInfoWeb = ({ product }) => {
   const isAddToCartDisabled = product?.options?.length > 0 && activeOption === null;
 
   return (
-    <div className="mt-[48px] ">
+    <div className="mt-[48px] md:block hidden">
       <Container>
         <div className="flex gap-10 mb-[40px] pb-[40px] border-b border-b-[#eee]">
           <section className="flex gap-4">
@@ -98,8 +98,8 @@ const ProductInfoWeb = ({ product }) => {
                 >
                   <Image
                     src={`${IMAGE_URL}/${img?.url}`}
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    style={{ objectFit: "cover" }} 
                   />
                 </div>
               ))}
@@ -114,8 +114,8 @@ const ProductInfoWeb = ({ product }) => {
             >
               <Image
                 src={`${IMAGE_URL}/${product?.image[currentImageIndex]?.url}`}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }} 
               />
             </motion.div>
           </section>

@@ -14,7 +14,7 @@ import {
   TbTruckDelivery,
 } from "react-icons/tb";
 import { TiStarFullOutline } from "react-icons/ti";
-import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+// import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { IMAGE_URL } from "@/lib/api";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -76,23 +76,53 @@ const ProductInfo = ({ product }) => {
   const handleOptionClick = (option, index) => {
     if (option.img) {
       const imageIndex = product?.image?.findIndex(
-        (img) => img.url === option.img 
+        (img) => img.url === option.img
       );
       if (imageIndex !== -1) {
         setCurrentImageIndex(imageIndex);
         swiperRef.current?.swiper.slideTo(imageIndex);
       }
     }
-  
+
     // Set the active option
     setActiveOption(index);
     product.l1 = product?.options[index];
   };
 
+  const handleAddToCart = () => {
+    addItem(product, product.l1);
+  };
 
-  const isAddToCartDisabled = product?.options?.length > 0 && activeOption === null;
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Check out this page",
+          text: "I found this interesting:",
+          url: window.location.href,
+        });
+        console.log("Content shared successfully");
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      // Fallback for browsers that do not support the Web Share API
+      // alert(
+      //   "Sharing is not supported in this browser. Copying the link instead."
+      // );
+      // navigator.clipboard
+      //   .writeText(window.location.href)
+      //   .then(() => {
+      //     alert("Link copied to clipboard!");
+      //   })
+      //   .catch((err) => {
+      //     console.error("Failed to copy: ", err);
+      //   });
+    }
+  };
+
   return (
-    <div>
+    <div className="md:hidden block">
       <div className="h-[400px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
           {product?.image && product.image.length > 0 && (
@@ -109,8 +139,8 @@ const ProductInfo = ({ product }) => {
                 <SwiperSlide key={index}>
                   <Image
                     src={`${IMAGE_URL}/${img.url}`}
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    style={{ objectFit: "cover" }}
                     alt={`product-image-${index}`}
                   />
                 </SwiperSlide>
@@ -178,6 +208,7 @@ const ProductInfo = ({ product }) => {
                 <IconButton
                   rounded={"8px"}
                   className="p-2 bg-[#f6f6f6] rounded-[8px] border border-[#eee]"
+                  onClick={handleShare}
                   icon={<TbShare2 className="text-[22px]" />}
                 />
                 <div className="w-[8px]" />
@@ -226,7 +257,7 @@ const ProductInfo = ({ product }) => {
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px] text-[#444]">
-            Delivered within 1-2 days
+            عادة مايتم توصيل المنتجات في 3-5 أيام
           </span>
         </div>
         <div className="mt-[16px] mb-[8px]">
@@ -239,7 +270,7 @@ const ProductInfo = ({ product }) => {
             />
           ))}
         </div>
-        <ProductCTA product={product} price={product?.endPrice} />
+        <ProductCTA product={product} onAddToCart={handleAddToCart} />
       </Container>
       <ProductCTA 
         product={product} 

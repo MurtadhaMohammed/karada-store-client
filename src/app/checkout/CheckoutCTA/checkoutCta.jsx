@@ -7,6 +7,7 @@ import { apiCall } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 import { useMemo } from "react";
+import AlertModal from "../AlertModal/alertModal";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
@@ -78,6 +79,7 @@ const CheckoutCTA = () => {
           </Ripples>
         </div>
       </Container>
+      {/* <AlertModal/> */}
     </div>
   );
 };

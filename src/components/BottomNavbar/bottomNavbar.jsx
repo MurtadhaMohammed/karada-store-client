@@ -27,7 +27,7 @@ const NavItem = ({ isActive = false, icon, label, to = "/", count = 0 }) => {
     <Link href={to} className="flex-1">
       <div
         //onClick={() => router.replace(to)}
-        className={`h-[70px] flex-1 flex flex-col items-center justify-center active:scale-[0.94] -mt-[1px] transition-all ${activeStyle} relative`}
+        className={`h-[70px] flex-1 flex flex-col items-center justify-center active:scale-[0.94] -mt-[1px] pt-1 transition-all ${activeStyle} relative`}
       >
         {icon}
         <p className="text-[14px] mt-[4px] font-bold">{label}</p>
@@ -81,7 +81,7 @@ const BottomNabar = () => {
       <Container>
         <div className="flex gap-4 justify-evenly items-center">
           <NavItem
-            icon={<TbSmartHome className="text-[26px]" />}
+            icon={<TbSmartHome className="text-[24px]" />}
             label={"الرئيسية"}
             isActive={pathname === "/"}
           />
@@ -89,9 +89,9 @@ const BottomNabar = () => {
             to="/categories"
             icon={
               pathname === "/categories" ? (
-                <TbCategoryFilled className="text-[26px]" />
+                <TbCategoryFilled className="text-[24px]" />
               ) : (
-                <TbCategory className="text-[26px]" />
+                <TbCategory className="text-[24px]" />
               )
             }
             label={"الفئات"}
@@ -101,9 +101,9 @@ const BottomNabar = () => {
             to="/brands"
             icon={
               pathname === "/brands" ? (
-                <TbBrandFirebase className="text-[26px]" />
+                <TbBrandFirebase className="text-[24px]" />
               ) : (
-                <TbBrandFirebase className="text-[26px]" />
+                <TbBrandFirebase className="text-[24px]" />
               )
             }
             label={"الماركات"}
@@ -113,9 +113,9 @@ const BottomNabar = () => {
             to="/cart?from=home"
             icon={
               pathname === "/cart" ? (
-                <TbShoppingCartFilled className="text-[26px]" />
+                <TbShoppingCartFilled className="text-[24px]" />
               ) : (
-                <TbShoppingCart className="text-[26px]" />
+                <TbShoppingCart className="text-[24px]" />
               )
             }
             label={"السلة"}
@@ -127,9 +127,9 @@ const BottomNabar = () => {
             to="/faivorates"
             icon={
               pathname === "/faivorates" ? (
-                <TbHeartFilled className="text-[26px]" />
+                <TbHeartFilled className="text-[24px]" />
               ) : (
-                <TbHeart className="text-[26px]" />
+                <TbHeart className="text-[24px]" />
               )
             }
             label={"الطلبات"}
@@ -139,9 +139,9 @@ const BottomNabar = () => {
             to="/faivorates"
             icon={
               pathname === "/faivorates" ? (
-                <TbHeartFilled className="text-[26px]" />
+                <TbHeartFilled className="text-[24px]" />
               ) : (
-                <TbHeart className="text-[26px]" />
+                <TbHeart className="text-[24px]" />
               )
             }
             label={"المفضلة"}

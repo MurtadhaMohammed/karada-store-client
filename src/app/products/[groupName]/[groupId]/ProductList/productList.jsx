@@ -9,17 +9,15 @@ import { useAppStore } from "@/lib/store";
 import Empty from "@/components/Empty/empty";
 import { VscSearchStop } from "react-icons/vsc";
 import { useEffect } from "react";
-import useIsScreenMd from "@/hooks/useIsScreenMd";
 
 const ProductList = ({ groupId, groupName }) => {
   const { querySearch, queryString, setPageTitle } = useAppStore();
-  const isScreenMd = useIsScreenMd();
-  const limit = isScreenMd ? 12 : 10;
+  const limit = 12 
 
   const getUrl = (pageParam) => ({
     search: `/client/product/product?page=${pageParam}&limit=${limit}&q=${querySearch}${queryString}`,
     banner: `/client/product/getProductsByBanner/${groupId}?page=${pageParam}&limit=${limit}`,
-    brand: `/client/product/product?brand_id=${groupId}`,
+    brand: `/client/product/product?brand_id=${groupId}&page=${pageParam}&limit=${limit}`,
   });
 
   const {
@@ -84,7 +82,7 @@ const ProductList = ({ groupId, groupName }) => {
         </div>
       </Container>
       {isFetchingNextPage && <ProductSkeleton size={4} />}
-      {hasNextPage && (
+      {hasNextPage && data?.pages[0]?.total > limit && (
         <Container>
           <button
             className={

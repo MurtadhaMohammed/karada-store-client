@@ -20,12 +20,12 @@ const CreatviceCard = ({ index, item }) => {
         } md:w-[100%] md:h-[300px]  w-[240px] h-[350px] active:opacity-50 transition-all`}
       >
         <div className="p-5 pb-0">
-          <h2 className="font-semih2old text-black text-[18px] font-semibold  whitespace-nowrap overflow-hidden text-ellipsis">
+          <h2 className="font-semih2old text-black text-[16px] font-semibold ">
             {item?.name}
           </h2>
-          <p className="text-gray-600 text-[14px] mt-[2px] line-clamp-2 overflow-hidden text-ellipsis">
-            {item?.description}
-          </p>
+          <p className="text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis">
+              {item?.description}
+            </p>
           {/* <a className="block mt-[8px] underline text-[#4b4383]">كرادة ستور</a> */}
           <h4 className="mt-[12px] text-[22px] font-extrabold">
             {Number(item?.price).toLocaleString("en")}{" "}
@@ -36,8 +36,8 @@ const CreatviceCard = ({ index, item }) => {
           <div className="w-full h-full relative">
             <Image
               src={`${IMAGE_URL}/${item.thumbnail2}`}
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }} 
               alt="image"
             />
           </div>
