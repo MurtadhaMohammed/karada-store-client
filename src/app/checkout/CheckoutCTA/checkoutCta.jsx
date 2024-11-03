@@ -21,6 +21,7 @@ const CheckoutCTA = () => {
       id: item.product.id,
       quantity: item.qt,
       store_id: item.product.store_id,
+      l1: item.l1,
     }));
   }, [cart]);
 

@@ -88,6 +88,7 @@ const ProductInfo = ({ product }) => {
     setActiveOption(index);
     product.l1 = product?.options[index];
   };
+
   const handleAddToCart = () => {
     addItem(product, product.l1);
   };
@@ -272,7 +273,10 @@ const ProductInfo = ({ product }) => {
             />
           ))}
         </div>
-        <ProductCTA product={product} onAddToCart={handleAddToCart} />
+        <ProductCTA
+          product={product}
+          onAddToCart={handleAddToCart}
+        />
       </Container>
       <ProductCTA
         product={product}
