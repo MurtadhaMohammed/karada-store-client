@@ -26,7 +26,7 @@ export default function SliderBanner({ banners }) {
           >
             {slider?.map((el) => (
               <SwiperSlide
-                key={el.id}
+                key={el?.id}
                 className="md:pl-0 md:pr-0 pl-[16px] pr-[16px]"
               >
                 <Link
@@ -34,9 +34,9 @@ export default function SliderBanner({ banners }) {
                   className="w-[100%] md:aspect-[3.5] aspect-3 relative rounded-[16px] overflow-hidden pb-[20px] inline-block shadow-md active:opacity-50 transition-all"
                 >
                   <Image
-                    src={`${IMAGE_URL}/${el.img}`}
+                    src={`${IMAGE_URL}/${el?.img}`}
                     fill
-                    alt={el.title || "Banner"}
+                    alt={el?.title || "Banner"}
                     style={{ objectFit: "cover" }} 
                   />
                 </Link>
