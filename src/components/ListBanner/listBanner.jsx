@@ -15,7 +15,6 @@ const ListBanner = ({
   isCreative = false,
   noMore = false,
 }) => {
-  console.log(list)
   if (list.length === 0) return;
   return (
     <div className="md:pt-[24px] pt-[16px] ">
