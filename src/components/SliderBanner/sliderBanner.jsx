@@ -13,7 +13,9 @@ import Link from "next/link";
 export default function SliderBanner({ banners }) {
   const [current, setCurrent] = useState(0);
 
+
   const slider = banners?.slider;
+  console.log(slider);
   return (
     <div className="mt-[16px] mb-[16px] w-full">
       <Container noPadding>
