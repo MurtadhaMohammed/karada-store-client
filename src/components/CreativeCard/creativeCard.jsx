@@ -35,7 +35,7 @@ const CreatviceCard = ({ index, item }) => {
         <div className="w-[240px] h-[240px] flex items-center justify-center relative">
           <div className="w-full h-full relative">
             <Image
-              src={`${IMAGE_URL}/${item.thumbnail2}`}
+              src={`${IMAGE_URL}/${item?.thumbnail2}`}
               fill
               style={{ objectFit: "cover" }} 
               alt="image"
