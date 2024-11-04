@@ -80,7 +80,7 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
                 setImageLoaded(false);
                 setCurrentIndex(index);
               }}
-              className={`w-[60px] h-[60px] md:w-[80px] md:h-[80px] rounded-[12px] mx-2 relative overflow-hidden cursor-pointer ${
+              className={`w-[30px] h-[30px] md:w-[60px] md:h-[60px] rounded-[8px] mx-2 relative overflow-hidden cursor-pointer ${
                 currentIndex === index ? "border border-[#975aff]" : ""
               }`}
             >
