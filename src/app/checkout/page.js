@@ -12,13 +12,13 @@ export default function Checkout() {
       <Container>
         <div className="md:grid md:grid-cols-2 md:gap-6">
           <div>
-          <Payments />
-          <Address />
+            <Payments />
+            <Address />
           </div>
-         <div>
-         <Voucher />
-         <Invoice />
-         </div>
+          <div>
+            <Voucher />
+            <Invoice />
+          </div>
         </div>
       </Container>
       <CheckoutCTA />

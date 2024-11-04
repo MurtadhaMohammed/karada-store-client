@@ -21,23 +21,20 @@ const Address = () => {
   const handlePhoneChange = (e) => {
     const newPhone = e.target.value;
     setPhone(newPhone);
-    setUserInfo({ ...userInfo, phone: newPhone });
   };
 
   const handleNameChange = (e) => {
     const newName = e.target.value;
     setName(newName);
-    setUserInfo({ ...userInfo, name: newName });
   };
 
   const handleNotesChange = (e) => {
     const newNotes = e.target.value;
     setNotes(newNotes);
-    setUserInfo({ ...userInfo, notes: newNotes });
   };
 
   return (
-    <div className="rounded-[8px] border border-[#eee] mt-[20px]">
+    <div className="rounded-[8px] border border-[#eee] mt-[22px]">
       <div className="flex items-center p-[16px]">
         <GrLocation className="text-[18px]" />
         <p className="mr-[6px]">تفاصيل العنوان</p>
@@ -49,23 +46,11 @@ const Address = () => {
           onChange={handleAddressChange}
         />
         <div className="h-[12px]"></div>
-        <Input
-          hint="رقم الهاتف"
-          value={phone}
-          onChange={handlePhoneChange}
-        />
+        <Input hint="رقم الهاتف" value={phone} onChange={handlePhoneChange} />
         <div className="h-[12px]"></div>
-        <Input
-          hint="الاسم الكامل"
-          value={name}
-          onChange={handleNameChange}
-        />
+        <Input hint="الاسم الكامل" value={name} onChange={handleNameChange} />
         <div className="h-[12px]"></div>
-        <Input
-          hint="ملاحظات"
-          value={notes}
-          onChange={handleNotesChange}
-        />
+        <Input hint="ملاحظات" value={notes} onChange={handleNotesChange} />
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+// CheckoutCTA.jsx
 "use client";
 import Container from "@/components/UI/Container/container";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -6,19 +7,24 @@ import Ripples from "react-ripples";
 import { apiCall } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
-import { useMemo } from "react";
-import AlertModal from "../AlertModal/alertModal";
+import { useMemo, useRef, useState } from "react";
+import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { userInfo } = useAppStore();
   const cart = useCartStore((state) => state.cart);
+  const voucher = useCartStore((state) => state.voucher); // Retrieve voucher from global state
+
+  const [loading, setLoading] = useState(false);
+
   const items = useMemo(() => {
     return cart.map((item) => ({
       id: item.product.id,
       quantity: item.qt,
       store_id: item.product.store_id,
+      l1: item.l1,
     }));
   }, [cart]);
 
@@ -28,26 +34,37 @@ const CheckoutCTA = () => {
     phone: userInfo.phone,
     address: userInfo.address,
     items,
-    voucher_id: userInfo.voucher_id,
-    store_id: items.length > 0 ? items[0].store_id : null,
+    voucher_id: voucher ? voucher.id : null,
+    store_id: 1,
   };
 
   const handleOrderCreation = async () => {
     try {
+      setLoading(true);
       const response = await apiCall({
         pathname: `/client/order/create-order`,
         method: "POST",
         data: order,
       });
-      if (response.ok) {
-        router.push("/");
-      } else {
-        console.error("Failed to create order");
-      }
+      if (response) router.replace("/orders");
+      setLoading(false);
     } catch (error) {
       console.error("Error creating order:", error);
     }
   };
+
+  const isDataProvided = useMemo(() => {
+    const { name, phone, address } = userInfo || {};
+    if (
+      name?.trim() &&
+      phone?.trim() &&
+      validateIraqiPhoneNumber(phone) &&
+      address?.trim() &&
+      !loading
+    )
+      return true;
+    else false;
+  }, [userInfo]);
 
   return (
     <div
@@ -68,18 +85,33 @@ const CheckoutCTA = () => {
         >
           <Ripples className="!grid w-full">
             <button
-              className="flex w-full items-center justify-center h-[56px] rounded-[28px] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
+              className={`flex w-full items-center justify-center h-[56px] rounded-[28px] ${
+                isDataProvided
+                  ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff]"
+                  : "bg-[#f6f6f6] border border-[#eee] text-[#ccc] cursor-not-allowed"
+              }`}
               onClick={handleOrderCreation}
+              disabled={!isDataProvided}
             >
-              <span className="ml-[8px] font-bold text-[18px]">
-                تأكـــيد الطلب
-              </span>
-              <GiConfirmed className="text-[22px]" />
+              {loading ? (
+                <div className="btn-loading"></div>
+              ) : (
+                <>
+                  <span className="ml-[8px] font-bold text-[18px]">
+                    تأكـــيد الطلب
+                  </span>
+                  <GiConfirmed className="text-[22px]" />
+                </>
+              )}
             </button>
           </Ripples>
         </div>
+        {/* {!isDataProvided && (
+          <p className="mt-2 text-red-600 text-center font-semibold">
+            يرجى ملء جميع المعلومات المطلوبة
+          </p>
+        )} */}
       </Container>
-      {/* <AlertModal/> */}
     </div>
   );
 };

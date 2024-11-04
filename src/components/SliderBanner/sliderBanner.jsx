@@ -15,7 +15,7 @@ export default function SliderBanner({ banners }) {
 
 
   const slider = banners?.slider;
-  console.log(slider);
+  console.log(slider, "slider");
   return (
     <div className="mt-[16px] mb-[16px] w-full">
       <Container noPadding>

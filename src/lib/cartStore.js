@@ -2,6 +2,9 @@ import { create } from "zustand";
 
 export const useCartStore = create((set, get) => ({
   cart: [],
+  voucher: null, // Stores the entire voucher object
+  totalPrice: 0,
+  deliveryCost: 5000, // Adjust as needed
 
   setCart: (cart) => set({ cart }),
 
@@ -19,7 +22,7 @@ export const useCartStore = create((set, get) => ({
           item.product?.l1?.uuid === itemToBeRemoved?.l1?.uuid
         )
           return false;
-        else return item;
+        else return true;
       }),
     }));
   },
@@ -30,7 +33,7 @@ export const useCartStore = create((set, get) => ({
           item.product.id === itemToBeIncreased.id &&
           item.product?.l1?.uuid === itemToBeIncreased?.l1?.uuid
         )
-          item.qt += 1;
+          return { ...item, qt: item.qt + 1 };
         return item;
       }),
     }));
@@ -38,8 +41,12 @@ export const useCartStore = create((set, get) => ({
   decrease: (itemToBeDecreased) => {
     set((state) => ({
       cart: state.cart.map((item) => {
-        if (item.product.id === itemToBeDecreased.id && item.qt > 1)
-          item.qt -= 1;
+        if (
+          item.product.id === itemToBeDecreased.id &&
+          item.qt > 1 &&
+          item.product?.l1?.uuid === itemToBeDecreased?.l1?.uuid
+        )
+          return { ...item, qt: item.qt - 1 };
         return item;
       }),
     }));
@@ -48,6 +55,8 @@ export const useCartStore = create((set, get) => ({
   clearCart: () => {
     set({
       cart: [],
+      voucher: null,
+      totalPrice: 0,
     });
   },
 
@@ -73,11 +82,13 @@ export const useCartStore = create((set, get) => ({
     return get().cart.find((item) => item?.product?.id === productId)?.qt || 0;
   },
 
-  geVoucherValue: () => {
-    return;
+  setVoucher: (voucher) => {
+    set({ voucher });
+    // Optionally, recalculate totalPrice here if needed
   },
 }));
 
-useCartStore.subscribe(({ cart }) =>
-  localStorage.setItem("karada-cart", JSON.stringify(cart))
-);
+useCartStore.subscribe(({ cart, voucher }) => {
+  localStorage.setItem("karada-cart", JSON.stringify(cart));
+  // Optionally, persist voucher if needed
+});

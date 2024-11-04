@@ -121,6 +121,12 @@ const ProductInfo = ({ product }) => {
     }
   };
 
+<<<<<<< HEAD
+=======
+  const isAddToCartDisabled =
+    product?.options?.length > 0 && activeOption === null;
+
+>>>>>>> 886987107ad33674b6c461516aa0e4d8c92a204e
   return (
     <div className="md:hidden block">
       <div className="h-[400px] border-b border-b-[#eee]">
@@ -149,7 +155,7 @@ const ProductInfo = ({ product }) => {
           )}
           <div className="absolute left-0 right-0 mt-[4px] bottom-[16px] z-50">
             <Container>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-center">
                 <div className="flex items-center gap-[4px] mr-1">
                   {product?.image?.map((image, i) => (
                     <span
@@ -163,10 +169,10 @@ const ProductInfo = ({ product }) => {
                     />
                   ))}
                 </div>
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <p className="mt-1 ml-2">3.6</p>
                   <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                </div>
+                </div> */}
               </div>
             </Container>
           </div>
@@ -270,10 +276,13 @@ const ProductInfo = ({ product }) => {
             />
           ))}
         </div>
-        <ProductCTA product={product} onAddToCart={handleAddToCart} />
+        <ProductCTA
+          product={product}
+          onAddToCart={handleAddToCart}
+        />
       </Container>
-      <ProductCTA 
-        product={product} 
+      <ProductCTA
+        product={product}
         onAddToCart={handleAddToCart}
         disabled={isAddToCartDisabled}
       />

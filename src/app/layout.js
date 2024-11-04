@@ -86,18 +86,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}
+      <ReactQueryProvider
+        fontStyle={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}
       >
-        <ReactQueryProvider>
-          <ProgressBar />
-          <MainHeader />
-          <MainHeaderWeb />
-          {children}
-          <BottomNabar />
-          <SideMenu />
-        </ReactQueryProvider>
-      </body>
+        <ProgressBar />
+        <MainHeader />
+        <MainHeaderWeb />
+        {children}
+        <BottomNabar />
+        <SideMenu />
+      </ReactQueryProvider>
     </html>
   );
 }

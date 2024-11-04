@@ -12,7 +12,7 @@ import { useEffect } from "react";
 
 const ProductList = ({ groupId, groupName }) => {
   const { querySearch, queryString, setPageTitle } = useAppStore();
-  const limit = 12 
+  const limit = 12;
 
   const getUrl = (pageParam) => ({
     search: `/client/product/product?page=${pageParam}&limit=${limit}&q=${querySearch}${queryString}`,
@@ -46,14 +46,21 @@ const ProductList = ({ groupId, groupName }) => {
   });
 
   useEffect(() => {
-    if (data && data?.pages[0] && groupName !== "search" && groupId !== "all")
+    if (
+      data &&
+      data?.pages[0] &&
+      groupName !== "search" &&
+      groupId !== "all" &&
+      groupName !== "brand"
+    )
       setPageTitle(data?.pages[0]?.bannerTitle);
     else if (
       data &&
       data?.pages[0]?.products?.length > 0 &&
-      groupName === "banner"
+      groupName === "brand"
     )
       setPageTitle(data.pages[0]?.products[0]?.brand?.name);
+    else if (groupName === "brand") setPageTitle("...");
   }, [data]);
 
   if (isLoading) return <ProductSkeleton />;
@@ -86,7 +93,7 @@ const ProductList = ({ groupId, groupName }) => {
         <Container>
           <button
             className={
-              "w-full h-[48px] rounded-[8px] border border-[#eee] mt-[26px]"
+              "w-full h-[48px] rounded-[8px] border border-[#eee] mt-[26px] bg-[#fff]"
             }
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage}
