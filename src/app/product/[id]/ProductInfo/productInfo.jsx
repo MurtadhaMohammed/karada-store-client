@@ -121,12 +121,9 @@ const ProductInfo = ({ product }) => {
     }
   };
 
-<<<<<<< HEAD
-=======
   const isAddToCartDisabled =
     product?.options?.length > 0 && activeOption === null;
 
->>>>>>> 886987107ad33674b6c461516aa0e4d8c92a204e
   return (
     <div className="md:hidden block">
       <div className="h-[400px] border-b border-b-[#eee]">
