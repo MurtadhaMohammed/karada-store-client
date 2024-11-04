@@ -56,19 +56,19 @@ const Categories = ({ isBanner = true, list = [] }) => {
         <div className="flex items-center justify-center md:pt-8 md:pb-8 pt-4 pb-4 gap-6 overflow-auto no-scrollbar md:pl-0 md:pr-0 pl-[16px] pr-[16px]">
           {list.map((el) => (
             <Wrapper
-              key={el.id}
+              key={el?.id}
               {...(isBanner
                 ? { href: `/categories?init=${el?.id}` }
                 : { onClick: () => handleCategoryClick(el.id) })}
               // innerRef={(elRef) => (categoryRefs?.current[el.id] = elRef)}
               className={`${
-                selectedCategoryId === el.id && !isBanner ? style.catItem : ""
+                selectedCategoryId === el?.id && !isBanner ? style.catItem : ""
               } flex items-center justify-center flex-col active:scale-95 transition-all cursor-pointer`}
             >
               <div className="md:w-[68px] md:h-[68px] w-[48px] h-[48px] relative overflow-hidden">
                 <Image
-                  src={`${IMAGE_URL}/${el.img}`}
-                  alt={el.title}
+                  src={`${IMAGE_URL}/${el?.img}`}
+                  alt={el?.title}
                   fill
                   style={{ objectFit: "contain" }} 
                 />
@@ -80,7 +80,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
                     : "text-gray-700"
                 }`}
               >
-                {el.title}
+                {el?.title}
               </p>
             </Wrapper>
           ))}
