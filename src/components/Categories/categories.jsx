@@ -59,7 +59,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
               key={el?.id}
               {...(isBanner
                 ? { href: `/categories?init=${el?.id}` }
-                : { onClick: () => handleCategoryClick(el.id) })}
+                : { onClick: () => handleCategoryClick(el?.id) })}
               // innerRef={(elRef) => (categoryRefs?.current[el.id] = elRef)}
               className={`${
                 selectedCategoryId === el?.id && !isBanner ? style.catItem : ""

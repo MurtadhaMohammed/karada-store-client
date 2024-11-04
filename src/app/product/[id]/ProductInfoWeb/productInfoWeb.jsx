@@ -11,8 +11,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useCartStore } from "@/lib/cartStore";
 import ProductCtaWeb from "../ProductCTAWeb/productCtaWeb";
+import ImageModal from "@/components/ImageModal/imageModal";
 
-// Updated OptionTag to handle clicks and image changes
 const OptionTag = ({ name, active = false, onClick }) => {
   return (
     <button
@@ -38,9 +38,12 @@ const ProductInfoWeb = ({ product }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(null);
   const { addItem } = useCartStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImageIndex, setModalImageIndex] = useState(0);
 
   const loadFavorites = () => {
-    const favorites = JSON.parse(localStorage.getItem("favorites_product")) || [];
+    const favorites =
+      JSON.parse(localStorage.getItem("favorites_product")) || [];
     return favorites;
   };
 
@@ -62,15 +65,14 @@ const ProductInfoWeb = ({ product }) => {
 
   const handleOptionClick = (option, index) => {
     if (option.img) {
-      // Find the index of the image that matches the option's img
       const imageIndex = product?.image?.findIndex(
         (img) => img.url === option.img
       );
       if (imageIndex !== -1) {
-        setCurrentImageIndex(imageIndex); // Update the current image index state
+        setCurrentImageIndex(imageIndex); 
       }
-      setActiveOption(index); // Set the active option
-      product.l1 = product?.options[index]; // Update the product option
+      setActiveOption(index); 
+      product.l1 = product?.options[index];
     }
   };
 
@@ -78,7 +80,17 @@ const ProductInfoWeb = ({ product }) => {
     addItem(product, product.l1);
   };
 
-  const isAddToCartDisabled = product?.options?.length > 0 && activeOption === null;
+  const isAddToCartDisabled =
+    product?.options?.length > 0 && activeOption === null;
+
+  const openModal = (index) => {
+    setIsModalOpen(true);
+    setModalImageIndex(index);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="mt-[48px] md:block hidden">
@@ -86,7 +98,7 @@ const ProductInfoWeb = ({ product }) => {
         <div className="flex gap-10 mb-[40px] pb-[40px] border-b border-b-[#eee]">
           <section className="flex gap-4">
             <div className="flex-1">
-              {product?.image?.map((img, i) => (
+              {product?.image?.slice(0, 4).map((img, i) => (
                 <div
                   key={i}
                   onClick={() => setCurrentImageIndex(i)} // Click to select image
@@ -99,23 +111,31 @@ const ProductInfoWeb = ({ product }) => {
                   <Image
                     src={`${IMAGE_URL}/${img?.url}`}
                     fill
-                    style={{ objectFit: "cover" }} 
+                    style={{ objectFit: "cover" }}
+                    alt="Product Thumbnail"
                   />
+                  {i === 3 && product?.image?.length > 4 && (
+                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                      <span className="text-white text-2xl font-bold">+</span>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
             <motion.div
-              key={currentImageIndex} // important for animating between images
+              key={currentImageIndex} 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="rounded-[16px] w-[450px] h-[450px] relative overflow-hidden"
+              className="rounded-[16px] w-[450px] h-[450px] relative overflow-hidden cursor-pointer"
+              onClick={() => openModal(currentImageIndex)}
             >
               <Image
                 src={`${IMAGE_URL}/${product?.image[currentImageIndex]?.url}`}
                 fill
-                style={{ objectFit: "cover" }} 
+                style={{ objectFit: "cover" }}
+                alt="Product Image"
               />
             </motion.div>
           </section>
@@ -152,8 +172,10 @@ const ProductInfoWeb = ({ product }) => {
               {product?.options && product?.options.length > 0 && (
                 <div>
                   <h5 className="text-[16px] ">الخيارات</h5>
-                  <h5 className="text-[14px] text-gray-600">أختر احد الخيارات لاضافتها للسلة</h5>
-                  </div>
+                  <h5 className="text-[14px] text-gray-600">
+                    أختر احد الخيارات لاضافتها للسلة
+                  </h5>
+                </div>
               )}
             </div>
             {product?.options && product?.options.length > 0 && (
@@ -179,6 +201,12 @@ const ProductInfoWeb = ({ product }) => {
           </section>
         </div>
       </Container>
+      <ImageModal
+        isOpen={isModalOpen}
+        initialIndex={modalImageIndex}
+        images={product?.image?.map((img) => `${IMAGE_URL}/${img?.url}`)}
+        onClose={closeModal}
+      />
     </div>
   );
 };
