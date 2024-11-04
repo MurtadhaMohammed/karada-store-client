@@ -7,6 +7,7 @@ import { URL } from "@/lib/api";
 import OrderCard from "./orders/OrderCard/orderCard";
 import Container from "@/components/UI/Container/container";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
+import BrandBanner from "@/components/BrandBanner/brandBanner";
 // import Image from "next/image";
 
 // const creaitveList = [
@@ -124,6 +125,7 @@ export default async function Home() {
   return (
     <div className="pb-[100px]">
       <SearchBar />
+      
       {/* <div className="md:hidden">
       <Container>
         <OrderCard
@@ -135,12 +137,15 @@ export default async function Home() {
         />
       </Container>
       </div> */}
+
       {/* <SliderBanner />
       <Categories />
       <ListBanner title="احدث المنتجات" list={creaitveList} isCreative />
       <ListBanner title="كافة مستلزمات الكمبيوتر " list={defaultList} />
       <SingleBanner /> */}
+
       {banners?.map((banner) => renderBanner(banner))}
+      {/* <BrandBanner title="افظل العروض" /> */}
     </div>
   );
 }
