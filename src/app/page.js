@@ -7,7 +7,8 @@ import { URL } from "@/lib/api";
 import OrderCard from "./orders/OrderCard/orderCard";
 import Container from "@/components/UI/Container/container";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
-import BrandBanner from "@/components/BrandBanner/brandBanner";
+import OffersBanner from "@/components/offersBanner/offersBanner";
+
 // import Image from "next/image";
 
 // const creaitveList = [
@@ -98,13 +99,21 @@ export default async function Home() {
         return <SingleBanner key={banner.id} banner={banner} />;
       case "List":
         return (
-          <ListBanner
+          <OffersBanner
             bannerId={banner.id}
             key={banner.id}
             title={banner.title}
             list={banner?.products || []}
           />
         );
+        // return (
+        //   <ListBanner
+        //     bannerId={banner.id}
+        //     key={banner.id}
+        //     title={banner.title}
+        //     list={banner?.products || []}
+        //   />
+        // );
       case "Category":
         return <Categories key={banner.id} list={banner.categories} />;
       case "CreativeBanner":
@@ -125,7 +134,7 @@ export default async function Home() {
   return (
     <div className="pb-[100px]">
       <SearchBar />
-      
+
       {/* <div className="md:hidden">
       <Container>
         <OrderCard
@@ -145,7 +154,7 @@ export default async function Home() {
       <SingleBanner /> */}
 
       {banners?.map((banner) => renderBanner(banner))}
-      {/* <BrandBanner title="افظل العروض" /> */}
+    
     </div>
   );
 }
