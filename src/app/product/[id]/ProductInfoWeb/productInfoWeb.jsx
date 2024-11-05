@@ -13,11 +13,11 @@ import { useCartStore } from "@/lib/cartStore";
 import ProductCtaWeb from "../ProductCTAWeb/productCtaWeb";
 import ImageModal from "@/components/ImageModal/imageModal";
 
-const OptionTag = ({ name, active = false, onClick }) => {
+const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
+      className="flex flex-row justify-center items-center h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
       style={
         active
           ? {
@@ -29,6 +29,12 @@ const OptionTag = ({ name, active = false, onClick }) => {
       }
     >
       {name}
+      {color && (
+        <span
+          className="w-[12px] h-[12px] rounded-full mr-[8px]"
+          style={{ backgroundColor: color}}
+          />
+        )}
     </button>
   );
 };
@@ -69,9 +75,9 @@ const ProductInfoWeb = ({ product }) => {
         (img) => img.url === option.img
       );
       if (imageIndex !== -1) {
-        setCurrentImageIndex(imageIndex); 
+        setCurrentImageIndex(imageIndex);
       }
-      setActiveOption(index); 
+      setActiveOption(index);
       product.l1 = product?.options[index];
     }
   };
@@ -123,7 +129,7 @@ const ProductInfoWeb = ({ product }) => {
               ))}
             </div>
             <motion.div
-              key={currentImageIndex} 
+              key={currentImageIndex}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -184,6 +190,7 @@ const ProductInfoWeb = ({ product }) => {
                   {product?.options.map((option, index) => (
                     <OptionTag
                       key={index}
+                      color={option.color}
                       name={option.name}
                       active={index === activeOption}
                       onClick={() => handleOptionClick(option, index)}
