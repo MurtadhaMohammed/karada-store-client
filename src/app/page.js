@@ -91,6 +91,7 @@ async function getBanners() {
 
 export default async function Home() {
   const banners = await getBanners();
+  console.log(banners)
   const renderBanner = (banner) => {
     switch (banner.type) {
       case "Slider":
@@ -99,6 +100,15 @@ export default async function Home() {
         return <SingleBanner key={banner.id} banner={banner} />;
       case "List":
         return (
+          <ListBanner
+            bannerId={banner.id}
+            key={banner.id}
+            title={banner.title}
+            list={banner?.products || []}
+          />
+        );
+      case "OffersBanner":
+        return (
           <OffersBanner
             bannerId={banner.id}
             key={banner.id}
@@ -106,14 +116,6 @@ export default async function Home() {
             list={banner?.products || []}
           />
         );
-        // return (
-        //   <ListBanner
-        //     bannerId={banner.id}
-        //     key={banner.id}
-        //     title={banner.title}
-        //     list={banner?.products || []}
-        //   />
-        // );
       case "Category":
         return <Categories key={banner.id} list={banner.categories} />;
       case "CreativeBanner":
@@ -154,7 +156,6 @@ export default async function Home() {
       <SingleBanner /> */}
 
       {banners?.map((banner) => renderBanner(banner))}
-    
     </div>
   );
 }
