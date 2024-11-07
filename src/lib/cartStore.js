@@ -9,9 +9,10 @@ export const useCartStore = create((set, get) => ({
   setCart: (cart) => set({ cart }),
 
   // Cart Operations
-  addItem: (product) => {
+  addItem: (product, option = null) => {
+    const endPrice = product.endPrice || product.price;
     set((state) => ({
-      cart: [...state.cart, { qt: 1, product }],
+      cart: [...state.cart, { qt: 1, product, endPrice, option }],
     }));
   },
   removeItem: (itemToBeRemoved) => {

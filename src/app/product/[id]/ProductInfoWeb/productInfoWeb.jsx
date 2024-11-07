@@ -83,7 +83,7 @@ const ProductInfoWeb = ({ product }) => {
   };
 
   const handleAddToCart = () => {
-    addItem(product, product.l1);
+    addItem({ ...product, endPrice: product.endPrice || product.price });
   };
 
   const isAddToCartDisabled =

@@ -3,15 +3,17 @@ import { PiInvoice } from "react-icons/pi";
 import { useCartStore } from "@/lib/cartStore";
 
 const Invoice = () => {
-  const { getSubTotal, voucher, cart } = useCartStore();
+  const { getTotal, voucher, cart } = useCartStore();
 
-  const subTotal = getSubTotal();
+  const subTotal = getTotal() || 0;
   const deliveryCost = 5000;
 
   // Calculate product discounts
   const productDiscount = cart.reduce((total, item) => {
-    return total + (item.product.discount ? item.product.discount * item.qt : 0);
+    const discount = item?.product?.discount || 0;
+    return total + discount * item.qt;
   }, 0);
+  console.log(productDiscount, "productDiscount")
 
   // Calculate voucher discount with capping
   let voucherDiscount = 0;
@@ -19,24 +21,25 @@ const Invoice = () => {
     if (voucher.type === "%") {
       voucherDiscount = (voucher.value / 100) * subTotal;
     } else {
-      voucherDiscount = voucher.value;
+      voucherDiscount = voucher.value || 0;
     }
-
+  
     if (voucher.max_amount && voucherDiscount > voucher.max_amount) {
       voucherDiscount = voucher.max_amount;
     }
   }
 
-  const totalDiscount = productDiscount + voucherDiscount;
-  const realTotal = subTotal - (totalDiscount + deliveryCost);
+  const totalDiscount = (productDiscount || 0) + (voucherDiscount || 0);
+  const realTotal = subTotal - totalDiscount + deliveryCost;
+  console.log(totalDiscount, "totalDiscount");
+  console.log(realTotal, "realTotal");
 
   const roundToNearest250 = (num) => {
-    let total = Math.ceil(num / 250) * 250;
+    const total = Math.ceil(num / 250) * 250;
     return total < 0 ? 0 : total;
   };
 
-  const roundedTotal = roundToNearest250(realTotal);
-
+  const roundedTotal = roundToNearest250(realTotal || 0);
   return (
     <div className="rounded-[8px] border border-[#eee] mt-[24px]">
       <div className="flex items-center p-[16px]">

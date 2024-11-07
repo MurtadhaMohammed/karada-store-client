@@ -14,13 +14,13 @@ const CheckoutCTA = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { userInfo } = useAppStore();
-  const cart = useCartStore((state) => state.cart);
+  const { cart, setCart, clearCart } = useCartStore(); // Include clearCart from useCartStore
   const voucher = useCartStore((state) => state.voucher); // Retrieve voucher from global state
 
   const [loading, setLoading] = useState(false);
 
   const items = useMemo(() => {
-    return cart.map((item) => ({
+    return cart?.map((item) => ({
       id: item.product.id,
       quantity: item.qt,
       store_id: item.product.store_id,
@@ -46,7 +46,10 @@ const CheckoutCTA = () => {
         method: "POST",
         data: order,
       });
-      if (response) router.replace("/orders");
+      if (response) {
+        clearCart(); 
+        router.replace("/orders");
+      }
       setLoading(false);
     } catch (error) {
       console.error("Error creating order:", error);

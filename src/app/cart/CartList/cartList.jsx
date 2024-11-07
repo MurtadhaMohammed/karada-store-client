@@ -15,8 +15,12 @@ import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
 
 const QtButton = ({ value, product }) => {
-  const { increase, decrease, removeItem } = useCartStore();
-  return (
+  const { increase, decrease, removeItem, getSubTotal,getTotal } = useCartStore();
+const getTotall = getTotal();
+const getsubtotal= getSubTotal();
+console.log(getTotall, "gettotallll")
+console.log(getsubtotal, "getsubtotal")
+    return (
     <div className="flex items-center bg-[#f6f6f6] rounded-[8px] border border-[#eee]">
       <IconButton
         className="p-[6px] w-[32px] h-[32px] flex items-center justify-center"
@@ -42,6 +46,7 @@ const QtButton = ({ value, product }) => {
 };
 
 const CartItem = ({ item }) => {
+  const priceToShow = item.endPrice || item.product.price;
   return (
     <div className="border-b border-b-[#eee] pt-[24px] pb-[16px]">
       <Container>
@@ -54,22 +59,30 @@ const CartItem = ({ item }) => {
             className="border border-[#eee] rounded-[8px]"
             alt="image"
           />
-          <div className=" flex-1 flex flex-col justify-between items-start">
+          <div className="flex-1 flex flex-col justify-between items-start">
             <div>
               <b className="text-[14px] whitespace-nowrap overflow-hidden text-ellipsis">
                 {item?.product?.name}
               </b>
               <p className="text-[14px] text-[#a5a5a5]">
-                {item?.product?.l1?.name ||
-                  `${item?.product?.description.substr(0, 20)}...`}
+                {item?.product?.l1?.name || `${item?.product?.description.substr(0, 20)}...`}
               </p>
             </div>
             <div className="flex items-end justify-between w-full">
-              <b className="text-[16px]">
-                {Number(item?.product?.price).toLocaleString("en")}{" "}
-                <span className="text-[14px]">IQD</span>
-              </b>
-
+              {item.endPrice !== item.product.price ? (
+                <div className="flex flex-col items-start">
+                  <p className="text-[18px] block line-through text-[#a5a5a5] italic">
+                    {Number(item.product.price).toLocaleString("en")}
+                  </p>
+                  <b className="text-[16px]">
+                    {Number(priceToShow).toLocaleString("en")} <span className="text-[14px]">IQD</span>
+                  </b>
+                </div>
+              ) : (
+                <b className="text-[16px]">
+                  {Number(priceToShow).toLocaleString("en")} <span className="text-[14px]">IQD</span>
+                </b>
+              )}
               <QtButton value={item?.qt} product={item?.product} />
             </div>
           </div>
