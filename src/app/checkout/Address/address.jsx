@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "@/components/UI/Input/input";
 import { GrLocation } from "react-icons/gr";
 import { useAppStore } from "@/lib/store";
@@ -12,25 +12,24 @@ const Address = () => {
   const [name, setName] = useState(userInfo?.name || "");
   const [notes, setNotes] = useState("");
 
+  useEffect(() => {
+    setUserInfo({ ...userInfo, address, phone, name, notes });
+  }, [address, phone, name, notes]);
+
   const handleAddressChange = (e) => {
-    const newAddress = e.target.value;
-    setAddress(newAddress);
-    setUserInfo({ ...userInfo, address: newAddress });
+    setAddress(e.target.value);
   };
 
   const handlePhoneChange = (e) => {
-    const newPhone = e.target.value;
-    setPhone(newPhone);
+    setPhone(e.target.value);
   };
 
   const handleNameChange = (e) => {
-    const newName = e.target.value;
-    setName(newName);
+    setName(e.target.value);
   };
 
   const handleNotesChange = (e) => {
-    const newNotes = e.target.value;
-    setNotes(newNotes);
+    setNotes(e.target.value);
   };
 
   return (
