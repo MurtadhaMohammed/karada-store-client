@@ -144,20 +144,24 @@ const ImageGroup = ({ thumbnails }) => {
 const getDate = (order) => {
   const today = new Date();
   const updatedAt = new Date(order.updated_at);
-  const diffTime = Math.abs(today - updatedAt);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const diffTime = today - updatedAt;
+  const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  let date;
   if (diffDays < 1) {
-    date = "اليوم";
+    if (diffHours < 1) {
+      // const diffMinutes = Math.floor(diffTime / (1000 * 60));
+      return `الان`;
+    } else {
+      return `منذ ${diffHours} ساعة`;
+    }
   } else if (diffDays === 1) {
-    date = "منذ يوم";
+    return "منذ يوم";
   } else if (diffDays === 2) {
-    date = "منذ يومين";
+    return "منذ يومين";
   } else {
-    date = `منذ ${diffDays} ايام`;
+    return `منذ ${diffDays} ايام`;
   }
-  return date;
 };
 
 const OrderCard = ({ order }) => {
