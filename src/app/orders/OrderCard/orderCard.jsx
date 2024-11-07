@@ -6,13 +6,14 @@ import Image from "next/image";
 
 const ImageGroup = ({ thumbnails }) => {
   return (
-    <div className="w-[100px] h-[100px]  relative ">
+    <div className="w-[100px] h-[100px] relative">
       {thumbnails?.length === 1 && (
         <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] overflow-hidden relative">
           <Image
             src={`${IMAGE_URL}/${thumbnails[0]}`}
             fill
             style={{ objectFit: "cover" }} 
+            alt="Thumbnail"
           />
         </div>
       )}
@@ -24,115 +25,83 @@ const ImageGroup = ({ thumbnails }) => {
               src={`${IMAGE_URL}/${thumbnails[0]}`}
               fill
               style={{ objectFit: "cover" }} 
+              alt="Thumbnail 1"
               className="relative"
             />
           </div>
-          <div className=" absolute inset-0 bg-[#0000002e] flex items-center justify-center text-[#fff]">
+          <div className="absolute inset-0 bg-[#0000002e] flex items-center justify-center text-[#fff]">
             +1
           </div>
         </div>
       )}
 
       {thumbnails?.length === 3 && (
-        <div
-          className="relative h-full grid grid-cols-2 gap-1  overflow-hidden"
-          style={{ direction: "ltr" }}
-        >
+        <div className="relative h-full grid grid-cols-2 gap-1 overflow-hidden" style={{ direction: "ltr" }}>
           <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
-            {" "}
             <Image
               src={`${IMAGE_URL}/${thumbnails[0]}`}
               fill
               style={{ objectFit: "cover" }} 
+              alt="Thumbnail 1"
             />
           </div>
           <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
             <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
+              src={`${IMAGE_URL}/${thumbnails[1]}`}
               fill
               style={{ objectFit: "cover" }} 
+              alt="Thumbnail 2"
             />
           </div>
           <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
             <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
+              src={`${IMAGE_URL}/${thumbnails[2]}`}
               fill
               style={{ objectFit: "cover" }} 
+              alt="Thumbnail 3"
             />
           </div>
         </div>
       )}
+
       {thumbnails?.length === 4 && (
-        <div
-          className="relative h-full grid grid-cols-2 gap-1  overflow-hidden"
-          style={{ direction: "ltr" }}
-        >
-          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
-              fill
-              style={{ objectFit: "cover" }} 
-            />
-          </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
-              fill
-              style={{ objectFit: "cover" }} 
-            />
-          </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
-              fill
-              style={{ objectFit: "cover" }} 
-            />
-          </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
-              fill
-              style={{ objectFit: "cover" }} 
-            />
-          </div>
+        <div className="relative h-full grid grid-cols-2 gap-1 overflow-hidden" style={{ direction: "ltr" }}>
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden">
+              <Image
+                src={`${IMAGE_URL}/${thumbnails[i]}`}
+                fill
+                style={{ objectFit: "cover" }} 
+                alt={`Thumbnail ${i + 1}`}
+              />
+            </div>
+          ))}
         </div>
       )}
+
       {thumbnails?.length > 4 && (
-        <div
-          className="relative h-[100%] grid grid-cols-2 gap-1  overflow-hidden"
-          style={{ direction: "ltr" }}
-        >
-          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
-              fill
-              style={{ objectFit: "cover" }} 
-            />
-          </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
-              fill
-              style={{ objectFit: "cover" }} 
-            />
-          </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
-              fill
-              style={{ objectFit: "cover" }} 
-            />
-          </div>
+        <div className="relative h-[100%] grid grid-cols-2 gap-1 overflow-hidden" style={{ direction: "ltr" }}>
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
+              <Image
+                src={`${IMAGE_URL}/${thumbnails[i]}`}
+                fill
+                style={{ objectFit: "cover" }} 
+                alt={`Thumbnail ${i + 1}`}
+              />
+            </div>
+          ))}
           <div className="relative h-full rounded-[8px] overflow-hidden">
             <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
               <Image
-                src={`${IMAGE_URL}/${thumbnails[0]}`}
+                src={`${IMAGE_URL}/${thumbnails[3]}`}
                 fill
                 style={{ objectFit: "cover" }} 
+                alt="Thumbnail 4"
               />
             </div>
-            <div className=" absolute inset-0 bg-[#0000002e] flex items-center justify-center text-[#fff]">
-              +2
+            <div className="absolute inset-0 bg-[#0000002e] flex items-center justify-center text-[#fff]">
+              +{thumbnails.length - 3}
             </div>
           </div>
         </div>
