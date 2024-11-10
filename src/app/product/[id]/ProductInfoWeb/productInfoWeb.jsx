@@ -42,12 +42,13 @@ const OptionTag = ({ name, color, active = false, onClick }) => {
 const ProductInfoWeb = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [activeOption, setActiveOption] = useState(null);
+  const [activeOption, setActiveOption] = useState(0);
   const { addItem } = useCartStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(product?.options?.[0] || null);
 
+  console.log(product)
   const loadFavorites = () => {
     const favorites =
       JSON.parse(localStorage.getItem("favorites_product")) || [];
@@ -68,27 +69,25 @@ const ProductInfoWeb = ({ product }) => {
   useEffect(() => {
     const favorites = loadFavorites();
     setIsFavorite(favorites.includes(product?.id));
+    if (product?.options?.length > 0) {
+      handleOptionClick(product.options[0], 0);
+    }
   }, [product?.id]);
 
   const handleOptionClick = (option, index) => {
-    if (option.img) {
-      const imageIndex = product?.image?.findIndex(
-        (img) => img.url === option.img
-      );
-      if (imageIndex !== -1) {
-        setCurrentImageIndex(imageIndex);
-      }
-      setActiveOption(index);
+    if (option.images.length > 0) {
+      setCurrentImageIndex(0);
       setSelectedOption(option);
     }
+    setActiveOption(index);
   };
 
   const handleAddToCart = () => {
     addItem({ ...product, endPrice: product.endPrice || product.price }, selectedOption);
-  };  
+  };
 
   const isAddToCartDisabled =
-    product?.options?.length > 0 && activeOption === null;
+    product?.options?.length > 0 && selectedOption === null;
 
   const openModal = (index) => {
     setIsModalOpen(true);
@@ -105,7 +104,7 @@ const ProductInfoWeb = ({ product }) => {
         <div className="flex gap-10 mb-[40px] pb-[40px] border-b border-b-[#eee]">
           <section className="flex gap-4">
             <div className="flex-1">
-              {product?.image?.slice(0, 4).map((img, i) => (
+              {selectedOption?.images?.slice(0, 4).map((img, i) => (
                 <div
                   key={i}
                   onClick={() => setCurrentImageIndex(i)} // Click to select image
@@ -116,12 +115,12 @@ const ProductInfoWeb = ({ product }) => {
                   }`}
                 >
                   <Image
-                    src={`${IMAGE_URL}/${img?.url}`}
+                    src={`${IMAGE_URL}/${img}`}
                     fill
                     style={{ objectFit: "cover" }}
                     alt="Product Thumbnail"
                   />
-                  {i === 3 && product?.image?.length > 4 && (
+                  {i === 3 && selectedOption?.images?.length > 4 && (
                     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                       <span className="text-white text-2xl font-bold">+</span>
                     </div>
@@ -139,7 +138,7 @@ const ProductInfoWeb = ({ product }) => {
               onClick={() => openModal(currentImageIndex)}
             >
               <Image
-                src={`${IMAGE_URL}/${product?.image[currentImageIndex]?.url}`}
+                src={`${IMAGE_URL}/${selectedOption?.images[currentImageIndex]}`}
                 fill
                 style={{ objectFit: "cover" }}
                 alt="Product Image"
@@ -213,7 +212,7 @@ const ProductInfoWeb = ({ product }) => {
       <ImageModal
         isOpen={isModalOpen}
         initialIndex={modalImageIndex}
-        images={product?.image?.map((img) => `${IMAGE_URL}/${img?.url}`)}
+        images={selectedOption?.images?.map((img) => `${IMAGE_URL}/${img}`)}
         onClose={closeModal}
       />
     </div>

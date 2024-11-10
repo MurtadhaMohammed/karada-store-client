@@ -47,10 +47,10 @@ const ProductInfo = ({ product }) => {
   const { scrollPosition } = useScrollPosition();
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [activeOption, setActiveOption] = useState(null);
+  const [activeOption, setActiveOption] = useState(0);
   const swiperRef = useRef(null);
   const { addItem } = useCartStore();
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(product?.options?.[0] || null);
 
   const loadFavorites = () => {
     const favorites =
@@ -72,19 +72,24 @@ const ProductInfo = ({ product }) => {
   useEffect(() => {
     const favorites = loadFavorites();
     setIsFavorite(favorites.includes(product?.id));
+    if (product?.options?.length > 0) {
+      handleOptionClick(product.options[0], 0);
+    }
   }, [product?.id]);
 
   const handleOptionClick = (option, index) => {
-    if (option.img) {
-      const imageIndex = product?.image?.findIndex(
-        (img) => img.url === option.img
-      );
-      if (imageIndex !== -1) {
-        setCurrentImageIndex(imageIndex);
-        swiperRef.current?.swiper.slideTo(imageIndex);
-      }
+    if (option.images.length > 0) {
+      setCurrentImageIndex(0);
+      swiperRef.current?.swiper.removeAllSlides();
+      option.images.forEach((img, i) => {
+        swiperRef.current?.swiper.appendSlide(
+          `<div class="swiper-slide">
+            <img src="${IMAGE_URL}/${img}" style="object-fit: cover; width: 100%; height: 100%;" alt="product-image-${i}" />
+          </div>`
+        );
+      });
+      swiperRef.current?.swiper.slideTo(0);
     }
-
     setActiveOption(index);
     setSelectedOption(option);
   };
@@ -127,7 +132,7 @@ const ProductInfo = ({ product }) => {
     <div className="md:hidden block">
       <div className="h-[400px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
-          {product?.image && product.image.length > 0 && (
+          {selectedOption?.images && selectedOption.images.length > 0 && (
             <Swiper
               ref={swiperRef}
               spaceBetween={10}
@@ -137,10 +142,10 @@ const ProductInfo = ({ product }) => {
               }
               className="h-full w-full relative z-0"
             >
-              {product.image.map((img, index) => (
+              {selectedOption.images.map((img, index) => (
                 <SwiperSlide key={index}>
                   <Image
-                    src={`${IMAGE_URL}/${img.url}`}
+                    src={`${IMAGE_URL}/${img}`}
                     fill
                     style={{ objectFit: "cover" }}
                     alt={`product-image-${index}`}
@@ -153,7 +158,7 @@ const ProductInfo = ({ product }) => {
             <Container>
               <div className="flex items-center justify-center">
                 <div className="flex items-center gap-[4px] mr-1">
-                  {product?.image?.map((image, i) => (
+                  {selectedOption?.images?.map((image, i) => (
                     <span
                       key={i}
                       className="block h-[8px] rounded-[24px] transition-all"
