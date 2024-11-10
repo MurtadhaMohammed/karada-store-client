@@ -12,42 +12,41 @@ export const useCartStore = create((set, get) => ({
   addItem: (product, option = null) => {
     const endPrice = product.endPrice || product.price;
     set((state) => ({
-      cart: [...state.cart, { qt: 1, product, endPrice, option }],
+      cart: [...state.cart, { qt: 1, product, endPrice,  l1: option }],
     }));
   },
-  removeItem: (itemToBeRemoved) => {
+  removeItem: (product, option = null) => {
     set((state) => ({
       cart: state.cart.filter((item) => {
-        if (
-          item.product.id === itemToBeRemoved.id &&
-          item.product?.l1?.uuid === itemToBeRemoved?.l1?.uuid
-        )
-          return false;
-        else return true;
+        return !(
+          item.product.id === product.id &&
+          (item.l1?.uuid || null) === (option?.uuid || null)
+        );
       }),
     }));
   },
-  increase: (itemToBeIncreased) => {
+  increase: (product, option = null) => {
     set((state) => ({
       cart: state.cart.map((item) => {
         if (
-          item.product.id === itemToBeIncreased.id &&
-          item.product?.l1?.uuid === itemToBeIncreased?.l1?.uuid
+          item.product.id === product.id &&
+          (item.l1?.uuid || null) === (option?.uuid || null)
         )
           return { ...item, qt: item.qt + 1 };
         return item;
       }),
     }));
   },
-  decrease: (itemToBeDecreased) => {
+  decrease: (product, option = null) => {
     set((state) => ({
       cart: state.cart.map((item) => {
         if (
-          item.product.id === itemToBeDecreased.id &&
-          item.qt > 1 &&
-          item.product?.l1?.uuid === itemToBeDecreased?.l1?.uuid
-        )
+          item.product.id === product.id &&
+          (item.l1?.uuid || null) === (option?.uuid || null) &&
+          item.qt > 1
+        ) {
           return { ...item, qt: item.qt - 1 };
+        }
         return item;
       }),
     }));
@@ -79,8 +78,13 @@ export const useCartStore = create((set, get) => ({
       .reduce((a, b) => a + b, 0);
   },
 
-  getQty: (productId) => {
-    return get().cart.find((item) => item?.product?.id === productId)?.qt || 0;
+  getQty: (productId, option = null) => {
+    const item = get().cart.find(
+      (item) =>
+        item?.product?.id === productId &&
+        (item.l1?.uuid || null) === (option?.uuid || null)
+    );
+    return item?.qt || 0;
   },
 
   setVoucher: (voucher) => {

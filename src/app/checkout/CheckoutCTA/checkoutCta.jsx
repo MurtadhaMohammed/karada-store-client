@@ -14,7 +14,7 @@ const CheckoutCTA = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { userInfo } = useAppStore();
-  const { cart, setCart, clearCart } = useCartStore(); // Include clearCart from useCartStore
+  const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher); // Retrieve voucher from global state
 
   const [loading, setLoading] = useState(false);
@@ -27,6 +27,7 @@ const CheckoutCTA = () => {
       l1: item.l1,
     }));
   }, [cart]);
+  
 
   const order = {
     user_id: userInfo.id,

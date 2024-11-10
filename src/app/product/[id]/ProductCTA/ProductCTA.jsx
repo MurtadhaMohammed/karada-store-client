@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useCartStore } from "@/lib/cartStore";
 import { useEffect } from "react";
 
-const ProductCTA = ({ product, disabled = false, onAddToCart }) => {
+const ProductCTA = ({ product, onAddToCart, selectedOption, disabled }) => {
   const { getQty, increase, decrease, removeItem, getItemsTotal, cart } = useCartStore();
   const router = useRouter();
 
@@ -17,11 +17,11 @@ const ProductCTA = ({ product, disabled = false, onAddToCart }) => {
     router.prefetch("/cart");
   }, [router]);
 
-  let qty = getQty(product?.id);
+  let qty = getQty(product?.id, selectedOption);
 
-  const handleClear = () => removeItem(product);
-  const handleIncrease = () => increase(product);
-  const handleDecrease = () => decrease(product);
+  const handleIncrease = () => increase(product, selectedOption);
+  const handleDecrease = () => decrease(product, selectedOption);
+  const handleClear = () => removeItem(product, selectedOption);
 
   return (
     <div
