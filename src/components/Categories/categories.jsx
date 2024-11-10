@@ -90,7 +90,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
         <div className="relative">
           <div
             ref={scrollContainerRef}
-            className="flex z-1 items-center justify-center md:pt-8 md:pb-8 pt-4 pb-4 gap-6 overflow-auto no-scrollbar md:pl-0 md:pr-0 pl-[16px] pr-[16px]"
+            className="flex z-1 items-center justify-center md:pt-8 md:pb-8 pt-4 pb-4 gap-6 overflow-auto no-scrollbar md:pr-32 pl-[16px] pr-[16px]"
           >
             {list.map((el) => (
               <Wrapper
