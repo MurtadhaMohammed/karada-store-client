@@ -49,7 +49,6 @@ const ProductInfoWeb = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
 
-
   const loadFavorites = () => {
     const favorites =
       JSON.parse(localStorage.getItem("favorites_product")) || [];
@@ -217,9 +216,21 @@ const ProductInfoWeb = ({ product }) => {
           </section>
         </div>
         <p className="text-[16px] ">تفاصيل المنتج</p>
-        <p className="text-[14px] text-gray-600 mt-[8px] mb-[24px]">
-          {product?.description}
-        </p>
+        
+        <div className="text-[14px] mt-[8px] mb-[24px] flex gap-2 flex-wrap">
+          {product?.description?.split("-")?.filter(el=> !!el)?.map(el=> <div className="pl-4 pr-4 flex items-center justify-center h-[32px] rounded-[24px] bg-[#f6f6f685] text-[14px] border border-[#f6f6f6]">{el}</div>)}
+        </div>
+        {/* <ul className="text-[14px] text-gray-600 mt-[8px] mb-[24px]">
+          {product?.description
+            ?.split("-")
+            ?.filter((el) => !!el)
+            ?.map((el, i) => (
+              <li>
+                {i + 1} -
+                {el}
+              </li>
+            ))}
+        </ul> */}
       </Container>
       <ImageModal
         isOpen={isModalOpen}
