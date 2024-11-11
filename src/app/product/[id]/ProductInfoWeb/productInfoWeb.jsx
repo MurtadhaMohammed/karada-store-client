@@ -42,7 +42,9 @@ const OptionTag = ({ name, color, active = false, onClick }) => {
 const ProductInfoWeb = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [activeOption, setActiveOption] = useState(product?.options?.[0] || null);
+  const [activeOption, setActiveOption] = useState(
+    product?.options?.[0] || null
+  );
   const { addItem } = useCartStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
@@ -96,13 +98,14 @@ const ProductInfoWeb = ({ product }) => {
     setIsModalOpen(false);
   };
 
+
   return (
     <div className="mt-[48px] md:block hidden">
       <Container>
         <div className="flex gap-10 mb-[40px] pb-[40px] border-b border-b-[#eee]">
           <section className="flex gap-4">
             <div className="flex-1">
-              {activeOption?.images?.slice(0, 4).map((img, i) => (
+              { activeOption?.images?.slice(0, 4).map((img, i) => (
                 <div
                   key={i}
                   onClick={() => setCurrentImageIndex(i)} // Click to select image
@@ -135,12 +138,16 @@ const ProductInfoWeb = ({ product }) => {
               className="rounded-[16px] w-[450px] h-[450px] relative overflow-hidden cursor-pointer"
               onClick={() => openModal(currentImageIndex)}
             >
-              <Image
-                src={`${IMAGE_URL}/${activeOption?.images[currentImageIndex]}`}
-                fill
-                style={{ objectFit: "cover" }}
-                alt="Product Image"
-              />
+              {activeOption?.images && activeOption?.images?.length !== 0? (
+                <Image
+                  src={`${IMAGE_URL}/${activeOption?.images[currentImageIndex]}`}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  alt="Product Image"
+                />
+              ) : (
+                ""
+              )}
             </motion.div>
           </section>
 
