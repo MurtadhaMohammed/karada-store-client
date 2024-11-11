@@ -49,6 +49,7 @@ const ProductInfoWeb = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
 
+
   const loadFavorites = () => {
     const favorites =
       JSON.parse(localStorage.getItem("favorites_product")) || [];
@@ -172,6 +173,9 @@ const ProductInfoWeb = ({ product }) => {
             {/* <p className="text-[14px] text-gray-600 mt-[8px]">
               {product?.description}
             </p> */}
+            <p className="text-[14px] text-gray-600 mt-[8px]">
+              {product?.shortDescription}
+            </p>
             <div className="flex items-center mt-[16px]">
               <TbTruckDelivery className="text-[16px]" />
               <span className="mr-[8px] text-[14px]">
