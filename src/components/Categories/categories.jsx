@@ -38,25 +38,19 @@ const Categories = ({ isBanner = true, list = [] }) => {
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-  
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
       const maxScrollLeft = scrollWidth - clientWidth;
       const NMaxScrollLeft = maxScrollLeft * -1;
       console.log("NmaxScrollLeft:", NMaxScrollLeft);
-  
-      if (scrollLeft > NMaxScrollLeft +1) {
+
+      if (scrollLeft > NMaxScrollLeft + 1) {
         setShowCircle(true);
       } else {
         setShowCircle(false);
       }
-  
-      console.log("scrollLeft:", scrollLeft);
-      console.log("scrollWidth:", scrollWidth);
-      console.log("clientWidth:", clientWidth);
     }
   };
-  
-  
 
   useEffect(() => {
     const initCategoryId = searchParams.get("init");
@@ -99,7 +93,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
         <div className="relative">
           <div
             ref={scrollContainerRef}
-            className="flex z-1 items-center justify-center md:pt-8 md:pb-8 pt-4 pb-4 gap-6 overflow-auto no-scrollbar md:pr-48 pl-[16px] pr-[16px]"
+            className="flex z-1 items-center md:pt-8 md:pb-8 pt-4 pb-4 gap-4 pl-[16px] pr-[16px] md:pl-0 md:pr-0 overflow-x-auto no-scrollbar "
           >
             {list.map((el) => (
               <Wrapper
@@ -135,7 +129,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
             ))}
             {showCircle && (
               <div
-                className={`${style.circle} ${isClicked ? "active" : ""} `}
+                className={`${style.circle} ${isClicked ? "active" : ""}`}
                 onClick={handleScrollToLeft}
               >
                 <MdKeyboardArrowLeft size={30} />
