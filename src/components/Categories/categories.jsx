@@ -39,7 +39,6 @@ const Categories = ({ isBanner = true, list = [] }) => {
   const handleScroll = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-  
       const maxScrollLeft = scrollWidth - clientWidth;
       const NMaxScrollLeft = maxScrollLeft * -1;
       console.log("NmaxScrollLeft:", NMaxScrollLeft);
@@ -49,10 +48,6 @@ const Categories = ({ isBanner = true, list = [] }) => {
       } else {
         setShowCircle(false);
       }
-  
-      console.log("scrollLeft:", scrollLeft);
-      console.log("scrollWidth:", scrollWidth);
-      console.log("clientWidth:", clientWidth);
     }
   };
   
@@ -99,7 +94,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
         <div className="relative">
           <div
             ref={scrollContainerRef}
-            className="flex z-1 items-center justify-center md:pt-8 md:pb-8 pt-4 pb-4 gap-6 overflow-auto no-scrollbar md:pr-48 pl-[16px] pr-[16px]"
+            className="flex z-1 items-center md:pt-8 md:pb-8 pt-4 pb-4 gap-4 md:pl-[16px] md:pr-[16px] overflow-x-auto no-scrollbar"
           >
             {list.map((el) => (
               <Wrapper
@@ -112,7 +107,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
                   selectedCategoryId === el?.id && !isBanner
                     ? style.catItem
                     : ""
-                } flex items-center justify-center flex-col active:scale-95 transition-all cursor-pointer`}
+                } flex items-center justify-center flex-col active:scale-95 transition-all cursor-pointer pr-2 pl-2`}
               >
                 <div className="md:w-[68px] md:h-[68px] w-[48px] h-[48px] relative overflow-hidden">
                   <Image
@@ -135,7 +130,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
             ))}
             {showCircle && (
               <div
-                className={`${style.circle} ${isClicked ? "active" : ""} `}
+                className={`${style.circle} ${isClicked ? "active" : ""}`}
                 onClick={handleScrollToLeft}
               >
                 <MdKeyboardArrowLeft size={30} />
