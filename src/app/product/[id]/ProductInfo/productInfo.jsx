@@ -50,6 +50,7 @@ const ProductInfo = ({ product }) => {
   const [activeOption, setActiveOption] = useState(null);
   const swiperRef = useRef(null);
   const { addItem } = useCartStore();
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const loadFavorites = () => {
     const favorites =
@@ -84,13 +85,12 @@ const ProductInfo = ({ product }) => {
       }
     }
 
-    // Set the active option
     setActiveOption(index);
-    product.l1 = product?.options[index];
+    setSelectedOption(option);
   };
 
   const handleAddToCart = () => {
-    addItem(product, product.l1);
+    addItem(product, selectedOption);
   };
 
   const handleShare = async () => {
@@ -121,8 +121,7 @@ const ProductInfo = ({ product }) => {
   };
 
   const isAddToCartDisabled =
-    product?.options?.length > 0 && activeOption === null;
-
+  product?.options?.length > 0 && selectedOption === null;
   return (
     <div className="md:hidden block">
       <div className="h-[400px] border-b border-b-[#eee]">
@@ -272,14 +271,12 @@ const ProductInfo = ({ product }) => {
             />
           ))}
         </div>
-        <ProductCTA
-          product={product}
-          onAddToCart={handleAddToCart}
-        />
+        <ProductCTA product={product} onAddToCart={handleAddToCart} />
       </Container>
       <ProductCTA
         product={product}
         onAddToCart={handleAddToCart}
+        selectedOption={selectedOption}
         disabled={isAddToCartDisabled}
       />
     </div>

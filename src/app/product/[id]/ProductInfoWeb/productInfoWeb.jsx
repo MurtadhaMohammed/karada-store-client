@@ -32,9 +32,9 @@ const OptionTag = ({ name, color, active = false, onClick }) => {
       {color && (
         <span
           className="w-[12px] h-[12px] rounded-full mr-[8px]"
-          style={{ backgroundColor: color}}
-          />
-        )}
+          style={{ backgroundColor: color }}
+        />
+      )}
     </button>
   );
 };
@@ -46,6 +46,7 @@ const ProductInfoWeb = ({ product }) => {
   const { addItem } = useCartStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const loadFavorites = () => {
     const favorites =
@@ -78,13 +79,13 @@ const ProductInfoWeb = ({ product }) => {
         setCurrentImageIndex(imageIndex);
       }
       setActiveOption(index);
-      product.l1 = product?.options[index];
+      setSelectedOption(option);
     }
   };
 
   const handleAddToCart = () => {
-    addItem({ ...product, endPrice: product.endPrice || product.price });
-  };
+    addItem({ ...product, endPrice: product.endPrice || product.price }, selectedOption);
+  };  
 
   const isAddToCartDisabled =
     product?.options?.length > 0 && activeOption === null;
@@ -204,6 +205,7 @@ const ProductInfoWeb = ({ product }) => {
               product={product}
               onAddToCart={handleAddToCart}
               isAddToCartDisabled={isAddToCartDisabled}
+              selectedOption={selectedOption}
             />
           </section>
         </div>

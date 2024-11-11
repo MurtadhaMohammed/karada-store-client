@@ -2,6 +2,22 @@
   position: relative;
 }
 
+.circle {
+  position: absolute;
+  left: 6px;
+  width: 48px;
+  height:48px;
+  border-radius: 50%;
+  background-color: #f6f6f6;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  box-shadow: 2px 2px 10px 0px #4c477e47;
+}
+
 .catItem::after {
   content: "";
   position: absolute;
