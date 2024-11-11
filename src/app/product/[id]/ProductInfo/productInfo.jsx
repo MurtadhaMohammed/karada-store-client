@@ -281,7 +281,7 @@ console.log(activeOption)
             ?.split("-")
             ?.filter((el) => !!el)
             ?.map((el, i) => (
-              <li>
+              <li key={i}>
                 -
                 {el}
               </li>
