@@ -91,7 +91,6 @@ async function getBanners() {
 
 export default async function Home() {
   const banners = await getBanners();
-  console.log(banners)
   const renderBanner = (banner) => {
     switch (banner.type) {
       case "Slider":

@@ -11,8 +11,6 @@ const CartCTA = () => {
   const subTotal = getSubTotal();
   const total = getTotal();
 
-  console.log(total, "getTtttttotal");
-  console.log(subTotal, "getSssssubTotal");
 
   if (getItemsTotal() === 0) return;
   
