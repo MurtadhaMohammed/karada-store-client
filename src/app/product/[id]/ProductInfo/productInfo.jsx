@@ -251,9 +251,9 @@ console.log(activeOption)
           </div>
         )}
 
-        {/* <p className="text-[14px] text-gray-600 mt-[8px]">
-          {product?.description}
-        </p> */}
+        <p className="text-[14px] text-gray-600 mt-[8px]">
+          {product?.shortDescription}
+        </p>
         {/* <div className="mt-[16px]">
           <InstallmentBanner />
         </div> */}
