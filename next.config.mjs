@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "drlab.us-east-1.linodeobjects.com",
+        hostname: "karadastore.eu-central-1.linodeobjects.com",
         port: "", // Leave empty for default port
         pathname: "/**", // Allow all paths within this domain
       },
