@@ -38,23 +38,36 @@ const Categories = ({ isBanner = true, list = [] }) => {
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
-      const scrollLeft = scrollContainerRef.current.scrollLeft;
-      setShowCircle(scrollLeft > -100);
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+  
+      const maxScrollLeft = scrollWidth - clientWidth;
+      const NMaxScrollLeft = maxScrollLeft * -1;
+      console.log("NmaxScrollLeft:", NMaxScrollLeft);
+  
+      if (scrollLeft > NMaxScrollLeft +1) {
+        setShowCircle(true);
+      } else {
+        setShowCircle(false);
+      }
+  
+      console.log("scrollLeft:", scrollLeft);
+      console.log("scrollWidth:", scrollWidth);
+      console.log("clientWidth:", clientWidth);
     }
   };
-
-  const checkOverflow = () => {
-    if (scrollContainerRef.current) {
-      const { scrollWidth, clientWidth } = scrollContainerRef.current;
-      setShowCircle(scrollWidth > clientWidth); 
-    }
-  };
+  
+  
 
   useEffect(() => {
     const initCategoryId = searchParams.get("init");
     const scrollContainer = scrollContainerRef.current;
 
-    checkOverflow();
+    if (scrollContainer) {
+      const { scrollWidth, clientWidth } = scrollContainer;
+      setShowCircle(scrollWidth > clientWidth);
+
+      scrollContainer.addEventListener("scroll", handleScroll);
+    }
 
     if (selectedCategoryId && categoryRefs.current[selectedCategoryId]) {
       categoryRefs.current[selectedCategoryId].scrollIntoView({
@@ -73,10 +86,6 @@ const Categories = ({ isBanner = true, list = [] }) => {
       }
     }
 
-    if (scrollContainer) {
-      scrollContainer.addEventListener("scroll", handleScroll);
-    }
-
     return () => {
       if (scrollContainer) {
         scrollContainer.removeEventListener("scroll", handleScroll);
@@ -90,7 +99,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
         <div className="relative">
           <div
             ref={scrollContainerRef}
-            className="flex z-1 items-center justify-center md:pt-8 md:pb-8 pt-4 pb-4 gap-6 overflow-auto no-scrollbar md:pl-0 md:pr-0 pl-[16px] pr-[16px]"
+            className="flex z-1 items-center justify-center md:pt-8 md:pb-8 pt-4 pb-4 gap-6 overflow-auto no-scrollbar md:pr-48 pl-[16px] pr-[16px]"
           >
             {list.map((el) => (
               <Wrapper

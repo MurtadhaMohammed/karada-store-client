@@ -13,7 +13,6 @@ const Invoice = () => {
     const discount = item?.product?.discount || 0;
     return total + discount * item.qt;
   }, 0);
-  console.log(productDiscount, "productDiscount")
 
   // Calculate voucher discount with capping
   let voucherDiscount = 0;
@@ -31,8 +30,6 @@ const Invoice = () => {
 
   const totalDiscount = (productDiscount || 0) + (voucherDiscount || 0);
   const realTotal = subTotal - totalDiscount + deliveryCost;
-  console.log(totalDiscount, "totalDiscount");
-  console.log(realTotal, "realTotal");
 
   const roundToNearest250 = (num) => {
     const total = Math.ceil(num / 250) * 250;

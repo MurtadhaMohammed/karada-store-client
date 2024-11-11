@@ -18,8 +18,6 @@ const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem, getSubTotal,getTotal } = useCartStore();
 const getTotall = getTotal();
 const getsubtotal= getSubTotal();
-console.log(getTotall, "gettotallll")
-console.log(getsubtotal, "getsubtotal")
     return (
     <div className="flex items-center bg-[#f6f6f6] rounded-[8px] border border-[#eee]">
       <IconButton
