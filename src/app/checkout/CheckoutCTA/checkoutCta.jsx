@@ -61,8 +61,7 @@ const CheckoutCTA = () => {
     const { name, phone, address } = userInfo || {};
     if (
       name?.trim() &&
-      phone?.trim() &&
-      validateIraqiPhoneNumber(phone) &&
+      validateIraqiPhoneNumber(phone).trim() &&
       address?.trim() &&
       !loading
     )
