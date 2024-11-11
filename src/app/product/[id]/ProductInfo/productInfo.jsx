@@ -22,11 +22,11 @@ import "swiper/css/navigation";
 import ProductCTA from "../ProductCTA/ProductCTA";
 import { useCartStore } from "@/lib/cartStore";
 
-const OptionTag = ({ name, active = false, onClick }) => {
+const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
+      className="flex flex-row justify-center items-center h-[32px] w-[80px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] mx-[4px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
       style={
         active
           ? {
@@ -38,6 +38,12 @@ const OptionTag = ({ name, active = false, onClick }) => {
       }
     >
       {name}
+      {color && (
+        <span
+          className="w-[12px] h-[12px] rounded-full mr-[8px]"
+          style={{ backgroundColor: color }}
+        />
+      )}
     </button>
   );
 };
@@ -47,11 +53,10 @@ const ProductInfo = ({ product }) => {
   const { scrollPosition } = useScrollPosition();
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [activeOption, setActiveOption] = useState(0);
+  const [activeOption, setActiveOption] = useState(product?.options?.[0] || null);
   const swiperRef = useRef(null);
   const { addItem } = useCartStore();
-  const [selectedOption, setSelectedOption] = useState(product?.options?.[0] || null);
-
+console.log(activeOption)
   const loadFavorites = () => {
     const favorites =
       JSON.parse(localStorage.getItem("favorites_product")) || [];
@@ -72,30 +77,21 @@ const ProductInfo = ({ product }) => {
   useEffect(() => {
     const favorites = loadFavorites();
     setIsFavorite(favorites.includes(product?.id));
-    if (product?.options?.length > 0) {
-      handleOptionClick(product.options[0], 0);
-    }
   }, [product?.id]);
+
+  useEffect(() => {
+    setActiveOption(product?.options?.[0] || null);
+  }, [product?.options]);
 
   const handleOptionClick = (option, index) => {
     if (option.images.length > 0) {
       setCurrentImageIndex(0);
-      swiperRef.current?.swiper.removeAllSlides();
-      option.images.forEach((img, i) => {
-        swiperRef.current?.swiper.appendSlide(
-          `<div class="swiper-slide">
-            <img src="${IMAGE_URL}/${img}" style="object-fit: cover; width: 100%; height: 100%;" alt="product-image-${i}" />
-          </div>`
-        );
-      });
-      swiperRef.current?.swiper.slideTo(0);
     }
-    setActiveOption(index);
-    setSelectedOption(option);
+    setActiveOption(option);
   };
 
   const handleAddToCart = () => {
-    addItem(product, selectedOption);
+    addItem(product, activeOption);
   };
 
   const handleShare = async () => {
@@ -106,6 +102,7 @@ const ProductInfo = ({ product }) => {
           text: "I found this interesting:",
           url: window.location.href,
         });
+        console.log("Content shared successfully");
       } catch (error) {
         console.error("Error sharing:", error);
       }
@@ -126,12 +123,12 @@ const ProductInfo = ({ product }) => {
   };
 
   const isAddToCartDisabled =
-  product?.options?.length > 0 && selectedOption === null;
+  product?.options?.length > 0 && activeOption === null;
   return (
     <div className="md:hidden block">
       <div className="h-[400px] border-b border-b-[#eee]">
         <div className={"w-full h-full relative"}>
-          {selectedOption?.images && selectedOption.images.length > 0 && (
+          {activeOption?.images && activeOption?.images?.length > 0 && (
             <Swiper
               ref={swiperRef}
               spaceBetween={10}
@@ -141,7 +138,7 @@ const ProductInfo = ({ product }) => {
               }
               className="h-full w-full relative z-0"
             >
-              {selectedOption.images.map((img, index) => (
+              {activeOption?.images?.map((img, index) => (
                 <SwiperSlide key={index}>
                   <Image
                     src={`${IMAGE_URL}/${img}`}
@@ -157,7 +154,7 @@ const ProductInfo = ({ product }) => {
             <Container>
               <div className="flex items-center justify-center">
                 <div className="flex items-center gap-[4px] mr-1">
-                  {selectedOption?.images?.map((image, i) => (
+                  { activeOption?.images?.map((images, i) => (
                     <span
                       key={i}
                       className="block h-[8px] rounded-[24px] transition-all"
@@ -266,12 +263,13 @@ const ProductInfo = ({ product }) => {
             عادة مايتم توصيل المنتجات في 3-5 أيام
           </span>
         </div>
-        <div className="mt-[16px] mb-[8px]">
+        <div className="mt-[16px] mb-[8px] flex flex-wrap">
           {product?.options?.map((option, index) => (
             <OptionTag
               key={index}
               name={option.name}
-              active={index === activeOption}
+              color={option.color}
+              active={option === activeOption}
               onClick={() => handleOptionClick(option, index)}
             />
           ))}
@@ -281,7 +279,7 @@ const ProductInfo = ({ product }) => {
       <ProductCTA
         product={product}
         onAddToCart={handleAddToCart}
-        selectedOption={selectedOption}
+        selectedOption={activeOption}
         disabled={isAddToCartDisabled}
       />
     </div>

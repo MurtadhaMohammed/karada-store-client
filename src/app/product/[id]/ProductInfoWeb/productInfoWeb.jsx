@@ -17,7 +17,7 @@ const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="flex flex-row justify-center items-center h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] ml-[8px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
+      className="flex flex-row justify-center items-center h-[32px] w-[80px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] mx-[4px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
       style={
         active
           ? {
@@ -42,13 +42,11 @@ const OptionTag = ({ name, color, active = false, onClick }) => {
 const ProductInfoWeb = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [activeOption, setActiveOption] = useState(0);
+  const [activeOption, setActiveOption] = useState(product?.options?.[0] || null);
   const { addItem } = useCartStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(product?.options?.[0] || null);
 
-  console.log(product)
   const loadFavorites = () => {
     const favorites =
       JSON.parse(localStorage.getItem("favorites_product")) || [];
@@ -69,25 +67,25 @@ const ProductInfoWeb = ({ product }) => {
   useEffect(() => {
     const favorites = loadFavorites();
     setIsFavorite(favorites.includes(product?.id));
-    if (product?.options?.length > 0) {
-      handleOptionClick(product.options[0], 0);
-    }
   }, [product?.id]);
+
+  useEffect(() => {
+    setActiveOption(product?.options?.[0] || null);
+  }, [product?.options]);
 
   const handleOptionClick = (option, index) => {
     if (option.images.length > 0) {
       setCurrentImageIndex(0);
-      setSelectedOption(option);
     }
-    setActiveOption(index);
+    setActiveOption(option);
   };
 
   const handleAddToCart = () => {
-    addItem({ ...product, endPrice: product.endPrice || product.price }, selectedOption);
+    addItem(product, activeOption);
   };
 
   const isAddToCartDisabled =
-    product?.options?.length > 0 && selectedOption === null;
+    product?.options?.length > 0 && activeOption === null;
 
   const openModal = (index) => {
     setIsModalOpen(true);
@@ -104,7 +102,7 @@ const ProductInfoWeb = ({ product }) => {
         <div className="flex gap-10 mb-[40px] pb-[40px] border-b border-b-[#eee]">
           <section className="flex gap-4">
             <div className="flex-1">
-              {selectedOption?.images?.slice(0, 4).map((img, i) => (
+              {activeOption?.images?.slice(0, 4).map((img, i) => (
                 <div
                   key={i}
                   onClick={() => setCurrentImageIndex(i)} // Click to select image
@@ -120,7 +118,7 @@ const ProductInfoWeb = ({ product }) => {
                     style={{ objectFit: "cover" }}
                     alt="Product Thumbnail"
                   />
-                  {i === 3 && selectedOption?.images?.length > 4 && (
+                  {i === 3 && activeOption?.images?.length > 4 && (
                     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                       <span className="text-white text-2xl font-bold">+</span>
                     </div>
@@ -138,7 +136,7 @@ const ProductInfoWeb = ({ product }) => {
               onClick={() => openModal(currentImageIndex)}
             >
               <Image
-                src={`${IMAGE_URL}/${selectedOption?.images[currentImageIndex]}`}
+                src={`${IMAGE_URL}/${activeOption?.images[currentImageIndex]}`}
                 fill
                 style={{ objectFit: "cover" }}
                 alt="Product Image"
@@ -185,14 +183,14 @@ const ProductInfoWeb = ({ product }) => {
               )}
             </div>
             {product?.options && product?.options.length > 0 && (
-              <div className="flex items-center mt-[8px]">
-                <div className="ml-[12px]">
+              <div className="flex items-center mt-[8px] flex-wrap">
+                <div className="ml-[12px] flex flex-wrap">
                   {product?.options.map((option, index) => (
                     <OptionTag
                       key={index}
                       color={option.color}
                       name={option.name}
-                      active={index === activeOption}
+                      active={option === activeOption}
                       onClick={() => handleOptionClick(option, index)}
                     />
                   ))}
@@ -204,7 +202,7 @@ const ProductInfoWeb = ({ product }) => {
               product={product}
               onAddToCart={handleAddToCart}
               isAddToCartDisabled={isAddToCartDisabled}
-              selectedOption={selectedOption}
+              selectedOption={activeOption}
             />
           </section>
         </div>
@@ -212,7 +210,7 @@ const ProductInfoWeb = ({ product }) => {
       <ImageModal
         isOpen={isModalOpen}
         initialIndex={modalImageIndex}
-        images={selectedOption?.images?.map((img) => `${IMAGE_URL}/${img}`)}
+        images={product?.image?.map((img) => `${IMAGE_URL}/${img?.url}`)}
         onClose={closeModal}
       />
     </div>

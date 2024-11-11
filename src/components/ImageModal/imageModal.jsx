@@ -38,40 +38,40 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
       <div className="relative w-full h-full flex flex-col items-center">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 text-3xl p-3 rounded-full bg-gray-200 z-10 transition-colors duration-200 hover:bg-gray-300"
+          className="absolute top-4 right-4 md:right-8 text-gray-500 text-xl p-3 rounded-full bg-gray-200 z-10 transition-colors duration-200 hover:bg-gray-300"
         >
           <RxCross2 />
         </button>
-        <div className="flex-1 flex items-center justify-center w-full max-w-screen-lg p-4 relative">
-          <button
-            onClick={nextImage}
-            className="absolute left-4 md:left-8 text-gray-500 text-3xl p-3 rounded-full bg-gray-200 z-2 transition-transform duration-200 hover:bg-gray-300"
-          >
-            <FiArrowLeft />
-          </button>
+        <button
+          onClick={nextImage}
+          className="absolute left-4 md:left-8 top-1/2 transform -translate-y-1/2 text-gray-500 text-3xl p-3 rounded-full bg-gray-200 z-20 transition-transform duration-200 hover:bg-gray-300"
+        >
+          <FiArrowLeft />
+        </button>
+        <div className="flex-1 flex items-center justify-center w-full max-w-screen-lg p-4 relative z-1">
           <div className="relative w-[500px] h-full max-h-full flex items-center justify-center z-1">
             <div
               className={`relative w-full h-full transition-opacity duration-500 ${
-                imageLoaded ? 'opacity-100' : 'opacity-0'
+                imageLoaded ? "opacity-100" : "opacity-0"
               }`}
             >
               <Image
                 key={currentIndex}
                 src={images[currentIndex]}
                 fill
-                style={{ objectFit: 'contain' }}
+                style={{ objectFit: "contain" }}
                 alt="Product Image"
                 onLoadingComplete={() => setImageLoaded(true)}
               />
             </div>
           </div>
-          <button
-            onClick={prevImage}
-            className="absolute right-4 md:right-8 text-gray-500 text-3xl p-3 rounded-full bg-gray-200 z-2 transition-transform duration-200 hover:bg-gray-300"
-          >
-            <FiArrowRight />
-          </button>
         </div>
+        <button
+          onClick={prevImage}
+          className="absolute right-4 md:right-8 top-1/2 transform -translate-y-1/2 text-gray-500 text-3xl p-3 rounded-full bg-gray-200 z-20 transition-transform duration-200 hover:bg-gray-300"
+        >
+          <FiArrowRight />
+        </button>
         <div className="flex overflow-x-auto mt-4 pb-4 px-4">
           {images.map((img, index) => (
             <div

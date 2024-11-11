@@ -5,8 +5,8 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "karadastore.eu-central-1.linodeobjects.com",
-        port: "", // Leave empty for default port
-        pathname: "/**", // Allow all paths within this domain
+        port: "",
+        pathname: "/**",
       },
     ],
   },
