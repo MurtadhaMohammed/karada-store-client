@@ -98,14 +98,13 @@ const ProductInfoWeb = ({ product }) => {
     setIsModalOpen(false);
   };
 
-
   return (
     <div className="mt-[48px] md:block hidden">
       <Container>
-        <div className="flex gap-10 mb-[40px] pb-[40px] border-b border-b-[#eee]">
+        <div className="flex gap-10 mb-[20px] pb-[40px] border-b border-b-[#eee]">
           <section className="flex gap-4">
             <div className="flex-1">
-              { activeOption?.images?.slice(0, 4).map((img, i) => (
+              {activeOption?.images?.slice(0, 4).map((img, i) => (
                 <div
                   key={i}
                   onClick={() => setCurrentImageIndex(i)} // Click to select image
@@ -138,7 +137,7 @@ const ProductInfoWeb = ({ product }) => {
               className="rounded-[16px] w-[450px] h-[450px] relative overflow-hidden cursor-pointer"
               onClick={() => openModal(currentImageIndex)}
             >
-              {activeOption?.images && activeOption?.images?.length !== 0? (
+              {activeOption?.images && activeOption?.images?.length !== 0 ? (
                 <Image
                   src={`${IMAGE_URL}/${activeOption?.images[currentImageIndex]}`}
                   fill
@@ -170,9 +169,9 @@ const ProductInfoWeb = ({ product }) => {
               </div>
             )}
 
-            <p className="text-[14px] text-gray-600 mt-[8px]">
+            {/* <p className="text-[14px] text-gray-600 mt-[8px]">
               {product?.description}
-            </p>
+            </p> */}
             <div className="flex items-center mt-[16px]">
               <TbTruckDelivery className="text-[16px]" />
               <span className="mr-[8px] text-[14px]">
@@ -213,6 +212,10 @@ const ProductInfoWeb = ({ product }) => {
             />
           </section>
         </div>
+        <p className="text-[16px] ">تفاصيل المنتج</p>
+        <p className="text-[14px] text-gray-600 mt-[8px] mb-[24px]">
+          {product?.description}
+        </p>
       </Container>
       <ImageModal
         isOpen={isModalOpen}
