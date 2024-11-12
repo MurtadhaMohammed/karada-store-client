@@ -52,6 +52,11 @@ const Categories = ({ isBanner = true, list = [] }) => {
     }
   };
 
+  const handleCategoryClick = (id) => {
+    if (isBanner) return;
+    setSelectedCategoryId(id);
+  };
+
   useEffect(() => {
     const initCategoryId = searchParams.get("init");
     const scrollContainer = scrollContainerRef.current;
