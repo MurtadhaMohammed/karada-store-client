@@ -274,7 +274,6 @@ console.log(activeOption)
             />
           ))}
         </div>
-
         <p className="text-[14px] ">تفاصيل المنتج</p>
         <ul className="text-[14px] text-gray-600 mt-[8px] mb-[24px] p-2 pt-0">
           {product?.description
