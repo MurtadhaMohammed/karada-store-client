@@ -6,35 +6,27 @@ import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import IconButton from "@/components/UI/IconButton/iconButton";
 
-const ProductCtaWeb = ({ product, isAddToCartDisabled, selectedOption }) => {
-  const {
-    getQty,
-    increase,
-    decrease,
-    removeItem,
-    getItemsTotal,
-    cart,
-    addItem,
-  } = useCartStore();
+const ProductCtaWeb = ({ product, isAddToCartDisabled }) => {
+  const { getQty, increase, decrease, removeItem, addItem } = useCartStore();
   const router = useRouter();
 
   useEffect(() => {
     router.prefetch("/cart");
   }, [router]);
 
-  const qty = getQty(product?.id, selectedOption);
+  const qty = getQty(product);
 
   const handleClear = () => {
-    removeItem(product, selectedOption);
+    removeItem(product);
   };
-  const handleIncrease = () => increase(product, selectedOption);
-  const handleDecrease = () => decrease(product, selectedOption);
+  const handleIncrease = () => increase(product);
+  const handleDecrease = () => decrease(product);
 
   return (
-       <div className="mt-[24px] flex items-center gap-4">
+    <div className="mt-[24px] flex items-center gap-4">
       {qty === 0 ? (
         <button
-        onClick={() => addItem(product, selectedOption)}
+          onClick={() => addItem(product)}
           className={`h-[48px] w-[180px] rounded-[24px] flex items-center justify-center transition-all active:scale-95 ${
             isAddToCartDisabled
               ? "bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed"

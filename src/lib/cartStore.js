@@ -9,10 +9,13 @@ export const useCartStore = create((set, get) => ({
   setCart: (cart) => set({ cart }),
 
   // Cart Operations
-  addItem: (product, option = null) => {
-    const endPrice = product.endPrice || product.price;
+  addItem: (product) => {
+    if (product?.l1) {
+      product.price = product?.l1?.price;
+      product.endPrice = product?.l1?.price; //TODO : handl endprice from BE
+    }
     set((state) => ({
-      cart: [...state.cart, { qt: 1, product, endPrice, option }],
+      cart: [...state.cart, { qt: 1, product }],
     }));
   },
   removeItem: (itemToBeRemoved) => {
@@ -79,8 +82,14 @@ export const useCartStore = create((set, get) => ({
       .reduce((a, b) => a + b, 0);
   },
 
-  getQty: (productId) => {
-    return get().cart.find((item) => item?.product?.id === productId)?.qt || 0;
+  getQty: (product) => {
+    return (
+      get().cart.find(
+        (item) =>
+          item?.product?.id === product?.id &&
+          item?.product?.l1?.uuid === product?.l1?.uuid
+      )?.qt || 0
+    );
   },
 
   setVoucher: (voucher) => {

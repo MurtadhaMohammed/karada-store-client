@@ -22,6 +22,11 @@ export function ReactQueryProvider({ fontStyle, children }) {
     if (typeof window !== "undefined") {
       let token = localStorage.getItem("karada-token");
 
+      setTimeout(() => {
+        let cart = localStorage.getItem("karada-cart");
+        if (cart) setCart(JSON.parse(cart));
+      }, 200);
+
       if (token && isTokenValid(token)) {
         setIsLogin(true);
         updateUserInfo(token);
@@ -37,11 +42,6 @@ export function ReactQueryProvider({ fontStyle, children }) {
         setIsLogin(true);
         updateUserInfo(token);
       }
-
-      setTimeout(() => {
-        let cart = localStorage.getItem("karada-cart");
-        if (cart) setCart(JSON.parse(cart));
-      }, 200);
     }
   };
 

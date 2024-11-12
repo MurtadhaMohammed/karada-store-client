@@ -9,28 +9,29 @@ import { useRouter } from "next/navigation";
 import { useCartStore } from "@/lib/cartStore";
 import { useEffect } from "react";
 
-const ProductCTA = ({ product, onAddToCart, selectedOption, disabled }) => {
-  const { getQty, increase, decrease, removeItem, getItemsTotal, cart } = useCartStore();
+const ProductCTA = ({ product, selectedOption, disabled }) => {
+  const { getQty, increase, decrease, removeItem, getItemsTotal, addItem } =
+    useCartStore();
   const router = useRouter();
 
   useEffect(() => {
     router.prefetch("/cart");
   }, [router]);
 
-  let qty = getQty(product?.id, selectedOption);
+  let qty = getQty(product);
 
-  const handleIncrease = () => increase(product, selectedOption);
-  const handleDecrease = () => decrease(product, selectedOption);
-  const handleClear = () => removeItem(product, selectedOption);
+  const handleIncrease = () => increase(product);
+  const handleDecrease = () => decrease(product);
+  const handleClear = () => removeItem(product);
 
   return (
     <div
       className="fixed -bottom-1 left-0 right-0 z-20 w-full border-t border-t-[#eee]"
       style={{
         background:
-          qty === 0 
-            ? disabled 
-              ? "linear-gradient(to right, #9ca3af, #d1d5db)" 
+          qty === 0
+            ? disabled
+              ? "linear-gradient(to right, #9ca3af, #d1d5db)"
               : "linear-gradient(to right, #4f46e5, #7c3aed)"
             : "#fff",
         height: qty === 0 ? 64 : 160,
@@ -51,7 +52,7 @@ const ProductCTA = ({ product, onAddToCart, selectedOption, disabled }) => {
             className={`p-4 flex w-full h-full items-center justify-center text-[#fff] ${
               disabled ? "pointer-events-none" : ""
             }`}
-            onClick={onAddToCart}
+            onClick={() => addItem(product)}
           >
             <FaPlus className="text-[18px]" />
             <b className="mr-[6px] text-[18px]">أضافة الى السلة</b>

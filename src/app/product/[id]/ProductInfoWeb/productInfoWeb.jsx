@@ -40,50 +40,31 @@ const OptionTag = ({ name, color, active = false, onClick }) => {
 };
 
 const ProductInfoWeb = ({ product }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(
     product?.options?.[0] || null
   );
-  const { addItem } = useCartStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [price, setPrice] = useState(product?.price);
+  const [endPrice, setEndPrice] = useState(product?.endPrice);
   const [modalImageIndex, setModalImageIndex] = useState(0);
-
-  const loadFavorites = () => {
-    const favorites =
-      JSON.parse(localStorage.getItem("favorites_product")) || [];
-    return favorites;
-  };
-
-  const toggleFavorite = (productId) => {
-    let favorites = loadFavorites();
-    if (favorites.includes(productId)) {
-      favorites = favorites.filter((id) => id !== productId);
-    } else {
-      favorites.push(productId);
-    }
-    localStorage.setItem("favorites_product", JSON.stringify(favorites));
-    setIsFavorite(favorites.includes(productId));
-  };
-
-  useEffect(() => {
-    const favorites = loadFavorites();
-    setIsFavorite(favorites.includes(product?.id));
-  }, [product?.id]);
 
   useEffect(() => {
     setActiveOption(product?.options?.[0] || null);
   }, [product?.options]);
+
+  useEffect(() => {
+    if (activeOption?.price) {
+      setPrice(activeOption?.price);
+      setEndPrice(activeOption?.price); //TODO : handl endprice from BE
+    } else setPrice(product?.price);
+  }, [activeOption]);
 
   const handleOptionClick = (option, index) => {
     if (option.images.length > 0) {
       setCurrentImageIndex(0);
     }
     setActiveOption(option);
-  };
-
-  const handleAddToCart = () => {
-    addItem(product, activeOption);
   };
 
   const isAddToCartDisabled =
@@ -152,18 +133,18 @@ const ProductInfoWeb = ({ product }) => {
 
           <section className="border-r border-r-[#eee] pr-8">
             <h4 className="text-[18px] mt-[16px]">{product?.name}</h4>
-            {product?.price === product?.endPrice ? (
+            {price === endPrice ? (
               <b className="text-[22px] block">
-                {Number(product?.endPrice).toLocaleString("en")}{" "}
+                {Number(endPrice).toLocaleString("en")}{" "}
                 <span className="text-[14px]">IQD</span>
               </b>
             ) : (
               <div className="flex flex-col items-start">
                 <p className="text-[18px] block line-through text-[#a5a5a5] italic">
-                  {Number(product?.price).toLocaleString("en")}
+                  {Number(price).toLocaleString("en")}
                 </p>
                 <b className="text-[22px] block">
-                  {Number(product?.endPrice).toLocaleString("en")}{" "}
+                  {Number(endPrice).toLocaleString("en")}{" "}
                   <span className="text-[14px]">IQD</span>
                 </b>
               </div>
@@ -208,17 +189,25 @@ const ProductInfoWeb = ({ product }) => {
             )}
 
             <ProductCtaWeb
-              product={product}
-              onAddToCart={handleAddToCart}
+              product={{ ...product, l1: activeOption }}
               isAddToCartDisabled={isAddToCartDisabled}
-              selectedOption={activeOption}
             />
           </section>
         </div>
         <p className="text-[16px] ">تفاصيل المنتج</p>
-        
+
         <div className="text-[14px] mt-[8px] mb-[24px] flex gap-2 flex-wrap">
-          {product?.description?.split("-")?.filter(el=> !!el)?.map((el, i)=> <div key={i} className="pl-4 pr-4 flex items-center justify-center h-[32px] rounded-[24px] bg-[#f6f6f685] text-[14px] border border-[#f6f6f6]">{el}</div>)}
+          {product?.description
+            ?.split("-")
+            ?.filter((el) => !!el)
+            ?.map((el, i) => (
+              <div
+                key={i}
+                className="pl-4 pr-4 flex items-center justify-center h-[32px] rounded-[24px] bg-[#f6f6f685] text-[14px] border border-[#f6f6f6]"
+              >
+                {el}
+              </div>
+            ))}
         </div>
         {/* <ul className="text-[14px] text-gray-600 mt-[8px] mb-[24px]">
           {product?.description

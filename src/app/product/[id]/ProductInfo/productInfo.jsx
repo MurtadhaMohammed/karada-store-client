@@ -54,9 +54,17 @@ const ProductInfo = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(product?.options?.[0] || null);
+  const [price, setPrice] = useState(product?.price);
+  const [endPrice, setEndPrice] = useState(product?.endPrice);
   const swiperRef = useRef(null);
-  const { addItem } = useCartStore();
-console.log(activeOption)
+
+  useEffect(() => {
+    if (activeOption?.price) {
+      setPrice(activeOption?.price);
+      setEndPrice(activeOption?.price); //TODO : handl endprice from BE
+    } else setPrice(product?.price);
+  }, [activeOption]);
+
   const loadFavorites = () => {
     const favorites =
       JSON.parse(localStorage.getItem("favorites_product")) || [];
@@ -90,9 +98,6 @@ console.log(activeOption)
     setActiveOption(option);
   };
 
-  const handleAddToCart = () => {
-    addItem(product, activeOption);
-  };
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -234,19 +239,19 @@ console.log(activeOption)
       </div>
       <Container>
         <h4 className="text-[18px] mt-[16px]">{product?.name}</h4>
-        {product?.price === product?.endPrice ? (
+        {price === endPrice ? (
           <b className="text-[22px] block">
-            {Number(product?.endPrice).toLocaleString("en")}{" "}
+            {Number(endPrice).toLocaleString("en")}{" "}
             <span className="text-[14px]">IQD</span>
           </b>
         ) : (
           <div className="flex items-end">
             <b className="text-[22px] block">
-              {Number(product?.endPrice).toLocaleString("en")}{" "}
+              {Number(endPrice).toLocaleString("en")}{" "}
               <span className="text-[14px]">IQD</span>
             </b>
             <p className="text-[18px] block mr-[16px] line-through text-[#a5a5a5] italic">
-              {Number(product?.price).toLocaleString("en")}
+              {Number(price).toLocaleString("en")}
             </p>
           </div>
         )}
@@ -286,12 +291,10 @@ console.log(activeOption)
               </li>
             ))}
         </ul>
-        <ProductCTA product={product} onAddToCart={handleAddToCart} />
+        {/* <ProductCTA product={product} /> */}
       </Container>
       <ProductCTA
-        product={product}
-        onAddToCart={handleAddToCart}
-        selectedOption={activeOption}
+        product={{ ...product, l1: activeOption }}
         disabled={isAddToCartDisabled}
       />
     </div>
