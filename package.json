@@ -3,7 +3,8 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev:main": "NEXT_PUBLIC_API_URL=https://store.puretik.com/api next dev",
+    "dev:dev": "NEXT_PUBLIC_API_URL=https://store.dev.puretik.com/api next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
