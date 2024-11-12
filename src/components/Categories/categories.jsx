@@ -42,7 +42,6 @@ const Categories = ({ isBanner = true, list = [] }) => {
         scrollContainerRef.current;
       const maxScrollLeft = scrollWidth - clientWidth;
       const NMaxScrollLeft = maxScrollLeft * -1;
-      console.log("NmaxScrollLeft:", NMaxScrollLeft);
 
       if (scrollLeft > NMaxScrollLeft + 1) {
         setShowCircle(true);
@@ -90,7 +89,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
         scrollContainer.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [list, selectedCategoryId, searchParams]);
+  }, [list, searchParams]);
 
   return (
     <div className={isBanner ? "border-b border-b-[#f6f6f6]" : ""}>
