@@ -79,16 +79,18 @@ const ProductInfoWeb = ({ product }) => {
     setIsModalOpen(false);
   };
 
+  const shownimages = activeOption?.images?.length > 0 ? activeOption.images : product?.image?.map(img => img.url);
+
   return (
     <div className="mt-[48px] md:block hidden">
       <Container>
         <div className="flex gap-10 mb-[20px] pb-[40px] border-b border-b-[#eee]">
           <section className="flex gap-4">
             <div className="flex-1">
-              {activeOption?.images?.slice(0, 4).map((img, i) => (
+              {shownimages?.slice(0, 4).map((img, i) => (
                 <div
                   key={i}
-                  onClick={() => setCurrentImageIndex(i)} // Click to select image
+                  onClick={() => setCurrentImageIndex(i)}
                   className={`w-[80px] h-[80px] rounded-[12px] mb-4 relative overflow-hidden ${
                     currentImageIndex === i
                       ? "border border-[#975aff] shadow-[0_4px_20px_rgb(0,0,0,0.08)]"
@@ -101,7 +103,7 @@ const ProductInfoWeb = ({ product }) => {
                     style={{ objectFit: "cover" }}
                     alt="Product Thumbnail"
                   />
-                  {i === 3 && activeOption?.images?.length > 4 && (
+                  {i === 3 && shownimages?.length > 4 && (
                     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                       <span className="text-white text-2xl font-bold">+</span>
                     </div>
@@ -118,9 +120,9 @@ const ProductInfoWeb = ({ product }) => {
               className="rounded-[16px] w-[450px] h-[450px] relative overflow-hidden cursor-pointer"
               onClick={() => openModal(currentImageIndex)}
             >
-              {activeOption?.images && activeOption?.images?.length !== 0 ? (
+              {shownimages && shownimages?.length !== 0 ? (
                 <Image
-                  src={`${IMAGE_URL}/${activeOption?.images[currentImageIndex]}`}
+                  src={`${IMAGE_URL}/${shownimages[currentImageIndex]}`}
                   fill
                   style={{ objectFit: "cover" }}
                   alt="Product Image"

@@ -130,11 +130,14 @@ const ProductInfo = ({ product }) => {
 
   const isAddToCartDisabled =
     product?.options?.length > 0 && activeOption === null;
+
+  const shownimages = activeOption?.images?.length > 0 ? activeOption.images : product?.image?.map(img => img.url);
+
   return (
     <div className="md:hidden block">
       <div className="h-[360px] border-b border-b-[#eee] mt-[60px]">
         <div className={"w-full h-full relative"}>
-          {activeOption?.images && activeOption?.images?.length > 0 && (
+          {shownimages && shownimages.length > 0 && (
             <Swiper
               ref={swiperRef}
               spaceBetween={10}
@@ -144,7 +147,7 @@ const ProductInfo = ({ product }) => {
               }
               className="h-full w-full relative z-0"
             >
-              {activeOption?.images?.map((img, index) => (
+              {shownimages.map((img, index) => (
                 <SwiperSlide key={index}>
                   <Image
                     src={`${IMAGE_URL}/${img}`}
@@ -160,7 +163,7 @@ const ProductInfo = ({ product }) => {
             <Container>
               <div className="flex items-center justify-start">
                 <div className="flex items-center gap-[4px] mr-1">
-                  {activeOption?.images?.map((images, i) => (
+                  {shownimages?.map((images, i) => (
                     <span
                       key={i}
                       className="block h-[8px] rounded-[24px] transition-all"
