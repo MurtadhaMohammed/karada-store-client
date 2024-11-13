@@ -10,7 +10,6 @@ import HomeSkeleton from "./Skeleton/skeleton";
 import MainHeaderWeb from "@/components/MainHeader/web/mainHeaderWeb";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 
-
 const IBMFont = localFont({
   src: [
     {
@@ -82,7 +81,8 @@ const rubikFont = localFont({
 export const metadata = {
   title: "كرادة ستور",
   description: "افضل متجر لتوفير الاجهزة مع ضمان حقيقي",
-  keywords: "karada store,gaming,phones,computers,pc,tablets,consoles,store,كيمنك,سماعات,هواتف",
+  keywords:
+    "karada store,gaming,phones,computers,pc,tablets,consoles,store,كيمنك,سماعات,هواتف",
   author: "Karada store",
   openGraph: {
     title: "Karada store",
@@ -124,10 +124,12 @@ export const metadata = {
   ],
 };
 
-
 export default function RootLayout({ children }) {
   return (
-      <body className={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}>
+    <html>
+      <body
+        className={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}
+      >
         <ReactQueryProvider>
           <ProgressBar />
           <MainHeader />
@@ -137,5 +139,6 @@ export default function RootLayout({ children }) {
           <SideMenu />
         </ReactQueryProvider>
       </body>
+    </html>
   );
 }
