@@ -91,7 +91,7 @@ export const metadata = {
     url: "https://karadastore.iq",
     images: [
       {
-        url: "karadastore.eu-central-1.linodeobjects.com/karada-store/image-rt0QuT.jpg",
+        url: "https://imgur.com/a/yHUgXkj",
         width: 1200,
         height: 630,
         alt: "Karada Store Image",
