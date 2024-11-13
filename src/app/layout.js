@@ -80,7 +80,7 @@ const rubikFont = localFont({
 });
 
 export const metadata = {
-  title: "كرادة ستور",
+  title: " ستور",
   description: "افضل متجر لتوفير الاجهزة مع ضمان حقيقي",
   keywords:
     "karada store,gaming,phones,computers,pc,tablets,consoles,store,كيمنك,سماعات,هواتف",
@@ -90,7 +90,7 @@ export const metadata = {
   ogType: "website",
   ogUrl: "https://karadastore.iq",
   ogImage:
-    "karadastore.eu-central-1.linodeobjects.com/karada-store/image-rt0QuT.jpg",
+    "https://karadastore.eu-central-1.linodeobjects.com/karada-store/image-3cj-xn.jpg",
   instagramCard: "https://www.instagram.com/karada.store.elc",
   instagramTitle: "karada.store.elc",
   facebookCard: "https://www.facebook.com/karada.gaming",
