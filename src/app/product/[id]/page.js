@@ -12,11 +12,11 @@ export async function generateMetadata({ params }) {
       // title: data?.product?.name || 'Product Page',
       // description: data?.product?.shortDescription || 'Product description',
       openGraph: {
-        title: data?.product?.name || 'Product Page',
+        title: 'Product Page',
         description: data?.product?.shortDescription || 'Product description',
         images: [
           {
-            url: `${IMAGE_URL}/${data?.product?.thumbnail1}`,
+            image: `${IMAGE_URL}/${data?.product?.image[0]}`,
           },
         ],
       }
