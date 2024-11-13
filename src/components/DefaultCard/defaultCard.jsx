@@ -60,7 +60,7 @@ const DefaultCard = ({
               {item?.name}
             </h2>
             <p className="text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis">
-              {item?.description}
+              {item?.shortDescription}
             </p>
           </div>
           <div className="flex items-end justify-between mt-[8px]">
