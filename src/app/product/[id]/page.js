@@ -12,7 +12,7 @@ export async function generateMetadata({ params }) {
       // title: data?.product?.name || 'Product Page',
       // description: data?.product?.shortDescription || 'Product description',
       openGraph: {
-        title: 'Product Page',
+        title: data?.product?.name || 'Product Page',
         description: data?.product?.shortDescription || 'Product description',
         images: [
           {
