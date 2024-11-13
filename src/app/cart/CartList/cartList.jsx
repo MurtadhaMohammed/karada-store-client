@@ -43,12 +43,15 @@ const QtButton = ({ value, product }) => {
 };
 
 const CartItem = ({ item }) => {
+  console.log(item)
   const loadImageUrl = () => {
     let image = item?.product?.thumbnail1;
     if (item?.product?.l1?.uuid) image = item?.product?.l1?.images[0];
 
     return image;
   };
+
+  const displayPrice = item?.product?.l1 ? item?.product?.l1?.price : item?.product?.price;
 
   return (
     <div className="border-b border-b-[#eee] pt-[24px] pb-[16px]">
@@ -79,13 +82,13 @@ const CartItem = ({ item }) => {
                     {Number(item.product.price).toLocaleString("en")}
                   </p>
                   <b className="text-[16px]">
-                    {Number(item?.product?.price).toLocaleString("en")}{" "}
+                    {Number(displayPrice).toLocaleString("en")}{" "}
                     <span className="text-[14px]">IQD</span>
                   </b>
                 </div>
               ) : (
                 <b className="text-[16px]">
-                  {Number(item?.product?.price).toLocaleString("en")}{" "}
+                  {Number(displayPrice).toLocaleString("en")}{" "}
                   <span className="text-[14px]">IQD</span>
                 </b>
               )}
