@@ -80,22 +80,50 @@ const rubikFont = localFont({
 });
 
 export const metadata = {
-  title: " كرادة ستور" ,
+  title: "كرادة ستور",
   description: "افضل متجر لتوفير الاجهزة مع ضمان حقيقي",
-  keywords:
-    "karada store,gaming,phones,computers,pc,tablets,consoles,store,كيمنك,سماعات,هواتف",
+  keywords: "karada store,gaming,phones,computers,pc,tablets,consoles,store,كيمنك,سماعات,هواتف",
   author: "Karada store",
-  ogTitle: "Karada store",
-  ogDescription: "افضل متجر لتوفير الاجهزة مع ضمان حقيقي",
-  ogType: "website",
-  ogUrl: "https://karadastore.iq",
-  ogimage:
-    "https://karadastore.eu-central-1.linodeobjects.com/karada-store/image-3cj-xn.jpg",
-  instagramCard: "https://www.instagram.com/karada.store.elc",
-  instagramTitle: "karada.store.elc",
-  facebookCard: "https://www.facebook.com/karada.gaming",
-  facebookTitle: "متجر الكرادة - Karada Store",
+  openGraph: {
+    title: "Karada store",
+    description: "افضل متجر لتوفير الاجهزة مع ضمان حقيقي",
+    type: "website",
+    url: "https://karadastore.iq",
+    images: [
+      {
+        url: "https://karadastore.eu-central-1.linodeobjects.com/karada-store/image-3cj-xn.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Karada Store Image",
+      },
+    ],
+  },
+  additionalLinkTags: [
+    {
+      rel: "icon",
+      href: "/favicon.ico",
+    },
+  ],
+  additionalMetaTags: [
+    {
+      property: "instagram:card",
+      content: "https://www.instagram.com/karada.store.elc",
+    },
+    {
+      property: "instagram:title",
+      content: "karada.store.elc",
+    },
+    {
+      property: "facebook:card",
+      content: "https://www.facebook.com/karada.gaming",
+    },
+    {
+      property: "facebook:title",
+      content: "متجر الكرادة - Karada Store",
+    },
+  ],
 };
+
 
 export default function RootLayout({ children }) {
   return (
