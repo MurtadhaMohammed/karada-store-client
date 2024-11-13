@@ -131,9 +131,9 @@ const Categories = ({ isBanner = true, list = [] }) => {
                 </p>
               </Wrapper>
             ))}
-            {showCircle && (
+           {showCircle && (
               <div
-                className={`${style.circle} ${isClicked ? "active" : ""}`}
+                className={`${style.circle} ${isClicked ? style.activeCircle : ""}`}
                 onClick={handleScrollToLeft}
               >
                 <MdKeyboardArrowLeft size={30} />

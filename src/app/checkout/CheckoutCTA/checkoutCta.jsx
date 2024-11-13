@@ -61,7 +61,8 @@ const CheckoutCTA = () => {
     const { name, phone, address } = userInfo || {};
     if (
       name?.trim() &&
-      validateIraqiPhoneNumber(phone).trim() &&
+      phone?.trim() &&
+      validateIraqiPhoneNumber(phone)&& //todo : check if validateIraqiPhoneNumber is working
       address?.trim() &&
       !loading
     )
