@@ -68,7 +68,7 @@ const LoginFormWeb = () => {
 
   if (isOtp)
     return (
-      <div className="max-w-[360px] m-auto mt-[20vh]">
+      <div className="max-w-[360px] m-auto mt-[20vh] font-ibm">
         <div>
           <div className="text-center mb-[16px]">
             <p className="text-[18px] font-bold">أدخل رمز التحقق</p>
