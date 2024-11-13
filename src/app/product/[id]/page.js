@@ -17,8 +17,6 @@ export async function generateMetadata({ params }) {
         images: [
           {
             url: `${IMAGE_URL}/${data?.product?.image[0]}`,
-            width: 6,
-            height: 8,
           },
         ],
       }

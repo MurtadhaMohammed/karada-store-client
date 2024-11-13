@@ -90,7 +90,7 @@ export const metadata = {
   ogType: "website",
   ogUrl: "https://karadastore.iq",
   ogImage:
-    "https://imgur.com/a/yHUgXkj",
+    "karadastore.eu-central-1.linodeobjects.com/karada-store/image-rt0QuT.jpg",
   instagramCard: "https://www.instagram.com/karada.store.elc",
   instagramTitle: "karada.store.elc",
   facebookCard: "https://www.facebook.com/karada.gaming",
