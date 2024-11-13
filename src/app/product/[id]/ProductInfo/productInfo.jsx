@@ -53,7 +53,9 @@ const ProductInfo = ({ product }) => {
   const { scrollPosition } = useScrollPosition();
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [activeOption, setActiveOption] = useState(product?.options?.[0] || null);
+  const [activeOption, setActiveOption] = useState(
+    product?.options?.[0] || null
+  );
   const [price, setPrice] = useState(product?.price);
   const [endPrice, setEndPrice] = useState(product?.endPrice);
   const swiperRef = useRef(null);
@@ -98,7 +100,6 @@ const ProductInfo = ({ product }) => {
     setActiveOption(option);
   };
 
-
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -128,10 +129,10 @@ const ProductInfo = ({ product }) => {
   };
 
   const isAddToCartDisabled =
-  product?.options?.length > 0 && activeOption === null;
+    product?.options?.length > 0 && activeOption === null;
   return (
     <div className="md:hidden block">
-      <div className="h-[400px] border-b border-b-[#eee]">
+      <div className="h-[400px] border-b border-b-[#eee] mt-[68px]">
         <div className={"w-full h-full relative"}>
           {activeOption?.images && activeOption?.images?.length > 0 && (
             <Swiper
@@ -157,9 +158,9 @@ const ProductInfo = ({ product }) => {
           )}
           <div className="absolute left-0 right-0 mt-[4px] bottom-[16px] z-50">
             <Container>
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-start">
                 <div className="flex items-center gap-[4px] mr-1">
-                  { activeOption?.images?.map((images, i) => (
+                  {activeOption?.images?.map((images, i) => (
                     <span
                       key={i}
                       className="block h-[8px] rounded-[24px] transition-all"
@@ -178,20 +179,29 @@ const ProductInfo = ({ product }) => {
               </div>
             </Container>
           </div>
+          <div className="w-[68px] h-[68px] bg-white border border-[#eeee] rounded-[8px] absolute left-[16px] -bottom-[32px] z-10 shadow-md overflow-hidden">
+            {product?.brand?.img && (
+              <Image
+                src={`${IMAGE_URL}/${product?.brand?.img}`}
+                fill
+                alt="brand"
+              />
+            )}
+          </div>
         </div>
         <div
-          className={`top-0 left-0 right-0 pt-[16px] pb-[16px] z-50 ${
+          className={`top-0 left-0 right-0 pt-[16px] pb-[16px] z-50 border-b  ${
             scrollPosition > 0
-              ? "fixed bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-b border-b-[#f0f0f0]"
-              : "absolute"
-          } transition-all`}
+              ? "fixed bg-[#fff] !border-b-[#eee]"
+              : "absolute bg-gradient-to-b from-[#f0eeff] to-transparent border-b-[#fff]"
+          } transition-all h-[68px]`}
         >
           <Container>
             <div className="flex items-start justify-between z-50">
               <div className="flex items-center flex-1">
                 <IconButton
                   rounded={"50%"}
-                  className={`bg-[#f6f6f6] rounded-full border border-[#eee] p-2 text-[24px] transition-all`}
+                  className={`bg-[#fff] rounded-full border border-[#eee] p-2 text-[24px] transition-all`}
                   icon={<IoIosArrowForward />}
                   onClick={() => router.back()}
                 />
@@ -203,7 +213,7 @@ const ProductInfo = ({ product }) => {
                   transition={{
                     duration: 0.3,
                   }}
-                  className="mt-2 mr-[8px] text-[18px] whitespace-nowrap overflow-hidden text-ellipsis"
+                  className="mt-1 mr-[8px] text-[18px] whitespace-nowrap overflow-hidden text-ellipsis"
                   style={{
                     maxWidth: 180,
                     visibility: scrollPosition > 200 ? "visible" : "hidden",
@@ -215,14 +225,14 @@ const ProductInfo = ({ product }) => {
               <div className="flex items-center">
                 <IconButton
                   rounded={"8px"}
-                  className="p-2 bg-[#f6f6f6] rounded-[8px] border border-[#eee]"
+                  className="p-2 bg-[#fff] rounded-[8px] border border-[#eee]"
                   onClick={handleShare}
                   icon={<TbShare2 className="text-[22px]" />}
                 />
                 <div className="w-[8px]" />
                 <IconButton
                   rounded={"8px"}
-                  className="p-2 bg-[#f6f6f6] rounded-[8px] border border-[#eee]"
+                  className="p-2 bg-[#fff] rounded-[8px] border border-[#eee]"
                   icon={
                     isFavorite ? (
                       <TbHeartFilled className="text-[22px] text-[#ff5a5f]" />
@@ -285,10 +295,7 @@ const ProductInfo = ({ product }) => {
             ?.split("-")
             ?.filter((el) => !!el)
             ?.map((el, i) => (
-              <li key={i}>
-                -
-                {el}
-              </li>
+              <li key={i}>-{el}</li>
             ))}
         </ul>
         {/* <ProductCTA product={product} /> */}

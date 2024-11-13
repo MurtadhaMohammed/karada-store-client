@@ -24,7 +24,7 @@ const CreatviceCard = ({ index, item }) => {
             {item?.name}
           </h2>
           <p className="text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis">
-              {item?.description}
+              {item?.shortDescription}
             </p>
           {/* <a className="block mt-[8px] underline text-[#4b4383]">كرادة ستور</a> */}
           <h4 className="mt-[12px] text-[22px] font-extrabold">

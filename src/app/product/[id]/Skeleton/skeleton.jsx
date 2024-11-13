@@ -9,11 +9,11 @@ import ProductCTA from "../ProductCTA/ProductCTA";
 const ProductSkeleton = () => {
   return (
     <div className="md:hidden block">
-      <div className="h-[400px] border-b border-b-[#eee] pure-skeleton">
+      <div className="h-[400px] border-b border-b-[#eee] pure-skeleton mt-[68px]">
         <div className={"w-full h-full relative"}>
           <div className="absolute left-0 right-0 mt-[4px]  bottom-[16px]">
             <Container>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-start">
                 <div className="flex items-center gap-[4px] mr-1">
                   {[...Array(3)]?.map((el, i) => (
                     <span
@@ -26,10 +26,10 @@ const ProductSkeleton = () => {
                     />
                   ))}
                 </div>
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <p className="mt-1 ml-2">0.0</p>
                   <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                </div>
+                </div> */}
               </div>
             </Container>
           </div>
