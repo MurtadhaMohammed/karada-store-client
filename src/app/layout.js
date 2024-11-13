@@ -99,25 +99,6 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
-        <meta name="keywords" content={metadata.keywords} />
-        <meta name="author" content={metadata.author} />
-
-        <meta property="og:title" content={metadata.ogTitle} />
-        <meta property="og:description" content={metadata.ogDescription} />
-        <meta property="og:type" content={metadata.ogType} />
-        <meta property="og:url" content={metadata.ogUrl} />
-        <meta property="og:image" content={metadata.ogImage} />
-
-        <meta property="og:site_name" content={metadata.instagramTitle} />
-        <meta property="og:see_also" content={metadata.instagramCard} />
-        <meta property="og:see_also" content={metadata.facebookCard} />
-
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-      </head>
       <body className={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}>
         <ReactQueryProvider>
           <ProgressBar />
@@ -128,6 +109,5 @@ export default function RootLayout({ children }) {
           <SideMenu />
         </ReactQueryProvider>
       </body>
-    </html>
   );
 }
