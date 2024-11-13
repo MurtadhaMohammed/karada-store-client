@@ -8,6 +8,7 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex || 0);
   const [imageLoaded, setImageLoaded] = useState(true);
 
+  console.log(images);
   const prevImage = () => {
     setCurrentIndex(
       (prevIndex) => (prevIndex - 1 + images.length) % images.length
@@ -44,7 +45,7 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
         >
           <RxCross2 />
         </button>
-        {currentIndex < images.length - 1 && (
+        {currentIndex < images?.length - 1 && (
           <button
             onClick={nextImage}
             className="absolute left-4 md:left-8 top-1/2 transform -translate-y-1/2 text-gray-500 text-3xl p-3 rounded-full bg-gray-200 z-20 transition-transform duration-200 hover:bg-gray-300"
