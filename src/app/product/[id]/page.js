@@ -3,25 +3,11 @@ import ProductInfoWeb from "./ProductInfoWeb/productInfoWeb";
 import RelatedList from "./RelatedList/relatedList";
 import { URL, IMAGE_URL } from "@/lib/api";
 
-export async function generateMetadata({ params }) {
-  try {
-    const response = await fetch(`${URL}/client/product/product/${params.id}`);
-    const data = await response.json();
-
-    return {
-      title: data?.product?.name || 'Product Page',
-      description: data?.product?.shortDescription || 'Product description',
-      images: `${IMAGE_URL}/${data?.product?.thumbnail1}`
-    }
-  } catch (error) {
-    console.error('Error generating metadata:', error);
-    return {
-      title: 'Product Page',
-      description: 'Product description',
-    }
-  }
+export const metadata = {
+  title: "تفاصيل المنتج",
+  description: "تفاصيل المنتج",
+  keywords: "تفاصيل المنتج",
 }
-
 
 export default async function ProductOne({ params }) {
   let products = await fetch(`${URL}/client/product/product/${params.id}`, {
