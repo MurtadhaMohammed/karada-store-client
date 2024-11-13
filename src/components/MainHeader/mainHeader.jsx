@@ -54,10 +54,10 @@ const MainHeader = () => {
     pathname !== "/brands"
   )
     return (
-      <header className="md:hidden h-[68px] shadow-[0_4px_20px_rgb(0,0,0,0.06)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-20">
+      <header className="md:hidden h-[64px] shadow-[0_4px_20px_rgb(0,0,0,0.06)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-20">
         <Motion y={-6}>
           <Container>
-            <div className="flex items-center justify-between h-[68px]">
+            <div className="flex items-center justify-between h-[64px]">
               <div className="flex gap-4 items-center">
                 <IconButton
                   onClick={() => router.back()}
@@ -87,14 +87,14 @@ const MainHeader = () => {
       }}
     >
       <Container>
-        <div className="flex items-center justify-between h-[68px]">
+        <div className="flex items-center justify-between h-[64px]">
           <div className="relative">
             <IconButton
               onClick={() => setIsMenu(true)}
               icon={<HiOutlineMenuAlt3 />}
             />
           </div>
-          <Image src={"/logo2.png"} width={110} height={24} alt="image" />
+          <Image src={"/logo2.png"} width={100} height={24} alt="image" />
         </div>
       </Container>
     </header>

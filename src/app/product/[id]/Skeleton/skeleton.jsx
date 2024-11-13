@@ -26,10 +26,6 @@ const ProductSkeleton = () => {
                     />
                   ))}
                 </div>
-                {/* <div className="flex items-center">
-                  <p className="mt-1 ml-2">0.0</p>
-                  <TiStarFullOutline className="ml-[4px] text-[24px] text-[#FCA120]" />
-                </div> */}
               </div>
             </Container>
           </div>

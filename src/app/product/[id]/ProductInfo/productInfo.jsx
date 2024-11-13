@@ -132,7 +132,7 @@ const ProductInfo = ({ product }) => {
     product?.options?.length > 0 && activeOption === null;
   return (
     <div className="md:hidden block">
-      <div className="h-[400px] border-b border-b-[#eee] mt-[68px]">
+      <div className="h-[360px] border-b border-b-[#eee] mt-[60px]">
         <div className={"w-full h-full relative"}>
           {activeOption?.images && activeOption?.images?.length > 0 && (
             <Swiper
@@ -179,21 +179,27 @@ const ProductInfo = ({ product }) => {
               </div>
             </Container>
           </div>
-          <div className="w-[68px] h-[68px] bg-white border border-[#eeee] rounded-[8px] absolute left-[16px] -bottom-[32px] z-10 shadow-md overflow-hidden">
-            {product?.brand?.img && (
+          {product?.brand?.img && (
+            <div
+              onClick={() =>
+                router.push(`/products/brand/${product?.brand.id}`)
+              }
+              className="w-[68px] h-[68px] bg-white border border-[#eeee] rounded-[8px] absolute left-[16px] -bottom-[32px] z-10 shadow-md overflow-hidden active:opacity-40 transition-all"
+            >
               <Image
                 src={`${IMAGE_URL}/${product?.brand?.img}`}
                 fill
+                objectFit="contain"
                 alt="brand"
               />
-            )}
-          </div>
+            </div>
+          )}
         </div>
         <div
           className={`top-0 left-0 right-0 pt-[16px] pb-[16px] z-50 border-b  ${
             scrollPosition > 0
               ? "fixed bg-[#fff] !border-b-[#eee]"
-              : "absolute bg-gradient-to-b from-[#f0eeff] to-transparent border-b-[#fff]"
+              : "absolute bg-gradient-to-b from-[#f0eeff] to-[#fff] border-b-[#fff]"
           } transition-all h-[68px]`}
         >
           <Container>
