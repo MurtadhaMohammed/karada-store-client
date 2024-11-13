@@ -80,7 +80,7 @@ const rubikFont = localFont({
 });
 
 export const metadata = {
-  title: " ستور",
+  title: " كرادة ستور" ,
   description: "افضل متجر لتوفير الاجهزة مع ضمان حقيقي",
   keywords:
     "karada store,gaming,phones,computers,pc,tablets,consoles,store,كيمنك,سماعات,هواتف",
