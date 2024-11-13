@@ -9,9 +9,17 @@ export async function generateMetadata({ params }) {
     const data = await response.json();
 
     return {
-      title: data?.product?.name || 'Product Page',
-      description: data?.product?.shortDescription || 'Product description',
-      images: `${IMAGE_URL}/${data?.product?.thumbnail1}`
+      // title: data?.product?.name || 'Product Page',
+      // description: data?.product?.shortDescription || 'Product description',
+      openGraph: {
+        title: data?.product?.name || 'Product Page',
+        description: data?.product?.shortDescription || 'Product description',
+        images: [
+          {
+            url: `${IMAGE_URL}/${data?.product?.thumbnail1}`,
+          },
+        ],
+      }
     }
   } catch (error) {
     console.error('Error generating metadata:', error);
