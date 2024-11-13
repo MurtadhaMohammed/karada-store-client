@@ -4,13 +4,21 @@ import RelatedList from "./RelatedList/relatedList";
 import { URL, IMAGE_URL } from "@/lib/api"; 
 
 export async function generateMetadata({ params }) {
-  const id = params
-
-  const product = await fetch(`${URL}/client/product/product/${id}`).then((res) => res.json());
-  return {
-    title: product?.product?.name,
-    description: product?.product?.shortDescription,
-    images: `${IMAGE_URL}/${product?.product?.image[0].url}`,
+  const { id } = params;
+  try {
+    const product = await fetch(`${URL}/client/product/product/${id}`).then((res) => res.json());
+    return {
+      title: product?.product?.name || "Product Details", 
+      description: product?.product?.shortDescription || "Check out our product details.",
+      images: `${IMAGE_URL}/${product?.product?.thumbnail1}` || "/default-thumbnail.jpg",
+    };
+  } catch (error) {
+    console.error("Failed to fetch product data for metadata:", error);
+    return {
+      title: "Product Details",
+      description: "Explore our range of products.",
+      images: "/default-thumbnail.jpg",
+    };
   }
 }
 
