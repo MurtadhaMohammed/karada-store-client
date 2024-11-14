@@ -8,12 +8,20 @@ export async function generateMetadata({ params }) {
     const response = await fetch(`${URL}/client/product/product/${params.id}`);
     const data = await response.json();
 
+    let shortDescription = (data?.product?.description || 'Product description')
+    .split('\n')
+    .filter(line => line.startsWith('-'))
+    .slice(0, 5)
+    .join('\n');
+
+    console.log(shortDescription);
+
     return {
       // title: data?.product?.name || 'Product Page',
       // description: data?.product?.shortDescription || 'Product description',
       openGraph: {
         title: data?.product?.name || 'Product Page',
-        description: data?.product?.shortDescription || 'Product description',
+        description: shortDescription || 'Product description',
         images: [
           {
             url: `${IMAGE_URL}/${data?.product?.image[0]}`,
