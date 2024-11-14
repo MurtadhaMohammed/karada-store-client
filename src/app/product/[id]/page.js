@@ -14,8 +14,6 @@ export async function generateMetadata({ params }) {
     .slice(0, 5)
     .join('\n');
 
-    console.log(shortDescription);
-
     return {
       // title: data?.product?.name || 'Product Page',
       // description: data?.product?.shortDescription || 'Product description',

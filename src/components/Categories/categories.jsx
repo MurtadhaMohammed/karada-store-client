@@ -55,7 +55,6 @@ const Categories = ({ isBanner = true, list = [] }) => {
       });
     }
   }, [getCategoryPositionId, list]);
-    console.log(selectedCategoryId);
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {

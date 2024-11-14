@@ -43,11 +43,9 @@ const QtButton = ({ value, product }) => {
 };
 
 const CartItem = ({ item }) => {
-  console.log(item)
   const loadImageUrl = () => {
     let image = item?.product?.thumbnail1;
     if (item?.product?.l1?.uuid) image = item?.product?.l1?.images[0];
-
     return image;
   };
 
