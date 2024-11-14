@@ -6,7 +6,6 @@ import { useAppStore } from "@/lib/store";
 
 const Address = () => {
   const { userInfo, setUserInfo } = useAppStore();
-
   const [address, setAddress] = useState(userInfo?.address || "");
   const [phone, setPhone] = useState(userInfo?.phone || "");
   const [name, setName] = useState(userInfo?.name || "");

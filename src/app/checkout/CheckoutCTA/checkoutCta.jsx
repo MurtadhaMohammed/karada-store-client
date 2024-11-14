@@ -7,7 +7,7 @@ import Ripples from "react-ripples";
 import { apiCall } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 
 const CheckoutCTA = () => {
@@ -15,9 +15,18 @@ const CheckoutCTA = () => {
   const router = useRouter();
   const { userInfo } = useAppStore();
   const { cart, clearCart } = useCartStore();
-  const voucher = useCartStore((state) => state.voucher); // Retrieve voucher from global state
+  const voucher = useCartStore((state) => state.voucher);
 
   const [loading, setLoading] = useState(false);
+  const [address, setAddress] = useState(userInfo?.address || "");
+  const [phone, setPhone] = useState(userInfo?.phone || "");
+  const [name, setName] = useState(userInfo?.name || "");
+
+  useEffect(() => {
+    setAddress(userInfo?.address || "");
+    setPhone(userInfo?.phone || "");
+    setName(userInfo?.name || "");
+  }, [userInfo]);
 
   const items = useMemo(() => {
     return cart?.map((item) => ({
@@ -27,13 +36,12 @@ const CheckoutCTA = () => {
       l1: item.l1,
     }));
   }, [cart]);
-  
 
   const order = {
     user_id: userInfo.id,
-    user_name: userInfo.name,
-    phone: userInfo.phone,
-    address: userInfo.address,
+    user_name: name,
+    phone: phone,
+    address: address,
     items,
     voucher_id: voucher ? voucher.id : null,
     store_id: 1,
@@ -48,7 +56,7 @@ const CheckoutCTA = () => {
         data: order,
       });
       if (response) {
-        clearCart(); 
+        clearCart();
         router.replace("/orders");
       }
       setLoading(false);
@@ -58,17 +66,16 @@ const CheckoutCTA = () => {
   };
 
   const isDataProvided = useMemo(() => {
-    const { name, phone, address } = userInfo || {};
     if (
       name?.trim() &&
       phone?.trim() &&
-      validateIraqiPhoneNumber(phone)&& //todo : check if validateIraqiPhoneNumber is working
+      validateIraqiPhoneNumber(phone) &&
       address?.trim() &&
       !loading
     )
       return true;
     else false;
-  }, [userInfo]);
+  }, [name, phone, address, loading]);
 
   return (
     <div

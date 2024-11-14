@@ -8,7 +8,6 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex || 0);
   const [imageLoaded, setImageLoaded] = useState(true);
 
-  console.log(images);
   const prevImage = () => {
     setCurrentIndex(
       (prevIndex) => (prevIndex - 1 + images.length) % images.length
@@ -79,25 +78,27 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
             <FiArrowRight />
           </button>
         )}
-        <div className="flex overflow-x-auto mt-4 pb-4 px-4">
-          {images.map((img, index) => (
-            <div
-              key={index}
-              onClick={() => {
-                setCurrentIndex(index);
-              }}
-              className={`w-[30px] h-[30px] md:w-[60px] md:h-[60px] rounded-[8px] mx-2 relative overflow-hidden cursor-pointer ${
-                currentIndex === index ? "border border-[#975aff]" : ""
-              }`}
-            >
-              <Image
-                src={img}
-                fill
-                style={{ objectFit: "cover" }}
-                alt="Thumbnail"
-              />
-            </div>
-          ))}
+        <div className="flex overflow-x-auto mt-4 pb-4 px-4 w-full max-w-screen-lg">
+          <div className="flex space-x-2">
+            {images.map((img, index) => (         
+              <div
+                key={index}
+                onClick={() => {
+                  setCurrentIndex(index);
+                }}
+                className={`w-[30px] h-[30px] md:w-[60px] md:h-[60px] rounded-[8px] relative overflow-hidden cursor-pointer ${
+                  currentIndex === index ? "border border-[#975aff]" : ""
+                }`}
+              >
+                <Image
+                  src={img}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  alt="Thumbnail"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
