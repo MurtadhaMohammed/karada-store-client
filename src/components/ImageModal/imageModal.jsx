@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import Image from "next/image";
@@ -7,6 +7,7 @@ import Image from "next/image";
 const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex || 0);
   const [imageLoaded, setImageLoaded] = useState(true);
+  const containerRef = useRef(null);
 
   const prevImage = () => {
     setCurrentIndex(
@@ -16,6 +17,16 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
 
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const scrollToImage = (index) => {
+    if (containerRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      containerRef.current.scrollTo({
+        left: index * containerWidth,
+        behavior: "smooth",
+      });
+    }
   };
 
   useEffect(() => {
@@ -31,6 +42,7 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
 
   useEffect(() => {
     setImageLoaded(false);
+    scrollToImage(currentIndex);
   }, [currentIndex]);
 
   if (!isOpen) return null;
@@ -78,7 +90,7 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
             <FiArrowRight />
           </button>
         )}
-        <div className="flex overflow-x-auto mt-4 pb-4 px-4 w-full max-w-screen-lg">
+        <div ref={containerRef} className="flex overflow-x-auto mt-4 pb-4 px-4 w-full max-w-screen-lg">
           <div className="flex space-x-2">
             {images.map((img, index) => (         
               <div
