@@ -12,7 +12,7 @@ export const useCartStore = create((set, get) => ({
   addItem: (product) => {
     if (product?.l1) {
       product.price = product?.l1?.price;
-      product.endPrice = product?.l1?.price; //TODO : handl endprice from BE
+      product.endPrice = product?.l1?.endPrice; //TODO : handl endprice from BE -done
     }
     set((state) => ({
       cart: [...state.cart, { qt: 1, product }],
