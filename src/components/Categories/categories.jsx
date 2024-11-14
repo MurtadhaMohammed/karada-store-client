@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Container from "../UI/Container/container";
 import style from "./style.module.css";
@@ -10,12 +10,16 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 
-const Wrapper = ({ children, ...props }) =>
-  props?.href ? (
-    <Link {...props}>{children}</Link>
-  ) : (
-    <div {...props}>{children}</div>
+const Wrapper = React.forwardRef(({ children, href, ...props }, ref) => {
+  const content = (
+    <div ref={ref} {...props}>
+      {children}
+    </div>
   );
+  return href ? <Link href={href}>{content}</Link> : content;
+});
+
+Wrapper.displayName = "Wrapper";
 
 const Categories = ({ isBanner = true, list = [] }) => {
   const { selectedCategoryId, setSelectedCategoryId } = useAppStore();
@@ -24,6 +28,8 @@ const Categories = ({ isBanner = true, list = [] }) => {
   const scrollContainerRef = useRef(null);
   const [showCircle, setShowCircle] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+
+  
 
   const handleScrollToLeft = () => {
     if (scrollContainerRef.current) {
@@ -35,6 +41,21 @@ const Categories = ({ isBanner = true, list = [] }) => {
       setTimeout(() => setIsClicked(false), 500);
     }
   };
+  const getCategoryPosition = searchParams.get("init");
+  const getCategoryPositionId = getCategoryPosition
+    ? parseInt(getCategoryPosition, 10)
+    : null;
+
+  useEffect(() => {
+    if (getCategoryPositionId && categoryRefs.current[getCategoryPositionId]) {
+      categoryRefs.current[getCategoryPositionId].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      });
+    }
+  }, [getCategoryPositionId, list]);
+    console.log(selectedCategoryId);
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
@@ -54,12 +75,12 @@ const Categories = ({ isBanner = true, list = [] }) => {
   const handleCategoryClick = (id) => {
     if (isBanner) return;
     setSelectedCategoryId(id);
+    
   };
 
   useEffect(() => {
     const initCategoryId = searchParams.get("init");
     const scrollContainer = scrollContainerRef.current;
-
     if (scrollContainer) {
       const { scrollWidth, clientWidth } = scrollContainer;
       setShowCircle(scrollWidth > clientWidth);
@@ -67,13 +88,13 @@ const Categories = ({ isBanner = true, list = [] }) => {
       scrollContainer.addEventListener("scroll", handleScroll);
     }
 
-    if (selectedCategoryId && categoryRefs.current[selectedCategoryId]) {
-      categoryRefs.current[selectedCategoryId].scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "center",
-      });
-    }
+    // if (selectedCategoryId && categoryRefs.current[selectedCategoryId]) {
+    //   categoryRefs.current[selectedCategoryId].scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "center",
+    //     inline: "center",
+    //   });
+    // }
 
     if (list.length > 0) {
       if (initCategoryId) {
