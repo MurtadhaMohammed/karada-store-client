@@ -56,7 +56,7 @@ const ProductInfoWeb = ({ product }) => {
   useEffect(() => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
-      setEndPrice(activeOption?.price); //TODO : handl endprice from BE
+      setEndPrice(activeOption?.endPrice); //TODO : handl endprice from BE
     } else setPrice(product?.price);
   }, [activeOption]);
 
