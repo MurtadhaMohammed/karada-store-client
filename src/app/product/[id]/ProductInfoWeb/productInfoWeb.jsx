@@ -56,8 +56,10 @@ const ProductInfoWeb = ({ product }) => {
   useEffect(() => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
-      setEndPrice(activeOption?.endPrice); //TODO : handl endprice from BE -- done
-    } else setPrice(product?.price);
+      setEndPrice(activeOption?.endPrice || activeOption?.price);
+    } else {
+      setPrice(product?.price);
+    }
   }, [activeOption]);
 
   const handleOptionClick = (option, index) => {
@@ -79,7 +81,10 @@ const ProductInfoWeb = ({ product }) => {
     setIsModalOpen(false);
   };
 
-  const shownimages = activeOption?.images?.length > 0 ? activeOption.images : product?.image?.map(img => img.url);
+  const shownimages =
+    activeOption?.images?.length > 0
+      ? activeOption.images
+      : product?.image?.map((img) => img.url);
 
   return (
     <div className="mt-[48px] md:block hidden">
