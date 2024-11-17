@@ -52,6 +52,7 @@ const ProductInfo = ({ product }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isMore, setIsMore] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(
     product?.options?.[0] || null
@@ -131,7 +132,10 @@ const ProductInfo = ({ product }) => {
   const isAddToCartDisabled =
     product?.options?.length > 0 && activeOption === null;
 
-  const shownimages = activeOption?.images?.length > 0 ? activeOption.images : product?.image?.map(img => img.url);
+  const shownimages =
+    activeOption?.images?.length > 0
+      ? activeOption.images
+      : product?.image?.map((img) => img.url);
 
   return (
     <div className="md:hidden block">
@@ -299,13 +303,24 @@ const ProductInfo = ({ product }) => {
           ))}
         </div>
         <p className="text-[14px] ">تفاصيل المنتج</p>
-        <ul className="text-[14px] text-gray-600 mt-[8px] mb-[24px] p-2 pt-0">
+        <ul
+          className="text-[14px] text-gray-600 mt-[8px] mb-[24px] p-4 bg-gradient-to-br from-gray-100 to-white rounded-[8px] border border-[#eee] overflow-hidden relative"
+          style={!isMore ? { maxHeight: 200 } : {}}
+        >
           {product?.description
             ?.split("-")
             ?.filter((el) => !!el)
             ?.map((el, i) => (
-              <li key={i}>-{el}</li>
+              <li key={i}>- {el}</li>
             ))}
+          {!isMore && (
+            <li
+              onClick={() => setIsMore(true)}
+              className="absolute bottom-2 left-2 right-2 bg-gradient-to-br from-gray-100 to-white border border-[#eee]  h-[48px] rounded-[8px] shadow-md flex items-center justify-center text-[16px] transition-all active:opacity-40"
+            >
+              + عرض المزيد
+            </li>
+          )}
         </ul>
         {/* <ProductCTA product={product} /> */}
       </Container>
