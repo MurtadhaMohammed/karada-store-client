@@ -313,12 +313,19 @@ const ProductInfo = ({ product }) => {
             ?.map((el, i) => (
               <li key={i}>- {el}</li>
             ))}
-          {!isMore && (
+          {isMore ? (
+            <li
+              onClick={() => setIsMore(false)}
+              className="absolute bottom-2 left-2 bg-gradient-to-br from-gray-100 to-white border border-[#eee]  h-[48px] w-[48px] rounded-[8px] shadow-md flex items-center justify-center text-[12px] transition-all active:opacity-40"
+            >
+              - اقل
+            </li>
+          ) : (
             <li
               onClick={() => setIsMore(true)}
-              className="absolute bottom-2 left-2 right-2 bg-gradient-to-br from-gray-100 to-white border border-[#eee]  h-[48px] rounded-[8px] shadow-md flex items-center justify-center text-[16px] transition-all active:opacity-40"
+              className="absolute bottom-2 left-2 bg-gradient-to-br from-gray-100 to-white border border-[#eee]  h-[48px] w-[48px] rounded-[8px] shadow-md flex items-center justify-center text-[12px] transition-all active:opacity-40"
             >
-              + عرض المزيد
+              + المزيد
             </li>
           )}
         </ul>
