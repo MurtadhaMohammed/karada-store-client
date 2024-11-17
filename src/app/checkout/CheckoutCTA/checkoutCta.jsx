@@ -79,7 +79,7 @@ const CheckoutCTA = () => {
 
   return (
     <div
-      className="fixed z-10 w-full text-end"
+      className="pointer-events-none fixed z-10 w-full text-end"
       style={{
         bottom: searchParams.get("from") === "home" ? 96 : 20,
       }}
@@ -94,7 +94,7 @@ const CheckoutCTA = () => {
             width: "100%",
           }}
         >
-          <Ripples className="!grid w-full">
+          <Ripples className="!grid w-full pointer-events-auto">
             <button
               className={`flex w-full items-center justify-center h-[56px] rounded-[28px] ${
                 isDataProvided
