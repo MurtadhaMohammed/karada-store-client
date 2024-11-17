@@ -30,6 +30,7 @@ const SingleBanner = ({ banner }) => {
             <div className=" absolute bottom-[16px] left-4">
               <Button
                 icon={<FaArrowLeft />}
+                href={`/products/banner/${banner?.id}`}
                 className="bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] app-link"
                 size="sm"
                 style={{ background: "red" }}
