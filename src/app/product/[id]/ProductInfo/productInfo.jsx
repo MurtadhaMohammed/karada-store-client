@@ -304,7 +304,7 @@ const ProductInfo = ({ product }) => {
         </div>
         <p className="text-[14px] ">تفاصيل المنتج</p>
         <ul
-          className="text-[14px] text-gray-600 mt-[8px] mb-[24px] p-4 bg-gradient-to-br from-gray-100 to-white rounded-[8px] border border-[#eee] overflow-hidden relative"
+          className="text-[14px] text-gray-600 mt-[8px] mb-[24px] p-4 bg-gradient-to-br from-gray-100 to-white rounded-[8px] border border-[#eee] overflow-hidden relative pb-[50px] transition-all"
           style={!isMore ? { maxHeight: 200 } : {}}
         >
           {product?.description
@@ -316,17 +316,17 @@ const ProductInfo = ({ product }) => {
           {isMore ? (
             <li
               onClick={() => setIsMore(false)}
-              className="absolute bottom-2 left-2 bg-gradient-to-br from-gray-100 to-white border border-[#eee]  h-[48px] w-[48px] rounded-[8px] shadow-md flex items-center justify-center text-[12px] transition-all active:opacity-40"
+               className="absolute bottom-0 right-0 left-0 bg-gradient-to-t from-white via-white/60 to-transparent h-[68px] rounded-[8px] shadow-md flex items-center justify-center text-[14px] transition-all active:opacity-40"
             >
-              - اقل
+             <p className="mt-[16px] text-indigo-600 font-bold"> - عرض عناصر اقل</p>
             </li>
           ) : (
             <li
-              onClick={() => setIsMore(true)}
-              className="absolute bottom-2 left-2 bg-gradient-to-br from-gray-100 to-white border border-[#eee]  h-[48px] w-[48px] rounded-[8px] shadow-md flex items-center justify-center text-[12px] transition-all active:opacity-40"
-            >
-              + المزيد
-            </li>
+            onClick={() => setIsMore(true)}
+            className="absolute bottom-0 right-0 left-0 bg-gradient-to-t from-white via-white/60 to-transparent h-[68px] rounded-[8px] shadow-md flex items-center justify-center text-[14px] transition-all active:opacity-40"
+          >
+           <p className="mt-[16px] text-indigo-600 font-bold"> + عرض المزيد</p>
+          </li>
           )}
         </ul>
         {/* <ProductCTA product={product} /> */}
