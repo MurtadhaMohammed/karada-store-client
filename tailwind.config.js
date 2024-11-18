@@ -7,8 +7,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        scaling: {
+          "0%": { transform: "scale(0)" },
+          "100%": { transform: "scale(1)" },
+        },
+      },
       animation: {
         "pulse-fast": "pulse 0.7s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        scaling: "scaling 0.4s ease-in-out",
       },
       colors: {
         background: "var(--background)",
@@ -23,6 +30,9 @@ module.exports = {
       },
       lineHeight: {
         "tight-custom": "1.1",
+      },
+      animation: {
+        scaling: "scaling 0.4s ease-in-out",
       },
     },
   },

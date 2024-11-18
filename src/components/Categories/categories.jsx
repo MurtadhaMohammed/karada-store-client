@@ -29,12 +29,10 @@ const Categories = ({ isBanner = true, list = [] }) => {
   const [showCircle, setShowCircle] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
 
-  
-
   const handleScrollToLeft = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        left: -2000,
+        left: -1000,
         behavior: "smooth",
       });
       setIsClicked(true);
@@ -74,7 +72,6 @@ const Categories = ({ isBanner = true, list = [] }) => {
   const handleCategoryClick = (id) => {
     if (isBanner) return;
     setSelectedCategoryId(id);
-    
   };
 
   useEffect(() => {
@@ -151,9 +148,11 @@ const Categories = ({ isBanner = true, list = [] }) => {
                 </p>
               </Wrapper>
             ))}
-           {showCircle && (
+            {showCircle && (
               <div
-                className={`${style.circle} ${isClicked ? style.activeCircle : ""}`}
+                className={`absolute left-[6px] w-[48px] h-[48px] rounded-full bg-[#f6f6f6] z-10 flex items-center justify-center cursor-pointer shadow-md border-none animate-scaling transition-transform duration-400 ${
+                  isClicked ? "scale-75" : ""
+                } hidden md:flex`}
                 onClick={handleScrollToLeft}
               >
                 <MdKeyboardArrowLeft size={30} />
