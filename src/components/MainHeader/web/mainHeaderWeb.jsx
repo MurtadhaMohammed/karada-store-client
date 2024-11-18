@@ -22,7 +22,6 @@ const MainHeaderWeb = () => {
     setIsLogin(false);
   };
 
-
   return (
     <header
       className={`md:block hidden md:shadow-none shadow-[0_4px_20px_rgb(0,0,0,0.06)] bg-white z-20 transition-all duration-300 ${
@@ -49,7 +48,12 @@ const MainHeaderWeb = () => {
                 <div className="h-3 w-[1px] bg-[#ccc]"></div>
                 <p className="text-[14px] text-[#a5a5a5]">{userInfo?.phone}</p>
                 <div className="h-3 w-[1px] bg-[#ccc]"></div>
-                <button className="text-[14px] text-[#0000ff] underline transition-all active:scale-90" onClick={logout}>تسجيل خروج</button>
+                <button
+                  className="text-[14px] text-[#0000ff] underline transition-all active:scale-90"
+                  onClick={logout}
+                >
+                  تسجيل خروج
+                </button>
               </div>
             ) : (
               <div className="flex items-center gap-4">
@@ -69,7 +73,9 @@ const MainHeaderWeb = () => {
             )}
           </div>
 
-          <Image src={"/logo2.png"} width={110} height={24} alt="image" />
+          <Link href="/">
+            <Image src={"/logo2.png"} width={110} height={24} alt="image" />
+          </Link>
         </div>
       </Container>
 
