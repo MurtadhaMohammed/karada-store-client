@@ -8,6 +8,12 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "store.storeimages.cdn-apple.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   experimental: {
