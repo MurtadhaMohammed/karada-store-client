@@ -205,7 +205,7 @@ const ProductInfoWeb = ({ product }) => {
 
         <div className="text-[14px] mt-[8px] mb-[24px] flex gap-2 flex-wrap">
           {product?.description
-            ?.split("-")
+            ?.split("***")
             ?.filter((el) => !!el)
             ?.map((el, i) => (
               <div
