@@ -10,23 +10,33 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
   const containerRef = useRef(null);
 
   const prevImage = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
-    );
+    setCurrentIndex((prevIndex) => {
+      const newIndex = (prevIndex - 1 + images.length) % images.length;
+      return newIndex;
+    });
   };
 
   const nextImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setCurrentIndex((prevIndex) => {
+      const newIndex = (prevIndex + 1) % images.length;
+      return newIndex;
+    });
   };
 
   const scrollToImage = (index) => {
     if (containerRef.current) {
+      const thumbnailOffset = containerRef.current.children[0].children[index].offsetLeft;
       const containerWidth = containerRef.current.offsetWidth;
-      containerRef.current.scrollTo({
-        left: index * containerWidth,
-        behavior: "smooth",
-      });
-    }
+      console.log("containerWidth", containerWidth);
+      console.log("index", index);
+      console.log("thumbnailOffset", thumbnailOffset);
+      if (thumbnailOffset < 0) {
+        containerRef.current.scrollTo({
+          left: -1000,
+          behavior: "smooth",
+        });
+      }
+  };
   };
 
   useEffect(() => {
@@ -90,8 +100,8 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
             <FiArrowRight />
           </button>
         )}
-        <div ref={containerRef} className="flex overflow-x-auto mt-4 pb-4 px-4 w-full max-w-screen-lg">
-          <div className="flex space-x-2">
+        <div ref={containerRef} className="flex overflow-x-auto mt-4 pb-4 px-4 w-full max-w-screen-lg no-scrollbar ">
+          <div className="flex space-x-2 mx-auto">
             {images.map((img, index) => (         
               <div
                 key={index}
