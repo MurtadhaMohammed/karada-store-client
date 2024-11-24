@@ -25,8 +25,6 @@ const CreatviceCard = ({ index, item }) => {
         className={`flex-none rounded-xl flex flex-col sm:shadow-none shadow-md relative overflow-hidden ${
           colors[index % 2 === 2 ? 0 : 1]
         } md:w-[100%] md:h-[300px] w-[260px] h-[350px] active:opacity-50 transition-all`}
-
-       
       >
         <div className="p-5 pb-0 absolute top-0 left-0 right-0 z-10 text-end ">
           <h2 className="font-semih2old text-black text-[18px] md:text-[16px] font-semibold ">

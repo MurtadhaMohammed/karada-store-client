@@ -60,9 +60,8 @@ const BottomNabar = () => {
     router.prefetch("/cart");
     router.prefetch("/categories");
     router.prefetch("/faivorates");
-    router.prefetch("/products");
     router.prefetch("/brands");
-    router.prefetch("/search");
+    router.prefetch("/products/search/all");
   }, [router]);
 
   return (

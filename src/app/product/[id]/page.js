@@ -5,39 +5,50 @@ import { URL, IMAGE_URL } from "@/lib/api";
 
 export async function generateMetadata({ params }) {
   try {
+    if (!params || !params.id) {
+      console.error("Missing params or params.id");
+      return {
+        title: "Product Page",
+        description: "Product description",
+      };
+    }
     const response = await fetch(`${URL}/client/product/product/${params.id}`);
     const data = await response.json();
 
-    let shortDescription = (data?.product?.description || 'Product description')
-    .split('\n')
-    .filter(line => line.startsWith('-'))
-    .slice(0, 5)
-    .join('\n');
+    let shortDescription = (data?.product?.description || "Product description")
+      .split("\n")
+      .filter((line) => line.startsWith("-"))
+      .slice(0, 5)
+      .join("\n");
 
     return {
       // title: data?.product?.name || 'Product Page',
       // description: data?.product?.shortDescription || 'Product description',
       openGraph: {
-        title: data?.product?.name || 'Product Page',
-        description: shortDescription || 'Product description',
+        title: data?.product?.name || "Product Page",
+        description: shortDescription || "Product description",
         images: [
           {
             url: `${IMAGE_URL}/${data?.product?.image[0]}`,
           },
         ],
-      }
-    }
+      },
+    };
   } catch (error) {
-    console.error('Error generating metadata:', error);
+    console.error("Error generating metadata:", error);
     return {
-      title: 'Product Page',
-      description: 'Product description',
-    }
+      title: "Product Page",
+      description: "Product description",
+    };
   }
 }
 
-
 export default async function ProductOne({ params }) {
+  if (!params || !params.id) {
+    console.error("Missing params or params.id");
+    return <div>Error: Invalid product ID</div>;
+  }
+
   let products = await fetch(`${URL}/client/product/product/${params.id}`, {
     method: "GET",
     cache: "no-cache",

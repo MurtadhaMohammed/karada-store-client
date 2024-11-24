@@ -9,6 +9,7 @@ import ProgressBar from "./Progreess";
 import HomeSkeleton from "./Skeleton/skeleton";
 import MainHeaderWeb from "@/components/MainHeader/web/mainHeaderWeb";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
+import Footer from "@/components/Footer/footer";
 
 const IBMFont = localFont({
   src: [
@@ -136,6 +137,7 @@ export default function RootLayout({ children }) {
           <MainHeaderWeb />
           {children}
           <BottomNabar />
+          <Footer/>
           <SideMenu />
         </ReactQueryProvider>
       </body>

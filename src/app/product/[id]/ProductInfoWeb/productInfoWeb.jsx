@@ -216,17 +216,6 @@ const ProductInfoWeb = ({ product }) => {
               </div>
             ))}
         </div>
-        {/* <ul className="text-[14px] text-gray-600 mt-[8px] mb-[24px]">
-          {product?.description
-            ?.split("-")
-            ?.filter((el) => !!el)
-            ?.map((el, i) => (
-              <li>
-                {i + 1} -
-                {el}
-              </li>
-            ))}
-        </ul> */}
       </Container>
       <ImageModal
         isOpen={isModalOpen}
