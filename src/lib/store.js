@@ -4,12 +4,15 @@ import { create } from "zustand";
 export const useAppStore = create((set) => ({
   isLogin: false,
   isMenu: false,
+  isOtp: false,
   platform: null,
   selectedCategoryId: null,
   pageTitle: null,
   userInfo: {},
   querySearch: "",
   queryString: "",
+  otp: null,
+  setIsOtp : (isOtp) => set({isOtp}),
   setQueryString: (queryString) => set({ queryString }),
   setQuerySearch: (querySearch) => set({ querySearch }),
   setIsLogin: (isLogin) => set({ isLogin }),
@@ -17,6 +20,7 @@ export const useAppStore = create((set) => ({
   setPlatform: (platform) => set({ platform }),
   setIsMenu: (isMenu) => set({ isMenu }),
   setSelectedCategoryId: (id) => set({ selectedCategoryId: id }),
+  setOtp: (otp) => set({ otp }),
 
   updateUserInfo: (token) => {
     if (typeof window === "undefined") return;

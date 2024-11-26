@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev:main": "set NEXT_PUBLIC_API_URL=https://www.karadastore.iq/api && next dev",
-    "dev:dev": "set NEXT_PUBLIC_API_URL=https://www.dev.karadastore.iq/api && next dev",
+    "dev:dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
