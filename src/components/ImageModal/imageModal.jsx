@@ -8,24 +8,49 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex || 0);
   const [imageLoaded, setImageLoaded] = useState(true);
   const containerRef = useRef(null);
+  const prevThumbnailOffsetRef = useRef(0);
 
   const prevImage = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
-    );
+    setCurrentIndex((prevIndex) => {
+      const newIndex = (prevIndex - 1 + images.length) % images.length;
+      return newIndex;
+    });
   };
 
   const nextImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setCurrentIndex((prevIndex) => {
+      const newIndex = (prevIndex + 1) % images.length;
+      return newIndex;
+    });
   };
+
+  const handleCloseModal = () => {
+    onClose();
+    setCurrentIndex(0);
+  }
 
   const scrollToImage = (index) => {
     if (containerRef.current) {
-      const containerWidth = containerRef.current.offsetWidth;
-      containerRef.current.scrollTo({
-        left: index * containerWidth,
-        behavior: "smooth",
-      });
+      const thumbnail = containerRef.current.children[0].children[index];
+      if (thumbnail) {
+        const thumbnailOffset = thumbnail.offsetLeft;
+        // const containerWidth = containerRef.current.offsetWidth;
+        if (index > 6) {
+          const prevThumbnailOffset = prevThumbnailOffsetRef.current;
+          if (thumbnailOffset > prevThumbnailOffset && images.length -8 > index) {
+            containerRef.current.scrollBy({
+              left: 70,
+              behavior: "smooth",
+            });
+          } else if (thumbnailOffset < prevThumbnailOffset) {
+            containerRef.current.scrollBy({
+              left: -70,
+              behavior: "smooth",
+            });
+          }
+          prevThumbnailOffsetRef.current = thumbnailOffset;
+        }
+      }
     }
   };
 
@@ -51,7 +76,7 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
     <div className="fixed inset-0 z-50 bg-white flex items-center justify-center">
       <div className="relative w-full h-full flex flex-col items-center">
         <button
-          onClick={onClose}
+          onClick={handleCloseModal}
           className="absolute top-4 right-4 md:right-8 text-gray-500 text-xl p-3 rounded-full bg-gray-200 z-10 transition-colors duration-200 hover:bg-gray-300"
         >
           <RxCross2 />
@@ -90,9 +115,12 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
             <FiArrowRight />
           </button>
         )}
-        <div ref={containerRef} className="flex overflow-x-auto mt-4 pb-4 px-4 w-full max-w-screen-lg">
-          <div className="flex space-x-2">
-            {images.map((img, index) => (         
+        <div
+          ref={containerRef}
+          className="flex overflow-x-auto mt-4 pb-4 px-4 w-full max-w-screen-lg no-scrollbar "
+        >
+          <div className="flex space-x-2 mx-auto">
+            {images.map((img, index) => (
               <div
                 key={index}
                 onClick={() => {

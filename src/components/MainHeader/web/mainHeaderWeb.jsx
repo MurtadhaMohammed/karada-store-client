@@ -74,7 +74,7 @@ const MainHeaderWeb = () => {
           </div>
 
           <Link href="/">
-            <Image src={"/logo2.png"} width={110} height={24} alt="image" />
+            <Image src={"/logoo.png"} width={110} height={24} alt="image" />
           </Link>
         </div>
       </Container>
