@@ -13,7 +13,7 @@ import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { userInfo,setIsOtp,setOtp } = useAppStore();
+  const { userInfo,setIsOtp,setOtp,isLogin } = useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
 
@@ -61,7 +61,7 @@ const CheckoutCTA = () => {
           setOtp(parseInt(response?.otp));
         }
         clearCart();
-        if (response.otp) {
+        if (response.otp&&!isLogin) {
           router.replace("/login");
         } else {
           router.replace("/orders");
