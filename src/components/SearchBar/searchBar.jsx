@@ -20,6 +20,10 @@ const filtersTags = [
     key: "price",
     label: "اقل سعر",
   },
+  {
+    key: "hprice",
+    label: "اعلى سعر",
+  },
 ];
 
 const SearchBar = () => {

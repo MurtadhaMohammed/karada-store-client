@@ -32,7 +32,6 @@ function BrandCard({ brand }) {
           />
         </div>
       </div>
-
       <div className="mt-2 font-bold text-sm text-black">{brand.name}</div>
     </Link>
   );

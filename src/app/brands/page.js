@@ -4,10 +4,10 @@ import BrandSkeleton from "./Skeleton/brandSkeleton";
 import SearchBar from "@/components/SearchBar/searchBar";
 
 export default async function Brands() {
-  const res = await fetch(`${URL}/client/brand/all-brands`, {
+  const res = await fetch(`${URL}/client/brand/all-brands?page=1&limit=100`, {
     method: "GET",
     cache: "no-cache",
-  });
+  });  
 
   if (!res.ok) throw new Error("Failed to fetch data");
 

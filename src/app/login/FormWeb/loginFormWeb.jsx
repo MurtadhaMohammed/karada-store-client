@@ -11,13 +11,11 @@ import { useRouter } from "next/navigation";
 import { useAppStore } from "@/lib/store";
 
 const LoginFormWeb = () => {
-  const [otp, setOtp] = useState("");
-  const [isOtp, setIsOtp] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { setIsLogin, userInfo, isLogin, updateUserInfo } = useAppStore();
+  const { setIsLogin, userInfo, isLogin, updateUserInfo, otp, setOtp,isOtp,setIsOtp } = useAppStore();
 
   const handleChange = (otp) => setOtp(otp);
 
@@ -45,8 +43,8 @@ const LoginFormWeb = () => {
       pathname: `/client/auth/verify`,
       method: "POST",
       data: {
-        otp,
-        phone,
+      otp,
+      phone: phone || userInfo.phone,
       },
     });
     setLoading(false);
