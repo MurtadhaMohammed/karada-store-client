@@ -11,7 +11,6 @@ import { TbFaceIdError } from "react-icons/tb";
 
 const OrderList = () => {
   const { userInfo } = useAppStore();
-
   const { data, isLoading, isError, error } = useQuery({
     queryKey: [`orders-${userInfo?.id}`],
     queryFn: () =>
@@ -23,7 +22,7 @@ const OrderList = () => {
   });
 
   if (isLoading) return <OrdersSkeleton />;
-  if (isError || error || data?.error)
+  if (isError || error )
     return (
       <Empty
         icon={<TbFaceIdError className="text-[100px]" />}
@@ -34,8 +33,7 @@ const OrderList = () => {
         //buttonText={"عودة للرئيسية"}
       />
     );
-
-  if (data?.orders?.length === 0)
+  if (Object.keys(userInfo).length === 0 || data?.orders?.length === undefined)
     return (
       <Empty
         icon={<AiOutlineTruck className="text-[100px]" />}
