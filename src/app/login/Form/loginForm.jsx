@@ -16,7 +16,7 @@ const LoginForm = () => {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { setIsLogin, userInfo, isLogin , updateUserInfo, otp, isOtp,setOtp,setIsOtp} = useAppStore();
+  const { setIsLogin, isLogin , updateUserInfo, otp, isOtp,setOtp,setIsOtp} = useAppStore();
 
   const handleChange = (otp) => setOtp(otp);
 
@@ -35,17 +35,19 @@ const LoginForm = () => {
     if (resp?.otp) {
       setOtp(parseInt(resp?.otp));
       setIsOtp(true);
+      router.replace(`/login?phone=${phone}`);
     }
   };
 
   const handleVerify = async () => {
     setLoading(true);
+    const phoneFromParams = new URLSearchParams(window.location.search).get("phone");
     const resp = await apiCall({
       pathname: `/client/auth/verify`,
       method: "POST",
       data: {
         otp,
-        phone:phone || userInfo.phone,
+        phone: phoneFromParams || userInfo.phone,
       },
     });
     setLoading(false);

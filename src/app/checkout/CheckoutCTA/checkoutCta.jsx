@@ -23,20 +23,19 @@ const CheckoutCTA = () => {
   const [name, setName] = useState(userInfo?.name || "");
 
   useEffect(() => {
-    setAddress(userInfo?.address || "");
-    setPhone(userInfo?.phone || "");
-    setName(userInfo?.name || "");
+    setAddress(address || "");
+    setPhone(phone || "");
+    setName(name || "");
   }, [userInfo]);
-
+  
   const items = useMemo(() => {
     return cart?.map((item) => ({
       id: item.product.id,
       quantity: item.qt,
       store_id: item.product.store_id,
-      l1: item.l1,
+      l1: item.product.l1,
     }));
   }, [cart]);
-
   const order = {
     user_id: userInfo.id,
     user_name: name,
