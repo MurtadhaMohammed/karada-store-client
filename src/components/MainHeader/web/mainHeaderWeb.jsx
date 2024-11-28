@@ -14,7 +14,7 @@ const MainHeaderWeb = () => {
   const { userInfo, isLogin, setIsLogin, updateUserInfo } = useAppStore();
   const pathname = usePathname();
   const { scrollDirection, scrollPosition } = useScrollPosition();
-
+  const user = userInfo
   const logout = () => {
     localStorage.removeItem("karada-token");
     localStorage.removeItem("karada-refreshToken");
@@ -44,9 +44,9 @@ const MainHeaderWeb = () => {
             </div>
             {isLogin ? (
               <div className="flex items-center gap-4">
-                <b className="text-[16px]">{userInfo?.name}</b>
+                <b className="text-[16px]">{user?.name}</b>
                 <div className="h-3 w-[1px] bg-[#ccc]"></div>
-                <p className="text-[14px] text-[#a5a5a5]">{userInfo?.phone}</p>
+                <p className="text-[14px] text-[#a5a5a5]">{user?.phone}</p>
                 <div className="h-3 w-[1px] bg-[#ccc]"></div>
                 <button
                   className="text-[14px] text-[#0000ff] underline transition-all active:scale-90"

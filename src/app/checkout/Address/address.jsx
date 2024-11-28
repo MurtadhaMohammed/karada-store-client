@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Input from "@/components/UI/Input/input";
 import { GrLocation } from "react-icons/gr";
 import { useAppStore } from "@/lib/store";
+import { useSearchParams } from "next/navigation";
 
 const Address = () => {
   const { userInfo, setUserInfo } = useAppStore();
@@ -10,25 +11,36 @@ const Address = () => {
   const [phone, setPhone] = useState(userInfo?.phone || "");
   const [name, setName] = useState(userInfo?.name || "");
   const [notes, setNotes] = useState("");
+  const searchParams = useSearchParams();
 
-  useEffect(() => {
-    setUserInfo({ ...userInfo, address, phone, name, notes });
-  }, [address, phone, name, notes]);
+  // useEffect(() => {
+  //   setUserInfo({ address, phone, name, notes });
+  // }, [address, phone, name, notes]);
 
+  
   const handleAddressChange = (e) => {
-    setAddress(e.target.value);
+    const newAddress = e.target.value;
+    setAddress(newAddress);
+    setUserInfo({ ...userInfo, address: newAddress });
+    // setAddress(e.target.value);
   };
 
   const handlePhoneChange = (e) => {
-    setPhone(e.target.value);
+    const newPhone = e.target.value;
+    setPhone(newPhone);
+    // setPhone(e.target.value);
   };
 
   const handleNameChange = (e) => {
-    setName(e.target.value);
+    const newName = e.target.value;
+    setName(newName);
+    // setName(e.target.value);
   };
 
   const handleNotesChange = (e) => {
-    setNotes(e.target.value);
+    const newNotes = e.target.value;
+    setNotes(newNotes);
+    // setNotes(e.target.value);
   };
 
   return (
