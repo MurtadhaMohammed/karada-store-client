@@ -1,21 +1,46 @@
-.statusBar30 {
-  width: 30%;
-  animation: effectAnimation30 2s infinite;
+.statusBar20 {
+  width: 20%;
+  animation: effectAnimation20 2s infinite;
 }
 
-@keyframes effectAnimation30 {
+@keyframes effectAnimation20 {
   0% {
     width: 0;
   }
   100% {
-    width: 30%;
+    width: 20%;
+  }
+}
+.statusBar40 {
+  width: 40%;
+  animation: effectAnimation40 2s infinite;
+}
+
+@keyframes effectAnimation40 {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 40%;
   }
 }
 .statusBar60 {
   width: 60%;
   animation: effectAnimation60 2s infinite;
 }
+.statusBar80 {
+  width: 80%;
+  animation: effectAnimation80 2s infinite;
+}
 
+@keyframes effectAnimation80 {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 80%;
+  }
+}
 @keyframes effectAnimation60 {
   0% {
     width: 0;

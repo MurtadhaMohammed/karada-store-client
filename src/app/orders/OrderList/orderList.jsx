@@ -50,7 +50,7 @@ const OrderList = () => {
       <Container>
         {data?.orders?.filter(
           (el) =>
-            el.order_status !== "Completed" && el.order_status !== "Canceled"
+            el.order_status !== "Delivered" && el.order_status !== "Canceled"
         )?.length !== 0 && (
           <div className="flex gap-4 items-center mb-[16px] text-[16px]">
             <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
@@ -61,7 +61,7 @@ const OrderList = () => {
         {data?.orders
           ?.filter(
             (el) =>
-              el.order_status !== "Completed" && el.order_status !== "Canceled"
+              el.order_status !== "Delivered" && el.order_status !== "Canceled"
           )
           ?.map((el, i) => (
             <OrderCard key={i} order={el} />
@@ -75,7 +75,7 @@ const OrderList = () => {
         {data?.orders
           ?.filter(
             (el) =>
-              el.order_status === "Completed" || el.order_status === "Canceled"
+              el.order_status === "Delivered" || el.order_status === "Canceled"
           )
           ?.map((el, i) => (
             <OrderCard key={i} order={el} />

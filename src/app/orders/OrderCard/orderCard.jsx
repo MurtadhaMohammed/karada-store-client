@@ -110,65 +110,72 @@ const ImageGroup = ({ thumbnails }) => {
   );
 };
 
-const getDate = (order) => {
-  const today = new Date();
-  const updatedAt = new Date(order.updated_at);
-  const diffTime = today - updatedAt;
-  const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+// const getDate = (order) => {
+//   const today = new Date();
+//   const updatedAt = new Date(order.updated_at);
+//   const diffTime = today - updatedAt;
+//   const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+//   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  if (diffDays < 1) {
-    if (diffHours < 1) {
-      // const diffMinutes = Math.floor(diffTime / (1000 * 60));
-      return `الان`;
-    } else {
-      return `منذ ${diffHours} ساعة`;
-    }
-  } else if (diffDays === 1) {
-    return "منذ يوم";
-  } else if (diffDays === 2) {
-    return "منذ يومين";
-  } else {
-    return `منذ ${diffDays} ايام`;
-  }
-};
+//   if (diffDays < 1) {
+//     if (diffHours < 1) {
+//       // const diffMinutes = Math.floor(diffTime / (1000 * 60));
+//       return `الان`;
+//     } else {
+//       return `منذ ${diffHours} ساعة`;
+//     }
+//   } else if (diffDays === 1) {
+//     return "منذ يوم";
+//   } else if (diffDays === 2) {
+//     return "منذ يومين";
+//   } else {
+//     return `منذ ${diffDays} ايام`;
+//   }
+// };
 
 const OrderCard = ({ order }) => {
   const { order_status } = order || {};
 
   const thumbnails = order?.items?.map((item) => item.thumbnail1);
 
+  const itemNames = order?.items?.map(item => item.name).join(", ");
 
   const address = order?.address;
 
-  const date = getDate(order);
+  // const date = getDate(order);
 
   const statusTheme = {
-    Recived: {
-      color: "text-[#faad14]",
+    Created: {
+      color: "text-[#d3d3d3]",
       text: "طلبك قيد الموافقة",
-      bar: `bg-gradient-to-r from-[#faad14] to-[#faca69] ${styles.statusBar30}`,
+      bar: `bg-gradient-to-r from-[#d3d3d3] to-[#e6e6e6] ${styles.statusBar20}`,
     },
-    Pending: {
-      color: "text-[#faad14]",
-      text: "طلبك قيد ألانتظار",
-      bar: `bg-gradient-to-r from-[#faad14] to-[#faca69] ${styles.statusBar30}`,
+    Accepted: {
+      color: "text-[#65e074]",
+      text: "تم قبول الطلب",
+      bar: `bg-gradient-to-r from-[#65e074] to-[#3adf4e] ${styles.statusBar40}`,
+    },
+    Packaging: {
+      color: "text-[#f99305]",
+      border: "border-[#f99305]",
+      text: "طلبك قيد التجهيز",
+      bar: `bg-gradient-to-r from-[#f99305] to-[#e76c02] ${styles.statusBar60}`,
+    },
+    Shipping: {
+      color: "text-[#3ab54a]",
+      border: "border-[#3ab54a]",
+      text: "طلبك قيد الشحن",
+      bar: `bg-gradient-to-r  from-[#3ab54a] to-[#22b636] ${styles.statusBar80}`,
+    },
+    Delivered: {
+      color: "text-[#000]",
+      bg: "bg-gradient-to-r from-[#52c41a] to-[#8dee5e]",
+      text: itemNames,
     },
     Canceled: {
       color: "text-[#ff4d4f]",
       bar: "bg-gradient-to-r from-[#ff4d4f] to-[#fb797b]",
       text: "تم الغاء طلبك",
-    },
-    Processing: {
-      color: "text-[#52c41a]",
-      border: "border-[#52c41a]",
-      text: "طلبك قيد التجهيز",
-      bar: `bg-gradient-to-r from-[#52c41a] to-[#8dee5e] ${styles.statusBar60}`,
-    },
-    Completed: {
-      color: "text-[#000]",
-      bg: "bg-gradient-to-r from-[#52c41a] to-[#8dee5e]",
-      text: `تم توصيل طلبك ${date}`,
     },
   };
   const formattedDate = new Date(order.created_at).toLocaleDateString("en-US", {
@@ -186,7 +193,7 @@ const OrderCard = ({ order }) => {
       <div className="flex p-[16px]">
         <ImageGroup thumbnails={thumbnails} />
         <div className="mr-[12px] flex flex-col justify-evenly flex-1">
-          <b className={`text-[18px] ${statusTheme[order_status]?.color}`}>
+          <b className={`text-[18px] ${statusTheme[order_status]?.color} line-clamp-1`}>
             {statusTheme[order_status]?.text}
           </b>
           <div className="flex items-center text-[14px] text-[#666]">
