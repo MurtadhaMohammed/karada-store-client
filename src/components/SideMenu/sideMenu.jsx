@@ -94,6 +94,10 @@ const SideMenu = () => {
           <MenuItem
             title={"التواصل مع الدعم"}
             icon={<BiSupport className="text-[24px]" />}
+            onClick={()=>{
+              setIsMenu(false);
+              router.push("/contactUs");
+            }}
           />
           <MenuItem
             title={"مشاركة التطبيق"}
