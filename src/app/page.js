@@ -8,6 +8,7 @@ import OrderCard from "./orders/OrderCard/orderCard";
 import Container from "@/components/UI/Container/container";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 import OffersBanner from "@/components/offersBanner/offersBanner";
+import SingleBannerPure from "@/components/SingleBannerPure/singleBannerPure";
 
 // import Image from "next/image";
 
@@ -95,6 +96,8 @@ export default async function Home() {
     switch (banner.type) {
       case "Slider":
         return <SliderBanner key={banner.id} banners={banner} />;
+      case "SinglePure":
+        return <SingleBannerPure key={banner.id} banner={banner} />;
       case "Single":
         return <SingleBanner key={banner.id} banner={banner} />;
       case "List":
@@ -106,7 +109,7 @@ export default async function Home() {
             list={banner?.products || []}
           />
         );
-      case "OffersBanner":
+      case "OfferBanner":
         return (
           <OffersBanner
             bannerId={banner.id}
