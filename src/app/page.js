@@ -109,7 +109,7 @@ export default async function Home() {
             list={banner?.products || []}
           />
         );
-      case "OffersBanner":
+      case "OfferBanner":
         return (
           <OffersBanner
             bannerId={banner.id}
