@@ -1,11 +1,13 @@
 "use client";
+
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Container from "../UI/Container/container";
 import { FiSearch, FiX } from "react-icons/fi";
-import { useEffect, useRef, useState } from "react";
-import IconButton from "../UI/IconButton/iconButton";
-import { useAppStore } from "@/lib/store";
 import { usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { useAppStore } from "@/lib/store";
+import { apiCall } from "@/lib/api";
 
 const filtersTags = [
   {
@@ -28,10 +30,10 @@ const filtersTags = [
 
 const SearchBar = () => {
   const inputRef = useRef(null);
-  const [historyList, setHistoryList] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
   const [filters, setFilters] = useState(["all"]);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const { querySearch, setQuerySearch, setQueryString } = useAppStore();
   const pathname = usePathname();
 
@@ -45,29 +47,6 @@ const SearchBar = () => {
     }
   }, [isSearch]);
 
-  const addToHistory = (historyItem) => {
-    if (typeof window !== "undefined") {
-      let newHistory = [historyItem, ...historyList];
-      if (newHistory.length > 4) newHistory.pop();
-      setHistoryList(newHistory);
-      localStorage.setItem("karada-history", JSON.stringify(newHistory));
-    }
-  };
-
-  const updateHistory = (newHistory) => {
-    if (typeof window !== "undefined") {
-      setHistoryList(newHistory);
-      localStorage.setItem("karada-history", JSON.stringify(newHistory));
-    }
-  };
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      let history = localStorage.getItem("karada-history");
-      if (history) setHistoryList(JSON.parse(history));
-    }
-  }, []);
-
   useEffect(() => {
     const _queryString = filters
       .filter((key) => key !== "all")
@@ -76,9 +55,27 @@ const SearchBar = () => {
     setQueryString(_queryString);
   }, [filters]);
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 300); 
+
+    return () => clearTimeout(handler); 
+  }, [search]);
+
+  const { data: suggestions = [], isFetching } = useQuery({
+    queryKey: ["product-suggestions", debouncedSearch],
+    queryFn: () =>
+      apiCall({
+        pathname: `/client/product/search?q=${debouncedSearch}`,
+      }),
+    enabled: isSearch && debouncedSearch.length > 1,
+    keepPreviousData: true,
+  });
+
   const submitSearch = () => {
     setQuerySearch(search);
-    addToHistory(search);
+    setIsSearch(false);
   };
 
   const handleKeyDown = ({ key }) => {
@@ -88,12 +85,12 @@ const SearchBar = () => {
   const handleFilter = (el) => {
     if (el.key === "all") setFilters(["all"]);
     else if (filters.find((key) => key === el.key)) {
-      let newList = filters?.filter((key) => key !== el?.key);
-      setFilters(newList?.length === 0 ? ["all"] : newList);
-    } else setFilters([...filters?.filter((key) => key !== "all"), el?.key]);
+      const newList = filters.filter((key) => key !== el.key);
+      setFilters(newList.length === 0 ? ["all"] : newList);
+    } else {
+      setFilters([...filters.filter((key) => key !== "all"), el.key]);
+    }
   };
-
-  const isHistory = isSearch && historyList.length !== 0 && !querySearch;
 
   const activeTagStyle =
     "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] border border-[#eee]";
@@ -104,14 +101,15 @@ const SearchBar = () => {
       <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
         <Container>
           <div className="relative">
-            {querySearch && isSearch ? (
+            {querySearch && !isSearch  ? (
               <FiX
-                onClick={() => {
-                  setQuerySearch("");
-                  setSearch("");
-                }}
-                className="absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50 transition-all active:opacity-30"
-              />
+              onClick={() => {
+                setQuerySearch(""); 
+                setSearch(""); 
+                setIsSearch(true); 
+              }}
+              className="absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50 transition-all active:opacity-30"
+            />
             ) : (
               <FiSearch
                 onClick={() => {
@@ -128,38 +126,35 @@ const SearchBar = () => {
               ref={inputRef}
               onKeyDown={handleKeyDown}
               readOnly={!isSearch}
-              className={`w-[100%] rounded-[8px] ${
-                isHistory ? "rounded-b-none border-b-[0px]" : ""
-              } h-[48px] pl-[46px] pr-[16px] outline-none border border-[#eee] text-[18px]`}
+              className="w-[100%] rounded-[8px] h-[48px] pl-[46px] pr-[16px] outline-none border border-[#eee] text-[18px]"
               placeholder="ابحث عن منتج"
             />
-          </div>
 
-          {isHistory && (
-            <div
-              className={`rounded-[8px] rounded-t-none border border-[#eee] border-t-[0px] bg-[#fff]`}
-            >
-              {historyList?.map((el, i) => (
-                <div
-                  key={i}
-                  onClick={() => {
-                    setSearch(el);
-                    setQuerySearch(el);
-                  }}
-                  className="flex items-center justify-between pr-[16px] p-[12px] border-t border-t-[#eee] transition-all active:opacity-50"
-                >
-                  <p className="text-[14px]">{el}</p>
-                  <IconButton
-                    onClick={() =>
-                      updateHistory(historyList.filter((h) => h !== el))
-                    }
-                    className={"p-[2px]"}
-                    icon={<FiX className="text-[18px]" />}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
+            {isSearch && suggestions?.products?.length > 0 && (
+              <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
+                {isFetching ? (
+                  <div className="p-2 text-gray-500">جاري التحميل...</div>
+                ) : (
+                  suggestions.products?.map((item) => (
+                    <Link key={item.id} href={`/product/${item.id}`}>
+                      <div
+                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => setSearch(item.name)}
+                      >
+                        {item.name}
+                      </div>
+                    </Link>
+                  ))
+                )}
+              </div>
+            )}
+
+            {isSearch && search.length > 2 && suggestions?.products?.length === 0 && !isFetching && (
+              <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
+                <div className="p-2 text-gray-500">لا توجد اقتراحات</div>
+              </div>
+            )}
+          </div>
 
           {isSearch && (
             <div className="flex gap-2 flex-wrap mt-[16px]">
