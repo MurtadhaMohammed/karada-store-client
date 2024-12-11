@@ -1,7 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 
-export const useAppStore = create((set) => ({
+export const useAppStore = create((set, get) => ({
   isLogin: false,
   isMenu: false,
   isOtp: false,
@@ -12,7 +12,9 @@ export const useAppStore = create((set) => ({
   querySearch: "",
   queryString: "",
   otp: null,
-  setIsOtp : (isOtp) => set({isOtp}),
+  favorites: [],
+  setFavorites: (favorites) => set({ favorites }),
+  setIsOtp: (isOtp) => set({ isOtp }),
   setQueryString: (queryString) => set({ queryString }),
   setQuerySearch: (querySearch) => set({ querySearch }),
   setIsLogin: (isLogin) => set({ isLogin }),
@@ -21,6 +23,15 @@ export const useAppStore = create((set) => ({
   setIsMenu: (isMenu) => set({ isMenu }),
   setSelectedCategoryId: (id) => set({ selectedCategoryId: id }),
   setOtp: (otp) => set({ otp }),
+
+  toggleFav: (productId) => {
+    let favorites = get().favorites;
+    let newArr = [];
+    let isExist = favorites?.find((id) => id === productId);
+    if (isExist) newArr = favorites?.filter((id) => id !== productId);
+    else newArr = [...favorites, productId];
+    return set({ favorites: newArr });
+  },
 
   updateUserInfo: (token) => {
     if (typeof window === "undefined") return;
@@ -31,3 +42,7 @@ export const useAppStore = create((set) => ({
   },
   setUserInfo: (newUserInfo) => set({ userInfo: newUserInfo }),
 }));
+
+useAppStore.subscribe(({ favorites }) => {
+  localStorage.setItem("favorites_product", JSON.stringify(favorites));
+});

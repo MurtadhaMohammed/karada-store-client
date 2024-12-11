@@ -28,6 +28,7 @@
 html,
 body {
   scroll-behavior: smooth;
+  /* background-color: #f6f6f6 !important; */
   /* overscroll-behavior: none;  */
   /* overflow: auto;     */
 }

@@ -96,7 +96,7 @@ const MainHeader = () => {
               icon={<HiOutlineMenuAlt3 />}
             />
           </div>
-          <Image src={"/logoo.png"} width={100} height={24} alt="image" />
+          <Image src={"/logoo.png"} width={120} height={24} alt="image" />
         </div>
       </Container>
     </header>

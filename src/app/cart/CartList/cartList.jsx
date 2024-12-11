@@ -52,7 +52,7 @@ const CartItem = ({ item }) => {
   const displayPrice = item?.product?.l1 ? item?.product?.l1?.price : item?.product?.price;
 
   return (
-    <div className="border-b border-b-[#eee] pt-[24px] pb-[16px]">
+    <div className="border-b border-b-[#eee] pt-[24px] pb-[16px] bg-white">
       <Container>
         <div className="flex gap-4">
           <Image

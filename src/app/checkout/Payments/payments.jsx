@@ -33,7 +33,7 @@ const Payments = () => {
   ];
 
   return (
-    <div className="rounded-[8px] border border-[#eee] mt-[20px]">
+    <div className="rounded-[8px] border border-[#eee] mt-[20px] bg-white">
       <div className="flex items-center p-[16px]">
         <BsCreditCard2Front className="text-[18px]" />
         <p className="mr-[6px]">حدد طريقة الدفع</p>

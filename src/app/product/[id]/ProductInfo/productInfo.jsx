@@ -7,20 +7,21 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { motion } from "framer-motion";
+import { FiSearch } from "react-icons/fi";
 import {
   TbHeart,
   TbHeartFilled,
   TbShare2,
   TbTruckDelivery,
 } from "react-icons/tb";
-import { TiStarFullOutline } from "react-icons/ti";
+// import { TiStarFullOutline } from "react-icons/ti";
 // import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { IMAGE_URL } from "@/lib/api";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import ProductCTA from "../ProductCTA/ProductCTA";
-import { useCartStore } from "@/lib/cartStore";
+import { useAppStore } from "@/lib/store";
 
 const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
@@ -51,9 +52,9 @@ const OptionTag = ({ name, color, active = false, onClick }) => {
 const ProductInfo = ({ product }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
-  const [isFavorite, setIsFavorite] = useState(false);
   const [isMore, setIsMore] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { toggleFav, favorites } = useAppStore();
   const [activeOption, setActiveOption] = useState(
     product?.options?.[0] || null
   );
@@ -67,28 +68,6 @@ const ProductInfo = ({ product }) => {
       setEndPrice(activeOption?.endPrice); //TODO : handl endprice from BE --done
     } else setPrice(product?.price);
   }, [activeOption]);
-
-  const loadFavorites = () => {
-    const favorites =
-      JSON.parse(localStorage.getItem("favorites_product")) || [];
-    return favorites;
-  };
-
-  const toggleFavorite = (productId) => {
-    let favorites = loadFavorites();
-    if (favorites.includes(productId)) {
-      favorites = favorites.filter((id) => id !== productId);
-    } else {
-      favorites.push(productId);
-    }
-    localStorage.setItem("favorites_product", JSON.stringify(favorites));
-    setIsFavorite(favorites.includes(productId));
-  };
-
-  useEffect(() => {
-    const favorites = loadFavorites();
-    setIsFavorite(favorites.includes(product?.id));
-  }, [product?.id]);
 
   useEffect(() => {
     setActiveOption(product?.options?.[0] || null);
@@ -238,6 +217,13 @@ const ProductInfo = ({ product }) => {
               <div className="flex items-center">
                 <IconButton
                   rounded={"8px"}
+                  className="p-2 bg-[#fff] rounded-[8px] border border-[#eee] "
+                  icon={<FiSearch className="text-[22px]" />}
+                  onClick={() => router.push("/products/search/all")}
+                />
+                <div className="w-[8px]" />
+                <IconButton
+                  rounded={"8px"}
                   className="p-2 bg-[#fff] rounded-[8px] border border-[#eee]"
                   onClick={handleShare}
                   icon={<TbShare2 className="text-[22px]" />}
@@ -245,15 +231,19 @@ const ProductInfo = ({ product }) => {
                 <div className="w-[8px]" />
                 <IconButton
                   rounded={"8px"}
-                  className="p-2 bg-[#fff] rounded-[8px] border border-[#eee]"
+                  className={`p-2  rounded-[8px] border border-[#eee] shadow-lg shadow-[#ff000041] ${
+                    favorites?.includes(product?.id)
+                      ? "bg-gradient-to-r from-[#ff0000] to-[#fb797b]"
+                      : "bg-[#fff]"
+                  }`}
                   icon={
-                    isFavorite ? (
-                      <TbHeartFilled className="text-[22px] text-[#ff5a5f]" />
+                    favorites?.includes(product?.id) ? (
+                      <TbHeartFilled className="text-[22px] text-[#fff]" />
                     ) : (
                       <TbHeart className="text-[22px]" />
                     )
                   }
-                  onClick={() => toggleFavorite(product?.id)}
+                  onClick={() => toggleFav(product?.id)}
                 />
               </div>
             </div>
@@ -261,7 +251,7 @@ const ProductInfo = ({ product }) => {
         </div>
       </div>
       <Container>
-        <h4 className="text-[18px] mt-[16px]">{product?.name}</h4>
+        <h4 className="text-[18px] mt-[16px] max-w-[84%]">{product?.name}</h4>
         {price === endPrice ? (
           <b className="text-[22px] block">
             {Number(endPrice).toLocaleString("en")}{" "}
@@ -308,7 +298,7 @@ const ProductInfo = ({ product }) => {
           style={!isMore ? { maxHeight: 200 } : {}}
         >
           {product?.description
-            ?.split("-")
+            ?.split("***")
             ?.filter((el) => !!el)
             ?.map((el, i) => (
               <li key={i}>- {el}</li>
@@ -316,17 +306,23 @@ const ProductInfo = ({ product }) => {
           {isMore ? (
             <li
               onClick={() => setIsMore(false)}
-               className="absolute bottom-0 right-0 left-0 bg-gradient-to-t from-white via-white/60 to-transparent h-[68px] rounded-[8px] shadow-md flex items-center justify-center text-[14px] transition-all active:opacity-40"
+              className="absolute bottom-0 right-0 left-0 bg-gradient-to-t from-white via-white/60 to-transparent h-[68px] rounded-[8px] shadow-md flex items-center justify-center text-[14px] transition-all active:opacity-40"
             >
-             <p className="mt-[16px] text-indigo-600 font-bold"> - عرض عناصر اقل</p>
+              <p className="mt-[16px] text-indigo-600 font-bold">
+                {" "}
+                - عرض عناصر اقل
+              </p>
             </li>
           ) : (
             <li
-            onClick={() => setIsMore(true)}
-            className="absolute bottom-0 right-0 left-0 bg-gradient-to-t from-white via-white/60 to-transparent h-[68px] rounded-[8px] shadow-md flex items-center justify-center text-[14px] transition-all active:opacity-40"
-          >
-           <p className="mt-[16px] text-indigo-600 font-bold"> + عرض المزيد</p>
-          </li>
+              onClick={() => setIsMore(true)}
+              className="absolute bottom-0 right-0 left-0 bg-gradient-to-t from-white via-white/60 to-transparent h-[68px] rounded-[8px] shadow-md flex items-center justify-center text-[14px] transition-all active:opacity-40"
+            >
+              <p className="mt-[16px] text-indigo-600 font-bold">
+                {" "}
+                + عرض المزيد
+              </p>
+            </li>
           )}
         </ul>
         {/* <ProductCTA product={product} /> */}

@@ -6,6 +6,9 @@ import IconButton from "../UI/IconButton/iconButton";
 import Link from "next/link";
 import { IMAGE_URL } from "@/lib/api";
 import useIsScreenMd from "@/hooks/useIsScreenMd";
+import { FaRegHeart, FaHeart } from "react-icons/fa6";
+import { useEffect, useState } from "react";
+import { useAppStore } from "@/lib/store";
 
 const DefaultCard = ({
   item,
@@ -13,7 +16,9 @@ const DefaultCard = ({
   isFav = false,
   handleRemoveFav = () => {},
 }) => {
-  const isScreenMd = useIsScreenMd();
+  // const isScreenMd = useIsScreenMd();
+  const { favorites, toggleFav } = useAppStore();
+
   return (
     <div
       className={`flex-none rounded-xl flex flex-col border border-[#eee] relative overflow-hidden bg-white active:opacity-50 transition-all ${
@@ -22,7 +27,7 @@ const DefaultCard = ({
       // style={{ width: isGrid || isScreenMd ? "100%" : 200 }}
     >
       {isFav && (
-        <div className="absolute top-2 right-2 z-10">
+        <div className="absolute top-2 left-2 z-10">
           <IconButton
             onClick={(e) => {
               e.stopPropagation(); // Stop event from bubbling up
@@ -35,10 +40,37 @@ const DefaultCard = ({
       )}
 
       {item?.discount?.value && (
-        <div className="absolute top-4 left-4 z-10 p-2 pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#ff000041] bg-gradient-to-r from-[#ff0000] to-[#fb797b] text-[#fff] text-[12px] discount-effect">
-          {item?.discount?.value}%
+        <div className="absolute top-4 right-4 z-10 p-2 pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[12px] discount-effect">
+          {item?.discount?.value || 40}%
         </div>
       )}
+
+      {!isFav ? (
+        favorites?.find((id) => id === item?.id) ? (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFav(item?.id);
+            }}
+            className="absolute flex items-center justify-center top-3 left-3 z-10 h-[32px] w-[32px] rounded-[8px] shadow-lg shadow-[#ff000041] bg-gradient-to-r from-[#ff0000] to-[#fb797b] text-[#fff]"
+          >
+            <FaHeart className="text-[18px] text-[#fff]" />
+          </div>
+        ) : (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFav(item?.id);
+            }}
+            className="absolute flex items-center justify-center top-3 left-3 z-10 h-[32px] w-[32px] rounded-[8px] bg-gradient-to-r from-[#f6f6f6] to-[#fff] text-[#fff] border border-[#f6f6f6]"
+          >
+            <FaRegHeart className="text-[18px] text-[#000]" />
+          </div>
+        )
+      ) : (
+        ""
+      )}
+
       <Link href={`/product/${item?.id}`} className="flex flex-col h-full">
         <div className={`flex items-center justify-center`}>
           <div
@@ -49,7 +81,7 @@ const DefaultCard = ({
             <Image
               src={`${IMAGE_URL}/${item?.thumbnail1}`}
               fill
-              style={{ objectFit: "cover" }} 
+              style={{ objectFit: "cover" }}
               alt="image"
             />
           </div>
