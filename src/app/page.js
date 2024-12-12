@@ -107,6 +107,7 @@ export default async function Home() {
             key={banner.id}
             title={banner.title}
             list={banner?.products || []}
+            banner={banner}
           />
         );
       case "OfferBanner":
@@ -116,10 +117,11 @@ export default async function Home() {
             key={banner.id}
             title={banner.title}
             list={banner?.products || []}
+            banner={banner}
           />
         );
       case "Category":
-        return <Categories key={banner.id} list={banner.categories} />;
+        return <Categories key={banner.id} list={banner.categories} banner={banner} />;
       case "CreativeBanner":
         return (
           <ListBanner
@@ -128,6 +130,7 @@ export default async function Home() {
             title={banner.title}
             list={banner?.products || []}
             isCreative
+            banner={banner}
           />
         );
       default:

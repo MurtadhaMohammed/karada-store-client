@@ -6,8 +6,9 @@ import Container from "../UI/Container/container";
 
 import { IoIosArrowBack } from "react-icons/io";
 
-const OffersBanner = ({ title, list = [], bannerId }) => {
-  return (
+const OffersBanner = ({ title, list = [], bannerId, banner }) => {
+  console.log(title , list, bannerId);
+  return banner?.disable  ? null : (
     <div className="md:pt-[24px] mt-[8px] mb-[8px] pt-[12px] pb-[8px] bg-gradient-to-r from-indigo-600 to-violet-600">
       <Container>
         <div className="flex items-center justify-between">

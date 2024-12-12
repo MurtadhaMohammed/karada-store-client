@@ -13,7 +13,7 @@ import Link from "next/link";
 export default function SliderBanner({ banners }) {
   const [current, setCurrent] = useState(0);
   const slider = banners?.slider;
-  return (
+  return banners?.disable  ? null :(
     <div className="mt-[16px] mb-[16px] w-full">
       <Container noPadding>
         <div className="flex flex-col justify-center items-center">

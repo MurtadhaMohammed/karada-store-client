@@ -21,7 +21,7 @@ const Wrapper = React.forwardRef(({ children, href, ...props }, ref) => {
 
 Wrapper.displayName = "Wrapper";
 
-const Categories = ({ isBanner = true, list = [] }) => {
+const Categories = ({ isBanner = true, list = [], banner }) => {
   const { selectedCategoryId, setSelectedCategoryId } = useAppStore();
   const searchParams = useSearchParams();
   const categoryRefs = useRef({});
@@ -108,7 +108,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
     };
   }, [list, searchParams]);
 
-  return (
+  return banner?.disable  ? null : (
     <div className={isBanner ? "border-b border-b-[#f6f6f6]" : ""}>
       <Container noPadding>
         <div className="relative">

@@ -14,9 +14,10 @@ const ListBanner = ({
   list,
   isCreative = false,
   noMore = false,
+  banner,
 }) => {
   if (list.length === 0) return;
-  return (
+  return banner?.disable  ? null : (
     <div className="md:pt-[24px] pt-[16px] ">
       <Container>
         <div className="flex items-center justify-between">

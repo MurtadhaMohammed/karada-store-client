@@ -5,7 +5,7 @@ import { IMAGE_URL } from "@/lib/api";
 import Link from "next/link";
 
 const SingleBannerPure = ({ banner }) => {
-    return (
+  return banner?.disable  ? null : (
         <div className="md:mt-[24px] md:mb-[24px] mt-[16px] mb-[16px]">
           <Container>
           <Link href={banner?.link ? banner.link : `/products/banner/${banner?.id}`}>
