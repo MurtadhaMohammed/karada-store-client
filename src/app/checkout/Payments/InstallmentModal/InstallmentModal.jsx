@@ -8,9 +8,44 @@ import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { BsCreditCard2Front } from "react-icons/bs";
 import Ripples from "react-ripples";
+import { useState } from "react";
+import { useCartStore } from "@/lib/cartStore"; 
+
+const AUTH_TOKEN = process.env.NEXT_PUBLIC_QI_MERCHANT_KEY;
+const API_URL = process.env.NEXT_PUBLIC_QI_API_URL;
 
 export const InstallmentModal = ({ onFinish }) => {
   const { colseModal } = useBottomSheetModal();
+  const { cart, getTotal } = useCartStore();
+  const [cardNumber, setCardNumber] = useState("");
+
+  const total = getTotal();
+  const installment = total / 10;
+  const handleFinish = async () => {
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Merchant ${AUTH_TOKEN}`);
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({
+        Identity: cardNumber,
+        Amount: total,
+      }),
+      redirect: "follow",
+    };
+
+    try {
+      const response = await fetch(`${API_URL}/aqsati/ThirdParty/api/Integration/GetCustomerInformation`, requestOptions);
+      const result = await response.text();
+      console.log(result);
+      onFinish({ number: cardNumber });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <BottomSheetModal
       title={
@@ -35,7 +70,7 @@ export const InstallmentModal = ({ onFinish }) => {
           >
             <Ripples className="!grid w-full">
               <button
-                onClick={() => onFinish({ number: "78672..." })}
+                onClick={handleFinish}
                 className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r text-violet-600   p-6 border-2 border-violet-600"
               >
                 <span className="ml-[8px] font-bold text-[18px]">متابعة</span>
@@ -50,16 +85,16 @@ export const InstallmentModal = ({ onFinish }) => {
           <div className="pt-0">
             <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
               <p>القسط الشهري</p>
-              <p>44,000 IQD</p>
+              <p>IQD {installment}</p>
             </div>
             <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
               <p>عدد الاشهر</p>
-              <p>12 شهر</p>
+              <p>10 شهر</p>
             </div>
 
             <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
               <p className="text-[#666]">المبلغ الاجمالي:</p>
-              <b className="text-[24px]">335,000 IQD</b>
+              <b className="text-[24px]">IQD {total}</b>
             </div>
 
             <div className="mt-[24px]">
@@ -69,6 +104,8 @@ export const InstallmentModal = ({ onFinish }) => {
               <Input
                 hint="رقم البطاقة"
                 prefix={<BsCreditCard2Front className="text-[20px]" />}
+                value={cardNumber}
+                onChange={(e) => setCardNumber(e.target.value)}
               />
             </div>
           </div>

@@ -25,11 +25,11 @@ const Payments = () => {
     //   label: "ماستر او فيزا كارد",
     //   disabled: true,
     // },
-    // {
-    //   value: "installment",
-    //   label: "شراء بالتقسيط",
-    //   disabled: true,
-    // },
+    {
+      value: "installment",
+      label: "شراء بالتقسيط",
+      disabled: false,
+    },
   ];
 
   return (
