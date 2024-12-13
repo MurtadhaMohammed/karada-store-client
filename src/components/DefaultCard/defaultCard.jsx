@@ -14,6 +14,7 @@ const DefaultCard = ({
   item,
   isGrid = false,
   isFav = false,
+  bannerType = "LIST",
   handleRemoveFav = () => {},
 }) => {
   // const isScreenMd = useIsScreenMd();
@@ -24,7 +25,9 @@ const DefaultCard = ({
       className={`flex-none rounded-xl flex flex-col border border-[#eee] relative overflow-hidden bg-white active:opacity-50 transition-all ${
         isGrid ? "w-[100%]" : "md:w-[100%]  w-[200px]"
       }`}
-      // style={{ width: isGrid || isScreenMd ? "100%" : 200 }}
+      style={
+        bannerType === "OfferBanner" ? { border: "4px solid #a88fea" } : {}
+      }
     >
       {isFav && (
         <div className="absolute top-2 left-2 z-10">
@@ -40,7 +43,7 @@ const DefaultCard = ({
       )}
 
       {item?.discount?.value && (
-        <div className="absolute top-4 right-4 z-10 p-2 pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[12px] discount-effect">
+        <div className="absolute top-4 right-4 z-10 p-2 pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
           {item?.discount?.value || 40}%
         </div>
       )}
