@@ -8,7 +8,7 @@ import { IoIosArrowBack } from "react-icons/io";
 
 const OffersBanner = ({ title, list = [], bannerId }) => {
   return (
-    <div className="md:pt-[24px] mt-[8px] mb-[8px] pt-[12px] pb-[8px] bg-gradient-to-r from-indigo-600 to-violet-600">
+    <div className="md:pt-[24px] mt-[8px] mb-[8px] pt-[12px] pb-[8px] offerBanner-bg">
       <Container>
         <div className="flex items-center justify-between">
           <h3 className="md:text-[18px] text-[16px] font-semih2old text-[#fff] font-semibold mr-1 ">
