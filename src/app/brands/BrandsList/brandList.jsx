@@ -28,7 +28,7 @@ function BrandCard({ brand }) {
             src={`${IMAGE_URL}/${brand.img}`}
             alt={brand.name}
             fill
-            style={{ objectFit: "contain" }} 
+            style={{ objectFit: "contain" }}
           />
         </div>
       </div>
