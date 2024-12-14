@@ -70,7 +70,7 @@ const CartItem = ({ item }) => {
               </b>
               <p className="text-[14px] text-[#a5a5a5]">
                 {item?.product?.l1?.name ||
-                  `${item?.product?.description.substr(0, 20)}...`}
+                  `${item?.product?.shortDescription.substr(0, 20)}...`}
               </p>
             </div>
             <div className="flex items-end justify-between w-full">
