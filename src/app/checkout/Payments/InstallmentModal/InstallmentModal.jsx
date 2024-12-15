@@ -19,7 +19,7 @@ export const InstallmentModal = ({ onFinish }) => {
   const { cart, getTotal } = useCartStore();
   const [cardNumber, setCardNumber] = useState("");
 
-  const total = getTotal();
+  const total = 2169291;
   const installment = total / 10;
   const handleFinish = async () => {
     const myHeaders = new Headers();
