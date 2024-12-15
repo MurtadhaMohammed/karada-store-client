@@ -101,20 +101,19 @@ const SearchBar = () => {
       <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
         <Container>
           <div className="relative">
-            {querySearch && !isSearch ? (
+            {isSearch ? (
               <FiX
                 onClick={() => {
                   setQuerySearch("");
                   setSearch("");
-                  setIsSearch(true);
+                  setIsSearch(false);
                 }}
                 className="absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50 transition-all active:opacity-30"
               />
             ) : (
               <FiSearch
                 onClick={() => {
-                  if (!isSearch) setIsSearch(true);
-                  submitSearch();
+                  setIsSearch(true);
                 }}
                 className="absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50 transition-all active:opacity-30"
               />
@@ -124,7 +123,7 @@ const SearchBar = () => {
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
-                setIsSearch(true); 
+                setIsSearch(true);
               }}
               ref={inputRef}
               onKeyDown={handleKeyDown}
