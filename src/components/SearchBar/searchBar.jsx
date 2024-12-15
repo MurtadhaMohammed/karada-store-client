@@ -58,9 +58,9 @@ const SearchBar = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 300); 
+    }, 300);
 
-    return () => clearTimeout(handler); 
+    return () => clearTimeout(handler);
   }, [search]);
 
   const { data: suggestions = [], isFetching } = useQuery({
@@ -101,19 +101,19 @@ const SearchBar = () => {
       <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
         <Container>
           <div className="relative">
-            {querySearch && !isSearch  ? (
+            {querySearch && !isSearch ? (
               <FiX
-              onClick={() => {
-                setQuerySearch(""); 
-                setSearch(""); 
-                setIsSearch(true); 
-              }}
-              className="absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50 transition-all active:opacity-30"
-            />
+                onClick={() => {
+                  setQuerySearch("");
+                  setSearch("");
+                  setIsSearch(true);
+                }}
+                className="absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50 transition-all active:opacity-30"
+              />
             ) : (
               <FiSearch
                 onClick={() => {
-                  if (!isSearch) return;
+                  if (!isSearch) setIsSearch(true);
                   submitSearch();
                 }}
                 className="absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50 transition-all active:opacity-30"
@@ -122,10 +122,12 @@ const SearchBar = () => {
 
             <input
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setIsSearch(true); 
+              }}
               ref={inputRef}
               onKeyDown={handleKeyDown}
-              readOnly={!isSearch}
               className="w-[100%] rounded-[8px] h-[48px] pl-[46px] pr-[16px] outline-none border border-[#eee] text-[18px]"
               placeholder="ابحث عن منتج"
             />
@@ -149,11 +151,14 @@ const SearchBar = () => {
               </div>
             )}
 
-            {isSearch && search.length > 2 && suggestions?.products?.length === 0 && !isFetching && (
-              <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
-                <div className="p-2 text-gray-500">لا توجد اقتراحات</div>
-              </div>
-            )}
+            {isSearch &&
+              search.length > 2 &&
+              suggestions?.products?.length === 0 &&
+              !isFetching && (
+                <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
+                  <div className="p-2 text-gray-500">لا توجد اقتراحات</div>
+                </div>
+              )}
           </div>
 
           {isSearch && (
