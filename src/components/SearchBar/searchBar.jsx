@@ -8,6 +8,10 @@ import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useAppStore } from "@/lib/store";
 import { apiCall } from "@/lib/api";
+import { IoFilter } from "react-icons/io5";
+import Ripples from "react-ripples";
+import { BottomSheetModal, useBottomSheetModal } from "../UI/BottomSheetModal/bottomSheetModal";
+
 
 const filtersTags = [
   {
@@ -36,6 +40,7 @@ const SearchBar = () => {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const { querySearch, setQuerySearch, setQueryString } = useAppStore();
   const pathname = usePathname();
+  const { openModal, closeModal } = useBottomSheetModal();
 
   useEffect(() => {
     if (pathname === "/products/search/all") setIsSearch(true);
@@ -58,9 +63,9 @@ const SearchBar = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 300); 
+    }, 300);
 
-    return () => clearTimeout(handler); 
+    return () => clearTimeout(handler);
   }, [search]);
 
   const { data: suggestions = [], isFetching } = useQuery({
@@ -97,66 +102,70 @@ const SearchBar = () => {
   const unactiveTagStyle = "border border-[#eee] bg-[#fff]";
 
   return (
-    <Link href={"/products/search/all"}>
-      <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
-        <Container>
-          <div className="relative">
-            {querySearch && !isSearch  ? (
-              <FiX
-              onClick={() => {
-                setQuerySearch(""); 
-                setSearch(""); 
-                setIsSearch(true); 
-              }}
-              className="absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50 transition-all active:opacity-30"
-            />
-            ) : (
-              <FiSearch
-                onClick={() => {
-                  if (!isSearch) return;
-                  submitSearch();
-                }}
-                className="absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50 transition-all active:opacity-30"
+    <div>
+      <Link href={"/products/search/all"}>
+        <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
+          <Container>
+            <div className="relative">
+              {querySearch && !isSearch ? (
+                <FiX
+                  onClick={() => {
+                    setQuerySearch("");
+                    setSearch("");
+                    setIsSearch(true);
+                  }}
+                  className="absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50 transition-all active:opacity-30"
+                />
+              ) : (
+                <FiSearch
+                  onClick={() => {
+                    if (!isSearch) return;
+                    submitSearch();
+                  }}
+                  className="absolute left-[12px] top-[12px] text-[22px] text-gray-700 opacity-50 transition-all active:opacity-30"
+                />
+              )}
+
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                ref={inputRef}
+                onKeyDown={handleKeyDown}
+                readOnly={!isSearch}
+                className="w-[100%] rounded-[8px] h-[48px] pl-[46px] pr-[16px] outline-none border border-[#eee] text-[18px]"
+                placeholder="ابحث عن منتج"
               />
-            )}
 
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              ref={inputRef}
-              onKeyDown={handleKeyDown}
-              readOnly={!isSearch}
-              className="w-[100%] rounded-[8px] h-[48px] pl-[46px] pr-[16px] outline-none border border-[#eee] text-[18px]"
-              placeholder="ابحث عن منتج"
-            />
+              {isSearch && suggestions?.products?.length > 0 && (
+                <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
+                  {isFetching ? (
+                    <div className="p-2 text-gray-500">جاري التحميل...</div>
+                  ) : (
+                    suggestions.products?.map((item) => (
+                      <Link key={item.id} href={`/product/${item.id}`}>
+                        <div
+                          className="p-2 hover:bg-gray-100 cursor-pointer"
+                          onClick={() => setSearch(item.name)}
+                        >
+                          {item.name}
+                        </div>
+                      </Link>
+                    ))
+                  )}
+                </div>
+              )}
 
-            {isSearch && suggestions?.products?.length > 0 && (
-              <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
-                {isFetching ? (
-                  <div className="p-2 text-gray-500">جاري التحميل...</div>
-                ) : (
-                  suggestions.products?.map((item) => (
-                    <Link key={item.id} href={`/product/${item.id}`}>
-                      <div
-                        className="p-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() => setSearch(item.name)}
-                      >
-                        {item.name}
-                      </div>
-                    </Link>
-                  ))
+              {isSearch &&
+                search.length > 2 &&
+                suggestions?.products?.length === 0 &&
+                !isFetching && (
+                  <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
+                    <div className="p-2 text-gray-500">لا توجد اقتراحات</div>
+                  </div>
                 )}
-              </div>
-            )}
+            </div>
 
-            {isSearch && search.length > 2 && suggestions?.products?.length === 0 && !isFetching && (
-              <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
-                <div className="p-2 text-gray-500">لا توجد اقتراحات</div>
-              </div>
-            )}
-          </div>
-
-          {isSearch && (
+            {/* {isSearch && (
             <div className="flex gap-2 flex-wrap mt-[16px]">
               {filtersTags?.map((el) => (
                 <div
@@ -172,10 +181,61 @@ const SearchBar = () => {
                 </div>
               ))}
             </div>
-          )}
-        </Container>
-      </div>
-    </Link>
+          )} */}
+
+            {isSearch && (
+              <div className="flex items-center justify-between mt-4 pl-1 pr-1">
+                <button
+                  onClick={() => openModal("filterModal")}
+                  className="flex gap-2 items-center text-[16px] text-[#0000ff]"
+                >
+                  <IoFilter />
+                  <span>تصفية</span>
+                </button>
+                <p className="text-[#a5a5a5] text-[16px]">
+                  نتائج البحث
+                  <span className="font-bold mr-1">1232</span>
+                </p>
+              </div>
+            )}
+          </Container>
+        </div>
+      </Link>
+      <BottomSheetModal
+        title={
+          <Container>
+            <b>الشراء بالتقسيط</b>
+          </Container>
+        }
+        detent={"content-height"}
+        name="filterModal"
+        onClose={closeModal}
+        footer={
+          <Container>
+            <div
+              className="active:scale-[0.96] transition-all shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] mb-[20px]"
+              style={{
+                display: "inline-flex",
+                borderRadius: 16,
+                overflow: "hidden",
+                width: "100%",
+              }}
+            >
+              <Ripples className="!grid w-full">
+                <button
+                  onClick={() => onFinish({ number: "78672..." })}
+                  className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r text-violet-600   p-6 border-2 border-violet-600"
+                >
+                  <span className="ml-[8px] font-bold text-[18px]">متابعة</span>
+                </button>
+              </Ripples>
+            </div>
+          </Container>
+        }
+      >
+        <Container>Hi</Container>
+      </BottomSheetModal>
+    </div>
   );
 };
 

@@ -22,11 +22,11 @@ export const useBottomSheetModal = () => {
     router.push(pathname + "?" + createQueryString(name, "true"));
   };
 
-  const colseModal = () => {
+  const closeModal = () => {
     router.back();
   };
 
-  return { colseModal, openModal };
+  return { closeModal, openModal };
 };
 
 export const BottomSheetModal = ({
@@ -40,11 +40,7 @@ export const BottomSheetModal = ({
   const searchParams = useSearchParams();
 
   return (
-    <Sheet
-      isOpen={searchParams.get(name)}
-      onClose={onClose}
-      detent={detent}
-    >
+    <Sheet isOpen={searchParams.get(name)} onClose={onClose} detent={detent}>
       <Sheet.Container>
         <Sheet.Header />
         <Sheet.Content>
