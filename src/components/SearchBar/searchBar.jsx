@@ -4,14 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Container from "../UI/Container/container";
 import { FiSearch, FiX } from "react-icons/fi";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useAppStore } from "@/lib/store";
 import { apiCall } from "@/lib/api";
 import { IoFilter } from "react-icons/io5";
 import Ripples from "react-ripples";
-import { BottomSheetModal, useBottomSheetModal } from "../UI/BottomSheetModal/bottomSheetModal";
-
+import {
+  BottomSheetModal,
+  useBottomSheetModal,
+} from "../UI/BottomSheetModal/bottomSheetModal";
 
 const filtersTags = [
   {
@@ -40,7 +42,7 @@ const SearchBar = () => {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const { querySearch, setQuerySearch, setQueryString } = useAppStore();
   const pathname = usePathname();
-  const { openModal, closeModal } = useBottomSheetModal();
+  const { closeModal } = useBottomSheetModal();
 
   useEffect(() => {
     if (pathname === "/products/search/all") setIsSearch(true);
@@ -185,13 +187,12 @@ const SearchBar = () => {
 
             {isSearch && (
               <div className="flex items-center justify-between mt-4 pl-1 pr-1">
-                <button
-                  onClick={() => openModal("filterModal")}
-                  className="flex gap-2 items-center text-[16px] text-[#0000ff]"
-                >
-                  <IoFilter />
-                  <span>تصفية</span>
-                </button>
+                <Link href={pathname + "?filterModal=true"}>
+                  <button className="flex gap-2 items-center text-[16px] text-[#0000ff]">
+                    <IoFilter />
+                    <span>تصفية</span>
+                  </button>
+                </Link>
                 <p className="text-[#a5a5a5] text-[16px]">
                   نتائج البحث
                   <span className="font-bold mr-1">1232</span>
