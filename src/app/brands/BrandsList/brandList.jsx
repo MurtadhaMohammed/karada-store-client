@@ -22,13 +22,13 @@ function BrandCard({ brand }) {
       href={`/products/brand/${brand.id}`}
       className="cursor-pointer text-center"
     >
-      <div className="aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg p-2">
+      <div className="aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg bg-white">
         <div className="relative w-full h-full">
           <Image
             src={`${IMAGE_URL}/${brand.img}`}
             alt={brand.name}
             fill
-            style={{ objectFit: "contain" }} 
+            style={{ objectFit: "contain" }}
           />
         </div>
       </div>

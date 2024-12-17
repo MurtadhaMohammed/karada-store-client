@@ -10,13 +10,22 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 export function ReactQueryProvider({ fontStyle, children }) {
-  const { setIsLogin, updateUserInfo } = useAppStore();
+  const { setIsLogin, updateUserInfo, setFavorites } = useAppStore();
   const { setCart } = useCartStore();
   const pathname = usePathname();
 
   useEffect(() => {
     init();
+    initFav();
   }, []);
+
+  const initFav = () => {
+    if (typeof window !== "undefined") {
+      const storedFavorites =
+        JSON.parse(localStorage.getItem("favorites_product")) || [];
+      setFavorites(storedFavorites.map((id) => parseInt(id)));
+    }
+  };
 
   const init = async () => {
     if (typeof window !== "undefined") {
@@ -51,7 +60,7 @@ export function ReactQueryProvider({ fontStyle, children }) {
         className={fontStyle}
         style={{
           background:
-            pathname?.split("/")[1] === "products" ? "#f6f6f6" : "#fff",
+            pathname?.split("/")[1] === "product" ? "#fff" : "#f6f6f6",
         }}
       >
         {children}

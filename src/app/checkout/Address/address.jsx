@@ -44,7 +44,7 @@ const Address = () => {
   };
 
   return (
-    <div className="rounded-[8px] border border-[#eee] mt-[22px]">
+    <div className="rounded-[8px] border border-[#eee] mt-[22px] bg-white">
       <div className="flex items-center p-[16px]">
         <GrLocation className="text-[18px]" />
         <p className="mr-[6px]">تفاصيل العنوان</p>

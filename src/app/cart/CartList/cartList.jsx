@@ -52,7 +52,7 @@ const CartItem = ({ item }) => {
   const displayPrice = item?.product?.l1 ? item?.product?.l1?.price : item?.product?.price;
 
   return (
-    <div className="border-b border-b-[#eee] pt-[24px] pb-[16px]">
+    <div className="border-b border-b-[#eee] pt-[24px] pb-[16px] bg-white">
       <Container>
         <div className="flex gap-4">
           <Image
@@ -70,13 +70,13 @@ const CartItem = ({ item }) => {
               </b>
               <p className="text-[14px] text-[#a5a5a5]">
                 {item?.product?.l1?.name ||
-                  `${item?.product?.description.substr(0, 20)}...`}
+                  `${item?.product?.shortDescription.substr(0, 20)}...`}
               </p>
             </div>
             <div className="flex items-end justify-between w-full">
               {item?.product?.endPrice !== item.product.price ? (
                 <div className="flex flex-col items-start">
-                  <p className="text-[18px] block line-through text-[#a5a5a5] italic">
+                  <p className="text-[14px] block line-through text-[#a5a5a5]">
                     {Number(item.product.price).toLocaleString("en")}
                   </p>
                   <b className="text-[16px]">

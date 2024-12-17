@@ -11,6 +11,8 @@ import MainHeaderWeb from "@/components/MainHeader/web/mainHeaderWeb";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 import Footer from "@/components/Footer/footer";
 
+
+
 const IBMFont = localFont({
   src: [
     {
@@ -128,10 +130,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html>
-      <body
-        className={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}
-      >
-        <ReactQueryProvider>
+        <ReactQueryProvider fontStyle={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}>
           <ProgressBar />
           <MainHeader />
           <MainHeaderWeb />
@@ -140,7 +139,6 @@ export default function RootLayout({ children }) {
           <Footer/>
           <SideMenu />
         </ReactQueryProvider>
-      </body>
     </html>
   );
 }

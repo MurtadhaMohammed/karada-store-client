@@ -38,7 +38,7 @@ const Invoice = () => {
 
   const roundedTotal = roundToNearest250(realTotal || 0);
   return (
-    <div className="rounded-[8px] border border-[#eee] mt-[24px]">
+    <div className="rounded-[8px] border border-[#eee] mt-[24px] bg-white">
       <div className="flex items-center p-[16px]">
         <PiInvoice className="text-[18px]" />
         <p className="mr-[6px]">تفاصيل الفاتورة</p>

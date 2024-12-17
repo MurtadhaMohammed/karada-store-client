@@ -60,7 +60,7 @@ const Voucher = () => {
   };
 
   return (
-    <div className="w-full rounded-[8px] border border-[#eee] mt-[20px]">
+    <div className="w-full rounded-[8px] border border-[#eee] mt-[20px] bg-white">
       <div className="flex items-center p-[16px]">
         <HiOutlineTicket className="text-[18px]" />
         <p className="mr-[6px]">كود الخصم</p>
