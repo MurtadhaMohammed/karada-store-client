@@ -36,6 +36,7 @@ const MainHeader = () => {
         break;
       case "/products/search/all":
         setPageTitle("البحث");
+        break;
       case "/contactUs":
         setPageTitle("التواصل مع الدعم");
         break;
