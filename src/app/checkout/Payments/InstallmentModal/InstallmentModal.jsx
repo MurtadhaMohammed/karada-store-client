@@ -13,11 +13,11 @@ import { useCartStore } from "@/lib/cartStore";
 
 
 export const InstallmentModal = ({ onFinish }) => {
-  const { colseModal } = useBottomSheetModal();
+  const { closeModal } = useBottomSheetModal();
   const { cart, getTotal } = useCartStore();
   const [cardNumber, setCardNumber] = useState("");
   
-  const total = 3000000;
+  const total = getTotal();
   const noOfMonths = 10;
   const installment = total / noOfMonths;
   const handleFinish = async () => {
@@ -30,6 +30,7 @@ export const InstallmentModal = ({ onFinish }) => {
       Identity: cardNumber,
       Amount: total,
       countOfMonth:noOfMonths,
+      PlanId: 1,
       }),
       redirect: "follow",
     };
@@ -39,6 +40,7 @@ export const InstallmentModal = ({ onFinish }) => {
       const result = await response.text();
       console.log(result);
       onFinish({ number: cardNumber });
+      openModal("OTPModal");
     } catch (error) {
       console.error(error);
     }
@@ -53,7 +55,7 @@ export const InstallmentModal = ({ onFinish }) => {
       }
       detent={"content-height"}
       name="installmentModal"
-      onClose={colseModal}
+      onClose={closeModal}
       
       footer={
         <Container>
@@ -109,6 +111,20 @@ export const InstallmentModal = ({ onFinish }) => {
           </div>
         </div>
       </Container>
+      <BottomSheetModal
+      title={
+        <Container>
+          <b>ادخل رمز التحقيق</b>
+        </Container>
+      }
+      name="OTPModal"
+      onClose={closeModal}
+      detent={"content-height"}
+
+      >
+
+      </BottomSheetModal>
     </BottomSheetModal>
+
   );
 };
