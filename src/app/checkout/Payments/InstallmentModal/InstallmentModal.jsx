@@ -11,33 +11,31 @@ import Ripples from "react-ripples";
 import { useState } from "react";
 import { useCartStore } from "@/lib/cartStore"; 
 
-const AUTH_TOKEN = process.env.NEXT_PUBLIC_QI_MERCHANT_KEY;
-const API_URL = process.env.NEXT_PUBLIC_QI_API_URL;
 
 export const InstallmentModal = ({ onFinish }) => {
   const { colseModal } = useBottomSheetModal();
   const { cart, getTotal } = useCartStore();
   const [cardNumber, setCardNumber] = useState("");
-
-  const total = 2169291;
-  const installment = total / 10;
+  
+  const total = 3000000;
+  const noOfMonths = 10;
+  const installment = total / noOfMonths;
   const handleFinish = async () => {
-    const myHeaders = new Headers();
-    myHeaders.append("Authorization", `Merchant ${AUTH_TOKEN}`);
-    myHeaders.append("Content-Type", "application/json");
-
     const requestOptions = {
       method: "POST",
-      headers: myHeaders,
+      headers: {
+      "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        Identity: cardNumber,
-        Amount: total,
+      Identity: cardNumber,
+      Amount: total,
+      countOfMonth:noOfMonths,
       }),
       redirect: "follow",
     };
 
     try {
-      const response = await fetch(`${API_URL}/aqsati/ThirdParty/api/Integration/GetCustomerInformation`, requestOptions);
+      const response = await fetch(`http://localhost:3003/api/client/installment/`, requestOptions);
       const result = await response.text();
       console.log(result);
       onFinish({ number: cardNumber });
@@ -89,7 +87,7 @@ export const InstallmentModal = ({ onFinish }) => {
             </div>
             <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
               <p>عدد الاشهر</p>
-              <p>10 شهر</p>
+              <p>{noOfMonths} اشهر</p>
             </div>
 
             <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
