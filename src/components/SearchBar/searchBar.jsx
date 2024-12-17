@@ -205,7 +205,7 @@ const SearchBar = () => {
       <BottomSheetModal
         title={
           <Container>
-            <b>الشراء بالتقسيط</b>
+            <b>تصفية النتائج</b>
           </Container>
         }
         detent={"content-height"}
@@ -227,14 +227,98 @@ const SearchBar = () => {
                   onClick={() => onFinish({ number: "78672..." })}
                   className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r text-violet-600   p-6 border-2 border-violet-600"
                 >
-                  <span className="ml-[8px] font-bold text-[18px]">متابعة</span>
+                  <span className="ml-[8px] font-bold text-[18px]">
+                    تأكيد البحث
+                  </span>
                 </button>
               </Ripples>
             </div>
           </Container>
         }
       >
-        <Container>Hi</Container>
+        <Container>
+          <section className="mb-6">
+            <div className="flex gap-2 flex-wrap mt-[16px]">
+              {filtersTags?.map((el) => (
+                <div
+                  key={el.key}
+                  onClick={() => handleFilter(el)}
+                  className={`h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] ${
+                    filters?.find((key) => key === el.key)
+                      ? activeTagStyle
+                      : unactiveTagStyle
+                  } transition-all active:opacity-50`}
+                >
+                  {el?.label}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-[16px]">
+              <p>الاقسام</p>
+              <div className="flex gap-2 mt-2 flex-wrap">
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  حاسبات
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  موبايلات
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  بطيخ
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  بصل
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  ماعرف ايش
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  حاسبات
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  موبايلات
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  بطيخ
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  بصل
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  ماعرف ايش
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  حاسبات
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  موبايلات
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  بطيخ
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  بصل
+                </div>
+                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
+                  ماعرف ايش
+                </div>
+              </div>
+            </div>
+            <div className="mt-[16px]">
+              <p>البراندات</p>
+              <div className="grid md:grid-cols-5 grid-cols-4  gap-3 mt-2 justify-center">
+                {[...new Array(30)].map((_, i) => (
+                  <div
+                    key={i}
+                    className={`aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg bg-[#f6f6f6] border border-transparent ${
+                      i === 0 ? "brand-active" : ""
+                    } `}
+                  ></div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </Container>
       </BottomSheetModal>
     </div>
   );
