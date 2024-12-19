@@ -10,16 +10,27 @@ import { BsCreditCard2Front } from "react-icons/bs";
 import Ripples from "react-ripples";
 import { useState } from "react";
 import { useCartStore } from "@/lib/cartStore"; 
+import { MdSecurityUpdateGood } from "react-icons/md";
 
 
 export const InstallmentModal = ({ onFinish }) => {
   const { closeModal } = useBottomSheetModal();
   const { cart, getTotal } = useCartStore();
   const [cardNumber, setCardNumber] = useState("");
+  const [otp, setOtp] = useState("");
+  const [currentStep, setCurrentStep] = useState(1);
   
   const total = getTotal();
   const noOfMonths = 10;
   const installment = total / noOfMonths;
+
+  const handleNextStep = () => { //use this when handle the api call
+    if (currentStep === 1) {
+      setCurrentStep(2);
+    } else {
+      handleFinish();
+    }
+  };
   const handleFinish = async () => {
     const requestOptions = {
       method: "POST",
@@ -39,6 +50,7 @@ export const InstallmentModal = ({ onFinish }) => {
       const response = await fetch(`http://localhost:3003/api/client/installment/`, requestOptions);
       const result = await response.text();
       console.log(result);
+      setCurrentStep(2); //and disable this
       onFinish({ number: cardNumber });
       openModal("OTPModal");
       closeModal(); 
@@ -74,7 +86,9 @@ export const InstallmentModal = ({ onFinish }) => {
                 onClick={handleFinish}
                 className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r text-violet-600   p-6 border-2 border-violet-600"
               >
-                <span className="ml-[8px] font-bold text-[18px]">متابعة</span>
+                <span className="ml-[8px] font-bold text-[18px]">
+                  {currentStep === 1 ? "التالي" : "متابعة"}
+                </span>
               </button>
             </Ripples>
           </div>
@@ -82,7 +96,8 @@ export const InstallmentModal = ({ onFinish }) => {
       }
     >
       <Container>
-        <div className="rounded-[8px]  mt-[16px] mb-[60px]">
+        {currentStep === 1 && (
+          <div className="rounded-[8px]  mt-[16px] mb-[60px]">
           <div className="pt-0">
             <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
               <p>القسط الشهري</p>
@@ -111,6 +126,19 @@ export const InstallmentModal = ({ onFinish }) => {
             </div>
           </div>
         </div>
+        )}
+        {currentStep === 2 && (
+          <div className="rounded-[8px] mt-[16px] mb-[60px]">
+            <div className="mt-[24px]">
+              <p className="mr-[6px] mb-[8px]">أدخل رمز التحقق </p>
+              <Input
+                hint="رمز التحقق"
+                prefix={<MdSecurityUpdateGood className="text-[20px]" />}
+                onChange={(e) => setOtp(e.target.value)}
+              />
+            </div>
+          </div>
+        )}
       </Container>
       <BottomSheetModal
       title={
