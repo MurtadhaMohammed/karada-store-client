@@ -7,7 +7,7 @@ import { FiSearch, FiX } from "react-icons/fi";
 import { usePathname, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useAppStore } from "@/lib/store";
-import { apiCall } from "@/lib/api";
+import { apiCall, IMAGE_URL } from "@/lib/api";
 import { IoFilter } from "react-icons/io5";
 import Ripples from "react-ripples";
 import {
@@ -80,6 +80,27 @@ const SearchBar = () => {
     keepPreviousData: true,
   });
 
+
+  const { data: categories = [], isFetching: isFetchingCategories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () =>
+      apiCall({
+        pathname: `/client/category/category?limit=1000`,
+      }),
+    keepPreviousData: true,
+  });
+
+  const { data: brands = [], isFetching: isFetchingBrands } = useQuery({
+    queryKey: ["brands"],
+    queryFn: () =>
+      apiCall({
+        pathname: `/client/brand/all-brands?limit=1000`,
+      }),
+    keepPreviousData: true,
+  });
+  console.log(brands);
+  console.log(categories);
+
   const submitSearch = () => {
     setQuerySearch(search);
     setIsSearch(false);
@@ -91,19 +112,29 @@ const SearchBar = () => {
 
   const handleFilter = (el) => {
     if (el.key === "all") setFilters(["all"]);
-    else if (filters.find((key) => key === el.key)) {
-      const newList = filters.filter((key) => key !== el.key);
-      setFilters(newList.length === 0 ? ["all"] : newList);
-    } else {
-      setFilters([...filters.filter((key) => key !== "all"), el.key]);
-    }
+    else setFilters([el.key]);
+  };
+
+  const handleCategorySelect = (categoryId) => {
+    setFilters((prevFilters) => {
+      const isSelected = prevFilters.includes(`category_id=${categoryId}`);
+      const newFilters = prevFilters.filter((key) => key !== "all" && !key.startsWith("category_id=") && !key.startsWith("brand_id="));
+      return isSelected ? newFilters : [...newFilters, `category_id=${categoryId}`];
+    });
+  };
+
+  const handleBrandSelect = (brandId) => {
+    setFilters((prevFilters) => {
+      const newFilters = prevFilters.filter((key) => key !== "all" && !key.startsWith("brand_id="));
+      return [...newFilters, `brand_id=${brandId}`];
+    });
   };
 
   const activeTagStyle =
     "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] border border-[#eee]";
   const unactiveTagStyle = "border border-[#eee] bg-[#fff]";
 
-  return (
+   return (
     <div>
       <Link href={"/products/search/all"}>
         <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
@@ -167,7 +198,7 @@ const SearchBar = () => {
                 )}
             </div>
 
-            {/* {isSearch && (
+            {isSearch && (
             <div className="flex gap-2 flex-wrap mt-[16px]">
               {filtersTags?.map((el) => (
                 <div
@@ -183,7 +214,7 @@ const SearchBar = () => {
                 </div>
               ))}
             </div>
-          )} */}
+          )}
 
             {isSearch && (
               <div className="flex items-center justify-between mt-4 pl-1 pr-1">
@@ -224,7 +255,7 @@ const SearchBar = () => {
             >
               <Ripples className="!grid w-full">
                 <button
-                  onClick={() => onFinish({ number: "78672..." })}
+                  onClick={() => (closeModal())}
                   className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r text-violet-600   p-6 border-2 border-violet-600"
                 >
                   <span className="ml-[8px] font-bold text-[18px]">
@@ -257,63 +288,36 @@ const SearchBar = () => {
             <div className="mt-[16px]">
               <p>الاقسام</p>
               <div className="flex gap-2 mt-2 flex-wrap">
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  حاسبات
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  موبايلات
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  بطيخ
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  بصل
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  ماعرف ايش
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  حاسبات
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  موبايلات
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  بطيخ
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  بصل
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  ماعرف ايش
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  حاسبات
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  موبايلات
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  بطيخ
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  بصل
-                </div>
-                <div className="h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap">
-                  ماعرف ايش
-                </div>
+                {categories?.categories?.map((category) => (
+                  <div
+                    key={category.id}
+                    onClick={() => handleCategorySelect(category.id)}
+                    className={`h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap cursor-pointer transition-all active:opacity-50 ${
+                      filters?.find((key) => key === `category_id=${category.id}`)
+                        ? activeTagStyle
+                        : unactiveTagStyle
+                    }`}
+                  >
+                    {category.title}
+                  </div>
+                ))}
               </div>
             </div>
             <div className="mt-[16px]">
               <p>البراندات</p>
-              <div className="grid md:grid-cols-5 grid-cols-4  gap-3 mt-2 justify-center">
-                {[...new Array(30)].map((_, i) => (
+              <div className="grid md:grid-cols-5 grid-cols-4 gap-3 mt-2 justify-center">
+                {brands?.records?.map((brand) => (
                   <div
-                    key={i}
-                    className={`aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg bg-[#f6f6f6] border border-transparent ${
-                      i === 0 ? "brand-active" : ""
-                    } `}
-                  ></div>
+                    key={brand.id}
+                    onClick={() => handleBrandSelect(brand.id)}
+                    className={`aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg bg-[#f6f6f6] cursor-pointer ${
+                      filters?.find((key) => key === `brand_id=${brand.id}`)
+                        ? "border-2 border-indigo-600"
+                        : "border border-transparent"
+                    }`}
+                  >
+                    <img src={`${IMAGE_URL}/${brand.img}`} alt={brand.name} className="w-full h-full object-cover" priority/>
+                  </div>
                 ))}
               </div>
             </div>
