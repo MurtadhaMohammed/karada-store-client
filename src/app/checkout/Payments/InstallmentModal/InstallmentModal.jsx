@@ -41,6 +41,7 @@ export const InstallmentModal = ({ onFinish }) => {
       console.log(result);
       onFinish({ number: cardNumber });
       openModal("OTPModal");
+      closeModal(); 
     } catch (error) {
       console.error(error);
     }
