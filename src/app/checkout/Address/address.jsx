@@ -56,7 +56,7 @@ const Address = () => {
             required
           />
           {addressError && (
-            <p className="mt-2 text-red-600 text-sm">{addressError}</p>
+            <p className="mt-2 text-red-600 text-sm mr-2">{addressError}</p>
           )}
         </div>
 
@@ -71,7 +71,7 @@ const Address = () => {
             required
           />
           {phoneError && (
-            <p className="mt-2 text-red-600 text-sm">{phoneError}</p>
+            <p className="mt-2 text-red-600 text-sm mr-2">{phoneError}</p>
           )}
         </div>
 
@@ -85,7 +85,7 @@ const Address = () => {
             required
           />
           {nameError && (
-            <p className="mt-2 text-red-600 text-sm">{nameError}</p>
+            <p className="mt-2 text-red-600 text-sm mr-2">{nameError}</p>
           )}
         </div>
 
