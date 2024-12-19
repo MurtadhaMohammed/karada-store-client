@@ -188,3 +188,8 @@ body {
     background-position: 0% 50%; /* Reset to start position */
   }
 }
+
+
+.brand-active{
+  border-color: #8b5cf6;
+}
