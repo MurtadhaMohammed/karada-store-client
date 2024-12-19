@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function BrandList({ brands }) {
   return (
     <Container>
-      <div className="grid md:grid-cols-5 grid-cols-3 gap-4 mt-6 justify-center">
+      <div className="grid md:grid-cols-5 grid-cols-4  gap-3 mt-4 justify-center">
         {brands?.map((brand) => (
           <BrandCard key={brand.id} brand={brand} />
         ))}
@@ -32,7 +32,12 @@ function BrandCard({ brand }) {
           />
         </div>
       </div>
-      <div className="mt-2 font-bold text-sm text-black">{brand.name}</div>
+      <div
+        className="mt-1 text-[12px] text-black whitespace-nowrap overflow-hidden text-ellipsis"
+        style={{ direction: "ltr" }}
+      >
+        {brand.name}
+      </div>
     </Link>
   );
 }
