@@ -13,6 +13,7 @@ export const useAppStore = create((set, get) => ({
   queryString: "",
   otp: null,
   favorites: [],
+  isPhoneValidated: false,
   setFavorites: (favorites) => set({ favorites }),
   setIsOtp: (isOtp) => set({ isOtp }),
   setQueryString: (queryString) => set({ queryString }),
@@ -23,6 +24,7 @@ export const useAppStore = create((set, get) => ({
   setIsMenu: (isMenu) => set({ isMenu }),
   setSelectedCategoryId: (id) => set({ selectedCategoryId: id }),
   setOtp: (otp) => set({ otp }),
+  setIsPhoneValidated: (isValid) => set({ isPhoneValidated: isValid }),
 
   toggleFav: (productId) => {
     let favorites = get().favorites;
