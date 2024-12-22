@@ -7,27 +7,27 @@ import Ripples from "react-ripples";
 import { apiCall } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
-import { useMemo, useRef, useState, useEffect } from "react";
-import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
+import { useMemo, useState, useEffect } from "react";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { userInfo,setIsOtp,setOtp,isLogin } = useAppStore();
+  const { userInfo, setIsOtp, setOtp, isLogin, isPhoneValidated } = useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
-
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState(userInfo?.address || "");
   const [phone, setPhone] = useState(userInfo?.phone || "");
   const [name, setName] = useState(userInfo?.name || "");
 
   useEffect(() => {
-    setAddress(address || "");
-    setPhone(phone || "");
-    setName(name || "");
+    if (userInfo) {
+      setAddress(address || "");
+      setPhone(phone || "");
+      setName(name || "");
+    }
   }, [userInfo]);
-  
+
   const items = useMemo(() => {
     return cart?.map((item) => ({
       id: item.product.id,
@@ -36,6 +36,7 @@ const CheckoutCTA = () => {
       l1: item.product.l1,
     }));
   }, [cart]);
+
   const order = {
     user_id: userInfo.id,
     user_name: name,
@@ -55,12 +56,12 @@ const CheckoutCTA = () => {
         data: order,
       });
       if (response) {
-        if(response.otp){
+        if (response.otp) {
           setIsOtp(true);
           setOtp(parseInt(response?.otp));
         }
         clearCart();
-        if (response.otp&&!isLogin) {
+        if (response.otp && !isLogin) {
           router.replace("/login");
         } else {
           router.replace("/orders");
@@ -68,21 +69,19 @@ const CheckoutCTA = () => {
       }
       setLoading(false);
     } catch (error) {
-      console.error("Error creating order:", error);
+      setLoading(false);
     }
   };
 
   const isDataProvided = useMemo(() => {
-    if (
-      name?.trim() &&
-      phone?.trim() &&
-      validateIraqiPhoneNumber(phone) &&
-      address?.trim() &&
+    return (
+      name.trim() &&
+      phone.trim() &&
+      isPhoneValidated &&
+      address.trim() &&
       !loading
-    )
-      return true;
-    else false;
-  }, [name, phone, address, loading]);
+    );
+  }, [name, phone, address, isPhoneValidated, loading]);
 
   return (
     <div
