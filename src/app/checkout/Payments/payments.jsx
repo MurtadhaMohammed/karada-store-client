@@ -21,8 +21,8 @@ const Payments = () => {
   const {isInstallment, setInstallment} = useAppStore();
 
   const handleInstallmentClick = () => {
-    console.log("installment");
     setInstallment(true);
+    setSelected("installment");
   };
 
   const payments = [

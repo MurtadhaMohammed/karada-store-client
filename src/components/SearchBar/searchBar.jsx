@@ -72,10 +72,12 @@ const SearchBar = () => {
 
   const { data: suggestions = [], isFetching } = useQuery({
     queryKey: ["product-suggestions", debouncedSearch],
-    queryFn: () =>
-      apiCall({
+    queryFn: () => {
+      console.log(`Fetching product suggestions for: ${debouncedSearch}`);
+      return apiCall({
         pathname: `/client/product/search?q=${debouncedSearch}`,
-      }),
+      });
+    },
     enabled: isSearch && debouncedSearch.length > 1,
     keepPreviousData: true,
   });
@@ -98,9 +100,6 @@ const SearchBar = () => {
       }),
     keepPreviousData: true,
   });
-  console.log(brands);
-  console.log(categories);
-
   const submitSearch = () => {
     setQuerySearch(search);
     setIsSearch(false);
@@ -198,7 +197,7 @@ const SearchBar = () => {
                 )}
             </div>
 
-            {isSearch && (
+            {/* {isSearch && (
             <div className="flex gap-2 flex-wrap mt-[16px]">
               {filtersTags?.map((el) => (
                 <div
@@ -214,7 +213,7 @@ const SearchBar = () => {
                 </div>
               ))}
             </div>
-          )}
+          )} */}
 
             {isSearch && (
               <div className="flex items-center justify-between mt-4 pl-1 pr-1">

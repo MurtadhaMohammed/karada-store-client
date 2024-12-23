@@ -8,83 +8,73 @@ import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { BsCreditCard2Front } from "react-icons/bs";
 import Ripples from "react-ripples";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCartStore } from "@/lib/cartStore"; 
 import { MdSecurityUpdateGood } from "react-icons/md";
-
+import { apiCall } from "@/lib/api";
 
 export const InstallmentModal = ({ onFinish }) => {
   const { closeModal, openModal } = useBottomSheetModal();
-  const { cart, getTotal } = useCartStore();
+  const { getTotal } = useCartStore();
   const [cardNumber, setCardNumber] = useState("");
   const [Note, setNote] = useState("");
-  const [PaymentCard, setPaymentCard] = useState("");
   const [OTP, setOTP] = useState("");
-  // const [otp, setOtp] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
-  
+  const [sessionId, setSessionId] = useState(null);
+
   const total = getTotal();
   const noOfMonths = 10;
   const installment = total / noOfMonths;
 
-  const handleNextStep = () => {
+  useEffect(() => {
+    console.log("Current Step:", currentStep);
     if (currentStep === 1) {
-      console.log("step 1");
-      setCurrentStep(2);
-    } else {
-      handleInstallmentOtp();
+      handleInstallment();
+    }
+  }, [currentStep]);
+
+  const handleInstallment = async () => {
+    try {
+      const result = await apiCall({
+        pathname: "/client/installment/",
+        method: "POST",
+        data: {
+          Identity: cardNumber,
+          Amount: total,
+          countOfMonth: noOfMonths,
+        },
+      });
+
+      if (result.succeeded === true) {
+        console.log("Installment Success:", result);
+        onFinish({ number: cardNumber });
+        setSessionId(result?.sessionId);
+        // closeModal();
+        setCurrentStep(2);
+        openModal("OTPModal");
+      }
+    } catch (error) {
+      console.error("Installment Error:", error);
     }
   };
 
   const handleInstallmentOtp = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        OTP,
-        Note,
-        PaymentCard:cardNumber,
-      }),
-      redirect: "follow",
-    };
     try {
-      const resp = await fetch(`http://localhost:3003/api/client/installment/done`, requestOptions);
-      const result = await resp.text();
-      console.log(result);
+      const result = await apiCall({
+        pathname: "/client/installment/done",
+        method: "POST",
+        data: {
+          sessionId,
+          OTP: parseInt(OTP, 10),
+          Note,
+          PaymentCard: cardNumber,
+        },
+      });
+
+      console.log("OTP Verification Result:", result);
       closeModal();
     } catch (error) {
-      console.error(error);
-    }
-  }
-
-
-  const handleInstallment = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-      "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-      Identity: cardNumber,
-      Amount: total,
-      countOfMonth:noOfMonths,
-      PlanId: 1,
-      }),
-      redirect: "follow",
-    };
-
-    try {
-      const response = await fetch(`http://localhost:3003/api/client/installment/`, requestOptions);
-      const result = await response.text();
-      console.log(result);
-      if(result.succeeded === "true") {
-        onFinish({ number: cardNumber });
-        handleNextStep();
-      }
-    } catch (error) {
-      console.error(error);
+      console.error("OTP Verification Error:", error);
     }
   };
 
@@ -98,7 +88,6 @@ export const InstallmentModal = ({ onFinish }) => {
       detent={"content-height"}
       name="installmentModal"
       onClose={closeModal}
-      
       footer={
         <Container>
           <div
@@ -112,7 +101,9 @@ export const InstallmentModal = ({ onFinish }) => {
           >
             <Ripples className="!grid w-full">
               <button
-                onClick={handleInstallment}
+                onClick={() => {
+                  currentStep === 1 ? handleInstallment() : handleInstallmentOtp();
+                }}
                 className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r text-violet-600   p-6 border-2 border-violet-600"
               >
                 <span className="ml-[8px] font-bold text-[18px]">
@@ -127,34 +118,34 @@ export const InstallmentModal = ({ onFinish }) => {
       <Container>
         {currentStep === 1 && (
           <div className="rounded-[8px]  mt-[16px] mb-[60px]">
-          <div className="pt-0">
-            <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
-              <p>القسط الشهري</p>
-              <p>IQD {installment}</p>
-            </div>
-            <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
-              <p>عدد الاشهر</p>
-              <p>{noOfMonths} اشهر</p>
-            </div>
+            <div className="pt-0">
+              <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
+                <p>القسط الشهري</p>
+                <p>IQD {installment}</p>
+              </div>
+              <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
+                <p>عدد الاشهر</p>
+                <p>{noOfMonths} اشهر</p>
+              </div>
 
-            <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
-              <p className="text-[#666]">المبلغ الاجمالي:</p>
-              <b className="text-[24px]">IQD {total}</b>
-            </div>
+              <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
+                <p className="text-[#666]">المبلغ الاجمالي:</p>
+                <b className="text-[24px]">IQD {total}</b>
+              </div>
 
-            <div className="mt-[24px]">
-              <p className="mr-[6px]  mb-[8px]">
-                اكتب رقم الجساب المكون من 10 مراتب
-              </p>
-              <Input
-                hint="رقم البطاقة"
-                prefix={<BsCreditCard2Front className="text-[20px]" />}
-                value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
-              />
+              <div className="mt-[24px]">
+                <p className="mr-[6px]  mb-[8px]">
+                  اكتب رقم الجساب المكون من 10 مراتب
+                </p>
+                <Input
+                  hint="رقم البطاقة"
+                  prefix={<BsCreditCard2Front className="text-[20px]" />}
+                  value={cardNumber}
+                  onChange={(e) => setCardNumber(e.target.value)}
+                />
+              </div>
             </div>
           </div>
-        </div>
         )}
         {currentStep === 2 && (
           <div className="rounded-[8px] mt-[16px] mb-[60px]">
@@ -170,20 +161,6 @@ export const InstallmentModal = ({ onFinish }) => {
           </div>
         )}
       </Container>
-      <BottomSheetModal
-      title={
-        <Container>
-          <b>ادخل رمز التحقيق</b>
-        </Container>
-      }
-      name="OTPModal"
-      onClose={closeModal}
-      detent={"content-height"}
-
-      >
-
-      </BottomSheetModal>
     </BottomSheetModal>
-
   );
 };

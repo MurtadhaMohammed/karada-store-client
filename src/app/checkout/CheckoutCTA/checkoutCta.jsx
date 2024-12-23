@@ -18,13 +18,14 @@ const CheckoutCTA = () => {
     useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
-  const { openModal } = useBottomSheetModal();
+  const { openModal, closeModal } = useBottomSheetModal();
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState(userInfo?.address || "");
   const [phone, setPhone] = useState(userInfo?.phone || "");
   const [name, setName] = useState(userInfo?.name || "");
   const { isInstallment } = useAppStore();
+  const [cardInfo, setCardInfo] = useState(null);
 
   useEffect(() => {
     if (userInfo) {
@@ -149,7 +150,6 @@ const CheckoutCTA = () => {
       <InstallmentModal
         onFinish={(value) => {
           setCardInfo(value);
-          setSelected("installment");
           closeModal();
         }}
       />
