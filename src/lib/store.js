@@ -2,6 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 
 export const useAppStore = create((set, get) => ({
+  isInstallment: false,
   isLogin: false,
   isMenu: false,
   isOtp: false,
@@ -14,6 +15,7 @@ export const useAppStore = create((set, get) => ({
   otp: null,
   favorites: [],
   isPhoneValidated: false,
+  setInstallment: (isInstallment) => set({ isInstallment }),
   setFavorites: (favorites) => set({ favorites }),
   setIsOtp: (isOtp) => set({ isOtp }),
   setQueryString: (queryString) => set({ queryString }),

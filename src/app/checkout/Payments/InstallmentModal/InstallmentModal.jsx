@@ -14,24 +14,53 @@ import { MdSecurityUpdateGood } from "react-icons/md";
 
 
 export const InstallmentModal = ({ onFinish }) => {
-  const { closeModal } = useBottomSheetModal();
+  const { closeModal, openModal } = useBottomSheetModal();
   const { cart, getTotal } = useCartStore();
   const [cardNumber, setCardNumber] = useState("");
-  const [otp, setOtp] = useState("");
+  const [Note, setNote] = useState("");
+  const [PaymentCard, setPaymentCard] = useState("");
+  const [OTP, setOTP] = useState("");
+  // const [otp, setOtp] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
   
   const total = getTotal();
   const noOfMonths = 10;
   const installment = total / noOfMonths;
 
-  const handleNextStep = () => { //use this when handle the api call
+  const handleNextStep = () => {
     if (currentStep === 1) {
+      console.log("step 1");
       setCurrentStep(2);
     } else {
-      handleFinish();
+      handleInstallmentOtp();
     }
   };
-  const handleFinish = async () => {
+
+  const handleInstallmentOtp = async () => {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        OTP,
+        Note,
+        PaymentCard:cardNumber,
+      }),
+      redirect: "follow",
+    };
+    try {
+      const resp = await fetch(`http://localhost:3003/api/client/installment/done`, requestOptions);
+      const result = await resp.text();
+      console.log(result);
+      closeModal();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  const handleInstallment = async () => {
     const requestOptions = {
       method: "POST",
       headers: {
@@ -50,10 +79,10 @@ export const InstallmentModal = ({ onFinish }) => {
       const response = await fetch(`http://localhost:3003/api/client/installment/`, requestOptions);
       const result = await response.text();
       console.log(result);
-      setCurrentStep(2); //and disable this
-      onFinish({ number: cardNumber });
-      openModal("OTPModal");
-      closeModal(); 
+      if(result.succeeded === "true") {
+        onFinish({ number: cardNumber });
+        handleNextStep();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -83,7 +112,7 @@ export const InstallmentModal = ({ onFinish }) => {
           >
             <Ripples className="!grid w-full">
               <button
-                onClick={handleFinish}
+                onClick={handleInstallment}
                 className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r text-violet-600   p-6 border-2 border-violet-600"
               >
                 <span className="ml-[8px] font-bold text-[18px]">
@@ -133,8 +162,9 @@ export const InstallmentModal = ({ onFinish }) => {
               <p className="mr-[6px] mb-[8px]">أدخل رمز التحقق </p>
               <Input
                 hint="رمز التحقق"
+                value={OTP}
                 prefix={<MdSecurityUpdateGood className="text-[20px]" />}
-                onChange={(e) => setOtp(e.target.value)}
+                onChange={(e) => setOTP(e.target.value)}
               />
             </div>
           </div>

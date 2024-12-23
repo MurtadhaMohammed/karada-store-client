@@ -1,24 +1,30 @@
-// CheckoutCTA.jsx
 "use client";
 import Container from "@/components/UI/Container/container";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { GiConfirmed } from "react-icons/gi";
 import Ripples from "react-ripples";
 import { apiCall } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
+import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
+import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
+import  {InstallmentModal}  from "../Payments/InstallmentModal/InstallmentModal";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { userInfo, setIsOtp, setOtp, isLogin, isPhoneValidated } = useAppStore();
+  const { userInfo, setIsOtp, setOtp, isLogin, isPhoneValidated } =
+    useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
+  const { openModal } = useBottomSheetModal();
+  const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState(userInfo?.address || "");
   const [phone, setPhone] = useState(userInfo?.phone || "");
   const [name, setName] = useState(userInfo?.name || "");
+  const { isInstallment } = useAppStore();
 
   useEffect(() => {
     if (userInfo) {
@@ -27,6 +33,7 @@ const CheckoutCTA = () => {
       setName(name || "");
     }
   }, [userInfo]);
+
 
   const items = useMemo(() => {
     return cart?.map((item) => ({
@@ -69,7 +76,17 @@ const CheckoutCTA = () => {
       }
       setLoading(false);
     } catch (error) {
-      setLoading(false);
+      console.error("Error creating order:", error);
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (isInstallment === true) {
+      console.log("true");
+      openModal("installmentModal");
+    } else {
+      console.log("false");
+      // handleOrderCreation();
     }
   };
 
@@ -107,8 +124,8 @@ const CheckoutCTA = () => {
                   ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff]"
                   : "bg-[#f6f6f6] border border-[#eee] text-[#ccc] cursor-not-allowed"
               }`}
-              onClick={handleOrderCreation}
-              disabled={!isDataProvided}
+              onClick={handleButtonClick}
+              // disabled={isDataProvided}
             >
               {loading ? (
                 <div className="btn-loading"></div>
@@ -123,12 +140,19 @@ const CheckoutCTA = () => {
             </button>
           </Ripples>
         </div>
-        {/* {!isDataProvided && (
-          <p className="mt-2 text-red-600 text-center font-semibold">
+        {!isDataProvided && (
+          <p className="mt-2 text-red-600 text-end font-semibold">
             يرجى ملء جميع المعلومات المطلوبة
           </p>
-        )} */}
+        )}
       </Container>
+      <InstallmentModal
+        onFinish={(value) => {
+          setCardInfo(value);
+          setSelected("installment");
+          closeModal();
+        }}
+      />
     </div>
   );
 };

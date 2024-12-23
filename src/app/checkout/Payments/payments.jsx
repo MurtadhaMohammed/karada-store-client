@@ -8,11 +8,22 @@ import {
   useBottomSheetModal,
 } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import { InstallmentModal } from "./InstallmentModal/InstallmentModal";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useAppStore } from "@/lib/store";
+
 
 const Payments = () => {
   const [selected, setSelected] = useState("cash");
   const [cardInfo, setCardInfo] = useState({});
   const { openModal, closeModal } = useBottomSheetModal();
+  const {isInstallment, setInstallment} = useAppStore();
+
+  const handleInstallmentClick = () => {
+    console.log("installment");
+    setInstallment(true);
+  };
 
   const payments = [
     {
@@ -20,15 +31,11 @@ const Payments = () => {
       label: "الدفع عند الاستلام",
       disabled: false,
     },
-    // {
-    //   value: "master",
-    //   label: "ماستر او فيزا كارد",
-    //   disabled: true,
-    // },
     {
       value: "installment",
       label: "شراء بالتقسيط",
       disabled: false,
+      onClick: handleInstallmentClick,
     },
   ];
 
@@ -45,9 +52,9 @@ const Payments = () => {
             onClick={() => {
               if (el.disabled) return;
               if (el?.value === "master") openModal("paymentModal");
-              else if (el?.value === "installment")
-                openModal("installmentModal");
-              else {
+              else if (el?.value === "installment") {
+                el.onClick();
+              } else {
                 setCardInfo({});
                 setSelected("cash");
               }
