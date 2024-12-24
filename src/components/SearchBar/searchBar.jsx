@@ -199,24 +199,6 @@ const SearchBar = () => {
             </div>
 
             {isSearch && (
-            // <div className="flex gap-2 flex-wrap mt-[16px]">
-            //   {filtersTags?.map((el) => (
-            //     <div
-            //       key={el.key}
-            //       onClick={() => handleFilter(el)}
-            //       className={`h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] ${
-            //         filters?.find((key) => key === el.key)
-            //           ? activeTagStyle
-            //           : unactiveTagStyle
-            //       } transition-all active:opacity-50`}
-            //     >
-            //       {el?.label}
-            //     </div>
-            //   ))}
-            // </div>
-          )}
-
-            {isSearch && (
               <div className="flex items-center justify-between mt-4 pl-1 pr-1">
                 <Link href={pathname + "?filterModal=true"}>
                   <button className="flex gap-2 items-center text-[16px] text-[#0000ff]">
