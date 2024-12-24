@@ -3,19 +3,18 @@ import Container from "@/components/UI/Container/container";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { GiConfirmed } from "react-icons/gi";
 import Ripples from "react-ripples";
-import { apiCall } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
-import { useMemo, useRef, useState, useEffect } from "react";
-import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
+import { useMemo, useState, useEffect } from "react";
 import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
-import  {InstallmentModal}  from "../Payments/InstallmentModal/InstallmentModal";
+import { InstallmentModal } from "../Payments/InstallmentModal/InstallmentModal";
+import { OtpModal } from "../Payments/OtpModal/OtpModal";
+import { createOrder } from "../utils/orderUtils";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { userInfo, setIsOtp, setOtp, isLogin, isPhoneValidated } =
-    useAppStore();
+  const { userInfo, setIsOtp, setOtp, isLogin, isPhoneValidated } = useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
   const { openModal, closeModal } = useBottomSheetModal();
@@ -26,6 +25,7 @@ const CheckoutCTA = () => {
   const [name, setName] = useState(userInfo?.name || "");
   const { isInstallment } = useAppStore();
   const [cardInfo, setCardInfo] = useState(null);
+  const [sessionId, setSessionId] = useState(null);
 
   useEffect(() => {
     if (userInfo) {
@@ -34,7 +34,6 @@ const CheckoutCTA = () => {
       setName(name || "");
     }
   }, [userInfo]);
-
 
   const items = useMemo(() => {
     return cart?.map((item) => ({
@@ -56,38 +55,18 @@ const CheckoutCTA = () => {
   };
 
   const handleOrderCreation = async () => {
-    try {
-      setLoading(true);
-      const response = await apiCall({
-        pathname: `/client/order/create-order`,
-        method: "POST",
-        data: order,
-      });
-      if (response) {
-        if (response.otp) {
-          setIsOtp(true);
-          setOtp(parseInt(response?.otp));
-        }
-        clearCart();
-        if (response.otp && !isLogin) {
-          router.replace("/login");
-        } else {
-          router.replace("/orders");
-        }
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error creating order:", error);
-    }
+    setLoading(true);
+    await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router);
+    setLoading(false);
   };
 
   const handleButtonClick = () => {
     if (isInstallment === true) {
-      console.log("true");
+      // console.log("true");
       openModal("installmentModal");
     } else {
-      console.log("false");
-      // handleOrderCreation();
+      // console.log("false");
+      handleOrderCreation();
     }
   };
 
@@ -126,7 +105,7 @@ const CheckoutCTA = () => {
                   : "bg-[#f6f6f6] border border-[#eee] text-[#ccc] cursor-not-allowed"
               }`}
               onClick={handleButtonClick}
-              // disabled={isDataProvided}
+              disabled={loading}
             >
               {loading ? (
                 <div className="btn-loading"></div>
@@ -150,8 +129,23 @@ const CheckoutCTA = () => {
       <InstallmentModal
         onFinish={(value) => {
           setCardInfo(value);
+          setSessionId(value.sessionId);
+        }}
+      />
+      <OtpModal
+        sessionId={sessionId}
+        cardNumber={cardInfo?.number}
+        onFinish={() => {
+          setCardInfo(null);
+          setSessionId(null);
           closeModal();
         }}
+        order={order} 
+        isLogin={isLogin} 
+        setIsOtp={setIsOtp} 
+        setOtp={setOtp}
+        clearCart={clearCart}
+        router={router}
       />
     </div>
   );
