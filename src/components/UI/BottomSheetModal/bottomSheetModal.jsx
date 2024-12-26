@@ -23,9 +23,7 @@ export const useBottomSheetModal = () => {
   };
   
   const closeModal = (name) => {
-    const params = new URLSearchParams(searchParams);
     router.back();
-    // router.push(pathname + "?" + params.toString());
   };
 
   return { closeModal, openModal };
