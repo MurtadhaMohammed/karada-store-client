@@ -62,10 +62,8 @@ const CheckoutCTA = () => {
 
   const handleButtonClick = () => {
     if (isInstallment === true) {
-      // console.log("true");
       openModal("installmentModal");
     } else {
-      // console.log("false");
       handleOrderCreation();
     }
   };
@@ -100,7 +98,7 @@ const CheckoutCTA = () => {
           <Ripples className="!grid w-full pointer-events-auto">
             <button
               className={`flex w-full items-center justify-center h-[56px] rounded-[28px] ${
-                isDataProvided
+                !isDataProvided
                   ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff]"
                   : "bg-[#f6f6f6] border border-[#eee] text-[#ccc] cursor-not-allowed"
               }`}
@@ -108,7 +106,7 @@ const CheckoutCTA = () => {
               disabled={loading}
             >
               {loading ? (
-                <div className="btn-loading"></div>
+                <div className="btn-loading text-black"></div>
               ) : (
                 <>
                   <span className="ml-[8px] font-bold text-[18px]">
@@ -120,7 +118,7 @@ const CheckoutCTA = () => {
             </button>
           </Ripples>
         </div>
-        {!isDataProvided && (
+        {isDataProvided && (
           <p className="mt-2 text-red-600 text-end font-semibold">
             يرجى ملء جميع المعلومات المطلوبة
           </p>

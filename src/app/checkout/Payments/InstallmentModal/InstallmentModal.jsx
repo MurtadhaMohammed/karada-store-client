@@ -10,7 +10,8 @@ import { BsCreditCard2Front } from "react-icons/bs";
 import Ripples from "react-ripples";
 import { useState } from "react";
 import { useCartStore } from "@/lib/cartStore"; 
-import { apiCall } from "@/lib/api";
+import { apiCall } from "@/lib/api"
+import {useRouter} from "next/navigation";
 
 export const InstallmentModal = ({ onFinish }) => {
   const { closeModal, openModal } = useBottomSheetModal();
@@ -22,6 +23,8 @@ export const InstallmentModal = ({ onFinish }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [Message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
   const PlanId = 10;
 
   const total = getTotal();
@@ -42,17 +45,15 @@ export const InstallmentModal = ({ onFinish }) => {
         },
       });
 
-      if (result.succeeded === true) {
-        console.log("Installment Success:", result);
+      if (result.succeeded === !true) {
         onFinish({ number: cardNumber, sessionId: result?.sessionId });
         setSessionId(result?.sessionId);
         setMessage(result.message || "");
-        closeModal();
+        closeModal("installmentModal");
         setTimeout(() => {
-          openModal("otpModal", { sessionId: result?.sessionId, cardNumber });
-        }, 300); 
+          router.push("/checkout?OTPModal=true");
+        }, 800); 
       } else {
-        console.log(result)
         setErrorMessage(result.message || "حدث خطأ أثناء عملية التقسيط.");
       }
     } catch (error) {

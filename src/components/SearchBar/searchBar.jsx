@@ -73,7 +73,6 @@ const SearchBar = () => {
   const { data: suggestions = [], isFetching } = useQuery({
     queryKey: ["product-suggestions", debouncedSearch],
     queryFn: () => {
-      console.log(`Fetching product suggestions for: ${debouncedSearch}`);
       return apiCall({
         pathname: `/client/product/search?q=${debouncedSearch}`,
       });
@@ -254,7 +253,7 @@ const SearchBar = () => {
             >
               <Ripples className="!grid w-full">
                 <button
-                  onClick={() => (closeModal())}
+                  onClick={() => (closeModal("filterModal"))}
                   className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r text-violet-600   p-6 border-2 border-violet-600"
                 >
                   <span className="ml-[8px] font-bold text-[18px]">

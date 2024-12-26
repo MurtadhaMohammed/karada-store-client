@@ -34,9 +34,8 @@ export const OtpModal = ({ sessionId, cardNumber, onFinish, order, isLogin, setI
       });
 
       if (result.succeeded === true) {
-        console.log("OTP Verification Result:", result);
         await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router); // Add this line to create an order
-        closeModal();
+        closeModal("OTPModal");
         onFinish();
       } else {
         setErrorMessage(result.message || "حدث خطأ أثناء التحقق من الرمز.");
@@ -57,7 +56,7 @@ export const OtpModal = ({ sessionId, cardNumber, onFinish, order, isLogin, setI
         </Container>
       }
       detent={"content-height"}
-      name="otpModal"
+      name="OTPModal"
       onClose={closeModal}
       footer={
         <Container>
