@@ -19,7 +19,11 @@ const Payments = () => {
   const [cardInfo, setCardInfo] = useState({});
   const { openModal, closeModal } = useBottomSheetModal();
   const {isInstallment, setInstallment} = useAppStore();
-
+  
+  const handleCashClick = () => {
+    setInstallment(false);
+    setSelected("cash");
+  };
   const handleInstallmentClick = () => {
     setInstallment(true);
     setSelected("installment");
@@ -30,6 +34,7 @@ const Payments = () => {
       value: "cash",
       label: "الدفع عند الاستلام",
       disabled: false,
+      onClick: handleCashClick,
     },
     {
       value: "installment",
@@ -54,9 +59,8 @@ const Payments = () => {
               if (el?.value === "master") openModal("paymentModal");
               else if (el?.value === "installment") {
                 el.onClick();
-              } else {
-                setCardInfo({});
-                setSelected("cash");
+              } else if (el?.value === "cash") {
+                el.onClick();
               }
             }}
             className={`flex items-start justify-between rounded-[8px] p-[12px] mt-[8px] active:opacity-55 ${

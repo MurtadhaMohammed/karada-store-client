@@ -45,7 +45,7 @@ export const InstallmentModal = ({ onFinish }) => {
         },
       });
 
-      if (result.succeeded === !true) {
+      if (result.succeeded === true) {
         onFinish({ number: cardNumber, sessionId: result?.sessionId });
         setSessionId(result?.sessionId);
         setMessage(result.message || "");

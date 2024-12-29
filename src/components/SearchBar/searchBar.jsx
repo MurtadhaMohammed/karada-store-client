@@ -81,7 +81,6 @@ const SearchBar = () => {
     keepPreviousData: true,
   });
 
-
   const { data: categories = [], isFetching: isFetchingCategories } = useQuery({
     queryKey: ["categories"],
     queryFn: () =>
@@ -116,14 +115,23 @@ const SearchBar = () => {
   const handleCategorySelect = (categoryId) => {
     setFilters((prevFilters) => {
       const isSelected = prevFilters.includes(`category_id=${categoryId}`);
-      const newFilters = prevFilters.filter((key) => key !== "all" && !key.startsWith("category_id=") && !key.startsWith("brand_id="));
-      return isSelected ? newFilters : [...newFilters, `category_id=${categoryId}`];
+      const newFilters = prevFilters.filter(
+        (key) =>
+          key !== "all" &&
+          !key.startsWith("category_id=") &&
+          !key.startsWith("brand_id=")
+      );
+      return isSelected
+        ? newFilters
+        : [...newFilters, `category_id=${categoryId}`];
     });
   };
 
   const handleBrandSelect = (brandId) => {
     setFilters((prevFilters) => {
-      const newFilters = prevFilters.filter((key) => key !== "all" && !key.startsWith("brand_id="));
+      const newFilters = prevFilters.filter(
+        (key) => key !== "all" && !key.startsWith("brand_id=")
+      );
       return [...newFilters, `brand_id=${brandId}`];
     });
   };
@@ -132,7 +140,7 @@ const SearchBar = () => {
     "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] border border-[#eee]";
   const unactiveTagStyle = "border border-[#eee] bg-[#fff]";
 
-   return (
+  return (
     <div>
       <Link href={"/products/search/all"}>
         <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
@@ -195,39 +203,18 @@ const SearchBar = () => {
                   </div>
                 )}
             </div>
-
-            {/* {isSearch && (
-            <div className="flex gap-2 flex-wrap mt-[16px]">
-              {filtersTags?.map((el) => (
-                <div
-                  key={el.key}
-                  onClick={() => handleFilter(el)}
-                  className={`h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] ${
-                    filters?.find((key) => key === el.key)
-                      ? activeTagStyle
-                      : unactiveTagStyle
-                  } transition-all active:opacity-50`}
-                >
-                  {el?.label}
-                </div>
-              ))}
+            <div className="flex items-center justify-between mt-4 pl-1 pr-1">
+              <Link href={pathname + "?filterModal=true"}>
+                <button className="flex gap-2 items-center text-[16px] text-[#0000ff]">
+                  <IoFilter />
+                  <span>تصفية</span>
+                </button>
+              </Link>
+              <p className="text-[#a5a5a5] text-[16px]">
+                نتائج البحث
+                <span className="font-bold mr-1">1232</span>
+              </p>
             </div>
-          )} */}
-
-            {isSearch && (
-              <div className="flex items-center justify-between mt-4 pl-1 pr-1">
-                <Link href={pathname + "?filterModal=true"}>
-                  <button className="flex gap-2 items-center text-[16px] text-[#0000ff]">
-                    <IoFilter />
-                    <span>تصفية</span>
-                  </button>
-                </Link>
-                <p className="text-[#a5a5a5] text-[16px]">
-                  نتائج البحث
-                  <span className="font-bold mr-1">1232</span>
-                </p>
-              </div>
-            )}
           </Container>
         </div>
       </Link>
@@ -253,7 +240,7 @@ const SearchBar = () => {
             >
               <Ripples className="!grid w-full">
                 <button
-                  onClick={() => (closeModal("filterModal"))}
+                  onClick={() => closeModal("filterModal")}
                   className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r text-violet-600   p-6 border-2 border-violet-600"
                 >
                   <span className="ml-[8px] font-bold text-[18px]">
@@ -291,7 +278,9 @@ const SearchBar = () => {
                     key={category.id}
                     onClick={() => handleCategorySelect(category.id)}
                     className={`h-[32px] pl-[16px] pr-[16px] rounded-[8px] flex items-center text-[14px] border border-[#eee] bg-[#fff] whitespace-nowrap cursor-pointer transition-all active:opacity-50 ${
-                      filters?.find((key) => key === `category_id=${category.id}`)
+                      filters?.find(
+                        (key) => key === `category_id=${category.id}`
+                      )
                         ? activeTagStyle
                         : unactiveTagStyle
                     }`}
@@ -314,7 +303,12 @@ const SearchBar = () => {
                         : "border border-transparent"
                     }`}
                   >
-                    <img src={`${IMAGE_URL}/${brand.img}`} alt={brand.name} className="w-full h-full object-cover" priority/>
+                    <img
+                      src={`${IMAGE_URL}/${brand.img}`}
+                      alt={brand.name}
+                      className="w-full h-full object-cover"
+                      priority
+                    />
                   </div>
                 ))}
               </div>
@@ -327,4 +321,3 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
-
