@@ -5,6 +5,7 @@ import ListBanner from "@/components/ListBanner/listBanner";
 import SingleBanner from "@/components/SingleBanner/singleBanner";
 import OffersBanner from "@/components/offersBanner/offersBanner";
 import SingleBannerPure from "@/components/SingleBannerPure/singleBannerPure";
+import Link from "next/link";
 
 import { URL } from "@/lib/api";
 
@@ -68,7 +69,7 @@ export default async function Home() {
     
       // Wrap banner content in a link only if the link starts with "/view"
       if (banner.link && banner.link.startsWith("/view")) {
-        return (
+        return ( 
           <Link key={banner.id} href={banner.link} passHref>
             <a>{bannerContent()}</a>
           </Link>
