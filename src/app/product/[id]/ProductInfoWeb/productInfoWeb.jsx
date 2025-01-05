@@ -48,7 +48,6 @@ const handleShare = async () => {
         text: "I found this interesting:",
         url: window.location.href,
       });
-      console.log("Content shared successfully");
     } catch (error) {
       console.error("Error sharing:", error);
     }

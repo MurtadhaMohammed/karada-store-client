@@ -7,7 +7,7 @@ import Input from "@/components/UI/Input/input";
 import { OtpInput } from "reactjs-otp-input";
 import { useEffect, useState } from "react";
 import { apiCall, URL } from "@/lib/api";
-import {  useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
 
 const LoginFormWeb = () => {
@@ -16,9 +16,9 @@ const LoginFormWeb = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setIsLogin, isLogin,updateUserInfo , otp, setOtp,isOtp,setIsOtp } = useAppStore();
+  const { setIsLogin, isLogin, updateUserInfo, otp, setOtp, isOtp, setIsOtp } = useAppStore();
   const handleChange = (otp) => setOtp(otp);
-  
+
   const handleLogin = async () => {
     setLoading(true);
     const resp = await apiCall({
@@ -29,15 +29,14 @@ const LoginFormWeb = () => {
         phone,
       },
     });
-    
+
     setLoading(false);
-    if (resp?.otp) {
-      setOtp(parseInt(resp?.otp));
+    if (resp?.message=="Login Success") {
       setIsOtp(true);
       router.replace(`/login?phone=${phone}`);
     }
   };
-  
+
   const handleVerify = async () => {
     setLoading(true);
     const phoneFromParams = searchParams.get("phone");
@@ -71,7 +70,7 @@ const LoginFormWeb = () => {
       if (_name) setName(_name);
     }
   }, [isLogin]);
-  
+
   if (isOtp)
     return (
       <div className="max-w-[360px] m-auto mt-[20vh] font-ibm">
