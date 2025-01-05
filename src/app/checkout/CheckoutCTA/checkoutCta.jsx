@@ -14,7 +14,8 @@ import { createOrder } from "../utils/orderUtils";
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { userInfo, setIsOtp, setOtp, isLogin, isPhoneValidated } = useAppStore();
+  const { userInfo, setIsOtp, setOtp, isLogin, isPhoneValidated } =
+    useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
   const { openModal, closeModal } = useBottomSheetModal();
@@ -26,6 +27,8 @@ const CheckoutCTA = () => {
   const { isInstallment } = useAppStore();
   const [cardInfo, setCardInfo] = useState(null);
   const [sessionId, setSessionId] = useState(null);
+  const [order_type, setOrderType] = useState();
+  const { installmentId, setInstallmentId } = useAppStore();
 
   useEffect(() => {
     if (userInfo) {
@@ -52,6 +55,8 @@ const CheckoutCTA = () => {
     items,
     voucher_id: voucher ? voucher.id : null,
     store_id: 1,
+    order_type,
+    installmentId,
   };
 
   const handleOrderCreation = async () => {
@@ -61,7 +66,9 @@ const CheckoutCTA = () => {
   };
 
   const handleButtonClick = () => {
+    console.log(installmentId);
     if (isInstallment === true) {
+      setOrderType("Installment");
       openModal("installmentModal");
     } else {
       handleOrderCreation();
@@ -98,7 +105,7 @@ const CheckoutCTA = () => {
           <Ripples className="!grid w-full pointer-events-auto">
             <button
               className={`flex w-full items-center justify-center h-[56px] rounded-[28px] ${
-                !isDataProvided
+                isDataProvided
                   ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff]"
                   : "bg-[#f6f6f6] border border-[#eee] text-[#ccc] cursor-not-allowed"
               }`}
@@ -136,11 +143,12 @@ const CheckoutCTA = () => {
         onFinish={() => {
           setCardInfo(null);
           setSessionId(null);
+          setInstallmentId(null);
           closeModal();
         }}
-        order={order} 
-        isLogin={isLogin} 
-        setIsOtp={setIsOtp} 
+        order={order}
+        isLogin={isLogin}
+        setIsOtp={setIsOtp}
         setOtp={setOtp}
         clearCart={clearCart}
         router={router}

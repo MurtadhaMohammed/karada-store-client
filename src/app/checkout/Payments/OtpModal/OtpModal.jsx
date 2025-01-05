@@ -7,17 +7,41 @@ import {
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { MdSecurityUpdateGood } from "react-icons/md";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Ripples from "react-ripples";
 import { apiCall } from "@/lib/api";
 import { createOrder } from "../../utils/orderUtils";
+import { useAppStore } from "@/lib/store";
 
-export const OtpModal = ({ sessionId, cardNumber, onFinish, order, isLogin, setIsOtp, setOtp, clearCart, router }) => {
+export const OtpModal = ({
+  sessionId,
+  cardNumber,
+  onFinish,
+  order,
+  isLogin,
+  setIsOtp,
+  setOtp,
+  clearCart,
+  router,
+}) => {
   const { closeModal } = useBottomSheetModal();
   const [OTP, setOTP] = useState("");
   const [Note, setNote] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const { setInstallmentId } = useAppStore();
+
+  const setInstallmentIdBeforeOrder = () => {
+    if (sessionId) {
+      setInstallmentId(sessionId);
+    }
+  };
+
+  useEffect(() => {
+    if (sessionId) {
+      setInstallmentId(sessionId);
+    }
+  }, [sessionId, setInstallmentId]);
 
   const handleInstallmentOtp = async () => {
     setLoading(true);
@@ -34,7 +58,8 @@ export const OtpModal = ({ sessionId, cardNumber, onFinish, order, isLogin, setI
       });
 
       if (result.succeeded === true) {
-        await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router); // Add this line to create an order
+        setInstallmentIdBeforeOrder();
+        await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router);
         closeModal("OTPModal");
         onFinish();
       } else {
@@ -88,9 +113,7 @@ export const OtpModal = ({ sessionId, cardNumber, onFinish, order, isLogin, setI
     >
       <Container>
         {errorMessage && (
-          <div className="text-red-600 mb-4">
-            {errorMessage}
-          </div>
+          <div className="text-red-600 mb-4">{errorMessage}</div>
         )}
         <div className="rounded-[8px] mt-[16px] mb-[60px]">
           <div className="mt-[24px]">

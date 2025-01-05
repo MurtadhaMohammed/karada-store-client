@@ -13,6 +13,8 @@ export const createOrder = async (order, isLogin, setIsOtp, setOtp, clearCart, r
         items: order.items,
         voucher_id: order.voucher_id,
         store_id: 1,
+        order_type: order.order_type,
+        installmentId: order.installmentId,
       },
     });
     if (response) {
