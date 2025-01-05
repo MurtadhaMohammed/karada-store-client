@@ -164,3 +164,32 @@ body {
     box-shadow: 0 2.5em 0 0;
   }
 }
+
+
+.offerBanner-bg {
+  background: linear-gradient(to right, #4f46e5, #8b5cf6);
+  background-size: 200% 200%;
+  animation: offerBannerBg 3s infinite;
+}
+@keyframes offerBannerBg {
+  0% {
+    background-position: 0% 50%; /* Start position */
+  }
+  25% {
+    background-position: 50% 100%; /* Move diagonally */
+  }
+  50% {
+    background-position: 100% 50%; /* Move horizontally */
+  }
+  75% {
+    background-position: 50% 0%; /* Move diagonally */
+  }
+  100% {
+    background-position: 0% 50%; /* Reset to start position */
+  }
+}
+
+
+.brand-active{
+  border-color: #8b5cf6;
+}

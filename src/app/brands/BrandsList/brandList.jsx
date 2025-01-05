@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function BrandList({ brands }) {
   return (
     <Container>
-      <div className="grid md:grid-cols-5 grid-cols-3 gap-4 mt-6 justify-center">
+      <div className="grid md:grid-cols-5 grid-cols-4  gap-3 mt-4 justify-center">
         {brands?.map((brand) => (
           <BrandCard key={brand.id} brand={brand} />
         ))}
@@ -22,17 +22,22 @@ function BrandCard({ brand }) {
       href={`/products/brand/${brand.id}`}
       className="cursor-pointer text-center"
     >
-      <div className="aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg">
+      <div className="aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg bg-white">
         <div className="relative w-full h-full">
           <Image
             src={`${IMAGE_URL}/${brand.img}`}
             alt={brand.name}
             fill
-            style={{ objectFit: "contain" }} 
+            style={{ objectFit: "contain" }}
           />
         </div>
       </div>
-      <div className="mt-2 font-bold text-sm text-black">{brand.name}</div>
+      <div
+        className="mt-1 text-[12px] text-black whitespace-nowrap overflow-hidden text-ellipsis"
+        style={{ direction: "ltr" }}
+      >
+        {brand.name}
+      </div>
     </Link>
   );
 }

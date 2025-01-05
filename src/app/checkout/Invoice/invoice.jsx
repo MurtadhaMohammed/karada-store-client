@@ -58,7 +58,7 @@ const Invoice = () => {
           {voucherDiscount > 0 && (
             <div className="flex items-center justify-between mt-[8px]">
               <p>قيمة الخصم</p>
-              <p>{voucherDiscount.toLocaleString()}- IQD</p>
+              <p className="text-red-500">{voucherDiscount.toLocaleString()}- IQD</p>
             </div>
           )}
           <div className="flex items-center justify-between mt-[8px]">

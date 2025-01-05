@@ -3,86 +3,14 @@ import Categories from "@/components/Categories/categories";
 import SliderBanner from "@/components/SliderBanner/sliderBanner";
 import ListBanner from "@/components/ListBanner/listBanner";
 import SingleBanner from "@/components/SingleBanner/singleBanner";
-import { URL } from "@/lib/api";
-import OrderCard from "./orders/OrderCard/orderCard";
-import Container from "@/components/UI/Container/container";
-import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 import OffersBanner from "@/components/offersBanner/offersBanner";
 import SingleBannerPure from "@/components/SingleBannerPure/singleBannerPure";
+import Link from "next/link";
 
-// import Image from "next/image";
+import { URL } from "@/lib/api";
 
-// const creaitveList = [
-//   {
-//     name: "Power Supply",
-//     description: "Deepcool DA700 700W Power Supply",
-//     store: "كرادة ستور",
-//     price: 305000,
-//     image: "/images/cam.png",
-//   },
-//   {
-//     name: "ريلمي G13",
-//     description: "ريلمي 13 برو بلس 5G - دبل سيم - 256/8 كيكابايت - اخضر",
-//     store: "كرادة ستور",
-//     price: 145000,
-//     image: "/images/card2.png",
-//   },
-//   {
-//     name: "ASUS Dual GeForce RTX",
-//     description: "ASUS Dual GeForce RTX™ 4070 OC Edition 12GB GDDR6X",
-//     store: "كرادة ستور",
-//     price: 120000,
-//     image: "/images/card3.png",
-//   },
-//   {
-//     name: "ipone 16 pro max",
-//     description: "512 GB,nutureal titanium",
-//     store: "كرادة ستور",
-//     price: 135000,
-//     image: "/images/card4.png",
-//   },
-// ];
-
-// const defaultList = [
-//   {
-//     name: "Power Supply",
-//     description: "Deepcool DA700 700W Power Supply",
-//     store: "كرادة ستور",
-//     price: 305000,
-//     image: "/images/1.png",
-//   },
-//   {
-//     name: "ريلمي G13",
-//     description: "ريلمي 13 برو بلس 5G - دبل سيم - 256/8 كيكابايت - اخضر",
-//     store: "كرادة ستور",
-//     price: 145000,
-//     image: "/images/2.png",
-//   },
-//   {
-//     name: "ريلمي G13",
-//     description: "ريلمي 13 برو بلس 5G - دبل سيم - 256/8 كيكابايت - اخضر",
-//     store: "كرادة ستور",
-//     price: 145000,
-//     image: "/images/4.png",
-//   },
-//   {
-//     name: "ASUS Dual GeForce RTX",
-//     description: "ASUS Dual GeForce RTX™ 4070 OC Edition 12GB GDDR6X",
-//     store: "كرادة ستور",
-//     price: 120000,
-//     image: "/images/3.png",
-//   },
-//   {
-//     name: "ipone 16 pro max",
-//     description: "512 GB,nutureal titanium",
-//     store: "كرادة ستور",
-//     price: 135000,
-//     image: "/images/iphone.png",
-//   },
-// ];
-
-async function getBanners() {
-  const res = await fetch(`${URL}/client/banner/all-banners`, {
+async function getViews() {
+  const res = await fetch(`${URL}/client/view/homeView`, {
     method: "GET",
     cache: "no-cache",
   });
@@ -91,73 +19,79 @@ async function getBanners() {
 }
 
 export default async function Home() {
-  const banners = await getBanners();
-  const renderBanner = (banner) => {
-    switch (banner.type) {
-      case "Slider":
-        return <SliderBanner key={banner.id} banners={banner} />;
-      case "SinglePure":
-        return <SingleBannerPure key={banner.id} banner={banner} />;
-      case "Single":
-        return <SingleBanner key={banner.id} banner={banner} />;
-      case "List":
-        return (
-          <ListBanner
-            bannerId={banner.id}
-            key={banner.id}
-            title={banner.title}
-            list={banner?.products || []}
-          />
+  try {
+    const viewData = await getViews();
+
+    // Extract the banners from the fetched data
+    const banners = viewData.banners;
+
+    // Function to render the correct banner component based on its type
+    const renderBanner = (banner) => {
+      const bannerContent = () => {
+        switch (banner.type) {
+          case "Slider":
+            return <SliderBanner banners={banner} />;
+          case "SinglePure":
+            return <SingleBannerPure banner={banner} />;
+          case "Single":
+            return <SingleBanner banner={banner} />;
+          case "List":
+            return (
+              <ListBanner
+                bannerId={banner.id}
+                title={banner.title}
+                list={banner?.products || []}
+              />
+            );
+          case "OfferBanner":
+            return (
+              <OffersBanner
+                bannerId={banner.id}
+                title={banner.title}
+                list={banner?.products || []}
+              />
+            );
+          case "Category":
+            return <Categories list={banner.categories} />;
+          case "CreativeBanner":
+            return (
+              <ListBanner
+                bannerId={banner.id}
+                title={banner.title}
+                list={banner?.products || []}
+                isCreative
+              />
+            );
+          default:
+            return null;
+        }
+      };
+    
+      // Wrap banner content in a link only if the link starts with "/view"
+      if (banner.link && banner.link.startsWith("/view")) {
+        return ( 
+          <Link key={banner.id} href={banner.link} passHref>
+            <a>{bannerContent()}</a>
+          </Link>
         );
-      case "OfferBanner":
-        return (
-          <OffersBanner
-            bannerId={banner.id}
-            key={banner.id}
-            title={banner.title}
-            list={banner?.products || []}
-          />
-        );
-      case "Category":
-        return <Categories key={banner.id} list={banner.categories} />;
-      case "CreativeBanner":
-        return (
-          <ListBanner
-            bannerId={banner.id}
-            key={banner.id}
-            title={banner.title}
-            list={banner?.products || []}
-            isCreative
-          />
-        );
-      default:
-        return null;
-    }
-  };
+      }
+    
+      // Render the banner content normally if no valid link is found
+      return <div key={banner.id}>{bannerContent()}</div>;
+    };    
 
-  return (
-    <div className="pb-[100px]">
-      <SearchBar />
-
-      {/* <div className="md:hidden">
-      <Container>
-        <OrderCard
-          order={{
-            id: 2,
-            orderStatus: "Processing",
-            images: ["", "", "", "", ""],
-          }}
-        />
-      </Container>
-      </div> */}
-
-      {/* <SliderBanner />
-      <Categories />
-      <ListBanner title="احدث المنتجات" list={creaitveList} isCreative />
-      <ListBanner title="كافة مستلزمات الكمبيوتر " list={defaultList} />
-      <SingleBanner /> */}
-
-      {banners?.map((banner) => renderBanner(banner))}
-    </div>
-  );
+    return (
+      <div className="pb-[100px]">
+        <SearchBar />
+        {banners && banners.length > 0 ? (
+          banners.map((banner) => renderBanner(banner))
+        ) : (
+          <div>No banners available</div>
+        )}
+      </div>
+    );
+  } catch (error) {
+    console.error("Error fetching view data:", error);
+    return <div>Failed to load content</div>;
+  }
 }

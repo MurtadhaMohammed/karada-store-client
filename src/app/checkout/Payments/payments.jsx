@@ -8,28 +8,40 @@ import {
   useBottomSheetModal,
 } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import { InstallmentModal } from "./InstallmentModal/InstallmentModal";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useAppStore } from "@/lib/store";
+
 
 const Payments = () => {
   const [selected, setSelected] = useState("cash");
   const [cardInfo, setCardInfo] = useState({});
   const { openModal, closeModal } = useBottomSheetModal();
+  const {isInstallment, setInstallment} = useAppStore();
+  
+  const handleCashClick = () => {
+    setInstallment(false);
+    setSelected("cash");
+  };
+  const handleInstallmentClick = () => {
+    setInstallment(true);
+    setSelected("installment");
+  };
 
   const payments = [
     {
       value: "cash",
       label: "الدفع عند الاستلام",
       disabled: false,
+      onClick: handleCashClick,
     },
-    // {
-    //   value: "master",
-    //   label: "ماستر او فيزا كارد",
-    //   disabled: true,
-    // },
-    // {
-    //   value: "installment",
-    //   label: "شراء بالتقسيط",
-    //   disabled: true,
-    // },
+    {
+      value: "installment",
+      label: "شراء بالتقسيط",
+      disabled: false,
+      onClick: handleInstallmentClick,
+    },
   ];
 
   return (
@@ -45,11 +57,10 @@ const Payments = () => {
             onClick={() => {
               if (el.disabled) return;
               if (el?.value === "master") openModal("paymentModal");
-              else if (el?.value === "installment")
-                openModal("installmentModal");
-              else {
-                setCardInfo({});
-                setSelected("cash");
+              else if (el?.value === "installment") {
+                el.onClick();
+              } else if (el?.value === "cash") {
+                el.onClick();
               }
             }}
             className={`flex items-start justify-between rounded-[8px] p-[12px] mt-[8px] active:opacity-55 ${

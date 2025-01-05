@@ -92,6 +92,12 @@ export const useCartStore = create((set, get) => ({
     );
   },
 
+  clearVoucher: () => {
+    set({
+      voucher: null,
+    });
+  } ,
+
   setVoucher: (voucher) => {
     set({ voucher });
     // Optionally, recalculate totalPrice here if needed

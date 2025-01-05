@@ -5,14 +5,15 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { TbTruckDelivery } from "react-icons/tb";
+import { TbTruckDelivery , TbShare2 , TbHeart,TbHeartFilled} from "react-icons/tb";
 import { IMAGE_URL } from "@/lib/api";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useCartStore } from "@/lib/cartStore";
+import { useAppStore } from "@/lib/store";
 import ProductCtaWeb from "../ProductCTAWeb/productCtaWeb";
 import ImageModal from "@/components/ImageModal/imageModal";
-
+import IconButton from "@/components/UI/IconButton/iconButton";
 const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
     <button
@@ -39,6 +40,33 @@ const OptionTag = ({ name, color, active = false, onClick }) => {
   );
 };
 
+const handleShare = async () => {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "Check out this page",
+        text: "I found this interesting:",
+        url: window.location.href,
+      });
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  } else {
+    // Fallback for browsers that do not support the Web Share API
+    // alert(
+    //   "Sharing is not supported in this browser. Copying the link instead."
+    // );
+    // navigator.clipboard
+    //   .writeText(window.location.href)
+    //   .then(() => {
+    //     alert("Link copied to clipboard!");
+    //   })
+    //   .catch((err) => {
+    //     console.error("Failed to copy: ", err);
+    //   });
+  }
+};
+
 const ProductInfoWeb = ({ product }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(
@@ -48,6 +76,7 @@ const ProductInfoWeb = ({ product }) => {
   const [price, setPrice] = useState(product?.price);
   const [endPrice, setEndPrice] = useState(product?.endPrice);
   const [modalImageIndex, setModalImageIndex] = useState(0);
+  const { toggleFav, favorites } = useAppStore();
 
   useEffect(() => {
     setActiveOption(product?.options?.[0] || null);
@@ -139,7 +168,34 @@ const ProductInfoWeb = ({ product }) => {
           </section>
 
           <section className="border-r border-r-[#eee] pr-8">
-            <h4 className="text-[18px] mt-[16px]">{product?.name}</h4>
+            <div className="flex items-center gap-2 mt-[16px] pb-4">
+            <IconButton
+                  rounded={"8px"}
+                  className={`p-2  rounded-[8px] border border-[#eee] shadow-lg shadow-[#ff000041] ${
+                    favorites?.includes(product?.id)
+                      ? "bg-gradient-to-r from-[#ff0000] to-[#fb797b]"
+                      : "bg-[#fff]"
+                  }`}
+                  icon={
+                    favorites?.includes(product?.id) ? (
+                      <TbHeartFilled className="text-[22px] text-[#fff]" />
+                    ) : (
+                      <TbHeart className="text-[22px]" />
+                    )
+                  }
+                  onClick={() => toggleFav(product?.id)}
+                />
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-2 p-2 bg-[#fff] rounded-[8px] border border-[#eee] hover:bg-gray-100 transition"
+              >
+                <TbShare2 className="text-[22px]" />
+                <span className="text-[14px] text-gray-700 font-bold">
+                  شارك المنتج
+                </span>
+              </button>
+            </div>
+            <h4 className="text-[18px]">{product?.name}</h4>
             {price === endPrice ? (
               <b className="text-[22px] block">
                 {Number(endPrice).toLocaleString("en")}{" "}

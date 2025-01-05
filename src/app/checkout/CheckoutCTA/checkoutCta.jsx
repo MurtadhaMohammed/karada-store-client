@@ -1,33 +1,43 @@
-// CheckoutCTA.jsx
 "use client";
 import Container from "@/components/UI/Container/container";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { GiConfirmed } from "react-icons/gi";
 import Ripples from "react-ripples";
-import { apiCall } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
-import { useMemo, useRef, useState, useEffect } from "react";
-import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
+import { useMemo, useState, useEffect } from "react";
+import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
+import { InstallmentModal } from "../Payments/InstallmentModal/InstallmentModal";
+import { OtpModal } from "../Payments/OtpModal/OtpModal";
+import { createOrder } from "../utils/orderUtils";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { userInfo,setIsOtp,setOtp,isLogin } = useAppStore();
+  const { userInfo, setIsOtp, setOtp, isLogin, isPhoneValidated } =
+    useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
-
+  const { openModal, closeModal } = useBottomSheetModal();
+  const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState(userInfo?.address || "");
   const [phone, setPhone] = useState(userInfo?.phone || "");
   const [name, setName] = useState(userInfo?.name || "");
+  const { isInstallment } = useAppStore();
+  const [cardInfo, setCardInfo] = useState(null);
+  const [sessionId, setSessionId] = useState(null);
+  const [order_type, setOrderType] = useState();
+  const { installmentId, setInstallmentId } = useAppStore();
 
   useEffect(() => {
-    setAddress(address || "");
-    setPhone(phone || "");
-    setName(name || "");
+    if (userInfo) {
+      setAddress(address || "");
+      setPhone(phone || "");
+      setName(name || "");
+    }
   }, [userInfo]);
-  
+
   const items = useMemo(() => {
     return cart?.map((item) => ({
       id: item.product.id,
@@ -36,6 +46,7 @@ const CheckoutCTA = () => {
       l1: item.product.l1,
     }));
   }, [cart]);
+
   const order = {
     user_id: userInfo.id,
     user_name: name,
@@ -44,45 +55,35 @@ const CheckoutCTA = () => {
     items,
     voucher_id: voucher ? voucher.id : null,
     store_id: 1,
+    order_type,
+    installmentId,
   };
 
   const handleOrderCreation = async () => {
-    try {
-      setLoading(true);
-      const response = await apiCall({
-        pathname: `/client/order/create-order`,
-        method: "POST",
-        data: order,
-      });
-      if (response) {
-        if(response.otp){
-          setIsOtp(true);
-          setOtp(parseInt(response?.otp));
-        }
-        clearCart();
-        if (response.otp&&!isLogin) {
-          router.replace("/login");
-        } else {
-          router.replace("/orders");
-        }
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error creating order:", error);
+    setLoading(true);
+    await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router);
+    setLoading(false);
+  };
+
+  const handleButtonClick = () => {
+    console.log(installmentId);
+    if (isInstallment === true) {
+      setOrderType("Installment");
+      openModal("installmentModal");
+    } else {
+      handleOrderCreation();
     }
   };
 
   const isDataProvided = useMemo(() => {
-    if (
-      name?.trim() &&
-      phone?.trim() &&
-      validateIraqiPhoneNumber(phone) &&
-      address?.trim() &&
+    return (
+      name.trim() &&
+      phone.trim() &&
+      isPhoneValidated &&
+      address.trim() &&
       !loading
-    )
-      return true;
-    else false;
-  }, [name, phone, address, loading]);
+    );
+  }, [name, phone, address, isPhoneValidated, loading]);
 
   return (
     <div
@@ -108,11 +109,11 @@ const CheckoutCTA = () => {
                   ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff]"
                   : "bg-[#f6f6f6] border border-[#eee] text-[#ccc] cursor-not-allowed"
               }`}
-              onClick={handleOrderCreation}
-              disabled={!isDataProvided}
+              onClick={handleButtonClick}
+              disabled={loading}
             >
               {loading ? (
-                <div className="btn-loading"></div>
+                <div className="btn-loading text-black"></div>
               ) : (
                 <>
                   <span className="ml-[8px] font-bold text-[18px]">
@@ -124,12 +125,34 @@ const CheckoutCTA = () => {
             </button>
           </Ripples>
         </div>
-        {/* {!isDataProvided && (
-          <p className="mt-2 text-red-600 text-center font-semibold">
+        {isDataProvided && (
+          <p className="mt-2 text-red-600 text-end font-semibold">
             يرجى ملء جميع المعلومات المطلوبة
           </p>
-        )} */}
+        )}
       </Container>
+      <InstallmentModal
+        onFinish={(value) => {
+          setCardInfo(value);
+          setSessionId(value.sessionId);
+        }}
+      />
+      <OtpModal
+        sessionId={sessionId}
+        cardNumber={cardInfo?.number}
+        onFinish={() => {
+          setCardInfo(null);
+          setSessionId(null);
+          setInstallmentId(null);
+          closeModal();
+        }}
+        order={order}
+        isLogin={isLogin}
+        setIsOtp={setIsOtp}
+        setOtp={setOtp}
+        clearCart={clearCart}
+        router={router}
+      />
     </div>
   );
 };
