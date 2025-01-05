@@ -17,12 +17,12 @@ export const useBottomSheetModal = () => {
     },
     [searchParams]
   );
-
+  
   const openModal = (name) => {
     router.push(pathname + "?" + createQueryString(name, "true"));
   };
-
-  const closeModal = () => {
+  
+  const closeModal = (name) => {
     router.back();
   };
 
