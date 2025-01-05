@@ -203,18 +203,21 @@ const SearchBar = () => {
                   </div>
                 )}
             </div>
-            <div className="flex items-center justify-between mt-4 pl-1 pr-1">
-              <Link href={pathname + "?filterModal=true"}>
-                <button className="flex gap-2 items-center text-[16px] text-[#0000ff]">
-                  <IoFilter />
-                  <span>تصفية</span>
-                </button>
-              </Link>
-              <p className="text-[#a5a5a5] text-[16px]">
-                نتائج البحث
-                <span className="font-bold mr-1">1232</span>
-              </p>
-            </div>
+
+            {isSearch && (
+              <div className="flex items-center justify-between mt-4 pl-1 pr-1">
+                <Link href={pathname + "?filterModal=true"}>
+                  <button className="flex gap-2 items-center text-[16px] text-[#0000ff]">
+                    <IoFilter />
+                    <span>تصفية</span>
+                  </button>
+                </Link>
+                <p className="text-[#a5a5a5] text-[16px]">
+                  نتائج البحث
+                  <span className="font-bold mr-1">1232</span>
+                </p>
+              </div>
+            )}
           </Container>
         </div>
       </Link>
