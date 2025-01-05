@@ -49,9 +49,9 @@ const CheckoutCTA = () => {
 
   const order = {
     user_id: userInfo.id,
-    user_name: name,
-    phone: phone,
-    address: address,
+    user_name: userInfo.name,
+    phone: userInfo.phone,
+    address: userInfo.address,
     items,
     voucher_id: voucher ? voucher.id : null,
     store_id: 1,
@@ -77,14 +77,15 @@ const CheckoutCTA = () => {
 
   const isDataProvided = useMemo(() => {
     return (
-      name.trim() &&
-      phone.trim() &&
+      userInfo.name.trim() !== "" &&
+      userInfo.phone.trim() !== "" &&
       isPhoneValidated &&
-      address.trim() &&
+      userInfo.address.trim() !== "" &&
       !loading
     );
-  }, [name, phone, address, isPhoneValidated, loading]);
+  }, [userInfo.name, userInfo.phone, userInfo.address, isPhoneValidated, loading]);
 
+  console.log("isDataProvidedssss", isDataProvided, userInfo);
   return (
     <div
       className="pointer-events-none fixed z-10 w-full text-end"
@@ -125,7 +126,7 @@ const CheckoutCTA = () => {
             </button>
           </Ripples>
         </div>
-        {isDataProvided && (
+        {!isDataProvided && (
           <p className="mt-2 text-red-600 text-end font-semibold">
             يرجى ملء جميع المعلومات المطلوبة
           </p>
