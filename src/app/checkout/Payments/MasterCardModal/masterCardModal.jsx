@@ -11,7 +11,7 @@ import { BsCreditCard2Front } from "react-icons/bs";
 import Ripples from "react-ripples";
 
 export const MasterCardModal = ({ onFinish }) => {
-  const { colseModal } = useBottomSheetModal();
+  const { closeModal } = useBottomSheetModal();
   return (
     <BottomSheetModal
       title={
@@ -21,7 +21,7 @@ export const MasterCardModal = ({ onFinish }) => {
       }
       detent={"content-height"}
       name="paymentModal"
-      onClose={colseModal}
+      onClose={closeModal}
       footer={
         <Container>
           <div
