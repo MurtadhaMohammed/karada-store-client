@@ -77,10 +77,10 @@ const CheckoutCTA = () => {
 
   const isDataProvided = useMemo(() => {
     return (
-      userInfo.name.trim() !== "" &&
-      userInfo.phone.trim() !== "" &&
+      userInfo.name !== "" &&
+      userInfo.phone !== "" &&
       isPhoneValidated &&
-      userInfo.address.trim() !== "" &&
+      userInfo.address !== "" &&
       !loading
     );
   }, [userInfo.name, userInfo.phone, userInfo.address, isPhoneValidated, loading]);
