@@ -63,7 +63,7 @@ const Payments = () => {
                 el.onClick();
               }
             }}
-            className={`flex items-start justify-between rounded-[8px] p-[12px] mt-[8px] active:opacity-55 ${
+            className={`flex items-start justify-between rounded-[8px] p-[12px] mt-[8px] active:opacity-55 cursor-pointer ${
               el?.value === selected
                 ? "border border-violet-600"
                 : "border border-[#eee]"
@@ -83,7 +83,7 @@ const Payments = () => {
               } rounded-full`}
             >
               <div
-                className={`w-[12px] h-[12px] ${
+                className={`w-[11px] h-[11px] ${
                   el?.value === selected ? "bg-violet-600" : "bg-[#fff]"
                 } rounded-full`}
               ></div>
