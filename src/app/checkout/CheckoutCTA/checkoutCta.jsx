@@ -5,7 +5,7 @@ import { GiConfirmed } from "react-icons/gi";
 import Ripples from "react-ripples";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, use } from "react";
 import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import { InstallmentModal } from "../Payments/InstallmentModal/InstallmentModal";
 import { OtpModal } from "../Payments/OtpModal/OtpModal";
@@ -14,29 +14,37 @@ import { createOrder } from "../utils/orderUtils";
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { userInfo, setIsOtp, setOtp, isLogin, isPhoneValidated } =
-    useAppStore();
+  const {
+    userCheckoutInfo,
+    userInfo,
+    setIsOtp,
+    setOtp,
+    isLogin,
+    isPhoneValidated,
+  } = useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
   const { openModal, closeModal } = useBottomSheetModal();
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
-  const [address, setAddress] = useState(userInfo?.address || "");
-  const [phone, setPhone] = useState(userInfo?.phone || "");
-  const [name, setName] = useState(userInfo?.name || "");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
   const { isInstallment } = useAppStore();
   const [cardInfo, setCardInfo] = useState(null);
   const [sessionId, setSessionId] = useState(null);
   const [order_type, setOrderType] = useState();
+  const [isDataProvided, setIsDataProvided] = useState(false);
+  const [order, setOrder] = useState(null);
   const { installmentId, setInstallmentId } = useAppStore();
 
   useEffect(() => {
-    if (userInfo) {
-      setAddress(address || "");
-      setPhone(phone || "");
-      setName(name || "");
+    if (userCheckoutInfo) {
+      setAddress(userCheckoutInfo?.address);
+      setPhone(userCheckoutInfo?.phone);
+      setName(userCheckoutInfo?.name);
     }
-  }, [userInfo]);
+  }, [userCheckoutInfo]);
 
   const items = useMemo(() => {
     return cart?.map((item) => ({
@@ -47,17 +55,23 @@ const CheckoutCTA = () => {
     }));
   }, [cart]);
 
-  const order = {
-    user_id: userInfo.id,
-    user_name: name,
-    phone: phone,
-    address: address,
-    items,
-    voucher_id: voucher ? voucher.id : null,
-    store_id: 1,
-    order_type,
-    installmentId,
-  };
+  useEffect(() => {
+    setOrder({
+      user_id: userInfo.id,
+      user_name: userCheckoutInfo.name,
+      phone: userCheckoutInfo.phone,
+      address: userCheckoutInfo.address,
+      items,
+      voucher_id: voucher ? voucher.id : null,
+      store_id: 1,
+      order_type,
+      installmentId,
+    });
+  }, [userInfo, userCheckoutInfo, items, voucher, order_type, installmentId]);
+
+  useEffect(() => {
+    console.log(order);
+  }, [order]);
 
   const handleOrderCreation = async () => {
     setLoading(true);
@@ -66,7 +80,6 @@ const CheckoutCTA = () => {
   };
 
   const handleButtonClick = () => {
-    console.log(installmentId);
     if (isInstallment === true) {
       setOrderType("Installment");
       openModal("installmentModal");
@@ -75,15 +88,11 @@ const CheckoutCTA = () => {
     }
   };
 
-  const isDataProvided = useMemo(() => {
-    return (
-      name.trim() &&
-      phone.trim() &&
-      isPhoneValidated &&
-      address.trim() &&
-      !loading
+  useEffect(() => {
+    setIsDataProvided(
+      (name !== "" && phone !== "" && address !== "") && isPhoneValidated
     );
-  }, [name, phone, address, isPhoneValidated, loading]);
+  }, [name, phone, address, isPhoneValidated]);
 
   return (
     <div
@@ -110,7 +119,7 @@ const CheckoutCTA = () => {
                   : "bg-[#f6f6f6] border border-[#eee] text-[#ccc] cursor-not-allowed"
               }`}
               onClick={handleButtonClick}
-              disabled={loading}
+              disabled={!isDataProvided && loading}
             >
               {loading ? (
                 <div className="btn-loading text-black"></div>
@@ -125,7 +134,7 @@ const CheckoutCTA = () => {
             </button>
           </Ripples>
         </div>
-        {isDataProvided && (
+        {!isDataProvided && (
           <p className="mt-2 text-red-600 text-end font-semibold">
             يرجى ملء جميع المعلومات المطلوبة
           </p>
