@@ -49,7 +49,9 @@ const CartItem = ({ item }) => {
     return image;
   };
 
-  const displayPrice = item?.product?.l1 ? item?.product?.l1?.price : item?.product?.price;
+  const displayPrice = item?.product?.l1
+    ? item?.product?.l1?.price
+    : item?.product?.price;
 
   return (
     <div className="border-b border-b-[#eee] pt-[24px] pb-[16px] bg-white">
@@ -80,7 +82,7 @@ const CartItem = ({ item }) => {
                     {Number(item.product.price).toLocaleString("en")}
                   </p>
                   <b className="text-[16px]">
-                    {Number(displayPrice).toLocaleString("en")}{" "}
+                    {Number(item.product.endPrice).toLocaleString("en")}{" "}
                     <span className="text-[14px]">IQD</span>
                   </b>
                 </div>
