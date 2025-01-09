@@ -7,7 +7,7 @@ import {
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { MdSecurityUpdateGood } from "react-icons/md";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Ripples from "react-ripples";
 import { apiCall } from "@/lib/api";
 import { createOrder } from "../../utils/orderUtils";
@@ -30,18 +30,13 @@ export const OtpModal = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { setInstallmentId } = useAppStore();
+  const { setInstallment } = useAppStore();
 
-  const setInstallmentIdBeforeOrder = () => {
-    if (sessionId) {
-      setInstallmentId(sessionId);
+  const handleInstallmentSetup = (installmentId) => {
+    if (installmentId) {
+      createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router,installmentId);
     }
   };
-
-  useEffect(() => {
-    if (sessionId) {
-      setInstallmentId(sessionId);
-    }
-  }, [sessionId, setInstallmentId]);
 
   const handleInstallmentOtp = async () => {
     setLoading(true);
@@ -58,9 +53,8 @@ export const OtpModal = ({
       });
 
       if (result.succeeded === true) {
-        setInstallmentIdBeforeOrder();
-        await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router);
-        closeModal("OTPModal");
+        handleInstallmentSetup(result.data?.installmentId);
+        setInstallment(false);
         onFinish();
       } else {
         setErrorMessage(result.message || "حدث خطأ أثناء التحقق من الرمز.");

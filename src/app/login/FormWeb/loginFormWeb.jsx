@@ -15,10 +15,20 @@ const LoginFormWeb = () => {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { setIsLogin, isLogin, updateUserInfo, otp, setOtp, isOtp, setIsOtp } = useAppStore();
-  const handleChange = (otp) => setOtp(otp);
 
+  const searchParams = useSearchParams();
+  const {
+    setIsLogin,
+    isLogin,
+    updateUserInfo,
+    otp,
+    setOtp,
+    isOtp,
+    setIsOtp,
+    userInfo,
+  } = useAppStore();
+  const handleChange = (otp) => setOtp(otp);
+  const globalPhone = userInfo?.phone;
   const handleLogin = async () => {
     setLoading(true);
     const resp = await apiCall({
@@ -31,7 +41,7 @@ const LoginFormWeb = () => {
     });
 
     setLoading(false);
-    if (resp?.message=="Login Success") {
+    if (resp?.message == "Login Success") {
       setIsOtp(true);
       router.replace(`/login?phone=${phone}`);
     }
@@ -45,7 +55,7 @@ const LoginFormWeb = () => {
       method: "POST",
       data: {
         otp,
-        phone: phoneFromParams,
+        phone: phoneFromParams || globalPhone,
       },
     });
     setLoading(false);

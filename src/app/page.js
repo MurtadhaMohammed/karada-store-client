@@ -22,10 +22,8 @@ export default async function Home() {
   try {
     const viewData = await getViews();
 
-    // Extract the banners from the fetched data
     const banners = viewData.banners;
 
-    // Function to render the correct banner component based on its type
     const renderBanner = (banner) => {
       const bannerContent = () => {
         switch (banner.type) {

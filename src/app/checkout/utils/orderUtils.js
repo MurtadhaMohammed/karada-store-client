@@ -1,6 +1,6 @@
 import { apiCall } from "@/lib/api";
 
-export const createOrder = async (order, isLogin, setIsOtp, setOtp, clearCart, router) => {
+export const createOrder = async (order, isLogin, setIsOtp, setOtp, clearCart, router,installmentId) => {
   try {
     const response = await apiCall({
       pathname: `/client/order/create-order`,
@@ -14,16 +14,14 @@ export const createOrder = async (order, isLogin, setIsOtp, setOtp, clearCart, r
         voucher_id: order.voucher_id,
         store_id: 1,
         order_type: order.order_type,
-        installmentId: order.installmentId,
+        installmentId: installmentId,
       },
     });
     if (response) {
-      if (response.otp) {
-        setIsOtp(true);
-        setOtp(parseInt(response?.otp));
-      }
       clearCart();
-      if (response.otp && !isLogin) {
+      if (response?.status=="Not Logged In" && !isLogin) {
+        setIsOtp(true);
+        setOtp('');
         router.replace("/login");
       } else {
         router.replace("/orders");

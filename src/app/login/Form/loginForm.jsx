@@ -7,19 +7,28 @@ import Input from "@/components/UI/Input/input";
 import { OtpInput } from "reactjs-otp-input";
 import { useEffect, useState } from "react";
 import { apiCall, URL } from "@/lib/api";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
 
 const LoginForm = () => {
-
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { setIsLogin, isLogin , updateUserInfo, otp, isOtp,setOtp,setIsOtp} = useAppStore();
 
+  const searchParams = useSearchParams();
+  const {
+    setIsLogin,
+    isLogin,
+    updateUserInfo,
+    otp,
+    setOtp,
+    isOtp,
+    setIsOtp,
+    userInfo,
+  } = useAppStore();
   const handleChange = (otp) => setOtp(otp);
-
+  const globalPhone = userInfo?.phone;
   const handleLogin = async () => {
     setLoading(true);
     const resp = await apiCall({
@@ -32,8 +41,7 @@ const LoginForm = () => {
     });
 
     setLoading(false);
-    if (resp?.otp) {
-      setOtp(parseInt(resp?.otp));
+    if (resp?.message == "Login Success") {
       setIsOtp(true);
       router.replace(`/login?phone=${phone}`);
     }
@@ -41,25 +49,30 @@ const LoginForm = () => {
 
   const handleVerify = async () => {
     setLoading(true);
-    const phoneFromParams = new URLSearchParams(window.location.search).get("phone");
+    const phoneFromParams = searchParams.get("phone");
     const resp = await apiCall({
       pathname: `/client/auth/verify`,
       method: "POST",
       data: {
         otp,
-        phone: phoneFromParams || userInfo.phone,
+        phone: phoneFromParams || globalPhone,
       },
     });
     setLoading(false);
     if (resp.accessToken) {
       localStorage.setItem("karada-token", resp.accessToken);
       localStorage.setItem("karada-refreshToken", resp.refreshToken);
-      localStorage.setItem("karada-account-name", userInfo?.name);
-      updateUserInfo(resp.accessToken)
+      updateUserInfo(resp.accessToken);
       router.replace("/");
       setIsLogin(true);
     }
   };
+  useEffect(() => {
+    const phoneFromParams = searchParams.get("phone");
+    if (phoneFromParams) {
+      setPhone(phoneFromParams);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
