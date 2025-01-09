@@ -4,45 +4,21 @@ import Input from "@/components/UI/Input/input";
 import { GrLocation } from "react-icons/gr";
 import { useAppStore } from "@/lib/store";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
-import { jwtDecode } from "jwt-decode";
-import { set } from "nprogress";
 
 const Address = () => {
-  const { userInfo, userCheckoutInfo, setIsPhoneValidated, setUserCheckoutInfo } =
-    useAppStore();
+  const { userInfo, setUserInfo, setIsPhoneValidated } = useAppStore();
   const [address, setAddress] = useState(userInfo?.address || "");
   const [phone, setPhone] = useState(userInfo?.phone || "");
   const [name, setName] = useState(userInfo?.name || "");
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState(userInfo?.notes || "");
 
   const [phoneError, setPhoneError] = useState(null);
   const [addressError, setAddressError] = useState(null);
   const [nameError, setNameError] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("karada-token");
-    if (token) {
-      const orderUserInfo = jwtDecode(token);
-      setAddress(orderUserInfo.address || "");
-      setPhone(orderUserInfo.phone || "");
-      setName(orderUserInfo.name || "");
-    }
-    setUserCheckoutInfo({
-      address,
-      phone,
-      name,
-      notes: "",
-    });
-  }, []);
-
-  useEffect(() => {
-    setUserCheckoutInfo({
-      address,
-      phone,
-      name,
-      notes,
-    });
-  }, [address, phone, name, notes]);
+    setUserInfo({ address, phone, name, notes });
+  }, [address, phone, name, notes, setUserInfo]);
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
