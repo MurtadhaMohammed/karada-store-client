@@ -9,12 +9,16 @@ import { BiSupport } from "react-icons/bi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import DotAlert from "../UI/DotAlert/dotAlert";
+import Button from "../UI/Button/button";
+import Modal from "../Modal/modal";
+import { useState, useEffect } from "react";
+import { apiCall } from "@/lib/api";
 
-const MenuItem = ({ isDot = false, title, icon, onClick = () => {} , isLink= false}) => {
+const MenuItem = ({ isDot = false, title, icon, onClick = () => {}, isLink = false }) => {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center mb-[28px] active:scale-[0.96] active:opacity-60 transition-all ${isLink ? "app-link" :""}`}
+      className={`flex items-center mb-[28px] active:scale-[0.96] active:opacity-60 transition-all ${isLink ? "app-link" : ""}`}
     >
       {icon}
       <div className="relative">
@@ -29,12 +33,45 @@ const SideMenu = () => {
   const { isMenu, setIsMenu, isLogin, setIsLogin, userInfo, updateUserInfo } =
     useAppStore();
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [platform, setPlatform] = useState(null);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const platformQuery = queryParams.get("platform");
+    setPlatform(platformQuery);  
+
+    console.log(platform)
+  }, []);
+  
 
   const logout = () => {
     localStorage.removeItem("karada-token");
     localStorage.removeItem("karada-refreshToken");
     updateUserInfo();
     setIsLogin(false);
+  };
+
+  const deleteAccount = async () => {
+    setLoading(true);
+    try {
+      const resp = await apiCall({
+        pathname: `/client/auth/deleteAccount`,
+        method: "DELETE",
+        data: {
+          phone: userInfo.phone,
+        },
+      });
+      if (resp?.success) {
+        console.log(resp?.success);
+        setLoading(false);
+        setIsModalOpen(false);
+        logout();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -94,7 +131,7 @@ const SideMenu = () => {
           <MenuItem
             title={"التواصل مع الدعم"}
             icon={<BiSupport className="text-[24px]" />}
-            onClick={()=>{
+            onClick={() => {
               setIsMenu(false);
               router.push("/contactUs");
             }}
@@ -112,10 +149,37 @@ const SideMenu = () => {
           )}
         </div>
       </section>
+      <div className="flex p-8 absolute bottom-4 items-center justify-center w-full">
+        {isLogin && (platform === "ios" || platform === "android") && (
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className="text-[#ff0000] font-semiBold hover:bg-[#ffebee] transition-all border-[#ff0000] border w-full"
+          >
+            حذف الحساب
+          </Button>
+        )}
+      </div>
+
+      {isModalOpen && (
+        <Modal
+          title="تأكيد الحذف"
+          description="هل أنت متأكد أنك تريد حذف الحساب؟ "
+          primaryButton={{
+            text: "حذف",
+            onClick: deleteAccount,
+          }}
+          secondaryButton={{
+            text: "إلغاء",
+            onClick: () => setIsModalOpen(false),
+          }}
+          isLoading={loading}
+        />
+      )}
+
       <p className="absolute bottom-4 text-center left-0 right-0 text-[14px] text-[#a5a5a5]">
         Pawered by{" "}
         <a className="text-[#0000ff]" href="puretike.com" target="_blank">
-          PureTike
+          PureTik
         </a>
       </p>
     </Drawer>
