@@ -57,11 +57,6 @@ export const apiCall = async ({
       }
       localStorage.setItem("karada-token", token);
     }
-    let { id, name, phone, address } = jwtDecode(token);
-    localStorage.setItem("karada-account-id", id);
-    localStorage.setItem("karada-account-name", name);
-    localStorage.setItem("karada-account-phone", phone);
-    localStorage.setItem("karada-account-address", address);
 
     let body = undefined;
     const myHeaders = new Headers();
