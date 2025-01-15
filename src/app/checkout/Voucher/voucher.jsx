@@ -1,26 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/components/UI/Button/button";
 import { HiOutlineTicket } from "react-icons/hi";
 import { CiCircleCheck } from "react-icons/ci";
 import { apiCall } from "@/lib/api";
 import { useAppStore } from "@/lib/store";
 import { useCartStore } from "@/lib/cartStore";
+import { set } from "nprogress";
 
 const Voucher = () => {
   const [voucherCode, setVoucherCode] = useState("");
   const [error, setError] = useState("");
   const { userInfo } = useAppStore();
   const setVoucher = useCartStore((state) => state.setVoucher);
+  const cart = useCartStore((state) => state.cart);
   const clearVoucher = useCartStore((state) => state.clearVoucher);
   const getSubTotal = useCartStore((state) => state.getSubTotal);
   const getTotal = useCartStore((state) => state.getTotal);
   const [voucherApplied, setVoucherApplied] = useState(false);
   const [voucherDetails, setVoucherDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const applyVoucher = async () => {
     try {
+      setLoading(true);
       const response = await apiCall({
         pathname: "/client/voucher/check-voucher",
         method: "POST",
@@ -30,39 +34,52 @@ const Voucher = () => {
         },
       });
 
+      if (response.error) {
+        setError("القسيمة تعمل على اول طلب فقــــــط");
+        setLoading(false);
+        return;
+      }
+
+      if (
+        cart.some((item) => item.product.discount !== null) &&
+        !response.voucher.apply_over_discount
+      ) {
+        setLoading(false);
+        setError("لا يمكن تطبيق هذه القسيمة على سلة تحتوي على تخفيض.");
+        return;
+      }
       if (response && response.voucher) {
         const voucher = response.voucher;
         const subTotal = getSubTotal();
 
         if (subTotal < voucher.min_amount) {
+          setLoading(false);
           setError(
-            `The minimum amount for this voucher is ${voucher.min_amount.toLocaleString()} IQD.`
+            `الحد الأدنى لهذه القسيمة هو ${voucher.min_amount.toLocaleString()} دينار عراقي.`
           );
           return;
         }
 
-        let discount = 0;
-        if (voucher.type === "%") {
-          discount = (voucher.value / 100) * subTotal;
-        } else {
-          discount = voucher.value;
-        }
-
+        let discount =
+          voucher.type === "%"
+            ? (voucher.value / 100) * subTotal
+            : voucher.value;
         if (voucher.max_amount && discount > voucher.max_amount) {
           discount = voucher.max_amount;
-        } else {
-          setError("");
         }
 
+        setError("");
+        setLoading(false);
         setVoucher(voucher);
         setVoucherDetails(voucher);
         setVoucherApplied(true);
       } else {
-        setError("Invalid voucher code");
+        setError("هذه القسيمة غير صالحة.");
       }
     } catch (err) {
       console.error("Error applying voucher:", err);
-      setError("Error applying voucher");
+      setLoading(false);
+      setError("هنالك مشكلة في تطبيق القسيمة.");
     }
   };
 
@@ -93,7 +110,11 @@ const Voucher = () => {
               />
               <Button
                 onClick={applyVoucher}
-                className="bg-gradient-to-r from-indigo-600 to-violet-600 text-white w-20 flex items-center justify-center"
+                className={`${
+                  loading
+                    ? "animate-pulse bg-gradient-to-r from-indigo-600 to-violet-600 text-white w-20  flex items-center justify-center"
+                    : "bg-gradient-to-r from-indigo-600 to-violet-600 text-white w-20  flex items-center justify-center"
+                }`}
               >
                 <span className="text-sm">تطبيق</span>
               </Button>
