@@ -14,8 +14,8 @@ import {
   TbShare2,
   TbTruckDelivery,
 } from "react-icons/tb";
-// import { TiStarFullOutline } from "react-icons/ti";
-// import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+import { TiStarFullOutline } from "react-icons/ti";
+import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { IMAGE_URL } from "@/lib/api";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -271,9 +271,9 @@ const ProductInfo = ({ product }) => {
         <p className="text-[14px] text-gray-600 mt-[8px]">
           {product?.shortDescription}
         </p>
-        {/* <div className="mt-[16px]">
-          <InstallmentBanner />
-        </div> */}
+        <div className="mt-[16px]">
+          <InstallmentBanner price={endPrice} />
+        </div>
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px] text-[#444]">

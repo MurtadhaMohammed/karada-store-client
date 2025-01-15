@@ -13,6 +13,7 @@ import RelatedList from "../RelatedList/relatedList";
 // import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
+import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -103,8 +104,8 @@ const CartItem = ({ item }) => {
 
 const CartList = () => {
   const router = useRouter();
-  const { cart, getItemsTotal } = useCartStore();
-
+  const { cart, getItemsTotal, getTotal } = useCartStore();
+const total = getTotal();
   useEffect(() => {
     router.prefetch("/checkout");
   }, [router]);
@@ -135,6 +136,7 @@ const CartList = () => {
 
       {getItemsTotal() !== 0 &&
         cart?.map((el, i) => <CartItem key={i} item={el} />)}
+      <InstallmentBanner price={total} />
       <RelatedList productId={productId} />
       <CartCTA />
     </div>
