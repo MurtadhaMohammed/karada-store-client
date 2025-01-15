@@ -7,6 +7,7 @@ import { CiCircleCheck } from "react-icons/ci";
 import { apiCall } from "@/lib/api";
 import { useAppStore } from "@/lib/store";
 import { useCartStore } from "@/lib/cartStore";
+import { set } from "nprogress";
 
 const Voucher = () => {
   const [voucherCode, setVoucherCode] = useState("");
@@ -33,8 +34,14 @@ const Voucher = () => {
         },
       });
 
+      if (response.error) {
+        setError("القسيمة تعمل على اول طلب فقــــــط");
+        setLoading(false);
+        return;
+      }
+
       if (
-        cart.some((item) => item.product.discount === null) &&
+        cart.some((item) => item.product.discount !== null) &&
         !response.voucher.apply_over_discount
       ) {
         setLoading(false);
@@ -71,6 +78,7 @@ const Voucher = () => {
       }
     } catch (err) {
       console.error("Error applying voucher:", err);
+      setLoading(false);
       setError("هنالك مشكلة في تطبيق القسيمة.");
     }
   };
@@ -102,8 +110,10 @@ const Voucher = () => {
               />
               <Button
                 onClick={applyVoucher}
-                className={`bg-gradient-to-r from-indigo-600 to-violet-600 text-white w-20  flex items-center justify-center${
-                  loading ? "animate-pulse" : ""
+                className={`${
+                  loading
+                    ? "animate-pulse bg-gradient-to-r from-indigo-600 to-violet-600 text-white w-20  flex items-center justify-center"
+                    : "bg-gradient-to-r from-indigo-600 to-violet-600 text-white w-20  flex items-center justify-center"
                 }`}
               >
                 <span className="text-sm">تطبيق</span>
