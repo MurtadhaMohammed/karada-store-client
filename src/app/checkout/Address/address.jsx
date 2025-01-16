@@ -26,6 +26,9 @@ const Address = () => {
       setAddress(orderUserInfo.address || "");
       setPhone(orderUserInfo.phone || "");
       setName(orderUserInfo.name || "");
+      const isValid = validateIraqiPhoneNumber(orderUserInfo.phone || "");
+      setPhoneError(isValid ? null : "يرجى إدخال رقم هاتف صالح");
+      setIsPhoneValidated(isValid);
     }
     setUserCheckoutInfo({
       address,
@@ -47,7 +50,6 @@ const Address = () => {
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     setPhone(value);
-
     const isValid = validateIraqiPhoneNumber(value);
     setPhoneError(isValid ? null : "يرجى إدخال رقم هاتف صالح");
     setIsPhoneValidated(isValid);
