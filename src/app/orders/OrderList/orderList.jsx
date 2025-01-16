@@ -61,7 +61,7 @@ const OrderList = () => {
         {data?.orders
           ?.filter(
             (el) =>
-              el.order_status !== "Delivered" && el.order_status !== "Canceled"
+              el.order_status !== "Completed" && el.order_status !== "Canceled"
           )
           ?.map((el, i) => (
             <OrderCard key={i} order={el} />
@@ -75,7 +75,7 @@ const OrderList = () => {
         {data?.orders
           ?.filter(
             (el) =>
-              el.order_status === "Delivered" || el.order_status === "Canceled"
+              el.order_status === "Canceled" || el.order_status === "Completed"
           )
           ?.map((el, i) => (
             <OrderCard key={i} order={el} />
