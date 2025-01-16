@@ -34,7 +34,15 @@ const Voucher = () => {
         },
       });
 
-      if (response.error) {
+      if (response.error === "Voucher not found") {
+        setError("القسيمة غير موجودة");
+        setLoading(false);
+        return;
+      } else if (response.error === "Voucher expired") {
+        setError("القسيمة منتهية");
+        setLoading(false);
+        return;
+      } else if (response.error === "Voucher is only valid for first order") {
         setError("القسيمة تعمل على اول طلب فقــــــط");
         setLoading(false);
         return;
