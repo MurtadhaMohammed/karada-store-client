@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "@/components/UI/Button/button";
 import { HiOutlineTicket } from "react-icons/hi";
 import { CiCircleCheck } from "react-icons/ci";
 import { apiCall } from "@/lib/api";
 import { useAppStore } from "@/lib/store";
 import { useCartStore } from "@/lib/cartStore";
-import { set } from "nprogress";
 
 const Voucher = () => {
   const [voucherCode, setVoucherCode] = useState("");
