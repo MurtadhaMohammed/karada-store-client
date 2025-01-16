@@ -14,7 +14,9 @@ import { useAppStore } from "@/lib/store";
 import ProductCtaWeb from "../ProductCTAWeb/productCtaWeb";
 import ImageModal from "@/components/ImageModal/imageModal";
 import IconButton from "@/components/UI/IconButton/iconButton";
+import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 const OptionTag = ({ name, color, active = false, onClick }) => {
+
   return (
     <button
       onClick={onClick}
@@ -250,6 +252,7 @@ const ProductInfoWeb = ({ product }) => {
                 </div>
               </div>
             )}
+            <InstallmentBanner price={endPrice} />
 
             <ProductCtaWeb
               product={{ ...product, l1: activeOption }}
