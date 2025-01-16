@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "@/components/UI/Button/button";
 import { HiOutlineTicket } from "react-icons/hi";
 import { CiCircleCheck } from "react-icons/ci";
 import { apiCall } from "@/lib/api";
 import { useAppStore } from "@/lib/store";
 import { useCartStore } from "@/lib/cartStore";
-import { set } from "nprogress";
 
 const Voucher = () => {
   const [voucherCode, setVoucherCode] = useState("");
@@ -34,7 +33,15 @@ const Voucher = () => {
         },
       });
 
-      if (response.error) {
+      if (response.error === "Voucher not found") {
+        setError("القسيمة غير موجودة");
+        setLoading(false);
+        return;
+      } else if (response.error === "Voucher expired") {
+        setError("القسيمة منتهية");
+        setLoading(false);
+        return;
+      } else if (response.error === "Voucher is only valid for first order") {
         setError("القسيمة تعمل على اول طلب فقــــــط");
         setLoading(false);
         return;
