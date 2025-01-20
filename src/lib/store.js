@@ -17,6 +17,8 @@ export const useAppStore = create((set, get) => ({
   favorites: [],
   isPhoneValidated: false,
   userCheckoutInfo: {},
+  searchResult: null,
+  setSearchResult: (result) => set({ searchResult: result }),
   setUserCheckoutInfo: (info) => set({ userCheckoutInfo: info }),
   setInstallmentId: (id) => set({ installmentId: id }),
   setInstallment: (isInstallment) => set({ isInstallment }),
