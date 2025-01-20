@@ -107,6 +107,8 @@ const LoginForm = () => {
               containerStyle={{
                 width: "100%",
                 justifyContent: "center",
+                direction: "ltr",
+                gap: "8x",
               }}
             />
           </div>
