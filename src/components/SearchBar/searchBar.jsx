@@ -197,7 +197,7 @@ const SearchBar = () => {
                        </div>
 
                         {suggestions.products?.map((item) => (
-                          <div className="flex justify-between items-center">
+                          <div key={item.id} className="flex justify-between items-center">
                             <Link key={item.id} href={`/product/${item.id}`}>
                               <div
                                 className="p-2 hover:bg-gray-100 cursor-pointer"
