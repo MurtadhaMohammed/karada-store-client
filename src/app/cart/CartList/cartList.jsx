@@ -10,7 +10,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useCartStore } from "@/lib/cartStore";
 import { IMAGE_URL } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
-// import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
@@ -105,7 +104,7 @@ const CartItem = ({ item }) => {
 const CartList = () => {
   const router = useRouter();
   const { cart, getItemsTotal, getTotal } = useCartStore();
-const total = getTotal();
+  const total = getTotal();
   useEffect(() => {
     router.prefetch("/checkout");
   }, [router]);
@@ -133,10 +132,13 @@ const total = getTotal();
           <InstallmentBanner />
         </div>
       </Container> */}
-
+      <div className="bg-white">
+      <Container>
+        <InstallmentBanner className={"none"} price={total} />
+      </Container>
+      </div>
       {getItemsTotal() !== 0 &&
         cart?.map((el, i) => <CartItem key={i} item={el} />)}
-      <InstallmentBanner price={total} />
       <RelatedList productId={productId} />
       <CartCTA />
     </div>

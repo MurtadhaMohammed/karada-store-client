@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Button from "../UI/Button/button";
 
-const InstallmentBanner = ({price}) => {
+const InstallmentBanner = ({className,price}) => {
   const installedPrice = (price * 1.2) / 10;
 
   return (
-    <div className="bg-[#f6f6f6] rounded-[8px] border border-[#eee] pt-[4px] pb-[4px] pl-[12px] pr-[12px] shadow-md active:scale-[0.96] active:opacity-50 transition-all">
+    <div className={`bg-[#f6f6f6] rounded-[8px] border-${className} pt-[4px] pb-[4px] pl-[12px] pr-[12px] shadow-md active:scale-[0.96] active:opacity-50 transition-all`}>
       <div className="flex items-center">
         <div className="h-[50px] w-[54px] grid relative ml-[8px]">
           <Image

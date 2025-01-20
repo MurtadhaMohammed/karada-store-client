@@ -170,6 +170,7 @@ const ProductInfoWeb = ({ product }) => {
           </section>
 
           <section className="border-r border-r-[#eee] pr-8">
+              <InstallmentBanner price={endPrice} />
             <div className="flex items-center gap-2 mt-[16px] pb-4">
             <IconButton
                   rounded={"8px"}
@@ -252,7 +253,6 @@ const ProductInfoWeb = ({ product }) => {
                 </div>
               </div>
             )}
-            <InstallmentBanner price={endPrice} />
 
             <ProductCtaWeb
               product={{ ...product, l1: activeOption }}
