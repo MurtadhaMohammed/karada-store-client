@@ -132,7 +132,7 @@ const CartList = () => {
           <InstallmentBanner />
         </div>
       </Container> */}
-      <div className="bg-white">
+      <div className="bg-white pt-[16px] pb-[16px]">
       <Container>
         <InstallmentBanner className={"none"} price={total} />
       </Container>
