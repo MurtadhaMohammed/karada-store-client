@@ -9,11 +9,13 @@ import { useEffect, useState } from "react";
 import { apiCall, URL } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
+import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 
 const LoginFormWeb = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -27,9 +29,27 @@ const LoginFormWeb = () => {
     setIsOtp,
     userInfo,
   } = useAppStore();
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+
+    // Update the phone input first
+    setPhone(value);
+
+    // Validate the input and set an error message if needed
+    const isValid = validateIraqiPhoneNumber(value);
+    if (!isValid && value.length > 0) {
+      setError("يرجى إدخال رقم هاتف صالح");
+    } else {
+      setError(""); // Clear error if valid
+    }
+  };
   const handleChange = (otp) => setOtp(otp);
+
   const globalPhone = userInfo?.phone;
   const handleLogin = async () => {
+    if (validateIraqiPhoneNumber(phone) === false)
+      return setError("يرجى إدخال رقم هاتف صالح");
     setLoading(true);
     const resp = await apiCall({
       pathname: `/client/auth/login`,
@@ -66,7 +86,17 @@ const LoginFormWeb = () => {
       router.replace("/");
       setIsLogin(true);
     }
+    if (resp?.message == "OTP is not valid") {
+      setError("يرجى إدخال رمز التحقق صحيح");
+    }
+    if (resp?.message == "OTP is expired") {
+      setError("يرجى إدخال رمز التحقق صحيح");
+    }
+    if (resp?.status !== 200) {
+      setError("يرجى إدخال رمز التحقق صحيح");
+    }
   };
+
   useEffect(() => {
     const phoneFromParams = searchParams.get("phone");
     if (phoneFromParams) {
@@ -83,98 +113,98 @@ const LoginFormWeb = () => {
 
   if (isOtp)
     return (
-      <div className="max-w-[360px] m-auto mt-[20vh] font-ibm">
-        <div>
-          <div className="text-center mb-[16px]">
-            <p className="text-[18px] font-bold">أدخل رمز التحقق</p>
-            <span className="text-[#a5a5a5] block mt-[4px]">
-              سوف تصلك رسالة تأكيد عبر ال SMS.
-            </span>
+      <>
+        <div className="max-w-[360px] m-auto mt-[20vh] font-ibm">
+          <div>
+            <div className="text-center mb-[16px]">
+              <p className="text-[18px] font-bold">أدخل رمز التحقق</p>
+              <span className="text-[#a5a5a5] block mt-[4px]">
+                سوف تصلك رسالة تأكيد عبر ال SMS.
+              </span>
+            </div>
+            <OtpInput
+              value={otp}
+              onChange={handleChange}
+              numInputs={6}
+              separator={<span className=""></span>}
+              inputStyle={{
+                width: 48,
+                height: 48,
+                border: "1px solid #eee",
+                borderRadius: 6,
+                outlineColor: "#7c3aed",
+                marginLeft: 8,
+              }}
+              containerStyle={{
+                width: "100%",
+                justifyContent: "center",
+                direction: "ltr",
+                gap: "8px",
+              }}
+            />
           </div>
-          <OtpInput
-            value={otp}
-            onChange={handleChange}
-            numInputs={6}
-            separator={<span className=""></span>}
-            inputStyle={{
-              width: 48,
-              height: 48,
-              border: "1px solid #eee",
-              borderRadius: 6,
-              outlineColor: "#7c3aed",
-              marginLeft: 8,
-            }}
-            containerStyle={{
+          <div>{error && <p className="text-red-500">{error}</p>}</div>
+          <div
+            className="active:scale-[0.96] transition-all shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]  mt-[34px]"
+            style={{
+              display: "inline-flex",
+              borderRadius: 16,
+              overflow: "hidden",
               width: "100%",
-              justifyContent: "center",
-              direction: "ltr",
-              gap: "8x",
             }}
-          />
+          >
+            <Ripples className="!grid w-full">
+              <button
+                onClick={handleVerify}
+                className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
+              >
+                <span className="ml-[8px] font-bold text-[18px]">
+                  {loading ? "جار المصادقة..." : "تأكـــيد"}
+                </span>
+              </button>
+            </Ripples>
+          </div>
         </div>
-
+      </>
+    );
+  return (
+    <>
+      <div className="max-w-[360px] m-auto mt-[20vh]">
+        <div>
+          <div className="mb-[16px] text-center">
+            {/* <b className="text-[18px]">مرحباً بك.</b> */}
+          </div>
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            hint="اسم المستخدم"
+          />
+          <div className="h-[16px]"></div>
+          <Input value={phone} onChange={handlePhoneChange} hint="رقم الهاتف" />
+        </div>
+        <div>{error && <p className="text-red-500">{error}</p>}</div>
         <div
-          className="active:scale-[0.96] transition-all shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]  mt-[34px]"
+          className="active:scale-[0.96] transition-all mt-[24px]"
           style={{
             display: "inline-flex",
-            borderRadius: 16,
+            borderRadius: 8,
             overflow: "hidden",
             width: "100%",
           }}
         >
           <Ripples className="!grid w-full">
             <button
-              onClick={handleVerify}
-              className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
+              onClick={handleLogin}
+              className="flex items-center justify-center  h-[48px] rounded-[8px] border border-violet-600  text-violet-600 p-6"
             >
               <span className="ml-[8px] font-bold text-[18px]">
-                {loading ? "جار المصادقة..." : "تأكـــيد"}
+                {loading ? "يرجى الانتظار..." : "تسجيل دخول"}
               </span>
             </button>
           </Ripples>
         </div>
       </div>
-    );
-
-  return (
-    <div className="max-w-[360px] m-auto mt-[20vh]">
-      <div>
-        <div className="mb-[16px] text-center">
-          {/* <b className="text-[18px]">مرحباً بك.</b> */}
-        </div>
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          hint="اسم المستخدم"
-        />
-        <div className="h-[16px]"></div>
-        <Input
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          hint="رقم الهاتف"
-        />
-      </div>
-      <div
-        className="active:scale-[0.96] transition-all mt-[24px]"
-        style={{
-          display: "inline-flex",
-          borderRadius: 8,
-          overflow: "hidden",
-          width: "100%",
-        }}
-      >
-        <Ripples className="!grid w-full">
-          <button
-            onClick={handleLogin}
-            className="flex items-center justify-center  h-[48px] rounded-[8px] border border-violet-600  text-violet-600 p-6"
-          >
-            <span className="ml-[8px] font-bold text-[18px]">
-              {loading ? "يرجى الانتظار..." : "تسجيل دخول"}
-            </span>
-          </button>
-        </Ripples>
-      </div>
-    </div>
+    </>
   );
 };
 

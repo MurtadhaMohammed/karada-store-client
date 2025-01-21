@@ -64,19 +64,19 @@ export default async function Home() {
             return null;
         }
       };
-    
+
       // Wrap banner content in a link only if the link starts with "/view"
       if (banner.link && banner.link.startsWith("/view")) {
-        return ( 
+        return (
           <Link key={banner.id} href={banner.link} passHref>
             <a>{bannerContent()}</a>
           </Link>
         );
       }
-    
+
       // Render the banner content normally if no valid link is found
       return <div key={banner.id}>{bannerContent()}</div>;
-    };    
+    };
 
     return (
       <div className="pb-[100px]">
