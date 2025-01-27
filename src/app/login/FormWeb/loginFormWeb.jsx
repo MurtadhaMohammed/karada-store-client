@@ -41,7 +41,7 @@ const LoginFormWeb = () => {
     if (!isValid && value.length > 0) {
       setError("يرجى إدخال رقم هاتف صالح");
     } else {
-      setError(""); // Clear error if valid
+      setError("");
     }
   };
   const handleChange = (otp) => setOtp(otp);
@@ -65,6 +65,9 @@ const LoginFormWeb = () => {
       setIsOtp(true);
       router.replace(`/login?phone=${phone}`);
     }
+    else {
+      setError("يرجى إدخال رقم هاتف صالح");
+    }
   };
 
   const handleVerify = async () => {
@@ -85,15 +88,8 @@ const LoginFormWeb = () => {
       updateUserInfo(resp.accessToken);
       router.replace("/");
       setIsLogin(true);
-    }
-    if (resp?.message == "OTP is not valid") {
-      setError("يرجى إدخال رمز التحقق صحيح");
-    }
-    if (resp?.message == "OTP is expired") {
-      setError("يرجى إدخال رمز التحقق صحيح");
-    }
-    if (resp?.status !== 200) {
-      setError("يرجى إدخال رمز التحقق صحيح");
+    } else {
+        setError("يرجى إدخال رمز التحقق صحيح");
     }
   };
 
