@@ -9,6 +9,7 @@ import useIsScreenMd from "@/hooks/useIsScreenMd";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { useAppStore } from "@/lib/store";
+import { isEnglish } from "@/helper/isEnglish";
 
 const DefaultCard = ({
   item,
@@ -91,10 +92,10 @@ const DefaultCard = ({
         </div>
         <div className="p-3 pt-2 pb-2 border-t border-t-[#eee] flex flex-col justify-between flex-1 h-[100%]">
           <div>
-            <h2 className="font-semih2old text-black text-[14px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
+            <h2 className={`font-semih2old text-black text-[14px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis ${isEnglish(item?.name) ? "dots" : ""}`}>
               {item?.name}
             </h2>
-            <p className="text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis">
+            <p className={`text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis ${isEnglish(item?.shortDescription) ? "dots" : ""}`}>
               {item?.shortDescription}
             </p>
           </div>

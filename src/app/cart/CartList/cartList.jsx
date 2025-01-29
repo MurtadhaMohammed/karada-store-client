@@ -13,6 +13,7 @@ import RelatedList from "../RelatedList/relatedList";
 import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+import { isEnglish } from "@/helper/isEnglish";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -67,12 +68,12 @@ const CartItem = ({ item }) => {
           />
           <div className="flex-1 flex flex-col justify-between items-start">
             <div>
-              <b className="text-[14px] whitespace-nowrap overflow-hidden text-ellipsis">
+              <b className={` text-[14px] whitespace-nowrap overflow-hidden text-ellipsis max-w-[280px] block ${isEnglish(item?.product?.name) ? "dots" : ""}`}>
                 {item?.product?.name}
               </b>
-              <p className="text-[14px] text-[#a5a5a5]">
+              <p className={`text-[14px] text-[#a5a5a5] whitespace-nowrap text-ellipsis overflow-hidden max-w-[200px] block ${isEnglish(item?.product?.shortDescription) ? "dot" : ""}`}>
                 {item?.product?.l1?.name ||
-                  `${item?.product?.shortDescription.substr(0, 20)}...`}
+                  `${item?.product?.shortDescription}`}
               </p>
             </div>
             <div className="flex items-end justify-between w-full">
