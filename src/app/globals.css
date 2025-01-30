@@ -43,6 +43,16 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
+.dots{
+  direction: ltr;
+  text-align: left;
+}
+
+.dot{
+  text-align: right;
+  direction: ltr;
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

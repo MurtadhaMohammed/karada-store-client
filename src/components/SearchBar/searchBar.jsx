@@ -14,6 +14,7 @@ import {
   BottomSheetModal,
   useBottomSheetModal,
 } from "../UI/BottomSheetModal/bottomSheetModal";
+import Image from "next/image";
 
 const filtersTags = [
   {
@@ -189,15 +190,18 @@ const SearchBar = () => {
                       <div className="p-2 text-gray-500">جاري التحميل...</div>
                     ) : (
                       <div>
-                       <div className="p-2  flex justify-between">
-                        <div className="text-gray-500">قائمة المقترحات:</div>
-                       <div onClick={closeSuggestions} className="">
-                          <IoCloseSharp size={22} />
+                        <div className="p-2  flex justify-between">
+                          <div className="text-gray-500">قائمة المقترحات:</div>
+                          <div onClick={closeSuggestions} className="">
+                            <IoCloseSharp size={22} />
+                          </div>
                         </div>
-                       </div>
 
                         {suggestions.products?.map((item) => (
-                          <div key={item.id} className="flex justify-between items-center">
+                          <div
+                            key={item.id}
+                            className="flex justify-between items-center"
+                          >
                             <Link key={item.id} href={`/product/${item.id}`}>
                               <div
                                 className="p-2 hover:bg-gray-100 cursor-pointer"
@@ -221,7 +225,7 @@ const SearchBar = () => {
                   <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50 flex justify-between items-center">
                     <div className="p-2 text-gray-500">لا توجد اقتراحات</div>
                     <div onClick={closeSuggestions} className="ml-2">
-                      <IoCloseSharp size={22}/>
+                      <IoCloseSharp size={22} />
                     </div>
                   </div>
                 )}
@@ -323,16 +327,17 @@ const SearchBar = () => {
                   <div
                     key={brand.id}
                     onClick={() => handleBrandSelect(brand.id)}
-                    className={`aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg bg-[#f6f6f6] cursor-pointer ${
+                    className={`aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg cursor-pointer ${
                       filters?.find((key) => key === `brand_id=${brand.id}`)
                         ? "border-2 border-indigo-600"
                         : "border border-transparent"
                     }`}
                   >
-                    <img
+                    <Image
                       src={`${IMAGE_URL}/${brand.img}`}
                       alt={brand.name}
-                      className="w-full h-full object-cover"
+                      fill
+                      style={{ objectFit: "contain" }}
                       priority
                     />
                   </div>
