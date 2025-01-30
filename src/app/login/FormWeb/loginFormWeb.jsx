@@ -74,7 +74,7 @@ const LoginFormWeb = () => {
     setLoading(true);
     const phoneFromParams = searchParams.get("phone");
     const resp = await apiCall({
-      pathname: `/client/auth/verify`,
+      pathname: `/client/auth/verifyv`,
       method: "POST",
       data: {
         otp,
