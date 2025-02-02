@@ -48,7 +48,7 @@ const ProductList = () => {
       <Empty
         icon={<BiBlanket className="text-[100px]" />}
         title="لا توجد منتجات!."
-        msg="قم بأظافة منتجات الى المفضلة"
+        msg="قم بإضافة منتجات الى المفضلة"
         href={"/"}
         top={14}
         buttonText={"عودة للرئيسية"}
