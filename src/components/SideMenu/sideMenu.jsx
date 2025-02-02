@@ -5,7 +5,7 @@ import IconButton from "../UI/IconButton/iconButton";
 import Drawer from "../UI/Drawer/drawer";
 import { CgClose } from "react-icons/cg";
 import { LuUser, LuSettings2, LuLogOut, LuShare2 } from "react-icons/lu";
-import { BiSupport } from "react-icons/bi";
+import { BiSupport , BiBook } from "react-icons/bi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import DotAlert from "../UI/DotAlert/dotAlert";
@@ -134,6 +134,14 @@ const SideMenu = () => {
             onClick={() => {
               setIsMenu(false);
               router.push("/contactUs");
+            }}
+          />
+           <MenuItem
+            title={"سياسة الخصوصية"}
+            icon={<BiBook className="text-[24px]" />}
+            onClick={() => {
+              setIsMenu(false);
+              router.push("/policies/privicy");
             }}
           />
           <MenuItem
