@@ -151,7 +151,7 @@ const LoginForm = () => {
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            hint="اسم المستخدم"
+            hint="الإسم"
           />
           <div className="h-[16px]"></div>
           <Input
@@ -179,7 +179,7 @@ const LoginForm = () => {
                 className="flex items-center justify-center  h-[56px] rounded-[16px] border border-violet-600  text-violet-600 p-6"
               >
                 <span className="ml-[8px] font-bold text-[18px]">
-                  {loading ? "يرجى الانتضار..." : "تسجيل دخول"}
+                  {loading ? "يرجى الإنتظار..." : "تسجيل دخول"}
                 </span>
               </button>
             </Ripples>
