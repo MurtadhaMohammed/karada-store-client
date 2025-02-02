@@ -151,7 +151,7 @@ const LoginForm = () => {
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            hint="الإسم"
+            hint="إسم المستخدم"
           />
           <div className="h-[16px]"></div>
           <Input
