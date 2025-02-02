@@ -15,10 +15,20 @@ const LoginFormWeb = () => {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { setIsLogin, isLogin, updateUserInfo, otp, setOtp, isOtp, setIsOtp } = useAppStore();
-  const handleChange = (otp) => setOtp(otp);
 
+  const searchParams = useSearchParams();
+  const {
+    setIsLogin,
+    isLogin,
+    updateUserInfo,
+    otp,
+    setOtp,
+    isOtp,
+    setIsOtp,
+    userInfo,
+  } = useAppStore();
+  const handleChange = (otp) => setOtp(otp);
+  const globalPhone = userInfo?.phone;
   const handleLogin = async () => {
     setLoading(true);
     const resp = await apiCall({
@@ -31,7 +41,7 @@ const LoginFormWeb = () => {
     });
 
     setLoading(false);
-    if (resp?.message=="Login Success") {
+    if (resp?.message == "Login Success") {
       setIsOtp(true);
       router.replace(`/login?phone=${phone}`);
     }
@@ -45,7 +55,7 @@ const LoginFormWeb = () => {
       method: "POST",
       data: {
         otp,
-        phone: phoneFromParams,
+        phone: phoneFromParams || globalPhone,
       },
     });
     setLoading(false);
@@ -85,17 +95,20 @@ const LoginFormWeb = () => {
             value={otp}
             onChange={handleChange}
             numInputs={6}
-            separator={<span className="m-1"></span>}
+            separator={<span className=""></span>}
             inputStyle={{
               width: 48,
               height: 48,
               border: "1px solid #eee",
               borderRadius: 6,
               outlineColor: "#7c3aed",
+              marginLeft: 8,
             }}
             containerStyle={{
               width: "100%",
               justifyContent: "center",
+              direction: "ltr",
+              gap: "8x",
             }}
           />
         </div>
@@ -156,7 +169,7 @@ const LoginFormWeb = () => {
             className="flex items-center justify-center  h-[48px] rounded-[8px] border border-violet-600  text-violet-600 p-6"
           >
             <span className="ml-[8px] font-bold text-[18px]">
-              {loading ? "يرجى الانتضار..." : "تسجيل دخول"}
+              {loading ? "يرجى الانتظار..." : "تسجيل دخول"}
             </span>
           </button>
         </Ripples>

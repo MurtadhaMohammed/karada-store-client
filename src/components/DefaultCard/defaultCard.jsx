@@ -42,7 +42,7 @@ const DefaultCard = ({
         </div>
       )}
 
-      {item?.discount?.value && (
+      {item?.discount && item?.discount?.active === true && (
         <div className="absolute top-4 right-4 z-10 p-2 pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
           {item?.discount?.value || 40}%
         </div>

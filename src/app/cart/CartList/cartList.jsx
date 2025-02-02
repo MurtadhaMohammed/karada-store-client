@@ -10,9 +10,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useCartStore } from "@/lib/cartStore";
 import { IMAGE_URL } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
-// import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
+import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -49,7 +49,9 @@ const CartItem = ({ item }) => {
     return image;
   };
 
-  const displayPrice = item?.product?.l1 ? item?.product?.l1?.price : item?.product?.price;
+  const displayPrice = item?.product?.l1
+    ? item?.product?.l1?.price
+    : item?.product?.price;
 
   return (
     <div className="border-b border-b-[#eee] pt-[24px] pb-[16px] bg-white">
@@ -80,7 +82,7 @@ const CartItem = ({ item }) => {
                     {Number(item.product.price).toLocaleString("en")}
                   </p>
                   <b className="text-[16px]">
-                    {Number(displayPrice).toLocaleString("en")}{" "}
+                    {Number(item.product.endPrice).toLocaleString("en")}{" "}
                     <span className="text-[14px]">IQD</span>
                   </b>
                 </div>
@@ -101,8 +103,8 @@ const CartItem = ({ item }) => {
 
 const CartList = () => {
   const router = useRouter();
-  const { cart, getItemsTotal } = useCartStore();
-
+  const { cart, getItemsTotal, getTotal } = useCartStore();
+  const total = getTotal();
   useEffect(() => {
     router.prefetch("/checkout");
   }, [router]);
@@ -130,7 +132,11 @@ const CartList = () => {
           <InstallmentBanner />
         </div>
       </Container> */}
-
+      <div className="bg-white">
+      <Container>
+        <InstallmentBanner className={"none"} price={total} />
+      </Container>
+      </div>
       {getItemsTotal() !== 0 &&
         cart?.map((el, i) => <CartItem key={i} item={el} />)}
       <RelatedList productId={productId} />

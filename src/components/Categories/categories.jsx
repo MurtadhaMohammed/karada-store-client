@@ -8,7 +8,7 @@ import { useAppStore } from "@/lib/store";
 import { IMAGE_URL } from "@/lib/api";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { MdKeyboardArrowLeft } from "react-icons/md";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const Wrapper = React.forwardRef(({ children, href, ...props }, ref) => {
   const content = (
@@ -26,15 +26,23 @@ const Categories = ({ isBanner = true, list = [] }) => {
   const searchParams = useSearchParams();
   const categoryRefs = useRef({});
   const scrollContainerRef = useRef(null);
-  const [showCircle, setShowCircle] = useState(false);
+  const [showCircleLeft, setShowCircleLeft] = useState(false);
+  const [showCircleRight, setShowCirlcRight] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
 
-  const handleScrollToLeft = () => {
+  const handleScrollToBothSides = ( side) => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: -1000,
-        behavior: "smooth",
-      });
+      if (side === "left") {
+        scrollContainerRef.current.scrollBy({
+          left: -500,
+          behavior: "smooth",
+        });
+      } else if (side === "right") {
+        scrollContainerRef.current.scrollBy({
+          left: 500,
+          behavior: "smooth",
+        });
+      }
       setIsClicked(true);
       setTimeout(() => setIsClicked(false), 500);
     }
@@ -62,10 +70,15 @@ const Categories = ({ isBanner = true, list = [] }) => {
       const NMaxScrollLeft = maxScrollLeft * -1;
 
       if (scrollLeft > NMaxScrollLeft + 1) {
-        setShowCircle(true);
+        setShowCircleLeft(true);
       } else {
-        setShowCircle(false);
+        setShowCircleLeft(false);
       }
+        if(scrollLeft < 0) {
+          setShowCirlcRight(true);
+        } else {
+          setShowCirlcRight(false);
+        }
     }
   };
 
@@ -79,7 +92,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
     const scrollContainer = scrollContainerRef.current;
     if (scrollContainer) {
       const { scrollWidth, clientWidth } = scrollContainer;
-      setShowCircle(scrollWidth > clientWidth);
+      setShowCircleLeft(scrollWidth > clientWidth);
 
       scrollContainer.addEventListener("scroll", handleScroll);
     }
@@ -148,15 +161,27 @@ const Categories = ({ isBanner = true, list = [] }) => {
                 </p>
               </Wrapper>
             ))}
-            {showCircle && (
+            {showCircleLeft && (
+             <>
               <div
                 className={`absolute left-[6px] w-[48px] h-[48px] rounded-full bg-[#f6f6f6] z-10 flex items-center justify-center cursor-pointer shadow-md border-none animate-scaling transition-transform duration-400 ${
                   isClicked ? "scale-75" : ""
                 } hidden md:flex`}
-                onClick={handleScrollToLeft}
+                onClick={() => handleScrollToBothSides("left")}
               >
                 <MdKeyboardArrowLeft size={30} />
               </div>
+             </>
+            )}
+            {showCircleRight && (
+               <div
+               className={`absolute right-[6px] w-[48px] h-[48px] rounded-full bg-[#f6f6f6] z-10 flex items-center justify-center cursor-pointer shadow-md border-none animate-scaling transition-transform duration-400 ${
+                 isClicked ? "scale-75" : ""
+               } hidden md:flex`}
+               onClick={() => handleScrollToBothSides("right")}
+             >
+               <MdKeyboardArrowRight size={30} />
+             </div>
             )}
           </div>
         </div>

@@ -27,7 +27,6 @@
     "reactjs-otp-input": "^2.0.10",
     "ripple-effect-reactjs": "^1.0.6",
     "scroll-into-view": "^1.16.2",
-    "sharp": "^0.33.5",
     "swiper": "^11.1.14",
     "zustand": "^5.0.0-rc.2"
   },
