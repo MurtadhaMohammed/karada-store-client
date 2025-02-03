@@ -43,11 +43,11 @@ export const useAppStore = create((set, get) => ({
     return set({ favorites: newArr });
   },
 
-  updateUserInfo: (user) => {
+  updateUserInfo: () => {
     if (typeof window === "undefined") return;
+    const user = JSON.parse(localStorage.getItem("karada-user"));
     if (!user) return set({ userInfo: {} });
     const userInfo = user;
-    localStorage.setItem("karada-account-name", userInfo?.name);
     return set({ userInfo });
   },
   setUserInfo: (newUserInfo) => set({ userInfo: newUserInfo }),

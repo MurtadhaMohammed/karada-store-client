@@ -22,11 +22,10 @@ const Address = () => {
   useEffect(() => {
     const token = localStorage.getItem("karada-token");
     if (token) {
-      const orderUserInfo = jwtDecode(token);
-      setAddress(orderUserInfo.address || "");
-      setPhone(orderUserInfo.phone || "");
-      setName(orderUserInfo.name || "");
-      const isValid = validateIraqiPhoneNumber(orderUserInfo.phone || "");
+      setAddress(userInfo.address || "");
+      setPhone(userInfo.phone || "");
+      setName(userInfo.name || "");
+      const isValid = validateIraqiPhoneNumber(userInfo.phone || "");
       setPhoneError(isValid ? null : "يرجى إدخال رقم هاتف صالح");
       setIsPhoneValidated(isValid);
     }

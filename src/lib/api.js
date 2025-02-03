@@ -27,8 +27,10 @@ export const reNewToken = async () => {
         refreshToken,
       },
     });
-    if (!resp?.accessToken) return;
-    return resp?.accessToken && resp?.user;
+    if (!resp) return;
+    localStorage.setItem("karada-token", resp?.accessToken);
+    localStorage.setItem("karada-user", JSON.stringify(resp?.user));
+    return resp;
   } catch (error) {
     console.log(error);
     return;
@@ -44,22 +46,22 @@ export const apiCall = async ({
 }) => {
   try {
     let token = localStorage.getItem("karada-token");
-    let user = localStorage.getItem("karada-user");
-    if (token) {
-      token = await reNewToken().accessToken;
-      user = await reNewToken().user;
-      console.log("renewed token", token);
-      console.log("renewed user", user);
-      if (!token) {
+    let user = JSON.parse(localStorage.getItem("karada-user"));
+
+    if (auth && !isTokenValid(token)) {
+      const newTokenData = await reNewToken();
+      if (!newTokenData) {
         localStorage.removeItem("karada-token");
         localStorage.removeItem("karada-refreshToken");
         localStorage.removeItem("karada-user");
-        useAppStore.setState({
-          isLogin: false,
-        });
-        useAppStore.getState().updateUserInfo(user);
+        useAppStore.setState({ isLogin: false });
+        useAppStore.getState().updateUserInfo(null);
         return;
       }
+      token = newTokenData.accessToken;
+      user = newTokenData.user;
+      console.log("new token", newTokenData);
+      console.log("new user", user);
       localStorage.setItem("karada-token", token);
       localStorage.setItem("karada-user", user);
     }
