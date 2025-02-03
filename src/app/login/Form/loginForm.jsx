@@ -62,7 +62,7 @@ const LoginForm = () => {
     if (resp.accessToken) {
       localStorage.setItem("karada-token", resp.accessToken);
       localStorage.setItem("karada-refreshToken", resp.refreshToken);
-      updateUserInfo(resp.accessToken);
+      updateUserInfo(resp.user);
       router.replace("/");
       setIsLogin(true);
     }

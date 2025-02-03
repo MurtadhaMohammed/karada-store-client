@@ -28,7 +28,7 @@ export const reNewToken = async () => {
       },
     });
     if (!resp?.accessToken) return;
-    return resp?.accessToken;
+    return resp?.accessToken && resp?.user;
   } catch (error) {
     console.log(error);
     return;
@@ -44,18 +44,24 @@ export const apiCall = async ({
 }) => {
   try {
     let token = localStorage.getItem("karada-token");
-    if (auth && !isTokenValid(token)) {
-      token = await reNewToken();
+    let user = localStorage.getItem("karada-user");
+    if (token) {
+      token = await reNewToken().accessToken;
+      user = await reNewToken().user;
+      console.log("renewed token", token);
+      console.log("renewed user", user);
       if (!token) {
         localStorage.removeItem("karada-token");
         localStorage.removeItem("karada-refreshToken");
+        localStorage.removeItem("karada-user");
         useAppStore.setState({
           isLogin: false,
         });
-        useAppStore.getState().updateUserInfo(token);
+        useAppStore.getState().updateUserInfo(user);
         return;
       }
       localStorage.setItem("karada-token", token);
+      localStorage.setItem("karada-user", user);
     }
 
     let body = undefined;

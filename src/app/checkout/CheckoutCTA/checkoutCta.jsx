@@ -46,6 +46,7 @@ const CheckoutCTA = () => {
     }
   }, [userCheckoutInfo]);
 
+  console.log(userInfo)
   const items = useMemo(() => {
     return cart?.map((item) => ({
       id: item.product.id,
