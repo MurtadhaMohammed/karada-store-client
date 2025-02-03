@@ -120,7 +120,7 @@ const CartList = () => {
       <Empty
         icon={<TbShoppingCartExclamation />}
         title="لا توجد منتجات!."
-        msg="قم بأظافة منتجات لمتابعة التسوق."
+        msg="قم بإضافة منتجات لمتابعة التسوق."
         href={"/"}
         buttonText={"عودة للرئيسية"}
       />

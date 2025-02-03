@@ -34,6 +34,18 @@ const MainHeader = () => {
       case "/orders":
         setPageTitle("قائمة الطلبات");
         break;
+      case "/policies/privicy":
+          setPageTitle("سياسة الخصوصية");
+          break;
+      case "/policies/payments":
+            setPageTitle("سياسة الدفع");
+          break;
+      case "/policies/refund":
+            setPageTitle("سياسة الإسترجاع");
+          break;
+      case "/policies/delivery":
+            setPageTitle("سياسة التوصيل");
+          break;
       case "/products/search/all":
         setPageTitle("البحث");
         break;
