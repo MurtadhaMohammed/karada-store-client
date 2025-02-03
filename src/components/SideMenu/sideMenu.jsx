@@ -60,7 +60,8 @@ const SideMenu = () => {
   const logout = () => {
     localStorage.removeItem("karada-token");
     localStorage.removeItem("karada-refreshToken");
-    updateUserInfo();
+    localStorage.removeItem("karada-user");
+    updateUserInfo(null);
     setIsLogin(false);
   };
 
