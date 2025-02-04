@@ -96,7 +96,7 @@ const LoginForm = () => {
               value={otp}
               onChange={handleChange}
               numInputs={6}
-              separator={<span className="m-1"></span>}
+              separator={<span className=""></span>}
               inputStyle={{
                 width: 48,
                 height: 48,
@@ -105,8 +105,9 @@ const LoginForm = () => {
                 outlineColor: "#7c3aed",
               }}
               containerStyle={{
-                width: "100%",
                 justifyContent: "center",
+                direction: "ltr",
+                gap: "8px",
               }}
             />
           </div>

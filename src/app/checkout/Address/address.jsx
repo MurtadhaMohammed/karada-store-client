@@ -8,8 +8,13 @@ import { jwtDecode } from "jwt-decode";
 import { set } from "nprogress";
 
 const Address = () => {
-  const { userInfo, userCheckoutInfo, setIsPhoneValidated, setUserCheckoutInfo } =
-    useAppStore();
+  const {
+    userInfo,
+    userCheckoutInfo,
+    setIsPhoneValidated,
+    setUserCheckoutInfo,
+    validateAddress,
+  } = useAppStore();
   const [address, setAddress] = useState(userInfo?.address || "");
   const [phone, setPhone] = useState(userInfo?.phone || "");
   const [name, setName] = useState(userInfo?.name || "");
@@ -19,13 +24,17 @@ const Address = () => {
   const [addressError, setAddressError] = useState(null);
   const [nameError, setNameError] = useState(null);
 
+  const [handelError, setHandelError] = useState(null);
+
   useEffect(() => {
     const token = localStorage.getItem("karada-token");
     if (token) {
-      const orderUserInfo = jwtDecode(token);
-      setAddress(orderUserInfo.address || "");
-      setPhone(orderUserInfo.phone || "");
-      setName(orderUserInfo.name || "");
+      setAddress(userInfo.address || "");
+      setPhone(userInfo.phone || "");
+      setName(userInfo.name || "");
+      const isValid = validateIraqiPhoneNumber(userInfo.phone || "");
+      // setPhoneError(isValid ? null : "يرجى إدخال رقم هاتف صالح");
+      setIsPhoneValidated(isValid);
     }
     setUserCheckoutInfo({
       address,
@@ -44,32 +53,43 @@ const Address = () => {
     });
   }, [address, phone, name, notes]);
 
+  useEffect(() => {
+    if (validateAddress) {
+      setHandelError("يرجى ملء جميع الحقول");
+    } else {
+      setHandelError(null);
+    }
+  }, [validateAddress]);
+
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     setPhone(value);
 
     const isValid = validateIraqiPhoneNumber(value);
-    setPhoneError(isValid ? null : "يرجى إدخال رقم هاتف صالح");
+    // setPhoneError(value.trim() ? null : isValid ? null : "يرجى إدخال رقم هاتف صالح");
     setIsPhoneValidated(isValid);
   };
 
   const handleAddressChange = (e) => {
     const value = e.target.value;
     setAddress(value);
-    setAddressError(value.trim() ? null : "يرجى إدخال العنوان");
+    // setAddressError(value.trim() ? null : "يرجى إدخال العنوان");
   };
 
   const handleNameChange = (e) => {
     const value = e.target.value;
     setName(value);
-    setNameError(value.trim() ? null : "يرجى إدخال الاسم");
+    // setNameError(value.trim() ? null : "يرجى إدخال الاسم");
   };
 
   return (
     <div className="rounded-[8px] border border-[#eee] mt-[22px] bg-white">
-      <div className="flex items-center p-[16px]">
-        <GrLocation className="text-[18px]" />
-        <p className="mr-[6px]">تفاصيل العنوان</p>
+      <div className="flex items-center justify-between p-[16px]">
+        <div className="flex items-center">
+          <GrLocation className="text-[18px]" />
+          <p className="mr-[6px]">تفاصيل العنوان</p>
+        </div>
+        {handelError && <p className="text-red-600 text-sm">{handelError}</p>}
       </div>
       <div className="p-[16px] pt-0">
         <div>
