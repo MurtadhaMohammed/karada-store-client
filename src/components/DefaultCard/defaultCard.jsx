@@ -20,7 +20,6 @@ const DefaultCard = ({
 }) => {
   // const isScreenMd = useIsScreenMd();
   const { favorites, toggleFav } = useAppStore();
-
   return (
     <div
       className={`flex-none rounded-xl flex flex-col border border-[#eee] relative overflow-hidden bg-white active:opacity-50 transition-all ${
@@ -56,9 +55,10 @@ const DefaultCard = ({
               e.stopPropagation();
               toggleFav(item?.id);
             }}
-            className="absolute flex items-center justify-center top-3 left-3 z-10 h-[32px] w-[32px] rounded-[8px] shadow-lg shadow-[#ff000041] bg-gradient-to-r from-[#ff0000] to-[#fb797b] text-[#fff]"
           >
-            <FaHeart className="text-[18px] text-[#fff]" />
+            <div className="absolute flex items-center justify-center top-3 left-3 z-10 h-[32px] w-[32px] rounded-[8px] shadow-lg shadow-[#ff000041] bg-gradient-to-r from-[#ff0000] to-[#fb797b] text-[#fff]">
+              <FaHeart className="text-[18px] text-[#fff]" />
+            </div>
           </div>
         ) : (
           <div
@@ -92,10 +92,18 @@ const DefaultCard = ({
         </div>
         <div className="p-3 pt-2 pb-2 border-t border-t-[#eee] flex flex-col justify-between flex-1 h-[100%]">
           <div>
-            <h2 className={`font-semih2old text-black text-[14px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis ${isEnglish(item?.name) ? "dots" : ""}`}>
+            <h2
+              className={`font-semih2old text-black text-[14px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis ${
+                isEnglish(item?.name) ? "dots" : ""
+              }`}
+            >
               {item?.name}
             </h2>
-            <p className={`text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis ${isEnglish(item?.shortDescription) ? "dots" : ""}`}>
+            <p
+              className={`text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis ${
+                isEnglish(item?.shortDescription) ? "dots" : ""
+              }`}
+            >
               {item?.shortDescription}
             </p>
           </div>
