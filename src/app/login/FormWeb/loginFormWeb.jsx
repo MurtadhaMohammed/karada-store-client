@@ -33,7 +33,7 @@ const LoginFormWeb = () => {
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     setPhone(value);
-    if (value !== "1234567890") {
+    if (value !== "07700000000") {
       const isValid = validateIraqiPhoneNumber(value);
       if (!isValid && value.length > 0) {
         setError("يرجى إدخال رقم هاتف صالح");
@@ -48,7 +48,7 @@ const LoginFormWeb = () => {
 
   const globalPhone = userInfo?.phone;
   const handleLogin = async () => {
-    if (phone !== "1234567890" && validateIraqiPhoneNumber(phone) === false)
+    if (phone !== "07700000000" && validateIraqiPhoneNumber(phone) === false)
       return setError("يرجى إدخال رقم هاتف صالح");
     setLoading(true);
     const resp = await apiCall({
