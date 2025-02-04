@@ -32,6 +32,7 @@ export function ReactQueryProvider({ fontStyle, children }) {
       let token = localStorage.getItem("karada-token");
       let user = localStorage.getItem('karada-user');
 
+
       setTimeout(() => {
         let cart = localStorage.getItem("karada-cart");
         if (cart) setCart(JSON.parse(cart));
@@ -50,6 +51,7 @@ export function ReactQueryProvider({ fontStyle, children }) {
         }
         localStorage.setItem("karada-token", token);
         localStorage.setItem("karada-user", user);
+        localStorage.setItem("karada-account-name", user.name);
         setIsLogin(true);
         updateUserInfo(user);
       }

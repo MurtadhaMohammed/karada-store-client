@@ -27,10 +27,10 @@ export const reNewToken = async () => {
         refreshToken,
       },
     });
-    if (!resp) return;
-    localStorage.setItem("karada-token", resp?.accessToken);
-    localStorage.setItem("karada-user", JSON.stringify(resp?.user));
-    return resp;
+    if (resp?.accessToken) {
+      return resp;
+    }
+    return;
   } catch (error) {
     console.log(error);
     return;
@@ -60,8 +60,6 @@ export const apiCall = async ({
       }
       token = newTokenData.accessToken;
       user = newTokenData.user;
-      console.log("new token", newTokenData);
-      console.log("new user", user);
       localStorage.setItem("karada-token", token);
       localStorage.setItem("karada-user", user);
     }
