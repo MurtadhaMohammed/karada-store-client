@@ -22,7 +22,7 @@ export const createOrder = async (order, isLogin, setIsOtp, setOtp, clearCart, r
       if (response?.status=="Not Logged In" && !isLogin) {
         setIsOtp(true);
         setOtp('');
-        router.replace("/login");
+        router.replace("/login?phone="+order.phone);
       } else {
         router.replace("/orders");
       }

@@ -14,6 +14,7 @@ const LoginForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -29,7 +30,25 @@ const LoginForm = () => {
   } = useAppStore();
   const handleChange = (otp) => setOtp(otp);
   const globalPhone = userInfo?.phone;
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    setPhone(value);
+    if (value !== "07700000000") {
+      const isValid = validateIraqiPhoneNumber(value);
+      if (!isValid && value.length > 0) {
+        setError("يرجى إدخال رقم هاتف صالح");
+      } else {
+        setError("");
+      }
+    } else {
+      setError("");
+    }
+  };
+
   const handleLogin = async () => {
+    if (phone !== "07700000000" && validateIraqiPhoneNumber(phone) === false)
+      return setError("يرجى إدخال رقم هاتف صالح");
     setLoading(true);
     const resp = await apiCall({
       pathname: `/client/auth/login`,
@@ -44,6 +63,8 @@ const LoginForm = () => {
     if (resp?.message == "Login Success") {
       setIsOtp(true);
       router.replace(`/login?phone=${phone}`);
+    } else {
+      setError("يرجى إدخال رقم هاتف صالح");
     }
   };
 
@@ -62,11 +83,15 @@ const LoginForm = () => {
     if (resp.accessToken) {
       localStorage.setItem("karada-token", resp.accessToken);
       localStorage.setItem("karada-refreshToken", resp.refreshToken);
-      updateUserInfo(resp.accessToken);
+      localStorage.setItem("karada-user", JSON.stringify(resp.user));
+      updateUserInfo(resp.user);
       router.replace("/");
       setIsLogin(true);
+    } else {
+      setError("يرجى إدخال رمز التحقق صحيح");
     }
   };
+
   useEffect(() => {
     const phoneFromParams = searchParams.get("phone");
     if (phoneFromParams) {
@@ -140,6 +165,7 @@ const LoginForm = () => {
             </div>
           </Container>
         </div>
+        <div>{error && <p className="text-red-500">{error}</p>}</div>
       </div>
     );
 
@@ -153,12 +179,12 @@ const LoginForm = () => {
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            hint="اسم المستخدم"
+            hint="إسم المستخدم"
           />
           <div className="h-[16px]"></div>
           <Input
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={handlePhoneChange}
             hint="رقم الهاتف"
           />
         </div>
@@ -181,13 +207,14 @@ const LoginForm = () => {
                 className="flex items-center justify-center  h-[56px] rounded-[16px] border border-violet-600  text-violet-600 p-6"
               >
                 <span className="ml-[8px] font-bold text-[18px]">
-                  {loading ? "يرجى الانتضار..." : "تسجيل دخول"}
+                  {loading ? "يرجى الإنتظار..." : "تسجيل دخول"}
                 </span>
               </button>
             </Ripples>
           </div>
         </Container>
       </div>
+      <div>{error && <p className="text-red-500">{error}</p>}</div>
     </div>
   );
 };

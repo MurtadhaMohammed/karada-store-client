@@ -30,15 +30,17 @@ export function ReactQueryProvider({ fontStyle, children }) {
   const init = async () => {
     if (typeof window !== "undefined") {
       let token = localStorage.getItem("karada-token");
+      let user = localStorage.getItem('karada-user');
+
 
       setTimeout(() => {
         let cart = localStorage.getItem("karada-cart");
         if (cart) setCart(JSON.parse(cart));
       }, 200);
 
-      if (token && isTokenValid(token)) {
+      if (user && isTokenValid(token)) {
         setIsLogin(true);
-        updateUserInfo(token);
+        updateUserInfo(user);
       } else {
         token = await reNewToken();
         if (!token) {
@@ -48,8 +50,10 @@ export function ReactQueryProvider({ fontStyle, children }) {
           return;
         }
         localStorage.setItem("karada-token", token);
+        localStorage.setItem("karada-user", user);
+        localStorage.setItem("karada-account-name", user.name);
         setIsLogin(true);
-        updateUserInfo(token);
+        updateUserInfo(user);
       }
     }
   };
