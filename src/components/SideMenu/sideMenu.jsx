@@ -43,7 +43,7 @@ const MenuItem = ({
 };
 
 const SideMenu = () => {
-  const { isMenu, setIsMenu, isLogin, setIsLogin, userInfo, updateUserInfo } =
+  const { isMenu, setIsMenu, isLogin, setIsLogin, userInfo, updateUserInfo,setIsOtp,setOtp } =
     useAppStore();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,6 +62,8 @@ const SideMenu = () => {
     localStorage.removeItem("karada-refreshToken");
     localStorage.removeItem("karada-user");
     updateUserInfo(null);
+    setOtp(null);
+    setIsOtp(false);
     setIsLogin(false);
   };
 

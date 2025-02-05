@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { apiCall, URL } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
+import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
+
 
 const LoginForm = () => {
   const [name, setName] = useState("");
@@ -81,11 +83,11 @@ const LoginForm = () => {
     });
     setLoading(false);
     if (resp.accessToken) {
+      router.replace("/");
       localStorage.setItem("karada-token", resp.accessToken);
       localStorage.setItem("karada-refreshToken", resp.refreshToken);
       localStorage.setItem("karada-user", JSON.stringify(resp.user));
       updateUserInfo(resp.user);
-      router.replace("/");
       setIsLogin(true);
     } else {
       setError("يرجى إدخال رمز التحقق صحيح");
@@ -165,7 +167,7 @@ const LoginForm = () => {
             </div>
           </Container>
         </div>
-        <div>{error && <p className="text-red-500">{error}</p>}</div>
+        <div>{error && <p className="text-red-500 mx-[22px] my-[16px]">{error}</p>}</div>
       </div>
     );
 
@@ -214,7 +216,7 @@ const LoginForm = () => {
           </div>
         </Container>
       </div>
-      <div>{error && <p className="text-red-500">{error}</p>}</div>
+      <div>{error && <p className="text-red-500 mx-[22px] my-[16px]">{error}</p>}</div>
     </div>
   );
 };

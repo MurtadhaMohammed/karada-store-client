@@ -64,8 +64,7 @@ const LoginFormWeb = () => {
     if (resp?.message == "Login Success") {
       setIsOtp(true);
       router.replace(`/login?phone=${phone}`);
-    }
-    else {
+    } else {
       setError("يرجى إدخال رقم هاتف صالح");
     }
   };
@@ -87,11 +86,10 @@ const LoginFormWeb = () => {
       localStorage.setItem("karada-refreshToken", resp.refreshToken);
       localStorage.setItem("karada-user", JSON.stringify(resp.user));
       updateUserInfo(resp.user);
-      console.log("resp",);
       router.replace("/");
       setIsLogin(true);
     } else {
-        setError("يرجى إدخال رمز التحقق صحيح");
+      setError("يرجى إدخال رمز التحقق صحيح");
     }
   };
 
@@ -178,7 +176,9 @@ const LoginFormWeb = () => {
             hint="اسم المستخدم"
           />
           <div className="h-[16px]"></div>
-          <Input value={phone} onChange={handlePhoneChange} hint="رقم الهاتف" />
+          <Input value={phone}
+           onChange={handlePhoneChange}
+            hint="رقم الهاتف" />
         </div>
         <div>{error && <p className="text-red-500">{error}</p>}</div>
         <div
