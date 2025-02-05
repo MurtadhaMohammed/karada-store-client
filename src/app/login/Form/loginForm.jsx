@@ -92,11 +92,12 @@ const LoginForm = () => {
                 سوف تصلك رسالة تأكيد عبر ال SMS.
               </span>
             </div>
-            <OtpInput
+           <div>
+           <OtpInput
               value={otp}
               onChange={handleChange}
               numInputs={6}
-              separator={<span className="m-1"></span>}
+              // separator={<span className="m-1"></span>}
               inputStyle={{
                 width: 48,
                 height: 48,
@@ -108,9 +109,10 @@ const LoginForm = () => {
                 width: "100%",
                 justifyContent: "center",
                 direction: "ltr",
-                gap: "8x",
+                gap: "8px",
               }}
             />
+           </div>
           </div>
         </Container>
 
