@@ -9,9 +9,10 @@ import { useAppStore } from "@/lib/store";
 import Empty from "@/components/Empty/empty";
 import { VscSearchStop } from "react-icons/vsc";
 import { useEffect } from "react";
+import { set } from "nprogress";
 
 const ProductList = ({ groupId, groupName }) => {
-  const { querySearch, queryString, setPageTitle } = useAppStore();
+  const { querySearch, queryString, setSearchResult, setPageTitle } = useAppStore();
   const limit = 12;
 
   const getUrl = (pageParam) => ({
@@ -46,6 +47,13 @@ const ProductList = ({ groupId, groupName }) => {
   });
 
   useEffect(() => {
+    if (data?.pages) {
+      const total = data.pages[0]?.total;
+      setSearchResult(total); 
+    }
+  }, [data, setSearchResult]);
+
+  useEffect(() => {
     if (
       data &&
       data?.pages[0] &&
@@ -53,29 +61,29 @@ const ProductList = ({ groupId, groupName }) => {
       groupId !== "all" &&
       groupName !== "brand"
     )
-      setPageTitle(data?.pages[0]?.bannerTitle);
+    setPageTitle(data?.pages[0]?.bannerTitle);
     else if (
       data &&
       data?.pages[0]?.products?.length > 0 &&
       groupName === "brand"
     )
-      setPageTitle(data.pages[0]?.products[0]?.brand?.name);
+    setPageTitle(data.pages[0]?.products[0]?.brand?.name);
     else if (groupName === "brand") setPageTitle("...");
   }, [data]);
-
+  
   if (isLoading) return <ProductSkeleton />;
   if (isError || error) return <div>Error loading products.</div>;
   if (data?.pages[0]?.total === 0)
     return (
-      <Empty
-        icon={<VscSearchStop className="text-[100px]" />}
-        title="لا توجد نتائج!."
-        msg="لاتوجد منتجات مطابقة لبحثك"
-        href={"/"}
-        top={14}
-        // buttonText={"عودة للرئيسية"}
-      />
-    );
+  <Empty
+  icon={<VscSearchStop className="text-[100px]" />}
+  title="لا توجد نتائج!."
+  msg="لاتوجد منتجات مطابقة لبحثك"
+  href={"/"}
+  top={14}
+  // buttonText={"عودة للرئيسية"}
+  />
+);
 
   return (
     <div className="pt-[12px]">

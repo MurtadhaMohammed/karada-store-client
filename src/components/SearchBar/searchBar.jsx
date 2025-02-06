@@ -8,12 +8,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useAppStore } from "@/lib/store";
 import { apiCall, IMAGE_URL } from "@/lib/api";
-import { IoFilter } from "react-icons/io5";
+import { IoFilter, IoCloseSharp } from "react-icons/io5";
 import Ripples from "react-ripples";
 import {
   BottomSheetModal,
   useBottomSheetModal,
 } from "../UI/BottomSheetModal/bottomSheetModal";
+import Image from "next/image";
 
 const filtersTags = [
   {
@@ -40,7 +41,9 @@ const SearchBar = () => {
   const [filters, setFilters] = useState(["all"]);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const { querySearch, setQuerySearch, setQueryString } = useAppStore();
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const { querySearch, setQuerySearch, setQueryString, searchResult } =
+    useAppStore();
   const pathname = usePathname();
   const { closeModal } = useBottomSheetModal();
 
@@ -65,6 +68,7 @@ const SearchBar = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
+      if (search.length > 0) setShowSuggestions(true);
     }, 300);
 
     return () => clearTimeout(handler);
@@ -100,7 +104,8 @@ const SearchBar = () => {
   });
   const submitSearch = () => {
     setQuerySearch(search);
-    setIsSearch(false);
+    setShowSuggestions(false);
+    // setIsSearch(false);
   };
 
   const handleKeyDown = ({ key }) => {
@@ -139,7 +144,9 @@ const SearchBar = () => {
   const activeTagStyle =
     "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] border border-[#eee]";
   const unactiveTagStyle = "border border-[#eee] bg-[#fff]";
-
+  const closeSuggestions = () => {
+    setShowSuggestions(false);
+  };
   return (
     <div>
       <Link href={"/products/search/all"}>
@@ -175,31 +182,51 @@ const SearchBar = () => {
                 placeholder="ابحث عن منتج"
               />
 
-              {isSearch && suggestions?.products?.length > 0 && (
-                <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
-                  {isFetching ? (
-                    <div className="p-2 text-gray-500">جاري التحميل...</div>
-                  ) : (
-                    suggestions.products?.map((item) => (
-                      <Link key={item.id} href={`/product/${item.id}`}>
-                        <div
-                          className="p-2 hover:bg-gray-100 cursor-pointer"
-                          onClick={() => setSearch(item.name)}
-                        >
-                          {item.name}
+              {isSearch &&
+                showSuggestions &&
+                suggestions?.products?.length > 0 && (
+                  <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
+                    {isFetching ? (
+                      <div className="p-2 text-gray-500">جاري التحميل...</div>
+                    ) : (
+                      <div>
+                        <div className="p-2  flex justify-between">
+                          <div className="text-gray-500">قائمة المقترحات:</div>
+                          <div onClick={closeSuggestions} className="">
+                            <IoCloseSharp size={22} />
+                          </div>
                         </div>
-                      </Link>
-                    ))
-                  )}
-                </div>
-              )}
+
+                        {suggestions.products?.map((item) => (
+                          <div
+                            key={item.id}
+                            className="flex justify-between items-center"
+                          >
+                            <Link key={item.id} href={`/product/${item.id}`}>
+                              <div
+                                className="p-2 hover:bg-gray-100 cursor-pointer"
+                                onClick={() => setSearch(item.name)}
+                              >
+                                {item.name}
+                              </div>
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
 
               {isSearch &&
+                showSuggestions &&
                 search.length > 2 &&
                 suggestions?.products?.length === 0 &&
                 !isFetching && (
-                  <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
+                  <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50 flex justify-between items-center">
                     <div className="p-2 text-gray-500">لا توجد اقتراحات</div>
+                    <div onClick={closeSuggestions} className="ml-2">
+                      <IoCloseSharp size={22} />
+                    </div>
                   </div>
                 )}
             </div>
@@ -214,7 +241,7 @@ const SearchBar = () => {
                 </Link>
                 <p className="text-[#a5a5a5] text-[16px]">
                   نتائج البحث
-                  <span className="font-bold mr-1">1232</span>
+                  <span className="font-bold mr-1">{searchResult}</span>
                 </p>
               </div>
             )}
@@ -300,16 +327,17 @@ const SearchBar = () => {
                   <div
                     key={brand.id}
                     onClick={() => handleBrandSelect(brand.id)}
-                    className={`aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg bg-[#f6f6f6] cursor-pointer ${
+                    className={`aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg cursor-pointer ${
                       filters?.find((key) => key === `brand_id=${brand.id}`)
                         ? "border-2 border-indigo-600"
                         : "border border-transparent"
                     }`}
                   >
-                    <img
+                    <Image
                       src={`${IMAGE_URL}/${brand.img}`}
                       alt={brand.name}
-                      className="w-full h-full object-cover"
+                      fill
+                      style={{ objectFit: "contain" }}
                       priority
                     />
                   </div>

@@ -5,16 +5,33 @@ import IconButton from "../UI/IconButton/iconButton";
 import Drawer from "../UI/Drawer/drawer";
 import { CgClose } from "react-icons/cg";
 import { LuUser, LuSettings2, LuLogOut, LuShare2 } from "react-icons/lu";
-import { BiSupport } from "react-icons/bi";
+import { BiSupport, BiBook, BiChevronDown, BiChevronUp } from "react-icons/bi";
+import { MdOutlinePrivacyTip } from "react-icons/md";
+import { FaBookOpen } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import DotAlert from "../UI/DotAlert/dotAlert";
+import Button from "../UI/Button/button";
+import Modal from "../Modal/modal";
+import { useState, useEffect } from "react";
+import { apiCall } from "@/lib/api";
+import { FaTruck } from "react-icons/fa6";
+import { TbCreditCardRefund } from "react-icons/tb";
+import { MdOutlinePayment } from "react-icons/md";
 
-const MenuItem = ({ isDot = false, title, icon, onClick = () => {} , isLink= false}) => {
+const MenuItem = ({
+  isDot = false,
+  title,
+  icon,
+  onClick = () => {},
+  isLink = false,
+}) => {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center mb-[28px] active:scale-[0.96] active:opacity-60 transition-all ${isLink ? "app-link" :""}`}
+      className={`flex items-center mb-[28px] active:scale-[0.96] active:opacity-60 transition-all ${
+        isLink ? "app-link" : ""
+      }`}
     >
       {icon}
       <div className="relative">
@@ -26,15 +43,49 @@ const MenuItem = ({ isDot = false, title, icon, onClick = () => {} , isLink= fal
 };
 
 const SideMenu = () => {
-  const { isMenu, setIsMenu, isLogin, setIsLogin, userInfo, updateUserInfo } =
+  const { isMenu, setIsMenu, isLogin, setIsLogin, userInfo, updateUserInfo,setIsOtp,setOtp } =
     useAppStore();
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [platform, setPlatform] = useState(null);
+  const [showPolicies, setShowPolicies] = useState(false);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const platformQuery = queryParams.get("platform");
+    setPlatform(platformQuery);
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("karada-token");
     localStorage.removeItem("karada-refreshToken");
-    updateUserInfo();
+    localStorage.removeItem("karada-user");
+    updateUserInfo(null);
+    setOtp(null);
+    setIsOtp(false);
     setIsLogin(false);
+  };
+
+  const deleteAccount = async () => {
+    setLoading(true);
+    try {
+      const resp = await apiCall({
+        pathname: `/client/auth/deleteAccount`,
+        method: "DELETE",
+        data: {
+          phone: userInfo.phone,
+        },
+      });
+      if (resp?.success) {
+        console.log(resp?.success);
+        setLoading(false);
+        setIsModalOpen(false);
+        logout();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -94,11 +145,65 @@ const SideMenu = () => {
           <MenuItem
             title={"التواصل مع الدعم"}
             icon={<BiSupport className="text-[24px]" />}
-            onClick={()=>{
+            onClick={() => {
               setIsMenu(false);
               router.push("/contactUs");
             }}
           />
+          <MenuItem
+            title={
+              <div className="flex items-center gap-16">
+                <span>سياسات الإستخدام</span>
+                <button onClick={() => setShowPolicies(!showPolicies)}>
+                  {showPolicies ? (
+                    <BiChevronUp className="text-[24px]" />
+                  ) : (
+                    <BiChevronDown className="text-[24px]" />
+                  )}
+                </button>
+              </div>
+            }
+            icon={<MdOutlinePrivacyTip className="text-[24px]" />}
+            onClick={() => setShowPolicies(!showPolicies)}
+            isLink
+          />
+          {showPolicies && (
+            <div className="mr-7">
+              {" "}
+              <MenuItem
+                title={"سياسة الخصوصية"}
+                icon={<BiBook className="text-[20px]" />}
+                onClick={() => {
+                  setIsMenu(false);
+                  router.push("/policies/privicy");
+                }}
+              />
+              <MenuItem
+                title={"التوصيل"}
+                icon={<FaTruck className="text-[20px]" />}
+                onClick={() => {
+                  setIsMenu(false);
+                  router.push("/policies/delivery");
+                }}
+              />
+              <MenuItem
+                title={"سياسة لدفع"}
+                icon={<MdOutlinePayment className="text-[20px]" />}
+                onClick={() => {
+                  setIsMenu(false);
+                  router.push("/policies/payments");
+                }}
+              />
+              <MenuItem
+                title={"سياسة الإسرجاع "}
+                icon={<TbCreditCardRefund className="text-[20px]" />}
+                onClick={() => {
+                  setIsMenu(false);
+                  router.push("/policies/refund");
+                }}
+              />
+            </div>
+          )}
           <MenuItem
             title={"مشاركة التطبيق"}
             icon={<LuShare2 className="text-[24px]" />}
@@ -112,12 +217,58 @@ const SideMenu = () => {
           )}
         </div>
       </section>
-      <p className="absolute bottom-4 text-center left-0 right-0 text-[14px] text-[#a5a5a5]">
-        Pawered by{" "}
-        <a className="text-[#0000ff]" href="puretike.com" target="_blank">
-          PureTike
-        </a>
-      </p>
+      <div className="flex p-8 absolute bottom-4 items-center justify-center w-full">
+        {isLogin && (platform === "ios" || platform === "android") && (
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className="text-[#ff0000] font-semiBold hover:bg-[#ffebee] transition-all border-[#ff0000] border w-full"
+          >
+            حذف الحساب
+          </Button>
+        )}
+      </div>
+
+      {isModalOpen && (
+        <Modal
+          title="تأكيد الحذف"
+          description="هل أنت متأكد أنك تريد حذف الحساب؟ "
+          primaryButton={{
+            text: "حذف",
+            onClick: deleteAccount,
+          }}
+          secondaryButton={{
+            text: "إلغاء",
+            onClick: () => setIsModalOpen(false),
+          }}
+          isLoading={loading}
+        />
+      )}
+
+<p className="absolute bottom-4 text-center left-0 right-0 text-[14px] text-[#a5a5a5]">
+  Powered by{" "}
+  {platform === "ios" || platform === "android" ? (
+    <a
+      className="text-[#0000ff]"
+      href="https://puretik.com"
+      onClick={(e) => {
+        e.preventDefault();
+        window.open("https://puretik.com", "_blank", "noopener,noreferrer");
+      }}
+    >
+      PureTik
+    </a>
+  ) : (
+    <a
+      className="text-[#0000ff]"
+      href="https://puretik.com"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      PureTik
+    </a>
+  )}
+</p>
+
     </Drawer>
   );
 };

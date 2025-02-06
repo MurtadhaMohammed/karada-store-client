@@ -14,7 +14,9 @@ import { useAppStore } from "@/lib/store";
 import ProductCtaWeb from "../ProductCTAWeb/productCtaWeb";
 import ImageModal from "@/components/ImageModal/imageModal";
 import IconButton from "@/components/UI/IconButton/iconButton";
+import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 const OptionTag = ({ name, color, active = false, onClick }) => {
+
   return (
     <button
       onClick={onClick}
@@ -168,6 +170,7 @@ const ProductInfoWeb = ({ product }) => {
           </section>
 
           <section className="border-r border-r-[#eee] pr-8">
+              <InstallmentBanner price={endPrice} />
             <div className="flex items-center gap-2 mt-[16px] pb-4">
             <IconButton
                   rounded={"8px"}

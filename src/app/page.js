@@ -8,7 +8,7 @@ import SingleBannerPure from "@/components/SingleBannerPure/singleBannerPure";
 import Link from "next/link";
 
 import { URL } from "@/lib/api";
-
+import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 async function getViews() {
   const res = await fetch(`${URL}/client/view/homeView`, {
     method: "GET",
@@ -64,19 +64,19 @@ export default async function Home() {
             return null;
         }
       };
-    
+
       // Wrap banner content in a link only if the link starts with "/view"
       if (banner.link && banner.link.startsWith("/view")) {
-        return ( 
+        return (
           <Link key={banner.id} href={banner.link} passHref>
             <a>{bannerContent()}</a>
           </Link>
         );
       }
-    
+
       // Render the banner content normally if no valid link is found
       return <div key={banner.id}>{bannerContent()}</div>;
-    };    
+    };
 
     return (
       <div className="pb-[100px]">
@@ -90,6 +90,8 @@ export default async function Home() {
     );
   } catch (error) {
     console.error("Error fetching view data:", error);
-    return <div>Failed to load content</div>;
+    return <div>
+      <ErrorBoundary/>
+    </div>;
   }
 }

@@ -1,6 +1,12 @@
 import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 
+const getInitialFavorites = () => {
+  if (typeof window === "undefined") return [];
+  const favorites = localStorage.getItem("favorites_product");
+  return favorites ? JSON.parse(favorites) : [];
+};
+
 export const useAppStore = create((set, get) => ({
   installmentId: null,
   isInstallment: false,
@@ -14,7 +20,7 @@ export const useAppStore = create((set, get) => ({
   querySearch: "",
   queryString: "",
   otp: null,
-  favorites: [],
+  favorites: getInitialFavorites(),
   isPhoneValidated: false,
   userCheckoutInfo: {},
   searchResult: null,
@@ -46,10 +52,11 @@ export const useAppStore = create((set, get) => ({
     return set({ favorites: newArr });
   },
 
-  updateUserInfo: (token) => {
+  updateUserInfo: () => {
     if (typeof window === "undefined") return;
-    if (!token) return set({ userInfo: {} });
-    const userInfo = jwtDecode(token);
+    const user = JSON.parse(localStorage.getItem("karada-user"));
+    if (!user) return set({ userInfo: {} });
+    const userInfo = user;
     localStorage.setItem("karada-account-name", userInfo?.name);
     return set({ userInfo });
   },

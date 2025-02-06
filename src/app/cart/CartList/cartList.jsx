@@ -10,9 +10,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useCartStore } from "@/lib/cartStore";
 import { IMAGE_URL } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
-// import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
+import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+import { isEnglish } from "@/helper/isEnglish";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -67,12 +68,12 @@ const CartItem = ({ item }) => {
           />
           <div className="flex-1 flex flex-col justify-between items-start">
             <div>
-              <b className="text-[14px] whitespace-nowrap overflow-hidden text-ellipsis">
+              <b className={` text-[14px] whitespace-nowrap overflow-hidden text-ellipsis max-w-[280px] block ${isEnglish(item?.product?.name) ? "dots" : ""}`}>
                 {item?.product?.name}
               </b>
-              <p className="text-[14px] text-[#a5a5a5]">
+              <p className={`text-[14px] text-[#a5a5a5] whitespace-nowrap text-ellipsis overflow-hidden max-w-[200px] block ${isEnglish(item?.product?.shortDescription) ? "dot" : ""}`}>
                 {item?.product?.l1?.name ||
-                  `${item?.product?.shortDescription.substr(0, 20)}...`}
+                  `${item?.product?.shortDescription}`}
               </p>
             </div>
             <div className="flex items-end justify-between w-full">
@@ -103,8 +104,8 @@ const CartItem = ({ item }) => {
 
 const CartList = () => {
   const router = useRouter();
-  const { cart, getItemsTotal } = useCartStore();
-
+  const { cart, getItemsTotal, getTotal } = useCartStore();
+  const total = getTotal();
   useEffect(() => {
     router.prefetch("/checkout");
   }, [router]);
@@ -119,7 +120,7 @@ const CartList = () => {
       <Empty
         icon={<TbShoppingCartExclamation />}
         title="لا توجد منتجات!."
-        msg="قم بأظافة منتجات لمتابعة التسوق."
+        msg="قم بإضافة منتجات لمتابعة التسوق."
         href={"/"}
         buttonText={"عودة للرئيسية"}
       />
@@ -132,7 +133,11 @@ const CartList = () => {
           <InstallmentBanner />
         </div>
       </Container> */}
-
+      <div className="bg-white pt-[16px] pb-[16px]">
+      <Container>
+        <InstallmentBanner className={"none"} price={total} />
+      </Container>
+      </div>
       {getItemsTotal() !== 0 &&
         cart?.map((el, i) => <CartItem key={i} item={el} />)}
       <RelatedList productId={productId} />

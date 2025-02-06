@@ -77,7 +77,7 @@ const Footer = () => {
         </div>
       </Container>
       <div className="absolute left-0 right-0 bottom-4 text-center z-10 text-[#fff] text-[14px]">
-        جميع الحقوق محفوظة © 2024 KaradaStore
+        جميع الحقوق محفوظة © 2025 KaradaStore
       </div>
     </div>
   );

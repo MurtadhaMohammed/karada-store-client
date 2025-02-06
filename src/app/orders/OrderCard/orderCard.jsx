@@ -168,6 +168,12 @@ const OrderCard = ({ order }) => {
       bar: `bg-gradient-to-r  from-[#3ab54a] to-[#22b636] ${styles.statusBar80}`,
     },
     Delivered: {
+      color: "text-[#52c41a]",
+      bg: "bg-gradient-to-r from-[#52c41a] to-[#8dee5e]",
+      text: "تم توصيل الطلب",
+      bar: `bg-gradient-to-r  from-[#3ab54a] to-[#22b636] ${styles.statusBar100}`,
+    },
+    Completed: {
       color: "text-[#000]",
       bg: "bg-gradient-to-r from-[#52c41a] to-[#8dee5e]",
       text: itemNames,

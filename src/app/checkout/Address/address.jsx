@@ -64,7 +64,6 @@ const Address = () => {
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     setPhone(value);
-
     const isValid = validateIraqiPhoneNumber(value);
     // setPhoneError(value.trim() ? null : isValid ? null : "يرجى إدخال رقم هاتف صالح");
     setIsPhoneValidated(isValid);

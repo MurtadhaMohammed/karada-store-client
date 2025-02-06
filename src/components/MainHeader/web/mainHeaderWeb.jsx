@@ -11,14 +11,17 @@ import { TbShoppingCart, TbHeart } from "react-icons/tb";
 import { RiShoppingBag3Line } from "react-icons/ri";
 
 const MainHeaderWeb = () => {
-  const { userInfo, isLogin, setIsLogin, updateUserInfo } = useAppStore();
+  const { userInfo, isLogin, setIsLogin, updateUserInfo,setIsOtp,setOtp } = useAppStore();
   const pathname = usePathname();
   const { scrollDirection, scrollPosition } = useScrollPosition();
   const user = userInfo
   const logout = () => {
     localStorage.removeItem("karada-token");
     localStorage.removeItem("karada-refreshToken");
-    updateUserInfo();
+    localStorage.removeItem("karada-user");
+    updateUserInfo(null);
+    setIsOtp(false);
+    setOtp(null);
     setIsLogin(false);
   };
 
