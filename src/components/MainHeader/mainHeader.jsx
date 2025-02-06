@@ -35,17 +35,17 @@ const MainHeader = () => {
         setPageTitle("قائمة الطلبات");
         break;
       case "/policies/privicy":
-          setPageTitle("سياسة الخصوصية");
-          break;
+        setPageTitle("سياسة الخصوصية");
+        break;
       case "/policies/payments":
-            setPageTitle("سياسة الدفع");
-          break;
+        setPageTitle("سياسة الدفع");
+        break;
       case "/policies/refund":
-            setPageTitle("سياسة الإسترجاع");
-          break;
+        setPageTitle("سياسة الإسترجاع");
+        break;
       case "/policies/delivery":
-            setPageTitle("سياسة التوصيل");
-          break;
+        setPageTitle("سياسة التوصيل");
+        break;
       case "/products/search/all":
         setPageTitle("البحث");
         break;
@@ -58,7 +58,6 @@ const MainHeader = () => {
     }
   }, [pathname]);
 
-
   if (pathname.split("/")[1] === "product") return;
 
   if (
@@ -69,7 +68,11 @@ const MainHeader = () => {
     pathname !== "/brands"
   )
     return (
-      <header className="md:hidden h-[64px] shadow-[0_4px_20px_rgb(0,0,0,0.06)] border-b border-b-[#f0f0f0] sticky top-0 bg-white z-20">
+      <header
+        className={`md:hidden h-[64px] shadow-[0_4px_20px_rgb(0,0,0,0.06)] border-b border-b-[#f0f0f0]  bg-white z-20 ${
+          pathname === "/login" ? "fixed top-0 right-0 left-0" : "sticky top-0"
+        }`}
+      >
         <Motion y={-6}>
           <Container>
             <div className="flex items-center justify-between h-[64px]">
