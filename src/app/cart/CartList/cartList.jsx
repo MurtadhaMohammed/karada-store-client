@@ -68,10 +68,10 @@ const CartItem = ({ item }) => {
           />
           <div className="flex-1 flex flex-col justify-between items-start">
             <div>
-              <b className={` text-[14px] whitespace-nowrap overflow-hidden text-ellipsis max-w-[280px] block ${isEnglish(item?.product?.name) ? "dots" : ""}`}>
+              <b className={` text-[14px] whitespace-nowrap overflow-hidden text-ellipsis max-w-[280px] block ${isEnglish(item?.product?.name) ? "" : ""}`}>
                 {item?.product?.name}
               </b>
-              <p className={`text-[14px] text-[#a5a5a5] whitespace-nowrap text-ellipsis overflow-hidden max-w-[200px] block ${isEnglish(item?.product?.shortDescription) ? "dot" : ""}`}>
+              <p className={`text-[14px] text-[#a5a5a5] whitespace-nowrap text-ellipsis overflow-hidden max-w-[200px] block ${isEnglish(item?.product?.shortDescription) ? "" : ""}`}>
                 {item?.product?.l1?.name ||
                   `${item?.product?.shortDescription}`}
               </p>

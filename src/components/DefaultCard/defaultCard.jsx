@@ -94,14 +94,14 @@ const DefaultCard = ({
           <div>
             <h2
               className={`font-semih2old text-black text-[14px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis ${
-                isEnglish(item?.name) ? "dots" : ""
+                isEnglish(item?.name) ? "" : ""
               }`}
             >
               {item?.name}
             </h2>
             <p
               className={`text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis ${
-                isEnglish(item?.shortDescription) ? "dots" : ""
+                isEnglish(item?.shortDescription) ? "" : ""
               }`}
             >
               {item?.shortDescription}
