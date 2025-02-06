@@ -110,7 +110,7 @@ const LoginForm = () => {
 
   if (isOtp)
     return (
-      <div>
+      <div className="pt-[60px]">
         <Container>
           <div className="mt-[36px]">
             <div className="text-center mb-[16px]">
@@ -172,7 +172,7 @@ const LoginForm = () => {
     );
 
   return (
-    <div>
+    <div className="pt-[60px]">
       <Container>
         <div className="mt-[26px]">
           <div className="mb-[16px] text-center">
