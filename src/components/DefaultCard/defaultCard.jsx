@@ -1,13 +1,10 @@
 "use client";
 import Image from "next/image";
-import { PiStarFill } from "react-icons/pi";
 import { CgClose } from "react-icons/cg";
 import IconButton from "../UI/IconButton/iconButton";
 import Link from "next/link";
 import { IMAGE_URL } from "@/lib/api";
-import useIsScreenMd from "@/hooks/useIsScreenMd";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
-import { useEffect, useState } from "react";
 import { useAppStore } from "@/lib/store";
 import { isEnglish } from "@/helper/isEnglish";
 
@@ -87,6 +84,8 @@ const DefaultCard = ({
               fill
               style={{ objectFit: "cover" }}
               alt="image"
+              placeholder="blur"
+              blurDataURL={"/logo4.png"}
             />
           </div>
         </div>
