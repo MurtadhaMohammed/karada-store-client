@@ -21,7 +21,7 @@ class ErrorBoundary extends Component {
   };
 
   render() {
-    if (this.state.hasError) {
+    // if (this.state.hasError) {
       return (
         <div className="flex flex-col  h-screen items-center justify-center  bg-gray-100 text-center">
           <FaExclamationTriangle className="text-red-500 text-6xl mb-6" />
@@ -39,7 +39,7 @@ class ErrorBoundary extends Component {
           </button>
         </div>
       );
-    }
+    // }
 
     return this.props.children;
   }

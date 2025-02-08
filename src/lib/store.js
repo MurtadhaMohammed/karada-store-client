@@ -1,6 +1,12 @@
 import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 
+const getInitialFavorites = () => {
+  if (typeof window === "undefined") return [];
+  const favorites = localStorage.getItem("favorites_product");
+  return favorites ? JSON.parse(favorites) : [];
+};
+
 export const useAppStore = create((set, get) => ({
   installmentId: null,
   isInstallment: false,
@@ -14,7 +20,7 @@ export const useAppStore = create((set, get) => ({
   querySearch: "",
   queryString: "",
   otp: null,
-  favorites: [],
+  favorites: getInitialFavorites(),
   isPhoneValidated: false,
   userCheckoutInfo: {},
   searchResult: null,

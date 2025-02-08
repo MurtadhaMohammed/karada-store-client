@@ -7,6 +7,7 @@ import OffersBanner from "@/components/offersBanner/offersBanner";
 import SingleBannerPure from "@/components/SingleBannerPure/singleBannerPure";
 
 import { URL } from "@/lib/api";
+import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 
 async function getViews(id) {
   const res = await fetch(`${URL}/client/view/viewById/${id}`, {
@@ -80,6 +81,6 @@ export default async function DynamicHomePage({ params }) {
     );
   } catch (error) {
     console.error("Error fetching view data:", error);
-    return <div>Failed to load content</div>;
+    return <div><ErrorBoundary/></div>;
   }
 }

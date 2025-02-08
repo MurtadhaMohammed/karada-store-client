@@ -10,6 +10,7 @@ import HomeSkeleton from "./Skeleton/skeleton";
 import MainHeaderWeb from "@/components/MainHeader/web/mainHeaderWeb";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 import Footer from "@/components/Footer/footer";
+import Head from "next/head";
 
 
 
@@ -130,15 +131,18 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html>
-        <ReactQueryProvider fontStyle={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}>
-          <ProgressBar />
-          <MainHeader />
-          <MainHeaderWeb />
-          {children}
-          <BottomNabar />
-          <Footer/>
-          <SideMenu />
-        </ReactQueryProvider>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+      </Head>
+      <ReactQueryProvider fontStyle={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}>
+        <ProgressBar />
+        <MainHeader />
+        <MainHeaderWeb />
+        {children}
+        <BottomNabar />
+        <Footer />
+        <SideMenu />
+      </ReactQueryProvider>
     </html>
   );
 }
