@@ -6,7 +6,7 @@ import Link from "next/link";
 import { IMAGE_URL } from "@/lib/api";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { useAppStore } from "@/lib/store";
-import { isEnglish } from "@/helper/isEnglish";
+// import { isEnglish } from "@/helper/isEnglish";
 
 const DefaultCard = ({
   item,
@@ -93,16 +93,12 @@ const DefaultCard = ({
         <div className="p-3 pt-2 pb-2 border-t border-t-[#eee] flex flex-col justify-between flex-1 h-[100%]">
           <div>
             <h2
-              className={`font-semih2old text-black text-[14px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis ${
-                isEnglish(item?.name) ? "dots" : ""
-              }`}
+              className={`font-semih2old text-black text-[14px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis`}
             >
               {item?.name}
             </h2>
             <p
-              className={`text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis ${
-                isEnglish(item?.shortDescription) ? "dots" : ""
-              }`}
+              className={`text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis`}
             >
               {item?.shortDescription}
             </p>
