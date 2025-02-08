@@ -71,7 +71,6 @@ const DefaultCard = ({
       ) : (
         ""
       )}
-
       <Link href={`/product/${item?.id}`} className="flex flex-col h-full">
         <div className={`flex items-center justify-center`}>
           <div
