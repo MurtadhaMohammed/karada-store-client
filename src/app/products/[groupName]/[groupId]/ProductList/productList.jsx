@@ -9,7 +9,6 @@ import { useAppStore } from "@/lib/store";
 import Empty from "@/components/Empty/empty";
 import { VscSearchStop } from "react-icons/vsc";
 import { useEffect } from "react";
-import { set } from "nprogress";
 
 const ProductList = ({ groupId, groupName }) => {
   const { querySearch, queryString, setSearchResult, setPageTitle } = useAppStore();

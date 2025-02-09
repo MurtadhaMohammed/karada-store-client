@@ -1,11 +1,18 @@
 "use client";
+import { useEffect } from "react";
 import Image from "next/image";
 import Container from "../UI/Container/container";
 import Button from "../UI/Button/button";
 import { FaArrowLeft } from "react-icons/fa6";
 import { IMAGE_URL } from "@/lib/api";
+import { useAppStore } from "@/lib/store";
 
-const SingleBanner = ({ banner }) => {
+const SingleBanner = ({ banner, title }) => {
+  const { setPageTitle } = useAppStore();
+
+  useEffect(() => {
+    setPageTitle(title);
+  }, []);
   return (
     <div className="md:mt-[24px] md:mb-[24px] mt-[16px] mb-[16px]">
       <Container>
@@ -15,7 +22,7 @@ const SingleBanner = ({ banner }) => {
               src={`${IMAGE_URL}/${banner?.img}`}
               fill
               alt={banner.title || "Single Banner"}
-              style={{ objectFit: "cover" }} 
+              style={{ objectFit: "cover" }}
             />
           </div>
           <div className="p-[12px] pr-[16] relative">

@@ -1,18 +1,24 @@
 "use client";
 import Image from "next/image";
 import Container from "../UI/Container/container";
+import { useAppStore } from "@/lib/store";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { IMAGE_URL } from "@/lib/api";
+import { useEffect } from "react";
 
 // Import Swiper styles
 import "swiper/css";
 import { useState } from "react";
 import Link from "next/link";
 
-export default function SliderBanner({ banners }) {
+export default function SliderBanner({ banners, title }) {
+  const { setPageTitle } = useAppStore();
   const [current, setCurrent] = useState(0);
   const slider = banners?.slider;
+  useEffect(() => {
+    setPageTitle(title);
+  }, []);
   return (
     <div className="mt-[16px] mb-[16px] w-full">
       <Container noPadding>

@@ -68,7 +68,7 @@ const CartItem = ({ item }) => {
           />
           <div className="flex-1 flex flex-col justify-between items-start">
             <div>
-              <b className={` text-[14px] whitespace-nowrap overflow-hidden text-ellipsis max-w-[280px] block ${isEnglish(item?.product?.name) ? "dots" : ""}`}>
+              <b className={` text-[14px] whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] block ${isEnglish(item?.product?.name) ? "dots" : ""}`}>
                 {item?.product?.name}
               </b>
               <p className={`text-[14px] text-[#a5a5a5] whitespace-nowrap text-ellipsis overflow-hidden max-w-[200px] block ${isEnglish(item?.product?.shortDescription) ? "dot" : ""}`}>
@@ -80,7 +80,7 @@ const CartItem = ({ item }) => {
               {item?.product?.endPrice !== item.product.price ? (
                 <div className="flex flex-col items-start">
                   <p className="text-[14px] block line-through text-[#a5a5a5]">
-                    {Number(item.product.price).toLocaleString("en")}
+                    {Number(item.product.price).toLocaleString("en")} 
                   </p>
                   <b className="text-[16px]">
                     {Number(item.product.endPrice).toLocaleString("en")}{" "}
