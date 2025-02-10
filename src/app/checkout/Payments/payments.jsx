@@ -98,13 +98,13 @@ const Payments = () => {
           closeModal();
         }}
       />
-      <InstallmentModal
+      {/* <InstallmentModal
         onFinish={(value) => {
           setCardInfo(value);
           setSelected("installment");
           closeModal();
         }}
-      />
+      /> */}
     </div>
   );
 };
