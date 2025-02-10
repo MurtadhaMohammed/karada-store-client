@@ -33,16 +33,6 @@ const LoginFormWeb = () => {
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     setPhone(value);
-    if (value !== "07700000000") {
-      const isValid = validateIraqiPhoneNumber(value);
-      if (!isValid && value.length > 0) {
-        setError("يرجى إدخال رقم هاتف صالح");
-      } else {
-        setError("");
-      }
-    } else {
-      setError("");
-    }
   };
   const handleChange = (otp) => setOtp(otp);
 
@@ -64,8 +54,7 @@ const LoginFormWeb = () => {
     if (resp?.message == "Login Success") {
       setIsOtp(true);
       router.replace(`/login?phone=${phone}`);
-    }
-    else {
+    } else {
       setError("يرجى إدخال رقم هاتف صالح");
     }
   };
@@ -87,11 +76,10 @@ const LoginFormWeb = () => {
       localStorage.setItem("karada-refreshToken", resp.refreshToken);
       localStorage.setItem("karada-user", JSON.stringify(resp.user));
       updateUserInfo(resp.user);
-      console.log("resp",);
       router.replace("/");
       setIsLogin(true);
     } else {
-        setError("يرجى إدخال رمز التحقق صحيح");
+      setError("يرجى إدخال رمز التحقق صحيح");
     }
   };
 
@@ -168,7 +156,7 @@ const LoginFormWeb = () => {
   return (
     <>
       <div className="max-w-[360px] m-auto mt-[20vh]">
-        <div>
+        <div className="flex flex-col items-start justify-center">
           <div className="mb-[16px] text-center">
             {/* <b className="text-[18px]">مرحباً بك.</b> */}
           </div>
@@ -179,8 +167,9 @@ const LoginFormWeb = () => {
           />
           <div className="h-[16px]"></div>
           <Input value={phone} onChange={handlePhoneChange} hint="رقم الهاتف" />
+
+          <div>{error && <p className="text-red-500 mr-[8px]">{error}</p>}</div>
         </div>
-        <div>{error && <p className="text-red-500">{error}</p>}</div>
         <div
           className="active:scale-[0.96] transition-all mt-[24px]"
           style={{

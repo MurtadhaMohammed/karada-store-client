@@ -24,6 +24,9 @@ export const useAppStore = create((set, get) => ({
   isPhoneValidated: false,
   userCheckoutInfo: {},
   searchResult: null,
+  validateAddress: false,
+  setValidateAddress: (validateAddress) =>
+    set({ validateAddress: validateAddress }),
   setSearchResult: (result) => set({ searchResult: result }),
   setUserCheckoutInfo: (info) => set({ userCheckoutInfo: info }),
   setInstallmentId: (id) => set({ installmentId: id }),

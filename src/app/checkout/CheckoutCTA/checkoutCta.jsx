@@ -21,6 +21,8 @@ const CheckoutCTA = () => {
     setOtp,
     isLogin,
     isPhoneValidated,
+    validateAddress,
+    setValidateAddress,
   } = useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
@@ -46,7 +48,7 @@ const CheckoutCTA = () => {
     }
   }, [userCheckoutInfo]);
 
-  console.log(userInfo)
+  console.log(userInfo);
   const items = useMemo(() => {
     return cart?.map((item) => ({
       id: item.product.id,
@@ -81,6 +83,12 @@ const CheckoutCTA = () => {
   };
 
   const handleButtonClick = () => {
+    if (!isDataProvided) {
+      setValidateAddress(true);
+      return;
+    } else {
+      setValidateAddress(false);
+    }
     if (isInstallment === true) {
       setOrderType("Installment");
       openModal("installmentModal");
@@ -90,9 +98,16 @@ const CheckoutCTA = () => {
   };
 
   useEffect(() => {
-    setIsDataProvided(
-      (name !== "" && phone !== "" && address !== "") && isPhoneValidated
-    );
+    if (name !== "" && phone !== "" && address !== "" && isPhoneValidated) {
+      setIsDataProvided(true);
+    } else if (
+      name === "" ||
+      phone === "" ||
+      address === "" ||
+      !isPhoneValidated
+    ) {
+      setIsDataProvided(false);
+    }
   }, [name, phone, address, isPhoneValidated]);
 
   return (
@@ -135,11 +150,6 @@ const CheckoutCTA = () => {
             </button>
           </Ripples>
         </div>
-        {!isDataProvided && (
-          <p className="mt-2 text-red-600 text-end font-semibold">
-            يرجى ملء جميع المعلومات المطلوبة
-          </p>
-        )}
       </Container>
       <InstallmentModal
         onFinish={(value) => {

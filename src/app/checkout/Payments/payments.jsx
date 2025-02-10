@@ -78,12 +78,12 @@ const Payments = () => {
               )}
             </div>
             <div
-              className={`w-[24px] h-[24px] flex items-center justify-center rounded-full border-2 ${
+               className={`w-[25px] h-[25px] flex items-center justify-center rounded-full border-2 ${
                 el?.value === selected ? "border-violet-600" : "border-[#ccc]"
               } rounded-full`}
             >
               <div
-                className={`w-[11px] h-[11px] ${
+                className={`w-[12px] h-[12px] ${
                   el?.value === selected ? "bg-violet-600" : "bg-[#fff]"
                 } rounded-full`}
               ></div>
@@ -98,13 +98,13 @@ const Payments = () => {
           closeModal();
         }}
       />
-      <InstallmentModal
+      {/* <InstallmentModal
         onFinish={(value) => {
           setCardInfo(value);
           setSelected("installment");
           closeModal();
         }}
-      />
+      /> */}
     </div>
   );
 };
