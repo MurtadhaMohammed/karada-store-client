@@ -11,7 +11,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 
-
 const LoginForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -36,16 +35,6 @@ const LoginForm = () => {
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     setPhone(value);
-    if (value !== "07700000000") {
-      const isValid = validateIraqiPhoneNumber(value);
-      if (!isValid && value.length > 0) {
-        setError("يرجى إدخال رقم هاتف صالح");
-      } else {
-        setError("");
-      }
-    } else {
-      setError("");
-    }
   };
 
   const handleLogin = async () => {
@@ -119,27 +108,26 @@ const LoginForm = () => {
                 سوف تصلك رسالة تأكيد عبر ال SMS.
               </span>
             </div>
-           <div>
-           <OtpInput
-              value={otp}
-              onChange={handleChange}
-              numInputs={6}
-              // separator={<span className="m-1"></span>}
-              inputStyle={{
-                width: 48,
-                height: 48,
-                border: "1px solid #eee",
-                borderRadius: 6,
-                outlineColor: "#7c3aed",
-              }}
-              containerStyle={{
-                width: "100%",
-                justifyContent: "center",
-                direction: "ltr",
-                gap: "8px",
-              }}
-            />
-           </div>
+            <div>
+              <OtpInput
+                value={otp}
+                onChange={handleChange}
+                numInputs={6}
+                separator={<span className=""></span>}
+                inputStyle={{
+                  width: 48,
+                  height: 48,
+                  border: "1px solid #eee",
+                  borderRadius: 6,
+                  outlineColor: "#7c3aed",
+                }}
+                containerStyle={{
+                  justifyContent: "center",
+                  direction: "ltr",
+                  gap: "8px",
+                }}
+              />
+            </div>
           </div>
         </Container>
 
@@ -167,7 +155,9 @@ const LoginForm = () => {
             </div>
           </Container>
         </div>
-        <div>{error && <p className="text-red-500 flex items-center justify-center p-[16px]">{error}</p>}</div>
+        <div>
+          {error && <p className="text-red-500 mx-[22px] my-[16px]">{error}</p>}
+        </div>
       </div>
     );
 
@@ -184,11 +174,7 @@ const LoginForm = () => {
             hint="إسم المستخدم"
           />
           <div className="h-[16px]"></div>
-          <Input
-            value={phone}
-            onChange={handlePhoneChange}
-            hint="رقم الهاتف"
-          />
+          <Input value={phone} onChange={handlePhoneChange} hint="رقم الهاتف" />
         </div>
       </Container>
 
@@ -216,7 +202,9 @@ const LoginForm = () => {
           </div>
         </Container>
       </div>
-      <div>{error && <p className="text-red-500 p-[16px]">{error}</p>}</div>
+      <div>
+        {error && <p className="text-red-500 mx-[24px] my-[13px] ">{error}</p>}
+      </div>
     </div>
   );
 };

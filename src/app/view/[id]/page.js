@@ -19,21 +19,25 @@ async function getViews(id) {
 }
 
 export default async function DynamicHomePage({ params }) {
-  const { id } = params; 
+  const { id } = params;
 
   try {
     const viewData = await getViews(id);
 
     const banners = viewData.banners;
-
+    const title = viewData.title;
     const renderBanner = (banner) => {
       switch (banner.type) {
         case "Slider":
-          return <SliderBanner key={banner.id} banners={banner} />;
+          return (
+            <SliderBanner key={banner.id} banners={banner} title={title} />
+          );
         case "SinglePure":
-          return <SingleBannerPure key={banner.id} banner={banner} />;
+          return (
+            <SingleBannerPure key={banner.id} banner={banner} title={title} />
+          );
         case "Single":
-          return <SingleBanner key={banner.id} banner={banner} />;
+          return <SingleBanner key={banner.id} banner={banner} title={title} />;
         case "List":
           return (
             <ListBanner
@@ -81,6 +85,10 @@ export default async function DynamicHomePage({ params }) {
     );
   } catch (error) {
     console.error("Error fetching view data:", error);
-    return <div><ErrorBoundary/></div>;
+    return (
+      <div>
+        <ErrorBoundary />
+      </div>
+    );
   }
 }
