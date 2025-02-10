@@ -99,7 +99,7 @@ const LoginForm = () => {
 
   if (isOtp)
     return (
-      <div className="pt-[60px]">
+      <div className="pt-[60px] h-[100vh] overflow-hidden">
         <Container>
           <div className="mt-[36px]">
             <div className="text-center mb-[16px]">
