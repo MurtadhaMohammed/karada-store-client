@@ -10,6 +10,7 @@ import { apiCall, URL } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
+import OtpInputs from "@/components/Otp/OtpInputs";
 
 const LoginFormWeb = () => {
   const [name, setName] = useState("");
@@ -108,7 +109,7 @@ const LoginFormWeb = () => {
                 سوف تصلك رسالة تأكيد عبر ال SMS.
               </span>
             </div>
-            <OtpInput
+            {/* <OtpInput
               value={otp}
               onChange={handleChange}
               numInputs={6}
@@ -127,7 +128,8 @@ const LoginFormWeb = () => {
                 direction: "ltr",
                 gap: "8px",
               }}
-            />
+            /> */}
+            <OtpInputs onChange={handleChange} />
           </div>
           <div>{error && <p className="text-red-500">{error}</p>}</div>
           <div

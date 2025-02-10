@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { apiCall, URL } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
+import OtpInputs from "@/components/Otp/OtpInputs";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 
 const LoginForm = () => {
@@ -108,26 +109,28 @@ const LoginForm = () => {
                 سوف تصلك رسالة تأكيد عبر ال SMS.
               </span>
             </div>
-            <div>
-              <OtpInput
-                value={otp}
-                onChange={handleChange}
-                numInputs={6}
-                separator={<span className=""></span>}
-                inputStyle={{
-                  width: 48,
-                  height: 48,
-                  border: "1px solid #eee",
-                  borderRadius: 6,
-                  outlineColor: "#7c3aed",
-                }}
-                containerStyle={{
-                  justifyContent: "center",
-                  direction: "ltr",
-                  gap: "8px",
-                }}
-              />
-            </div>
+           <div>
+           {/* <OtpInput
+              value={otp}
+              onChange={handleChange}
+              numInputs={6}
+              // separator={<span className="m-1"></span>}
+              inputStyle={{
+                width: 48,
+                height: 48,
+                border: "1px solid #eee",
+                borderRadius: 6,
+                outlineColor: "#7c3aed",
+              }}
+              containerStyle={{
+                width: "100%",
+                justifyContent: "center",
+                direction: "ltr",
+                gap: "8px",
+              }}
+            /> */}
+            <OtpInputs onChange={handleChange} />
+           </div>
           </div>
         </Container>
 

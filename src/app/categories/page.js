@@ -2,6 +2,7 @@ import SearchBar from "@/components/SearchBar/searchBar";
 import ProductList from "./ProductsList/productsList";
 import Categories from "@/components/Categories/categories";
 import { URL } from "@/lib/api";
+import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 
 async function getCategories() {
   const res = await fetch(`${URL}/client/category/category?limit=100`, {
@@ -12,7 +13,8 @@ async function getCategories() {
 }
 
 const Category = async () => {
-  const category = await getCategories();
+  try {
+    const category = await getCategories();
 
   return (
     <div className="pb-[100px]">
@@ -21,6 +23,11 @@ const Category = async () => {
       <ProductList />
     </div>
   );
+  }
+  catch (error) {
+    console.error("Error fetching view data:", error);
+    return <div><ErrorBoundary/></div>;
+  }
 };
 
 export default Category;
