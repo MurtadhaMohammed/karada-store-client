@@ -64,7 +64,7 @@ const OtpInputs = ({ numInputs = 6, onChange }) => {
         <input
           key={index}
           ref={(el) => (inputsRef.current[index] = el)}
-          type="text"
+          type="tel"
           maxLength="1"
           value={value}
           onChange={(e) => handleChange(e.target.value, index)}
