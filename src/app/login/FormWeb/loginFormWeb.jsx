@@ -109,10 +109,11 @@ const LoginFormWeb = () => {
                 سوف تصلك رسالة تأكيد عبر ال SMS.
               </span>
             </div>
-            {/* <OtpInput
+            <OtpInput
               value={otp}
               onChange={handleChange}
               numInputs={6}
+              isInputNum={true}
               separator={<span className=""></span>}
               inputStyle={{
                 width: 48,
@@ -128,8 +129,8 @@ const LoginFormWeb = () => {
                 direction: "ltr",
                 gap: "8px",
               }}
-            /> */}
-            <OtpInputs onChange={handleChange} />
+            />
+            {/* <OtpInputs onChange={handleChange} /> */}
           </div>
           <div>{error && <p className="text-red-500">{error}</p>}</div>
           <div

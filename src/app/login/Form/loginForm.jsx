@@ -109,28 +109,29 @@ const LoginForm = () => {
                 سوف تصلك رسالة تأكيد عبر ال SMS.
               </span>
             </div>
-           <div>
-           {/* <OtpInput
-              value={otp}
-              onChange={handleChange}
-              numInputs={6}
-              // separator={<span className="m-1"></span>}
-              inputStyle={{
-                width: 48,
-                height: 48,
-                border: "1px solid #eee",
-                borderRadius: 6,
-                outlineColor: "#7c3aed",
-              }}
-              containerStyle={{
-                width: "100%",
-                justifyContent: "center",
-                direction: "ltr",
-                gap: "8px",
-              }}
-            /> */}
-            <OtpInputs onChange={handleChange} />
-           </div>
+            <div>
+              <OtpInput
+                value={otp}
+                onChange={handleChange}
+                numInputs={6}
+                isInputNum={true}
+                // separator={<span className="m-1"></span>}
+                inputStyle={{
+                  width: 48,
+                  height: 48,
+                  border: "1px solid #eee",
+                  borderRadius: 6,
+                  outlineColor: "#7c3aed",
+                }}
+                containerStyle={{
+                  width: "100%",
+                  justifyContent: "center",
+                  direction: "ltr",
+                  gap: "8px",
+                }}
+              />
+              {/* <OtpInputs onChange={handleChange} /> */}
+            </div>
           </div>
         </Container>
 
