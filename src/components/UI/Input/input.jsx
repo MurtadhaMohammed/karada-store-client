@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const Input = ({ hint, value, prefix = null, onChange }) => {
+const Input = ({ hint, value, prefix = null, onChange, type = "text" }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const handleFocus = () => setIsFocus(true);
@@ -26,6 +26,7 @@ const Input = ({ hint, value, prefix = null, onChange }) => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         value={value}
+        type={type}
         onChange={onChange}
       />
       {prefix && (

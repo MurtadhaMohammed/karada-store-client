@@ -130,6 +130,7 @@ export const InstallmentModal = ({ onFinish }) => {
               </p>
               <Input
                 hint="رقم البطاقة"
+                type="tel"
                 prefix={<BsCreditCard2Front className="text-[20px]" />}
                 value={cardNumber}
                 onChange={(e) => setCardNumber(e.target.value)}
