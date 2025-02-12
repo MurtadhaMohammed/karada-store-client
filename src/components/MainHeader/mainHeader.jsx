@@ -12,7 +12,7 @@ import DotAlert from "../UI/DotAlert/dotAlert";
 import useScrollPosition from "@/hooks/useScrollPosition";
 
 const MainHeader = () => {
-  const { setIsMenu, pageTitle, setPageTitle } = useAppStore();
+  const { setIsMenu, pageTitle, setPageTitle, setIsOtp, isOtp } = useAppStore();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -77,11 +77,27 @@ const MainHeader = () => {
           <Container>
             <div className="flex items-center justify-between h-[64px]">
               <div className="flex gap-4 items-center">
-                <IconButton
-                  onClick={() => router.back()}
-                  icon={<IoIosArrowForward className="text-[26px]" />}
-                />
-                <p className="text-[18px] font-bold mt-[2px]">{pageTitle}</p>
+                {pathname === "/login" && isOtp ? (
+                  <>
+                    <IconButton
+                      onClick={() => setIsOtp(false)}
+                      icon={<IoIosArrowForward className="text-[26px]" />}
+                    />
+                    <p className="text-[18px] font-bold mt-[2px]">
+                      {pageTitle}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <IconButton
+                      onClick={() => router.back()}
+                      icon={<IoIosArrowForward className="text-[26px]" />}
+                    />
+                    <p className="text-[18px] font-bold mt-[2px]">
+                      {pageTitle}
+                    </p>
+                  </>
+                )}
               </div>
               {/* <Image src={"/logo2.png"} width={110} height={24} /> */}
             </div>
