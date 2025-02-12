@@ -1,8 +1,12 @@
 import { IoMdTime } from "react-icons/io";
+import { useEffect, useState } from "react";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import styles from "./style.module.css";
 import { IMAGE_URL } from "@/lib/api";
 import Image from "next/image";
+import { FaCheck } from "react-icons/fa6";
+import { useAppStore } from "@/lib/store";
+import Link from "next/link";
 
 const ImageGroup = ({ thumbnails }) => {
   return (
@@ -12,7 +16,7 @@ const ImageGroup = ({ thumbnails }) => {
           <Image
             src={`${IMAGE_URL}/${thumbnails[0]}`}
             fill
-            style={{ objectFit: "cover" }} 
+            style={{ objectFit: "cover" }}
             alt="Thumbnail"
           />
         </div>
@@ -24,7 +28,7 @@ const ImageGroup = ({ thumbnails }) => {
             <Image
               src={`${IMAGE_URL}/${thumbnails[0]}`}
               fill
-              style={{ objectFit: "cover" }} 
+              style={{ objectFit: "cover" }}
               alt="Thumbnail 1"
               className="relative"
             />
@@ -36,12 +40,15 @@ const ImageGroup = ({ thumbnails }) => {
       )}
 
       {thumbnails?.length === 3 && (
-        <div className="relative h-full grid grid-cols-2 gap-1 overflow-hidden" style={{ direction: "ltr" }}>
+        <div
+          className="relative h-full grid grid-cols-2 gap-1 overflow-hidden"
+          style={{ direction: "ltr" }}
+        >
           <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
             <Image
               src={`${IMAGE_URL}/${thumbnails[0]}`}
               fill
-              style={{ objectFit: "cover" }} 
+              style={{ objectFit: "cover" }}
               alt="Thumbnail 1"
             />
           </div>
@@ -49,7 +56,7 @@ const ImageGroup = ({ thumbnails }) => {
             <Image
               src={`${IMAGE_URL}/${thumbnails[1]}`}
               fill
-              style={{ objectFit: "cover" }} 
+              style={{ objectFit: "cover" }}
               alt="Thumbnail 2"
             />
           </div>
@@ -57,7 +64,7 @@ const ImageGroup = ({ thumbnails }) => {
             <Image
               src={`${IMAGE_URL}/${thumbnails[2]}`}
               fill
-              style={{ objectFit: "cover" }} 
+              style={{ objectFit: "cover" }}
               alt="Thumbnail 3"
             />
           </div>
@@ -65,13 +72,19 @@ const ImageGroup = ({ thumbnails }) => {
       )}
 
       {thumbnails?.length === 4 && (
-        <div className="relative h-full grid grid-cols-2 gap-1 overflow-hidden" style={{ direction: "ltr" }}>
+        <div
+          className="relative h-full grid grid-cols-2 gap-1 overflow-hidden"
+          style={{ direction: "ltr" }}
+        >
           {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden">
+            <div
+              key={i}
+              className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden"
+            >
               <Image
                 src={`${IMAGE_URL}/${thumbnails[i]}`}
                 fill
-                style={{ objectFit: "cover" }} 
+                style={{ objectFit: "cover" }}
                 alt={`Thumbnail ${i + 1}`}
               />
             </div>
@@ -80,13 +93,19 @@ const ImageGroup = ({ thumbnails }) => {
       )}
 
       {thumbnails?.length > 4 && (
-        <div className="relative h-[100%] grid grid-cols-2 gap-1 overflow-hidden" style={{ direction: "ltr" }}>
+        <div
+          className="relative h-[100%] grid grid-cols-2 gap-1 overflow-hidden"
+          style={{ direction: "ltr" }}
+        >
           {[0, 1, 2].map((i) => (
-            <div key={i} className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
+            <div
+              key={i}
+              className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative"
+            >
               <Image
                 src={`${IMAGE_URL}/${thumbnails[i]}`}
                 fill
-                style={{ objectFit: "cover" }} 
+                style={{ objectFit: "cover" }}
                 alt={`Thumbnail ${i + 1}`}
               />
             </div>
@@ -96,7 +115,7 @@ const ImageGroup = ({ thumbnails }) => {
               <Image
                 src={`${IMAGE_URL}/${thumbnails[3]}`}
                 fill
-                style={{ objectFit: "cover" }} 
+                style={{ objectFit: "cover" }}
                 alt="Thumbnail 4"
               />
             </div>
@@ -134,11 +153,12 @@ const ImageGroup = ({ thumbnails }) => {
 // };
 
 const OrderCard = ({ order }) => {
+  const [showDetails, setShowDetails] = useState(false);
   const { order_status } = order || {};
 
   const thumbnails = order?.items?.map((item) => item.thumbnail1);
 
-  const itemNames = order?.items?.map(item => item.name).join(", ");
+  const itemNames = order?.items?.map((item) => item.name).join(", ");
 
   const address = order?.address;
 
@@ -151,21 +171,21 @@ const OrderCard = ({ order }) => {
       bar: `bg-gradient-to-r from-[#d3d3d3] to-[#e6e6e6] ${styles.statusBar20}`,
     },
     Accepted: {
-      color: "text-[#65e074]",
+      color: "text-blue-300",
       text: "تم قبول الطلب",
-      bar: `bg-gradient-to-r from-[#65e074] to-[#3adf4e] ${styles.statusBar40}`,
+      bar: `bg-gradient-to-r from-blue-400 to-blue-300 ${styles.statusBar40}`,
     },
     Packaging: {
-      color: "text-[#f99305]",
-      border: "border-[#f99305]",
+      color: "text-yellow-400",
+      border: "border-yellow-300",
       text: "طلبك قيد التجهيز",
-      bar: `bg-gradient-to-r from-[#f99305] to-[#e76c02] ${styles.statusBar60}`,
+      bar: `bg-gradient-to-r from-yellow-400 to-yellow-300 ${styles.statusBar60}`,
     },
     Shipping: {
-      color: "text-[#3ab54a]",
+      color: "text-orange-400",
       border: "border-[#3ab54a]",
       text: "طلبك قيد الشحن",
-      bar: `bg-gradient-to-r  from-[#3ab54a] to-[#22b636] ${styles.statusBar80}`,
+      bar: `bg-gradient-to-r  from-orange-500 to-orange-400 ${styles.statusBar80}`,
     },
     Delivered: {
       color: "text-[#52c41a]",
@@ -175,12 +195,18 @@ const OrderCard = ({ order }) => {
     },
     Completed: {
       color: "text-[#000]",
-      bg: "bg-gradient-to-r from-[#52c41a] to-[#8dee5e]",
-      text: itemNames,
+      bg: "",
+      text: (
+        <div className="flex items-center items-center gap-4">
+          تم انهاء الطلب{" "}
+          <FaCheck className="hidden sm:block w-6 h-6 text-violet-600" />
+        </div>
+      ),
+      bar: `bg-[#F6F6F6]`,
     },
     Canceled: {
       color: "text-[#ff4d4f]",
-      bar: "bg-gradient-to-r from-[#ff4d4f] to-[#fb797b]",
+      bar: "bg-[#F6F6F6]",
       text: "تم الغاء طلبك",
     },
   };
@@ -198,8 +224,15 @@ const OrderCard = ({ order }) => {
     >
       <div className="flex p-[16px]">
         <ImageGroup thumbnails={thumbnails} />
+        {/* <img
+          src="https://media.tenor.com/sbfBfp3FeY8AAAAj/oia-uia.gif"
+          className="w-[100px] h-[100px]"
+          alt=""
+        /> */}
         <div className="mr-[12px] flex flex-col justify-evenly flex-1">
-          <b className={`text-[18px] ${statusTheme[order_status]?.color} line-clamp-1`}>
+          <b
+            className={`text-[18px] ${statusTheme[order_status]?.color} line-clamp-1`}
+          >
             {statusTheme[order_status]?.text}
           </b>
           <div className="flex items-center text-[14px] text-[#666]">
@@ -216,7 +249,49 @@ const OrderCard = ({ order }) => {
             ></div>
           </div>
         </div>
+        <div>
+          <button
+            className="bg-[#f6f6f6] px-[8px] py-[4px] text-[14px] flex items-center"
+            onClick={() => setShowDetails(!showDetails)}
+          >
+            <span className="flex items-center gap-2 font-bold">
+              <Link target="_blank" href={`/orderDetails/${order.id}`}>
+                <p className="hidden sm:block">تفاصيل الطلب</p>
+              </Link>
+            </span>
+          </button>
+        </div>
       </div>
+      {showDetails && (
+        <div className="p-[16px] border-t border-[#eee]">
+          <div className="flex items-center gap-4">
+            <div>
+              <div className="text-[20px] text-[#666]">المنتجات:</div>
+              {order?.items?.map((item, i) => (
+                <div key={i} className="flex items-center gap-4 mt-[8px]">
+                  <Image
+                    src={`${IMAGE_URL}/${item.thumbnail1}`}
+                    width={60}
+                    height={60}
+                    alt="thumbnail"
+                    className="rounded-[8px]"
+                  />
+                  <div>
+                    <p className="text-[14px] font-bold">{item.name}</p>
+                    <p className="text-[14px] text-[#666]">
+                      {Number(item.price).toLocaleString("en")} IQD
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-2 mt-[16px]">
+            <p>مجموع الطلب:</p>
+            <p>{Number(order.total_price).toLocaleString("en")} IQD</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
