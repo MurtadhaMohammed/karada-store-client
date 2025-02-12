@@ -27,7 +27,7 @@ export const InstallmentModal = ({ onFinish }) => {
   const PlanId = 10;
   const total = getTotal();
   const noOfMonths = 10;
-  const installment = total / noOfMonths;
+  const installment = (total * 1.2 / noOfMonths) ;
 
   const handleInstallment = async () => {
     setLoading(true);
