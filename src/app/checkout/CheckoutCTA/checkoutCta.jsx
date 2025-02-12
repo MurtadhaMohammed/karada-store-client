@@ -52,7 +52,7 @@ const CheckoutCTA = () => {
   const items = useMemo(() => {
     return cart?.map((item) => ({
       id: item.product.id,
-      quantity: item.qt,
+      qt: item.qt,
       store_id: item.product.store_id,
       l1: item.product.l1,
     }));

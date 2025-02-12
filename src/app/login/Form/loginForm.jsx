@@ -160,7 +160,7 @@ const LoginForm = () => {
           </Container>
         </div>
         <div>
-          {error && <p className="text-red-500 mx-[22px] my-[16px]">{error}</p>}
+          {error && <p className="text-red-500 flex items-center justify-center p-[16px]">{error}</p>}
         </div>
       </div>
     );
@@ -207,7 +207,7 @@ const LoginForm = () => {
         </Container>
       </div>
       <div>
-        {error && <p className="text-red-500 mx-[24px] my-[13px] ">{error}</p>}
+        {error && <p className="text-red-500 p-[16px] ">{error}</p>}
       </div>
     </div>
   );
