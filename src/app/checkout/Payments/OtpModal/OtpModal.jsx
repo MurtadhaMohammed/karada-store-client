@@ -7,7 +7,7 @@ import {
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { MdSecurityUpdateGood } from "react-icons/md";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Ripples from "react-ripples";
 import { apiCall } from "@/lib/api";
 import { createOrder } from "../../utils/orderUtils";
