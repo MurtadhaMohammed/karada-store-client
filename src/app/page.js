@@ -6,9 +6,12 @@ import SingleBanner from "@/components/SingleBanner/singleBanner";
 import OffersBanner from "@/components/offersBanner/offersBanner";
 import SingleBannerPure from "@/components/SingleBannerPure/singleBannerPure";
 import Link from "next/link";
+import { FaUpLong } from "react-icons/fa6";
 
 import { URL } from "@/lib/api";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
+import Container from "@/components/UI/Container/container";
+
 async function getViews() {
   const res = await fetch(`${URL}/client/view/homeView`, {
     method: "GET",
@@ -18,10 +21,35 @@ async function getViews() {
   return res.json();
 }
 
-export default async function Home() {
+export default async function Home({ searchParams }) {
   try {
-    const viewData = await getViews();
+    const oiaoia = searchParams?.oiaoia;
+    if (oiaoia === "true") {
+      return (
+        <Container>
+          <div className="flex flex-col sm:flex-row items-center justify-between h-[50vh]">
+            <img src="./logoo8.gif" className="w-[300px] h-[300px]" />
+            <div className="flex items-center justify-center ">
+              <img src="./logoo9.png" className="w-[300px] h-[300px]" />
+              <div className="flex items-center justify-center ">
+                <p className="text-2xl text-red-600 font-bold text-center">
+                  +15 <br /> social <br /> credits
+                </p>
+                <FaUpLong className="h-[90px] w-[90px] text-green-500" />
+              </div>
+            </div>
+          </div>
+          <audio autoPlay loop>
+            <source src="/sound.mp3" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
 
+          <p>made by iaie & aiau & aui</p>
+        </Container>
+      );
+    }
+
+    const viewData = await getViews();
     const banners = viewData.banners;
 
     const renderBanner = (banner) => {
@@ -65,22 +93,20 @@ export default async function Home() {
         }
       };
 
-      // Wrap banner content in a link only if the link starts with "/view"
       if (banner.link && banner.link.startsWith("/view")) {
         return (
-          <Link key={banner.id} href={banner.link} passHref>
-            <a>{bannerContent()}</a>
+          <Link key={banner.id} href={banner.link}>
+            {bannerContent()}
           </Link>
         );
       }
 
-      // Render the banner content normally if no valid link is found
       return <div key={banner.id}>{bannerContent()}</div>;
     };
 
     return (
       <div className="pb-[100px]">
-        <SearchBar />
+        {!oiaoia && <SearchBar />}
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (
@@ -90,8 +116,10 @@ export default async function Home() {
     );
   } catch (error) {
     console.error("Error fetching view data:", error);
-    return <div>
-      <ErrorBoundary/>
-    </div>;
+    return (
+      <div>
+        <ErrorBoundary />
+      </div>
+    );
   }
 }
