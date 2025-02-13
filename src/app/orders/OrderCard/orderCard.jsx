@@ -153,7 +153,6 @@ const ImageGroup = ({ thumbnails }) => {
 // };
 
 const OrderCard = ({ order }) => {
-  const [showDetails, setShowDetails] = useState(false);
   const { order_status } = order || {};
 
   const thumbnails = order?.items?.map((item) => item.thumbnail1);
@@ -250,48 +249,15 @@ const OrderCard = ({ order }) => {
           </div>
         </div>
         <div>
-          <button
-            className="bg-[#f6f6f6] px-[8px] py-[4px] text-[14px] flex items-center"
-            onClick={() => setShowDetails(!showDetails)}
-          >
+          <button className="bg-[#f6f6f6] px-[8px] py-[4px] text-[14px] flex items-center">
             <span className="flex items-center gap-2 font-bold">
-              <Link target="_blank" href={`/orderDetails/${order.id}`}>
+              <Link href={`/orderDetails/${order.id}`}>
                 <p className="hidden sm:block">تفاصيل الطلب</p>
               </Link>
             </span>
           </button>
         </div>
       </div>
-      {showDetails && (
-        <div className="p-[16px] border-t border-[#eee]">
-          <div className="flex items-center gap-4">
-            <div>
-              <div className="text-[20px] text-[#666]">المنتجات:</div>
-              {order?.items?.map((item, i) => (
-                <div key={i} className="flex items-center gap-4 mt-[8px]">
-                  <Image
-                    src={`${IMAGE_URL}/${item.thumbnail1}`}
-                    width={60}
-                    height={60}
-                    alt="thumbnail"
-                    className="rounded-[8px]"
-                  />
-                  <div>
-                    <p className="text-[14px] font-bold">{item.name}</p>
-                    <p className="text-[14px] text-[#666]">
-                      {Number(item.price).toLocaleString("en")} IQD
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center gap-2 mt-[16px]">
-            <p>مجموع الطلب:</p>
-            <p>{Number(order.total_price).toLocaleString("en")} IQD</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

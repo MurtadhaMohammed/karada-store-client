@@ -289,7 +289,7 @@ const OrderDetails = ({ params }) => {
               <div>
                 <button className="bg-[#f6f6f6] px-[8px] py-[4px] text-[14px] flex items-center">
                   <span className="flex items-center gap-2 font-bold">
-                    <p className="hidden sm:block">تفاصيل الطلب</p>
+                    <p>تفاصيل الطلب</p>
                   </span>
                 </button>
               </div>
@@ -322,7 +322,6 @@ const OrderDetails = ({ params }) => {
                               <span>-</span>
                               <span className="text-black">x{item.qt}</span>
                             </div>
-                            <p></p>
                           </div>
                         </div>
                       </div>
