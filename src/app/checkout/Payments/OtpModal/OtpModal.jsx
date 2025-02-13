@@ -31,6 +31,7 @@ export const OtpModal = ({
   const [loading, setLoading] = useState(false);
   const { setInstallmentId } = useAppStore();
   const { setInstallment } = useAppStore();
+  const [platform, setPlatform] = useState(null);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);

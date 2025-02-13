@@ -39,6 +39,7 @@ const CheckoutCTA = () => {
   const [isDataProvided, setIsDataProvided] = useState(false);
   const [order, setOrder] = useState(null);
   const { installmentId, setInstallmentId } = useAppStore();
+  const [platform, setPlatform] = useState(null);
 
   useEffect(() => {
     if (userCheckoutInfo) {
