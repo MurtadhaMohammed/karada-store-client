@@ -75,10 +75,14 @@ const CheckoutCTA = () => {
   useEffect(() => {
     console.log(order);
   }, [order]);
-
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const platformQuery = queryParams.get("platform");
+    setPlatform(platformQuery);
+  }, []);
   const handleOrderCreation = async () => {
     setLoading(true);
-    await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router);
+    await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router, platformQuery );
     setLoading(false);
   };
 

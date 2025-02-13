@@ -32,9 +32,24 @@ export const OtpModal = ({
   const { setInstallmentId } = useAppStore();
   const { setInstallment } = useAppStore();
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const platformQuery = queryParams.get("platform");
+    setPlatform(platformQuery);
+  }, []);
+
   const handleInstallmentSetup = (installmentId) => {
     if (installmentId) {
-      createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router,installmentId);
+      createOrder(
+        order,
+        isLogin,
+        setIsOtp,
+        setOtp,
+        clearCart,
+        router,
+        installmentId,
+        platformQuery
+      );
     }
   };
 
