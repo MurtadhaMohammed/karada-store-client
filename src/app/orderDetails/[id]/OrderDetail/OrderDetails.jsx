@@ -11,10 +11,12 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import Container from "@/components/UI/Container/container";
 import { useAppStore } from "@/lib/store";
+import { GoChevronLeft } from "react-icons/go";
+import dayjs from "dayjs";
 
 const ImageGroup = ({ thumbnails }) => {
   return (
-    <div className="w-[100px] h-[100px] relative">
+    <div className={`w-[100px] h-[100px] relative`}>
       {thumbnails?.length === 1 && (
         <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] overflow-hidden relative">
           <Image
@@ -264,7 +266,7 @@ const OrderDetails = ({ params }) => {
             className="border border-[#eee] rounded-[16px] overflow-hidden mt-[8px] mb-[18px]"
             style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
           >
-            <div className="flex p-[16px]">
+            <div className={`flex ${styles.customeSize} p-[16px]`}>
               <ImageGroup thumbnails={thumbnails} />
               <div className="mr-[12px] flex flex-col justify-evenly flex-1">
                 <b
@@ -274,7 +276,10 @@ const OrderDetails = ({ params }) => {
                 </b>
                 <div className="flex items-center text-[14px] text-[#666]">
                   <IoMdTime />
-                  <p className="mr-[4px]">{formattedDate}</p>
+                  <p className="mr-[4px] hidden sm:block">{formattedDate}</p>
+                  <p className="mr-[4px] block sm:hidden">
+                    {dayjs(order.create_at).format("YYYY-MM-DD")}
+                  </p>
                 </div>
                 <div className="flex items-center text-[14px] text-[#666]">
                   <HiOutlineLocationMarker />
@@ -286,49 +291,37 @@ const OrderDetails = ({ params }) => {
                   ></div>
                 </div>
               </div>
-              <div>
-                <button className="bg-[#f6f6f6] px-[8px] py-[4px] text-[14px] flex items-center">
-                  <span className="flex items-center gap-2 font-bold">
-                    <p>تفاصيل الطلب</p>
-                  </span>
-                </button>
-              </div>
             </div>
-
             <div className="p-[16px] border-t border-[#eee]">
               <div className="flex items-center w-full gap-4">
                 <div>
                   <div className="text-[20px] text-[#666]">المنتجات:</div>
-                  {order?.items?.length ? (
-                    order.items.map((item, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start justify-between w-full gap-4 mt-[8px]"
-                      >
-                        <div className="flex items-start justify-start gap-4">
-                          <Image
-                            src={`${IMAGE_URL}/${item.thumbnail1}`}
-                            width={60}
-                            height={60}
-                            alt="thumbnail"
-                            className="rounded-[8px]"
-                          />
-                          <div className="flex flex-col justify-start items-start">
-                            <p className="text-[14px] font-bold">{item.name}</p>
-                            <div className="text-[14px] text-[#666] flex items-center gap-2">
-                              <span className="text-black">
-                                {Number(item.price).toLocaleString("en")} IQD
-                              </span>{" "}
-                              <span>-</span>
-                              <span className="text-black">x{item.qt}</span>
-                            </div>
+                  {order.items.map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex items-start justify-between w-full gap-4 mt-[8px]"
+                    >
+                      <div className="flex items-start justify-start gap-4">
+                        <Image
+                          src={`${IMAGE_URL}/${item.thumbnail1}`}
+                          width={60}
+                          height={60}
+                          alt="thumbnail"
+                          className="rounded-[8px]"
+                        />
+                        <div className="flex flex-col justify-start items-start">
+                          <p className="text-[14px] font-bold">{item.name}</p>
+                          <div className="text-[14px] text-[#666] flex items-center gap-2">
+                            <span className="text-black">
+                              {Number(item.price).toLocaleString("en")} IQD
+                            </span>
+                            <span>-</span>
+                            <span className="text-black">x{item.qt}</span>
                           </div>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-[14px] text-[#666]">لا توجد منتجات</p>
-                  )}
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className="flex items-center gap-2 mt-[16px]">
