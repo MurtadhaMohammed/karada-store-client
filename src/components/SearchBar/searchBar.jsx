@@ -42,10 +42,16 @@ const SearchBar = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const { querySearch, setQuerySearch, setQueryString, searchResult } =
-    useAppStore();
+  const {
+    querySearch,
+    setQuerySearch,
+    setQueryString,
+    searchResult,
+  } = useAppStore();
+
   const pathname = usePathname();
   const { closeModal } = useBottomSheetModal();
+
 
   useEffect(() => {
     if (pathname === "/products/search/all") setIsSearch(true);

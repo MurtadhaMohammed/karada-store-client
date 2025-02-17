@@ -12,8 +12,6 @@ import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 import Footer from "@/components/Footer/footer";
 import Head from "next/head";
 
-
-
 const IBMFont = localFont({
   src: [
     {
@@ -110,6 +108,10 @@ export const metadata = {
   ],
   additionalMetaTags: [
     {
+      name: "apple-itunes-app",
+      content: "app-id=6741197248",
+    },
+    {
       property: "instagram:card",
       content: "https://www.instagram.com/karada.store.elc",
     },
@@ -132,9 +134,15 @@ export default function RootLayout({ children }) {
   return (
     <html>
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no"
+        />
+        <meta name="apple-itunes-app" content="app-id=6741197248" />
       </Head>
-      <ReactQueryProvider fontStyle={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable} antialiased`}>
+      <ReactQueryProvider
+        fontStyle={`${newSansFont.variable} ${rubikFont.variable} ${IBMFont.variable}  antialiased`}
+      >
         <ProgressBar />
         <MainHeader />
         <MainHeaderWeb />
