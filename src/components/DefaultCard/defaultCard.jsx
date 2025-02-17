@@ -20,7 +20,7 @@ const DefaultCard = ({
   return (
     <div
       className={`flex-none rounded-xl flex flex-col border border-[#eee] relative overflow-hidden bg-white active:opacity-50 transition-all ${
-        isGrid ? "w-[100%]" : "md:w-[100%]  w-[200px]"
+        isGrid ? "w-[100%]" : "md:w-[100%]  w-[186px]"
       }`}
       style={
         bannerType === "OfferBanner" ? { border: "4px solid #a88fea" } : {}
@@ -75,7 +75,7 @@ const DefaultCard = ({
         <div className={`flex items-center justify-center`}>
           <div
             className={`w-full relative ${
-              isGrid ? "aspect-w-1 aspect-h-1" : "h-[200px]"
+              isGrid ? "aspect-w-1 aspect-h-1" : "h-[186px]"
             }`}
           >
             <Image

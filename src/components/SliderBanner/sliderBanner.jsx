@@ -58,7 +58,7 @@ export default function SliderBanner({ banners, title }) {
                 className="block h-[6px] rounded-[24px] transition-all"
                 style={{
                   width: current === i ? 50 : 6,
-                  background: current === i ? "#ddd" : "#eee",
+                  background: current === i ? "#ddd" : "#e7e7e7",
                 }}
               />
             ))}
