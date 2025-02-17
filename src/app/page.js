@@ -9,6 +9,7 @@ import Link from "next/link";
 
 import { URL } from "@/lib/api";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
+import DownloadBanner from "@/components/DownloadBanner/DownloadBanner";
 async function getViews() {
   const res = await fetch(`${URL}/client/view/homeView`, {
     method: "GET",
@@ -81,6 +82,7 @@ export default async function Home() {
     return (
       <div className="pb-[100px]">
         <SearchBar />
+        <DownloadBanner />
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (
@@ -90,8 +92,10 @@ export default async function Home() {
     );
   } catch (error) {
     console.error("Error fetching view data:", error);
-    return <div>
-      <ErrorBoundary/>
-    </div>;
+    return (
+      <div>
+        <ErrorBoundary />
+      </div>
+    );
   }
 }
