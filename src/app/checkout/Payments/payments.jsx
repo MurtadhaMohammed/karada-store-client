@@ -36,12 +36,12 @@ const Payments = () => {
       disabled: false,
       onClick: handleCashClick,
     },
-    {
-      value: "installment",
-      label: "شراء بالتقسيط",
-      disabled: false,
-      onClick: handleInstallmentClick,
-    },
+    // {
+    //   value: "installment",
+    //   label: "شراء بالتقسيط",
+    //   disabled: false,
+    //   onClick: handleInstallmentClick,
+    // },
   ];
 
   return (
