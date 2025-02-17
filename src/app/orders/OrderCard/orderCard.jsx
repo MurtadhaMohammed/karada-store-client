@@ -255,14 +255,14 @@ const OrderCard = ({ order }) => {
           </div>
         </div>
         <div>
-          <button className="bg-[#f6f6f6] px-[8px] py-[4px] text-[14px] flex items-center">
+          {/* <button className="bg-[#f6f6f6] px-[8px] py-[4px] text-[14px] flex items-center">
             <span className="flex items-center gap-2 font-bold">
               <Link href={`/orderDetails/${order.id}`}>
                 <p className="hidden sm:block">تفاصيل الطلب</p>
                 <GoChevronLeft className="block sm:hidden w-6 h-6" />
               </Link>
             </span>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

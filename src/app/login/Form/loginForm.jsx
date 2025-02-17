@@ -54,6 +54,7 @@ const LoginForm = () => {
     setLoading(false);
     if (resp?.message == "Login Success") {
       setIsOtp(true);
+      setError(null);
       router.replace(`/login?phone=${phone}`);
     } else {
       setError("يرجى إدخال رقم هاتف صالح");

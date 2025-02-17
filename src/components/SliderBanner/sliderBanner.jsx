@@ -19,6 +19,8 @@ export default function SliderBanner({ banners, title }) {
   useEffect(() => {
     setPageTitle(title);
   }, []);
+
+  if (banners?.banner_ids?.length === 0) return;
   return (
     <div className="mt-[16px] mb-[16px] w-full">
       <Container noPadding>
