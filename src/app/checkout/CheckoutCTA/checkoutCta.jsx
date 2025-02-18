@@ -38,8 +38,7 @@ const CheckoutCTA = () => {
   const [order_type, setOrderType] = useState();
   const [isDataProvided, setIsDataProvided] = useState(false);
   const [order, setOrder] = useState(null);
-  const { installmentId, setInstallmentId } = useAppStore();
-  const [platform, setPlatform] = useState(null);
+  const { installmentId, setInstallmentId,platform, setPlatform } = useAppStore();
 
   useEffect(() => {
     if (userCheckoutInfo) {
@@ -49,7 +48,6 @@ const CheckoutCTA = () => {
     }
   }, [userCheckoutInfo]);
 
-  console.log(userInfo);
   const items = useMemo(() => {
     return cart?.map((item) => ({
       id: item.product.id,
@@ -73,9 +71,6 @@ const CheckoutCTA = () => {
     });
   }, [userInfo, userCheckoutInfo, items, voucher, order_type, installmentId]);
 
-  useEffect(() => {
-    console.log(order);
-  }, [order]);
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const platformQuery = queryParams.get("platform");

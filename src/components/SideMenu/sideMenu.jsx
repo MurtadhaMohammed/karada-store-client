@@ -43,12 +43,11 @@ const MenuItem = ({
 };
 
 const SideMenu = () => {
-  const { isMenu, setIsMenu, isLogin, setIsLogin, userInfo, updateUserInfo,setIsOtp,setOtp } =
+  const { isMenu, setIsMenu, isLogin, setIsLogin, userInfo, updateUserInfo,setIsOtp,setOtp,platform, setPlatform } =
     useAppStore();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [platform, setPlatform] = useState(null);
   const [showPolicies, setShowPolicies] = useState(false);
 
   useEffect(() => {

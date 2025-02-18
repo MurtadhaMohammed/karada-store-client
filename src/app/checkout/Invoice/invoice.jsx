@@ -10,7 +10,11 @@ const Invoice = () => {
 
   // Calculate product discounts
   const productDiscount = cart.reduce((total, item) => {
-    const discount = item?.product?.discount || 0;
+    const discount =
+      item?.product?.discount?.active &&
+      item?.product?.discount?.end_at > new Date()
+        ? item?.product?.discount?.value || 0
+        : 0;
     return total + discount * item.qt;
   }, 0);
 
@@ -22,7 +26,7 @@ const Invoice = () => {
     } else {
       voucherDiscount = voucher.value || 0;
     }
-  
+
     if (voucher.max_amount && voucherDiscount > voucher.max_amount) {
       voucherDiscount = voucher.max_amount;
     }
@@ -58,7 +62,9 @@ const Invoice = () => {
           {voucherDiscount > 0 && (
             <div className="flex items-center justify-between mt-[8px]">
               <p>قيمة الخصم</p>
-              <p className="text-red-500">{voucherDiscount.toLocaleString()}- IQD</p>
+              <p className="text-red-500">
+                {voucherDiscount.toLocaleString()}- IQD
+              </p>
             </div>
           )}
           <div className="flex items-center justify-between mt-[8px]">
