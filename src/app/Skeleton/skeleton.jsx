@@ -49,9 +49,9 @@ const HomeSkeleton = () => {
         </div>
       </div>
 
-      <div className={"border-b border-b-[#f6f6f6]"}>
+      <div>
         <Container noPadding>
-          <div className="flex items-center pt-4 pb-4 gap-6 overflow-auto no-scrollbar pl-[16px] pr-[16px] ">
+          <div className="flex items-center pt-4 pb-4 gap-6 overflow-auto no-scrollbar pl-[16px] pr-[16px] border-b border-b-[#eee]">
             {[...Array(16)].map((el, i) => (
               <div
                 key={i}

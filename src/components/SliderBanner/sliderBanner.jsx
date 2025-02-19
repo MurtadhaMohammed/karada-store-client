@@ -38,7 +38,7 @@ export default function SliderBanner({ banners, title }) {
               >
                 <Link
                   href={`/products/banner/${el?.id}`}
-                  className="w-[100%] md:aspect-[3.5] aspect-3 relative rounded-[16px] overflow-hidden pb-[20px] inline-block shadow-md active:opacity-50 transition-all"
+                  className="w-[100%] md:aspect-[3.5] aspect-3 relative rounded-[16px] overflow-hidden pb-[20px] inline-block shadow-md active:opacity-50 transition-all pure-skeleton"
                 >
                   <Image
                     src={`${IMAGE_URL}/${el?.img}`}
