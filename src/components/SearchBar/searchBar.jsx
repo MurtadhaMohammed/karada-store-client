@@ -35,23 +35,18 @@ const filtersTags = [
   },
 ];
 
-const SearchBar = () => {
+const SearchBar = ({ disabled = false }) => {
   const inputRef = useRef(null);
   const [isSearch, setIsSearch] = useState(false);
   const [filters, setFilters] = useState(["all"]);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const {
-    querySearch,
-    setQuerySearch,
-    setQueryString,
-    searchResult,
-  } = useAppStore();
+  const { querySearch, setQuerySearch, setQueryString, searchResult } =
+    useAppStore();
 
   const pathname = usePathname();
   const { closeModal } = useBottomSheetModal();
-
 
   useEffect(() => {
     if (pathname === "/products/search/all") setIsSearch(true);
@@ -155,7 +150,7 @@ const SearchBar = () => {
   };
   return (
     <div>
-      <Link href={"/products/search/all"}>
+      <Link href={disabled ? "" : "/products/search/all"}>
         <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
           <Container>
             <div className="relative">

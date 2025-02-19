@@ -4,11 +4,8 @@ import { ReactQueryProvider } from "./providers";
 import BottomNabar from "@/components/BottomNavbar/bottomNavbar";
 import SideMenu from "@/components/SideMenu/sideMenu";
 import MainHeader from "@/components/MainHeader/mainHeader";
-import { Suspense } from "react";
 import ProgressBar from "./Progreess";
-import HomeSkeleton from "./Skeleton/skeleton";
 import MainHeaderWeb from "@/components/MainHeader/web/mainHeaderWeb";
-import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 import Footer from "@/components/Footer/footer";
 import Head from "next/head";
 
