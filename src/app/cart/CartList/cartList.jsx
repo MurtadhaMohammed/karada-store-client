@@ -92,13 +92,13 @@ const CartItem = ({ item }) => {
                   </p>
                   <b className="text-[16px]">
                     {Number(item.product.endPrice).toLocaleString("en")}{" "}
-                    <span className="text-[14px]">IQD</span>
+                    <span className="text-[14px]">د.ع</span>
                   </b>
                 </div>
               ) : (
                 <b className="text-[16px]">
                   {Number(displayPrice).toLocaleString("en")}{" "}
-                  <span className="text-[14px]">IQD</span>
+                  <span className="text-[14px]">د.ع</span>
                 </b>
               )}
               <QtButton value={item?.qt} product={item?.product} />

@@ -37,7 +37,7 @@ const CreatviceCard = ({ index, item }) => {
           {/* <a className="block mt-[8px] underline text-[#4b4383]">كرادة ستور</a> */}
           <h4 className="text-[22px] font-extrabold -mt-[4px]">
             {Number(item?.price).toLocaleString("en")}{" "}
-            <span className="text-[12px]">IQD</span>
+            <span className="text-[14px]">د.ع</span>
           </h4>
         </div>
         <div className="w-[260px] h-full flex items-center justify-center relative">
