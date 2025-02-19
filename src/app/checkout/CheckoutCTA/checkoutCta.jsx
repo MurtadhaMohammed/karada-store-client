@@ -78,7 +78,7 @@ const CheckoutCTA = () => {
   }, []);
   const handleOrderCreation = async () => {
     setLoading(true);
-    await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router, platformQuery );
+    await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router, platform );
     setLoading(false);
   };
 
