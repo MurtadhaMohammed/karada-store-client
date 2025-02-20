@@ -102,11 +102,16 @@ export const metadata = {
       rel: "icon",
       href: "/favicon.ico",
     },
+    {
+      rel: "manifest",
+      href: "/manifest.json",
+    },
   ],
   additionalMetaTags: [
     {
-      name: "apple-itunes-app",
-      content: "app-id=6741197248",
+      name: "apple-itunes-app", 
+      content:
+        "app-id=6741197248, app-argument=https://apps.apple.com/iq/app/karada-store/id6741197248",
     },
     {
       property: "instagram:card",
