@@ -7,8 +7,9 @@ import { queryClient } from "@/lib/queryClient";
 import { useAppStore } from "@/lib/store";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { UAParser } from "ua-parser-js";
+import HomeSkeleton from "./Skeleton/skeleton";
 
 export function ReactQueryProvider({ fontStyle, children }) {
   const {
@@ -106,7 +107,7 @@ export function ReactQueryProvider({ fontStyle, children }) {
           WebkitUserSelect: deviceStatment() ? "none" : "auto",
         }}
       >
-        {children}
+        <Suspense fallback={<HomeSkeleton />}>{children}</Suspense>
       </body>
     </QueryClientProvider>
   );

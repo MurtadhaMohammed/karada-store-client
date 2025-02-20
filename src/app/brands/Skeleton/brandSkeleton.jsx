@@ -3,6 +3,7 @@ import Container from "@/components/UI/Container/container";
 
 export default function BrandSkeleton() {
   return (
+    
     <div>
       <SearchBar />
       <Container>

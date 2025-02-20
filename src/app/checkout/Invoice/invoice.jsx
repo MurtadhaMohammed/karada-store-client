@@ -51,31 +51,29 @@ const Invoice = () => {
         <div className="rounded-[8px] border border-[#eee] p-[16px]">
           <div className="flex items-center justify-between">
             <p>المجموع</p>
-            <p>{subTotal.toLocaleString()} IQD</p>
+            <p>{subTotal.toLocaleString()} د.ع</p>
           </div>
           {productDiscount > 0 && (
             <div className="flex items-center justify-between mt-[8px]">
               <p>خصم المنتجات</p>
-              <p>{productDiscount.toLocaleString()}- IQD</p>
+              <p>{productDiscount.toLocaleString()}- د.ع</p>
             </div>
           )}
           {voucherDiscount > 0 && (
             <div className="flex items-center justify-between mt-[8px]">
               <p>قيمة الخصم</p>
-              <p className="text-red-500">
-                {voucherDiscount.toLocaleString()}- IQD
-              </p>
+              <p className="text-red-500">{voucherDiscount.toLocaleString()}- د.ع</p>
             </div>
           )}
           <div className="flex items-center justify-between mt-[8px]">
             <p>كلفة التوصيل</p>
-            <p>{deliveryCost.toLocaleString()} IQD</p>
+            <p>{deliveryCost.toLocaleString()} د.ع</p>
           </div>
         </div>
 
         <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
           <p className="text-[#666]">المبلغ النهائي</p>
-          <b className="text-[24px]">{roundedTotal.toLocaleString()} IQD</b>
+          <b className="text-[24px]">{roundedTotal.toLocaleString()} د.ع</b>
         </div>
       </div>
     </div>

@@ -7,10 +7,6 @@ import {
 import {
   useBottomSheetModal,
 } from "@/components/UI/BottomSheetModal/bottomSheetModal";
-import { InstallmentModal } from "./InstallmentModal/InstallmentModal";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import { useAppStore } from "@/lib/store";
 
 
@@ -24,10 +20,10 @@ const Payments = () => {
     setInstallment(false);
     setSelected("cash");
   };
-  const handleInstallmentClick = () => {
-    setInstallment(true);
-    setSelected("installment");
-  };
+  // const handleInstallmentClick = () => {
+  //   setInstallment(true);
+  //   setSelected("installment");
+  // };
 
   const payments = [
     {

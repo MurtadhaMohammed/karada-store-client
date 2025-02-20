@@ -19,8 +19,6 @@ export default async function Brands() {
       <div className="pb-[100px]">
         <SearchBar/>
         <BrandList brands={data.records} />
-  
-        {/* <BrandSkeleton /> */}
       </div>
     );
   }

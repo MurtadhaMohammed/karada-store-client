@@ -26,7 +26,7 @@ const CreatviceCard = ({ index, item }) => {
           colors[index % 2 === 2 ? 0 : 1]
         } md:w-[100%] md:h-[300px] w-[260px] h-[350px] active:opacity-50 transition-all`}
       >
-        <div className="p-5 pb-0 absolute top-0 left-0 right-0 z-10 text-end ">
+        <div className="p-5 pb-0 absolute top-0 left-0 right-0 z-10 text-start ">
           <h2 className="font-semih2old text-black text-[18px] md:text-[16px] font-semibold ">
             {item?.name}
           </h2>
@@ -37,11 +37,11 @@ const CreatviceCard = ({ index, item }) => {
           {/* <a className="block mt-[8px] underline text-[#4b4383]">كرادة ستور</a> */}
           <h4 className="text-[22px] font-extrabold -mt-[4px]">
             {Number(item?.price).toLocaleString("en")}{" "}
-            <span className="text-[12px]">IQD</span>
+            <span className="text-[14px]">د.ع</span>
           </h4>
         </div>
         <div className="w-[260px] h-full flex items-center justify-center relative">
-          <div className="w-full h-full relative">
+          <div className="w-full h-full relative pure-skeleton">
             <Image
               // src={images[index]}
               src={`${IMAGE_URL}/${item?.thumbnail2}`}

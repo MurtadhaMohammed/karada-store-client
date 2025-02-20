@@ -122,7 +122,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
   }, [list, searchParams]);
 
   return (
-    <div className={isBanner ? "border-b border-b-[#f6f6f6]" : ""}>
+    <div className={isBanner ? "border-b border-b-[#eee]" : ""}>
       <Container noPadding>
         <div className="relative">
           <div
