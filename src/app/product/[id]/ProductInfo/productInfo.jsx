@@ -80,6 +80,7 @@ const ProductInfo = ({ product }) => {
     setActiveOption(option);
   };
 
+  console.log("product", product.out_of_stock);
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -108,7 +109,8 @@ const ProductInfo = ({ product }) => {
   };
 
   const isAddToCartDisabled =
-    product?.options?.length > 0 && activeOption === null;
+    (product?.options?.length > 0 && activeOption === null) ||
+    product.out_of_stock;
 
   const shownimages =
     activeOption?.images?.length > 0
@@ -268,6 +270,11 @@ const ProductInfo = ({ product }) => {
           </div>
         )}
 
+        {product.out_of_stock ? (
+          <p className="text-[14px] text-red-600 mt-[8px]">
+            هذا المنتج غير متوفر حالياً
+          </p>
+        ) : null}
         <p className="text-[14px] text-gray-600 mt-[8px]">
           {product?.shortDescription}
         </p>
