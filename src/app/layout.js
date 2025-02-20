@@ -102,6 +102,10 @@ export const metadata = {
       rel: "icon",
       href: "/favicon.ico",
     },
+    {
+      rel: "manifest",
+      href: "/manifest.json",
+    },
   ],
   additionalMetaTags: [
     {
