@@ -20,7 +20,7 @@ const DefaultCard = ({
   return (
     <div
       className={`flex-none rounded-xl flex flex-col border border-[#eee] relative overflow-hidden bg-white active:opacity-50 transition-all ${
-        isGrid ? "w-[100%]" : "md:w-[100%]  w-[200px]"
+        isGrid ? "w-[100%]" : "md:w-[100%]  w-[186px]"
       }`}
       style={
         bannerType === "OfferBanner" ? { border: "4px solid #a88fea" } : {}
@@ -75,7 +75,7 @@ const DefaultCard = ({
         <div className={`flex items-center justify-center`}>
           <div
             className={`w-full relative ${
-              isGrid ? "aspect-w-1 aspect-h-1" : "h-[200px]"
+              isGrid ? "aspect-w-1 aspect-h-1" : "h-[186px]"
             }`}
           >
             <Image
@@ -107,14 +107,14 @@ const DefaultCard = ({
             <div>
               {item?.price !== item?.endPrice && (
                 <h4 className="text-[14px] font-normal text-[#a5a5a5] line-through">
+                  <span className="text-[12px]">د.ع</span>
                   {Number(item?.price).toLocaleString("en")}
-                  <span className="text-[12px]">IQD</span>
                 </h4>
               )}
 
               <h4 className="text-[16px] font-extrabold -mt-1">
-                <span className="text-[12px]"> IQD </span>
                 {Number(item?.endPrice).toLocaleString("en")}
+                <span className="text-[12px]"> د.ع </span>
               </h4>
             </div>
             {/* <div className="flex gap-1">

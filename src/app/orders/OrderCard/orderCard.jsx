@@ -7,6 +7,8 @@ import Image from "next/image";
 import { FaCheck } from "react-icons/fa6";
 import { useAppStore } from "@/lib/store";
 import Link from "next/link";
+import { GoChevronLeft } from "react-icons/go";
+import dayjs from "dayjs";
 
 const ImageGroup = ({ thumbnails }) => {
   return (
@@ -216,9 +218,10 @@ const OrderCard = ({ order }) => {
     hour: "numeric",
     minute: "numeric",
   });
+
   return (
     <div
-      className={`border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px]`}
+      className={`border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px] `}
       style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
     >
       <div className="flex p-[16px]">
@@ -236,7 +239,10 @@ const OrderCard = ({ order }) => {
           </b>
           <div className="flex items-center text-[14px] text-[#666]">
             <IoMdTime />
-            <p className="mr-[4px]">{formattedDate}</p>
+            <p className="mr-[4px] hidden sm:block">{formattedDate}</p>
+            <p className="mr-[4px] block sm:hidden">
+              {dayjs(order.create_at).format("YYYY-MM-DD")}
+            </p>
           </div>
           <div className="flex items-center text-[14px] text-[#666]">
             <HiOutlineLocationMarker />
@@ -253,6 +259,7 @@ const OrderCard = ({ order }) => {
             <span className="flex items-center gap-2 font-bold">
               <Link href={`/orderDetails/${order.id}`}>
                 <p className="hidden sm:block">تفاصيل الطلب</p>
+                <GoChevronLeft className="block sm:hidden w-6 h-6" />
               </Link>
             </span>
           </button> */}

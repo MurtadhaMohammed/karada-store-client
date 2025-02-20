@@ -5,6 +5,8 @@
   "scripts": {
     "dev:main": "set NEXT_PUBLIC_API_URL=https://karadastore.iq/api&& next dev",
     "dev:dev": "set NEXT_PUBLIC_API_URL=https://dev.karadastore.iq/api&& next dev",
+    "dev:main:mac": "NEXT_PUBLIC_API_URL=https://karadastore.iq/api next dev",
+    "dev:dev:mac": "NEXT_PUBLIC_API_URL=https://dev.karadastore.iq/api next dev",
     "dev:local": "NEXT_PUBLIC_API_URL=http://localhost:3002/api next dev",
     "build": "next build",
     "start": "next start",
@@ -29,6 +31,7 @@
     "ripple-effect-reactjs": "^1.0.6",
     "scroll-into-view": "^1.16.2",
     "swiper": "^11.1.14",
+    "ua-parser-js": "^2.0.2",
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {

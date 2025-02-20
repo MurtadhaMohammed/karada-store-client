@@ -38,7 +38,7 @@ const CartCTA = () => {
             >
               <span className="text-[18px] font-bold">
                 {Number(total).toLocaleString("en")}{" "}
-                <span className="text-[14px]">IQD</span>
+                <span className="text-[14px]">د.ع</span>
               </span>
               <div className="flex items-center">
                 <span className="ml-[8px] font-bold text-[18px]">متابعة</span>
