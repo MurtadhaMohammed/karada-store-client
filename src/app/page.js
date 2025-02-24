@@ -25,8 +25,8 @@ export default async function Home() {
     const viewData = await getViews();
 
     const banners = viewData.banners;
-
     const renderBanner = (banner) => {
+
       const bannerContent = () => {
         switch (banner.type) {
           case "Slider":
@@ -35,6 +35,8 @@ export default async function Home() {
             return <SingleBannerPure banner={banner} />;
           case "Single":
             return <SingleBanner banner={banner} />;
+          case "Brand":
+            return <BrandBanner list={banner.brand_ids} />;
           case "List":
             return (
               <ListBanner
@@ -91,7 +93,6 @@ export default async function Home() {
     return (
       <div className="pb-[100px]">
         <SearchBar />
-        {/* <DownloadBanner /> */}
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (
