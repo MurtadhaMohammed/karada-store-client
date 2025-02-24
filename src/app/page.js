@@ -10,6 +10,7 @@ import Link from "next/link";
 import { URL } from "@/lib/api";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 import DownloadBanner from "@/components/DownloadBanner/DownloadBanner";
+import BrandBanner from "@/components/brandBanner/brandBanner";
 async function getViews() {
   const res = await fetch(`${URL}/client/view/homeView`, {
     method: "GET",
@@ -42,6 +43,14 @@ export default async function Home() {
                 list={banner?.products || []}
               />
             );
+          // case "OfferBanner":
+          //   return (
+          //     <BrandBanner
+          //       bannerId={banner.id}
+          //       title={banner.title}
+          //       list={banner?.products || []}
+          //     />
+          //   );
           case "OfferBanner":
             return (
               <OffersBanner
