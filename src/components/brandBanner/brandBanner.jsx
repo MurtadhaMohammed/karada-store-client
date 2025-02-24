@@ -10,7 +10,6 @@ import { LuMoreVertical } from "react-icons/lu";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 
-
 const BrandBanner = ({ list = [] }) => {
   const { data: brands, isLoading } = useQuery({
     queryFn: () =>
@@ -26,8 +25,11 @@ const BrandBanner = ({ list = [] }) => {
     <div className=" mt-[8px] mb-[8px] pt-[24px] pb-[24px] bg-[#eee] md:bg-[transparent]">
       <Container>
         <div className="grid md:grid-cols-10 grid-cols-5  gap-3  justify-center">
-          {filterdBrands?.map((brand) => (
-            <div className="aspect-1 overflow-hidden relative rounded-lg bg-white border border-[#f6f6f6]">
+          {filterdBrands?.map((brand, i) => (
+            <div
+              key={i}
+              className="aspect-1 overflow-hidden relative rounded-lg bg-white border border-[#f6f6f6]"
+            >
               <div className="relative w-full h-full">
                 <Link href={`/products/brand/${brand.id}`}>
                   <Image
