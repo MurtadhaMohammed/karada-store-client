@@ -6,7 +6,6 @@ export default async function ProductOne({ params }) {
     console.error("Missing params or params.id");
     return <div>Error: Invalid product ID</div>;
   }
-  console.log("ProductOne -> params", params);
 
   return (
     <div className="pb-[100px]">

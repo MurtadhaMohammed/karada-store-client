@@ -80,7 +80,6 @@ const ProductInfo = ({ product }) => {
     setActiveOption(option);
   };
 
-  console.log("product", product.out_of_stock);
   const handleShare = async () => {
     if (navigator.share) {
       try {

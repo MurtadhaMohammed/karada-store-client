@@ -77,7 +77,6 @@ const SideMenu = () => {
         },
       });
       if (resp?.success) {
-        console.log(resp?.success);
         setLoading(false);
         setIsModalOpen(false);
         logout();
