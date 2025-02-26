@@ -1,10 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import DefaultCard from "../DefaultCard/defaultCard";
-import Button from "../UI/Button/button";
 import Container from "../UI/Container/container";
-import { IoIosArrowBack } from "react-icons/io";
 import { apiCall, IMAGE_URL } from "@/lib/api";
 import { LuMoreVertical } from "react-icons/lu";
 import Link from "next/link";
