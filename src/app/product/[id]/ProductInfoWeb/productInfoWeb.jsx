@@ -73,7 +73,7 @@ const handleShare = async () => {
   }
 };
 
-const ProductInfoWeb = ({ product }) => {
+const ProductInfoWeb = ({ product,settings }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(
     product?.options?.[0] || null
@@ -235,7 +235,7 @@ const ProductInfoWeb = ({ product }) => {
             <div className="flex items-center mt-[16px]">
               <TbTruckDelivery className="text-[16px]" />
               <span className="mr-[8px] text-[14px]">
-                عادة مايتم توصيل المنتجات في 3-5 أيام
+              عادة مايتم توصيل المنتجات {settings[6]?.value}
               </span>
             </div>
             <div className="mt-4 pt-4">
