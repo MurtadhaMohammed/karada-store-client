@@ -9,7 +9,6 @@ import Link from "next/link";
 
 import { URL } from "@/lib/api";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
-import DownloadBanner from "@/components/DownloadBanner/DownloadBanner";
 import BrandBanner from "@/components/brandBanner/brandBanner";
 async function getViews() {
   const res = await fetch(`${URL}/client/view/homeView`, {
@@ -25,7 +24,6 @@ export default async function Home() {
     const viewData = await getViews();
 
     const banners = viewData.banners;
-
     const renderBanner = (banner) => {
       const bannerContent = () => {
         switch (banner.type) {
@@ -33,8 +31,10 @@ export default async function Home() {
             return <SliderBanner banners={banner} />;
           case "SinglePure":
             return <SingleBannerPure banner={banner} />;
-          case "Single":
-            return <SingleBanner banner={banner} />;
+          // case "Single":
+          //   return <SingleBanner banner={banner} />;
+          case "Brand":
+            return <BrandBanner list={banner.brand_ids} />;
           case "List":
             return (
               <ListBanner
@@ -91,11 +91,10 @@ export default async function Home() {
     return (
       <div className="pb-[100px]">
         <SearchBar />
-        {/* <DownloadBanner /> */}
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (
-          <div>No banners available</div>
+          <div><ErrorBoundary /></div>
         )}
       </div>
     );

@@ -16,25 +16,38 @@ export function ReactQueryProvider({ fontStyle, children }) {
     setIsLogin,
     updateUserInfo,
     setFavorites,
-    deviceOSName,
-    setDeviceOSName,
+    // deviceOSName,
+    // setDeviceOSName,
+    setPlatform,
+    platform,
   } = useAppStore();
   const { setCart } = useCartStore();
+  // const [platform, setPlatform] = useState(null);
 
   const pathname = usePathname();
   useEffect(() => {
     init();
     initFav();
-    initDevice();
+    // initDevice();
+    initPlatform();
   }, []);
 
-  const initDevice = async () => {
+  const initPlatform = () => {
     if (typeof window !== "undefined") {
-      const parser = new UAParser();
-      const result = parser.getResult();
-      setDeviceOSName(result?.os?.name);
+      const queryParams = new URLSearchParams(window.location.search);
+      const platformQuery = queryParams.get("platform");
+      setPlatform(platformQuery);
     }
   };
+
+  // const initDevice = async () => {
+  //   if (typeof window !== "undefined") {
+  //     const parser = new UAParser();
+  //     const result = parser.getResult();
+  //     setDeviceOSName(result?.os?.name);
+  //   }
+  // };
+
   const initFav = () => {
     if (typeof window !== "undefined") {
       const storedFavorites =
@@ -74,9 +87,9 @@ export function ReactQueryProvider({ fontStyle, children }) {
   };
 
   const deviceStatment = () => {
-    if (deviceOSName === "macOS") {
+    if (platform === "ios") {
       return true;
-    } else if (deviceOSName === "Android") {
+    } else if (platform === "android") {
       return true;
     } else {
       return false;

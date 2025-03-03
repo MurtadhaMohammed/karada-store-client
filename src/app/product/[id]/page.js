@@ -49,6 +49,12 @@ export default async function ProductOne({ params }) {
     return <div>Error: Invalid product ID</div>;
   }
 
+  let settings = await fetch(`${URL}/client/settings/`, {
+    method: "GET",
+    cache: "no-cache"
+  });
+  settings = await settings.json();
+  console.log("settings", settings);
   let products = await fetch(`${URL}/client/product/product/${params.id}`, {
     method: "GET",
     cache: "no-cache",
@@ -56,8 +62,8 @@ export default async function ProductOne({ params }) {
   let product = await products.json();
   return (
     <div className="pb-[100px]">
-      <ProductInfo product={product?.product} />
-      <ProductInfoWeb product={product?.product} />
+      <ProductInfo product={product?.product} settings={settings} />
+      <ProductInfoWeb product={product?.product} settings={settings} />
       <RelatedList productId={product?.product?.id} />
     </div>
   );

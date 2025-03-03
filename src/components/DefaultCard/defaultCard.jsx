@@ -17,6 +17,7 @@ const DefaultCard = ({
 }) => {
   // const isScreenMd = useIsScreenMd();
   const { favorites, toggleFav } = useAppStore();
+
   return (
     <div
       className={`flex-none rounded-xl flex flex-col border border-[#eee] relative overflow-hidden bg-white active:opacity-50 transition-all ${
@@ -39,11 +40,13 @@ const DefaultCard = ({
         </div>
       )}
 
-      {item?.discount && item?.discount?.active === true && (
-        <div className="absolute top-4 right-4 z-10 p-2 pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
-          {item?.discount?.value || 40}%
-        </div>
-      )}
+      {
+        item?.discount?.end_at > new Date() &&
+        item?.discount?.active === true && (
+          <div className="absolute top-4 right-4 z-10 p-2 pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
+            {item?.discount?.value || 40}%
+          </div>
+        )}
 
       {!isFav ? (
         favorites?.find((id) => id === item?.id) ? (

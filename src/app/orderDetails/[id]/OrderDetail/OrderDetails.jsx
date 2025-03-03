@@ -1,139 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { IoMdTime } from "react-icons/io";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { apiCall, IMAGE_URL } from "@/lib/api";
 import Image from "next/image";
 import { FaCheck } from "react-icons/fa6";
-import { HiChevronDown } from "react-icons/hi2";
 import styles from "./style.module.css";
-import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import Container from "@/components/UI/Container/container";
 import { useAppStore } from "@/lib/store";
-import { GoChevronLeft } from "react-icons/go";
 import dayjs from "dayjs";
-
-const ImageGroup = ({ thumbnails }) => {
-  return (
-    <div className={`w-[100px] h-[100px] relative`}>
-      {thumbnails?.length === 1 && (
-        <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] overflow-hidden relative">
-          <Image
-            src={`${IMAGE_URL}/${thumbnails[0]}`}
-            fill
-            style={{ objectFit: "cover" }}
-            alt="Thumbnail"
-          />
-        </div>
-      )}
-
-      {thumbnails?.length === 2 && (
-        <div className="relative h-full border border-[#eee] rounded-[8px] overflow-hidden">
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
-              fill
-              style={{ objectFit: "cover" }}
-              alt="Thumbnail 1"
-              className="relative"
-            />
-          </div>
-          <div className="absolute inset-0 bg-[#0000002e] flex items-center justify-center text-[#fff]">
-            +1
-          </div>
-        </div>
-      )}
-
-      {thumbnails?.length === 3 && (
-        <div
-          className="relative h-full grid grid-cols-2 gap-1 overflow-hidden"
-          style={{ direction: "ltr" }}
-        >
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
-              fill
-              style={{ objectFit: "cover" }}
-              alt="Thumbnail 1"
-            />
-          </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[1]}`}
-              fill
-              style={{ objectFit: "cover" }}
-              alt="Thumbnail 2"
-            />
-          </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[2]}`}
-              fill
-              style={{ objectFit: "cover" }}
-              alt="Thumbnail 3"
-            />
-          </div>
-        </div>
-      )}
-
-      {thumbnails?.length === 4 && (
-        <div
-          className="relative h-full grid grid-cols-2 gap-1 overflow-hidden"
-          style={{ direction: "ltr" }}
-        >
-          {[0, 1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden"
-            >
-              <Image
-                src={`${IMAGE_URL}/${thumbnails[i]}`}
-                fill
-                style={{ objectFit: "cover" }}
-                alt={`Thumbnail ${i + 1}`}
-              />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {thumbnails?.length > 4 && (
-        <div
-          className="relative h-[100%] grid grid-cols-2 gap-1 overflow-hidden"
-          style={{ direction: "ltr" }}
-        >
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative"
-            >
-              <Image
-                src={`${IMAGE_URL}/${thumbnails[i]}`}
-                fill
-                style={{ objectFit: "cover" }}
-                alt={`Thumbnail ${i + 1}`}
-              />
-            </div>
-          ))}
-          <div className="relative h-full rounded-[8px] overflow-hidden">
-            <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
-              <Image
-                src={`${IMAGE_URL}/${thumbnails[3]}`}
-                fill
-                style={{ objectFit: "cover" }}
-                alt="Thumbnail 4"
-              />
-            </div>
-            <div className="absolute inset-0 bg-[#0000002e] flex items-center justify-center text-[#fff]">
-              +{thumbnails.length - 3}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+import OrdersDetailsSkeleton from "../Skeleton/skeleton";
 
 const OrderDetails = ({ params }) => {
   const { data: order, isLoading } = useQuery({
@@ -148,7 +25,6 @@ const OrderDetails = ({ params }) => {
   });
 
   const order_status = order?.order_status || "Created"; // Default status to prevent errors
-  const thumbnails = order?.items?.map((item) => item.thumbnail1) || [];
   const address = order?.address || "غير متوفر";
   const formattedDate = order?.created_at
     ? new Date(order.created_at).toLocaleDateString("en-US", {
@@ -209,131 +85,85 @@ const OrderDetails = ({ params }) => {
   useEffect(() => {
     setPageTitle(`طلب رقم ${params.id}`);
   }, []);
+
+  if (isLoading) return <OrdersDetailsSkeleton />;
   return (
     <Container>
-      {isLoading ? (
+      <>
         <div
-          className="border border-[#eee] rounded-[16px] overflow-hidden mt-[8px] mb-[18px]"
+          className="border border-[#eee] rounded-[16px] overflow-hidden mt-[16px] mb-[18px] bg-white"
           style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
         >
-          <div className="flex p-[16px]">
-            <div className="w-[100px] h-[100px] bg-gray-300 rounded-[8px] animate-pulse"></div>
-            <div className="mr-[12px] flex flex-col justify-evenly flex-1">
-              <p className="w-[140px] h-2 bg-gray-300 rounded-[8px] animate-pulse"></p>
-
-              <div className="flex items-center text-[14px] gap-2 text-[#666]">
+          <div className={`flex ${styles.customeSize} p-[16px]`}>
+            <div className="flex flex-col justify-evenly flex-1">
+              <b
+                className={`text-[18px] ${statusTheme[order_status]?.color} line-clamp-1`}
+              >
+                {statusTheme[order_status]?.text}
+              </b>
+              <div className="flex items-center text-[14px] text-[#666] mt-[6px]">
                 <IoMdTime />
-                <p className="w-14 h-2 bg-gray-300 rounded-[8px] animate-pulse"></p>
+                <p className="mr-[4px] hidden sm:block">{formattedDate}</p>
+                <p className="mr-[4px] block sm:hidden">
+                  {dayjs(order?.create_at).format("YYYY-MM-DD")}
+                </p>
               </div>
-              <div className="flex items-center text-[14px] gap-2 text-[#666]">
+              <div className="flex items-center text-[14px] text-[#666] mt-[6px]">
                 <HiOutlineLocationMarker />
-                <p className="w-14 h-2 bg-gray-300 rounded-[8px] animate-pulse"></p>
+                <p className="mr-[4px]">{address}</p>
               </div>
-              <div className="h-[4px] rounded-[24px] bg-[#eee]"></div>
-            </div>
-            <div>
-              <button className=" px-[8px] py-[4px] text-[14px] flex items-center">
-                <span className="flex items-center gap-2 font-bold">
-                  <p className="hidden sm:block">تفاصيل الطلب</p>
-                </span>
-              </button>
+              <div className="h-[4px] rounded-[24px] bg-[#eee] mt-[16px]">
+                <div
+                  className={`h-[4px] rounded-[24px] ${statusTheme[order_status]?.bar}`}
+                ></div>
+              </div>
             </div>
           </div>
+          <div className="p-[16px] border-t border-[#eee] ">
+            {order.items.map((item, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between w-full gap-4 mb-[16px] border border-[#eee] p-3 rounded-lg"
+              >
+                <div className="flex items-center gap-4 w-full">
+                  {/* Image */}
+                  <Image
+                    src={`${IMAGE_URL}/${item.thumbnail1}`}
+                    width={40}
+                    height={40}
+                    alt="thumbnail"
+                    className="rounded-[8px] shrink-0"
+                  />
 
-          <div className="p-[16px] border-t border-[#eee]">
-            <div className="flex items-center gap-4">
-              <div>
-                <div className="text-[20px] text-[#666]">المنتجات:</div>
+                  {/* Text Container */}
+                  <div className="flex flex-col w-full overflow-hidden">
+                    {/* Title (Truncated) */}
+                    <p className="text-[14px] font-bold truncate overflow-hidden whitespace-nowrap max-w-[160px]">
+                      {item.name}
+                    </p>
 
-                <div className="flex items-center gap-4 mt-[8px]">
-                  <div className="w-14 h-14 bg-gray-300 rounded-[8px] animate-pulse"></div>
-                  <div className="flex flex-col justify-between items-start">
-                    <p className="w-[100px] h-2 bg-gray-300 rounded-[8px] mt-1 animate-pulse"></p>{" "}
-                    <p className="w-14 h-2 bg-gray-300 rounded-[8px] mt-1 animate-pulse"></p>
+                    {/* Description (Truncated) */}
+                    <p className="text-[12px] text-[#666] truncate overflow-hidden whitespace-nowrap max-w-[160px]">
+                      {item.shortDescription}
+                    </p>
                   </div>
+
+                  {/* Price */}
+                  <p className="text-[12px] font-bold shrink-0">
+                    {item?.qt} * {Number(item.price).toLocaleString("en")}
+                  </p>
                 </div>
               </div>
-            </div>
-            <div className="flex items-center gap-2 mt-[16px]">
-              <p>مجموع الطلب:</p>
-              <p className="w-14 h-2 bg-gray-300 rounded-[8px] animate-pulse"></p>
+            ))}
+            <div className="flex items-center justify-between w-full gap-4  border border-[#eee] p-3 rounded-lg">
+              <p>مجموع الطلب : </p>
+              <b className="text-[16px]">
+                {Number(order?.total_price || 0).toLocaleString("en")} د.ع
+              </b>
             </div>
           </div>
         </div>
-      ) : (
-        <>
-          <div
-            className="border border-[#eee] rounded-[16px] overflow-hidden mt-[8px] mb-[18px]"
-            style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
-          >
-            <div className={`flex ${styles.customeSize} p-[16px]`}>
-              <ImageGroup thumbnails={thumbnails} />
-              <div className="mr-[12px] flex flex-col justify-evenly flex-1">
-                <b
-                  className={`text-[18px] ${statusTheme[order_status]?.color} line-clamp-1`}
-                >
-                  {statusTheme[order_status]?.text}
-                </b>
-                <div className="flex items-center text-[14px] text-[#666]">
-                  <IoMdTime />
-                  <p className="mr-[4px] hidden sm:block">{formattedDate}</p>
-                  <p className="mr-[4px] block sm:hidden">
-                    {dayjs(order.create_at).format("YYYY-MM-DD")}
-                  </p>
-                </div>
-                <div className="flex items-center text-[14px] text-[#666]">
-                  <HiOutlineLocationMarker />
-                  <p className="mr-[4px]">{address}</p>
-                </div>
-                <div className="h-[4px] rounded-[24px] bg-[#eee]">
-                  <div
-                    className={`h-[4px] rounded-[24px] ${statusTheme[order_status]?.bar}`}
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <div className="p-[16px] border-t border-[#eee]">
-              <div className="flex items-center w-full gap-4">
-                <div>
-                  <div className="text-[20px] text-[#666]">المنتجات:</div>
-                  {order.items.map((item, i) => (
-                    <div
-                      key={i}
-                      className="flex items-start justify-between w-full gap-4 mt-[8px]"
-                    >
-                      <div className="flex items-start justify-start gap-4">
-                        <Image
-                          src={`${IMAGE_URL}/${item.thumbnail1}`}
-                          width={60}
-                          height={60}
-                          alt="thumbnail"
-                          className="rounded-[8px]"
-                        />
-                        <div className="flex flex-col justify-start items-start">
-                          <p className="text-[14px] font-bold">{item.name}</p>
-                          <div className="text-[14px] text-[#666] flex items-center gap-2">
-                            <span className="text-black">
-                              {Number(item.price).toLocaleString("en")} IQD
-                            </span>
-                            <span>-</span>
-                            <span className="text-black">x{item.qt}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="flex items-center gap-2 mt-[16px]">
-                <p>مجموع الطلب:</p>
-                <p>
-                  {Number(order?.total_price || 0).toLocaleString("en")} IQD
-                </p>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+      </>
     </Container>
   );
 };

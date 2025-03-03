@@ -220,9 +220,10 @@ const OrderCard = ({ order }) => {
   });
 
   return (
-    <div
-      className={`border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px] `}
+    <Link
+      className={`block border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px] bg-white active:opacity-45 transition-all`}
       style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
+      href={`/orderDetails/${order?.id}`}
     >
       <div className="flex p-[16px]">
         <ImageGroup thumbnails={thumbnails} />
@@ -265,7 +266,7 @@ const OrderCard = ({ order }) => {
           </button> */}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

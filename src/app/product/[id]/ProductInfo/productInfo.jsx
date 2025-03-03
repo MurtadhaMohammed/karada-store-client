@@ -49,7 +49,7 @@ const OptionTag = ({ name, color, active = false, onClick }) => {
   );
 };
 
-const ProductInfo = ({ product }) => {
+const ProductInfo = ({ product, settings }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
   const [isMore, setIsMore] = useState(false);
@@ -108,7 +108,8 @@ const ProductInfo = ({ product }) => {
   };
 
   const isAddToCartDisabled =
-    product?.options?.length > 0 && activeOption === null;
+    (product?.options?.length > 0 && activeOption === null) ||
+    product.out_of_stock;
 
   const shownimages =
     activeOption?.images?.length > 0
@@ -268,6 +269,11 @@ const ProductInfo = ({ product }) => {
           </div>
         )}
 
+        {product.out_of_stock ? (
+          <p className="text-[14px] text-red-600 mt-[8px]">
+            هذا المنتج غير متوفر حالياً
+          </p>
+        ) : null}
         <p className="text-[14px] text-gray-600 mt-[8px]">
           {product?.shortDescription}
         </p>
@@ -277,7 +283,8 @@ const ProductInfo = ({ product }) => {
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px] text-[#444]">
-            عادة مايتم توصيل المنتجات في 3-5 أيام
+          عادة مايتم توصيل المنتجات {settings[6]?.value}
+
           </span>
         </div>
         <div className="mt-[16px] mb-[8px] flex flex-wrap">

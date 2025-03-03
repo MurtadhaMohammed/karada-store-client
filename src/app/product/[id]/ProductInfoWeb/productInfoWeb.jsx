@@ -5,7 +5,12 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { TbTruckDelivery , TbShare2 , TbHeart,TbHeartFilled} from "react-icons/tb";
+import {
+  TbTruckDelivery,
+  TbShare2,
+  TbHeart,
+  TbHeartFilled,
+} from "react-icons/tb";
 import { IMAGE_URL } from "@/lib/api";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -16,7 +21,6 @@ import ImageModal from "@/components/ImageModal/imageModal";
 import IconButton from "@/components/UI/IconButton/iconButton";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 const OptionTag = ({ name, color, active = false, onClick }) => {
-
   return (
     <button
       onClick={onClick}
@@ -69,7 +73,7 @@ const handleShare = async () => {
   }
 };
 
-const ProductInfoWeb = ({ product }) => {
+const ProductInfoWeb = ({ product,settings }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(
     product?.options?.[0] || null
@@ -101,7 +105,8 @@ const ProductInfoWeb = ({ product }) => {
   };
 
   const isAddToCartDisabled =
-    product?.options?.length > 0 && activeOption === null;
+    (product?.options?.length > 0 && activeOption === null) ||
+    product.out_of_stock;
 
   const openModal = (index) => {
     setIsModalOpen(true);
@@ -170,24 +175,24 @@ const ProductInfoWeb = ({ product }) => {
           </section>
 
           <section className="border-r border-r-[#eee] pr-8">
-              <InstallmentBanner price={endPrice} />
+            <InstallmentBanner price={endPrice} />
             <div className="flex items-center gap-2 mt-[16px] pb-4">
-            <IconButton
-                  rounded={"8px"}
-                  className={`p-2  rounded-[8px] border border-[#eee] shadow-lg shadow-[#ff000041] ${
-                    favorites?.includes(product?.id)
-                      ? "bg-gradient-to-r from-[#ff0000] to-[#fb797b]"
-                      : "bg-[#fff]"
-                  }`}
-                  icon={
-                    favorites?.includes(product?.id) ? (
-                      <TbHeartFilled className="text-[22px] text-[#fff]" />
-                    ) : (
-                      <TbHeart className="text-[22px]" />
-                    )
-                  }
-                  onClick={() => toggleFav(product?.id)}
-                />
+              <IconButton
+                rounded={"8px"}
+                className={`p-2  rounded-[8px] border border-[#eee] shadow-lg shadow-[#ff000041] ${
+                  favorites?.includes(product?.id)
+                    ? "bg-gradient-to-r from-[#ff0000] to-[#fb797b]"
+                    : "bg-[#fff]"
+                }`}
+                icon={
+                  favorites?.includes(product?.id) ? (
+                    <TbHeartFilled className="text-[22px] text-[#fff]" />
+                  ) : (
+                    <TbHeart className="text-[22px]" />
+                  )
+                }
+                onClick={() => toggleFav(product?.id)}
+              />
               <button
                 onClick={handleShare}
                 className="flex items-center gap-2 p-2 bg-[#fff] rounded-[8px] border border-[#eee] hover:bg-gray-100 transition"
@@ -219,13 +224,18 @@ const ProductInfoWeb = ({ product }) => {
             {/* <p className="text-[14px] text-gray-600 mt-[8px]">
               {product?.description}
             </p> */}
+            {product.out_of_stock ? (
+              <p className="text-[14px] text-red-600 mt-[8px]">
+                هذا المنتج غير متوفر حالياً
+              </p>
+            ) : null}
             <p className="text-[14px] text-gray-600 mt-[8px]">
               {product?.shortDescription}
             </p>
             <div className="flex items-center mt-[16px]">
               <TbTruckDelivery className="text-[16px]" />
               <span className="mr-[8px] text-[14px]">
-                عادة مايتم توصيل المنتجات في 3-5 أيام
+              عادة مايتم توصيل المنتجات {settings[6]?.value}
               </span>
             </div>
             <div className="mt-4 pt-4">
