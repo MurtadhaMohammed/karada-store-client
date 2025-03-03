@@ -107,8 +107,8 @@ const DefaultCard = ({
             <div>
               {item?.price !== item?.endPrice && (
                 <h4 className="text-[14px] font-normal text-[#a5a5a5] line-through">
-                  <span className="text-[12px]">د.ع</span>
                   {Number(item?.price).toLocaleString("en")}
+                  <span className="text-[12px]"> د.ع </span>
                 </h4>
               )}
 
