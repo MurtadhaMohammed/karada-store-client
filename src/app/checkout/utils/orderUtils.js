@@ -16,7 +16,7 @@ export const createOrder = async (order, isLogin, setIsOtp, setOtp, clearCart, r
         order_type: order.order_type,
         installmentId: installmentId,
         platform: platform,
-        delivaryCost:delivaryCost
+        delivary_cost:delivaryCost
       },
     });
     if (response) {
