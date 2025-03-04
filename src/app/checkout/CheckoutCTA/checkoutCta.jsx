@@ -38,7 +38,7 @@ const CheckoutCTA = () => {
   const [order_type, setOrderType] = useState();
   const [isDataProvided, setIsDataProvided] = useState(false);
   const [order, setOrder] = useState(null);
-  const { installmentId, setInstallmentId,platform, setPlatform } = useAppStore();
+  const { installmentId, setInstallmentId,platform, setPlatform, delivaryCost } = useAppStore();
 
   useEffect(() => {
     if (userCheckoutInfo) {
@@ -78,7 +78,7 @@ const CheckoutCTA = () => {
   }, []);
   const handleOrderCreation = async () => {
     setLoading(true);
-    await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router, platform );
+    await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router, platform, delivaryCost );
     setLoading(false);
   };
 

@@ -73,7 +73,7 @@ const handleShare = async () => {
   }
 };
 
-const ProductInfoWeb = ({ product,settings }) => {
+const ProductInfoWeb = ({ product, settings }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(
     product?.options?.[0] || null
@@ -82,7 +82,11 @@ const ProductInfoWeb = ({ product,settings }) => {
   const [price, setPrice] = useState(product?.price);
   const [endPrice, setEndPrice] = useState(product?.endPrice);
   const [modalImageIndex, setModalImageIndex] = useState(0);
-  const { toggleFav, favorites } = useAppStore();
+  const { toggleFav, favorites, setDelivaryCost } = useAppStore();
+
+  useEffect(() => {
+    setDelivaryCost(settings[0]?.value);
+  }, [settings, setDelivaryCost]);
 
   useEffect(() => {
     setActiveOption(product?.options?.[0] || null);
@@ -235,7 +239,7 @@ const ProductInfoWeb = ({ product,settings }) => {
             <div className="flex items-center mt-[16px]">
               <TbTruckDelivery className="text-[16px]" />
               <span className="mr-[8px] text-[14px]">
-              عادة مايتم توصيل المنتجات {settings[6]?.value}
+                عادة مايتم توصيل المنتجات {settings[6]?.value}
               </span>
             </div>
             <div className="mt-4 pt-4">

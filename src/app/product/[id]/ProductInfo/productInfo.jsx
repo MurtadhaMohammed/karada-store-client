@@ -54,13 +54,17 @@ const ProductInfo = ({ product, settings }) => {
   const { scrollPosition } = useScrollPosition();
   const [isMore, setIsMore] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { toggleFav, favorites } = useAppStore();
+  const { toggleFav, favorites, setDelivaryCost } = useAppStore();
   const [activeOption, setActiveOption] = useState(
     product?.options?.[0] || null
   );
   const [price, setPrice] = useState(product?.price);
   const [endPrice, setEndPrice] = useState(product?.endPrice);
   const swiperRef = useRef(null);
+
+  useEffect(() => {
+    setDelivaryCost(settings[0]?.value);
+  }, [settings, setDelivaryCost]);
 
   useEffect(() => {
     if (activeOption?.price) {
@@ -283,8 +287,7 @@ const ProductInfo = ({ product, settings }) => {
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px] text-[#444]">
-          عادة مايتم توصيل المنتجات {settings[6]?.value}
-
+            عادة مايتم توصيل المنتجات {settings[6]?.value}
           </span>
         </div>
         <div className="mt-[16px] mb-[8px] flex flex-wrap">
