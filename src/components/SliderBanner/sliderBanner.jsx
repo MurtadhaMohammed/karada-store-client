@@ -12,6 +12,24 @@ import "swiper/css";
 import { useState } from "react";
 import Link from "next/link";
 
+const LinkOrDev = ({ banner, classNameProp, children }) => {
+  if (banner.link)
+    return (
+      <Link className={classNameProp} href={banner.link}>
+        {children}
+      </Link>
+    );
+
+  if (banner?.product_ids?.length !== 0)
+    return (
+      <Link className={classNameProp} href={`/products/banner/${banner?.id}`}>
+        {children}
+      </Link>
+    );
+
+  return <div className={classNameProp}>{children}</div>;
+};
+
 export default function SliderBanner({ banners, title }) {
   const { setPageTitle } = useAppStore();
   const [current, setCurrent] = useState(0);
@@ -36,9 +54,9 @@ export default function SliderBanner({ banners, title }) {
                 key={el?.id}
                 className="md:pl-0 md:pr-0 pl-[16px] pr-[16px]"
               >
-                <Link
-                  href={`/products/banner/${el?.id}`}
-                  className="w-[100%] md:aspect-[3.5] aspect-3 relative rounded-[16px] overflow-hidden pb-[20px] inline-block shadow-md active:opacity-50 transition-all pure-skeleton"
+                <LinkOrDev
+                  banner={el}
+                  classNameProp="w-[100%] md:aspect-[3.5] aspect-3 relative rounded-[16px] overflow-hidden pb-[20px] inline-block shadow-md active:opacity-50 transition-all pure-skeleton"
                 >
                   <Image
                     src={`${IMAGE_URL}/${el?.img}`}
@@ -46,7 +64,7 @@ export default function SliderBanner({ banners, title }) {
                     alt={el?.title || "Banner"}
                     style={{ objectFit: "cover" }}
                   />
-                </Link>
+                </LinkOrDev>
               </SwiperSlide>
             ))}
           </Swiper>
