@@ -62,6 +62,11 @@ const CheckoutCTA = () => {
       l1: item.product.l1,
     }));
   }, [cart]);
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const platformQuery = queryParams.get("platform");
+    setPlatform(platformQuery);
+  }, []);
 
   useEffect(() => {
     setOrder({
@@ -73,15 +78,11 @@ const CheckoutCTA = () => {
       voucher_id: voucher ? voucher.id : null,
       store_id: 1,
       order_type,
+      platform,
       installmentId,
     });
   }, [userInfo, userCheckoutInfo, items, voucher, order_type, installmentId]);
 
-  // useEffect(() => {
-  //   const queryParams = new URLSearchParams(window.location.search);
-  //   const platformQuery = queryParams.get("platform");
-  //   setPlatform(platformQuery);
-  // }, []);
 
   const handleOrderCreation = async () => {
     setLoading(true);
@@ -92,6 +93,7 @@ const CheckoutCTA = () => {
       setOtp,
       clearCart,
       router,
+      platform,
       installmentId,
       deliveryCost
     );
