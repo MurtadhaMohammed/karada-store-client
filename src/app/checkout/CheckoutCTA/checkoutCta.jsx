@@ -92,6 +92,7 @@ const CheckoutCTA = () => {
       setOtp,
       clearCart,
       router,
+      installmentId,
       delivaryCost
     );
     setLoading(false);
