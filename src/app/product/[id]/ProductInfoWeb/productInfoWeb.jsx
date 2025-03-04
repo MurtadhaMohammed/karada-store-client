@@ -82,11 +82,11 @@ const ProductInfoWeb = ({ product, settings }) => {
   const [price, setPrice] = useState(product?.price);
   const [endPrice, setEndPrice] = useState(product?.endPrice);
   const [modalImageIndex, setModalImageIndex] = useState(0);
-  const { toggleFav, favorites, setDelivaryCost } = useAppStore();
+  const { toggleFav, favorites, setDeliveryCost } = useAppStore();
 
   useEffect(() => {
-    setDelivaryCost(settings[0]?.value);
-  }, [settings, setDelivaryCost]);
+    setDeliveryCost(settings[0]?.value);
+  }, [settings, setDeliveryCost]);
 
   useEffect(() => {
     setActiveOption(product?.options?.[0] || null);

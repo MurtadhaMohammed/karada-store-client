@@ -1,6 +1,6 @@
 import { apiCall } from "@/lib/api";
 
-export const createOrder = async (order, isLogin, setIsOtp, setOtp, clearCart, router, installmentId, platform, delivaryCost) => {
+export const createOrder = async (order, isLogin, setIsOtp, setOtp, clearCart, router, installmentId, platform, deliveryCost) => {
   try {
     const response = await apiCall({
       pathname: `/client/order/create-order`,
@@ -16,7 +16,7 @@ export const createOrder = async (order, isLogin, setIsOtp, setOtp, clearCart, r
         order_type: order.order_type,
         installmentId: installmentId,
         platform: platform,
-        delivery_cost: delivaryCost
+        delivery_cost: deliveryCost
       },
     });
     if (response) {

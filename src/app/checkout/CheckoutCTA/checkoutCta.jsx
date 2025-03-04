@@ -43,7 +43,7 @@ const CheckoutCTA = () => {
     setInstallmentId,
     platform,
     setPlatform,
-    delivaryCost,
+    deliveryCost,
   } = useAppStore();
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const CheckoutCTA = () => {
       clearCart,
       router,
       installmentId,
-      delivaryCost
+      deliveryCost
     );
     setLoading(false);
   };

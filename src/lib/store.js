@@ -8,7 +8,7 @@ const getInitialFavorites = () => {
 };
 
 export const useAppStore = create((set, get) => ({
-  delivaryCost: 0,
+  deliveryCost: 0,
   installmentId: null,
   isInstallment: false,
   isLogin: false,
@@ -28,7 +28,7 @@ export const useAppStore = create((set, get) => ({
   validateAddress: false,
   deviceOSName: "",
   platform: null,
-  setDelivaryCost: (cost) => set({ delivaryCost: cost }),
+  setDeliveryCost: (cost) => set({ deliveryCost: cost }),
   setPlatform: (platform) => set({ platform }),
   setDeviceOSName: (deviceOSName) => set({ deviceOSName }),
   setValidateAddress: (validateAddress) =>

@@ -54,7 +54,7 @@ const ProductInfo = ({ product, settings }) => {
   const { scrollPosition } = useScrollPosition();
   const [isMore, setIsMore] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { toggleFav, favorites, setDelivaryCost } = useAppStore();
+  const { toggleFav, favorites, setDeliveryCost } = useAppStore();
   const [activeOption, setActiveOption] = useState(
     product?.options?.[0] || null
   );
@@ -63,8 +63,8 @@ const ProductInfo = ({ product, settings }) => {
   const swiperRef = useRef(null);
 
   useEffect(() => {
-    setDelivaryCost(settings[0]?.value);
-  }, [settings, setDelivaryCost]);
+    setDeliveryCost(settings[0]?.value);
+  }, [settings, setDeliveryCost]);
 
   useEffect(() => {
     if (activeOption?.price) {
