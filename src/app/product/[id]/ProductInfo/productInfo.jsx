@@ -63,7 +63,7 @@ const ProductInfo = ({ product, settings }) => {
   const swiperRef = useRef(null);
 
   useEffect(() => {
-    setDeliveryCost(settings[0]?.value);
+    setDeliveryCost(parseFloat(settings[0]?.value));
   }, [settings, setDeliveryCost]);
 
   useEffect(() => {

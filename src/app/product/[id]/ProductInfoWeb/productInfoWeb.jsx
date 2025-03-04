@@ -85,7 +85,7 @@ const ProductInfoWeb = ({ product, settings }) => {
   const { toggleFav, favorites, setDeliveryCost } = useAppStore();
 
   useEffect(() => {
-    setDeliveryCost(settings[0]?.value);
+    setDeliveryCost(parseFloat(settings[0]?.value));
   }, [settings, setDeliveryCost]);
 
   useEffect(() => {
