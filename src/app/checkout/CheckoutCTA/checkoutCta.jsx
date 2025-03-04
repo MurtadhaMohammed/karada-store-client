@@ -38,7 +38,13 @@ const CheckoutCTA = () => {
   const [order_type, setOrderType] = useState();
   const [isDataProvided, setIsDataProvided] = useState(false);
   const [order, setOrder] = useState(null);
-  const { installmentId, setInstallmentId,platform, setPlatform, delivaryCost } = useAppStore();
+  const {
+    installmentId,
+    setInstallmentId,
+    platform,
+    setPlatform,
+    delivaryCost,
+  } = useAppStore();
 
   useEffect(() => {
     if (userCheckoutInfo) {
@@ -71,14 +77,23 @@ const CheckoutCTA = () => {
     });
   }, [userInfo, userCheckoutInfo, items, voucher, order_type, installmentId]);
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const platformQuery = queryParams.get("platform");
-    setPlatform(platformQuery);
-  }, []);
+  // useEffect(() => {
+  //   const queryParams = new URLSearchParams(window.location.search);
+  //   const platformQuery = queryParams.get("platform");
+  //   setPlatform(platformQuery);
+  // }, []);
+
   const handleOrderCreation = async () => {
     setLoading(true);
-    await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router, platform, delivaryCost );
+    await createOrder(
+      order,
+      isLogin,
+      setIsOtp,
+      setOtp,
+      clearCart,
+      router,
+      delivaryCost
+    );
     setLoading(false);
   };
 
