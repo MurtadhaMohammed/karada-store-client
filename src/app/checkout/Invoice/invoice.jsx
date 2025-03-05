@@ -1,12 +1,14 @@
 "use client";
 import { PiInvoice } from "react-icons/pi";
 import { useCartStore } from "@/lib/cartStore";
+import { useAppStore } from "@/lib/store";
 
 const Invoice = () => {
   const { getTotal, voucher, cart } = useCartStore();
+  const { deliveryCost } = useAppStore();
 
   const subTotal = getTotal() || 0;
-  const deliveryCost = 5000;
+  const delivery_cost = deliveryCost ;
 
   // Calculate product discounts
   const productDiscount = cart.reduce((total, item) => {
@@ -67,7 +69,7 @@ const Invoice = () => {
           )}
           <div className="flex items-center justify-between mt-[8px]">
             <p>كلفة التوصيل</p>
-            <p>{deliveryCost.toLocaleString()} د.ع</p>
+            <p>{delivery_cost.toLocaleString()} د.ع</p>
           </div>
         </div>
 
