@@ -1,8 +1,6 @@
 "use client";
 import Container from "@/components/UI/Container/container";
-import useScrollPosition from "@/hooks/useScrollPosition";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
@@ -14,7 +12,6 @@ import {
 import { IMAGE_URL } from "@/lib/api";
 import "swiper/css";
 import "swiper/css/navigation";
-import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 import ProductCtaWeb from "../ProductCTAWeb/productCtaWeb";
 import ImageModal from "@/components/ImageModal/imageModal";
@@ -73,7 +70,7 @@ const handleShare = async () => {
   }
 };
 
-const ProductInfoWeb = ({ product, settings }) => {
+const ProductInfoWeb = ({ product }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeOption, setActiveOption] = useState(
     product?.options?.[0] || null
@@ -82,11 +79,7 @@ const ProductInfoWeb = ({ product, settings }) => {
   const [price, setPrice] = useState(product?.price);
   const [endPrice, setEndPrice] = useState(product?.endPrice);
   const [modalImageIndex, setModalImageIndex] = useState(0);
-  const { toggleFav, favorites, setDeliveryCost } = useAppStore();
-
-  useEffect(() => {
-    setDeliveryCost(parseFloat(settings[0]?.value));
-  }, [settings, setDeliveryCost]);
+  const { toggleFav, favorites, settings } = useAppStore();
 
   useEffect(() => {
     setActiveOption(product?.options?.[0] || null);
@@ -239,7 +232,7 @@ const ProductInfoWeb = ({ product, settings }) => {
             <div className="flex items-center mt-[16px]">
               <TbTruckDelivery className="text-[16px]" />
               <span className="mr-[8px] text-[14px]">
-                عادة مايتم توصيل المنتجات {settings[6]?.value}
+                عادة مايتم توصيل المنتجات {settings?.time}
               </span>
             </div>
             <div className="mt-4 pt-4">

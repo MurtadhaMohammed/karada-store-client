@@ -40,13 +40,8 @@ const CheckoutCTA = () => {
   const [order_type, setOrderType] = useState();
   const [isDataProvided, setIsDataProvided] = useState(false);
   const [order, setOrder] = useState(null);
-  const {
-    installmentId,
-    setInstallmentId,
-    platform,
-    setPlatform,
-    deliveryCost,
-  } = useAppStore();
+  const { installmentId, setInstallmentId, platform, setPlatform, settings } =
+    useAppStore();
 
   useEffect(() => {
     if (userCheckoutInfo) {
@@ -105,7 +100,7 @@ const CheckoutCTA = () => {
       router,
       platform,
       installmentId,
-      deliveryCost,
+      parseInt(settings?.delivery) || 0,
       note
     );
     setLoading(false);

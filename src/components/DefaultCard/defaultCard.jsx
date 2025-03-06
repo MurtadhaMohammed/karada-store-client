@@ -45,8 +45,8 @@ const DefaultCard = ({
         dayjs(item.discount.end_at).isValid() &&
         dayjs(item.discount.end_at).isAfter(dayjs()) &&
         item?.discount?.active === true && (
-          <div className="absolute top-4 right-4 z-10 p-2 pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
-            {item?.discount?.value}%
+          <div className="absolute top-3 right-3 z-10 p-[6px] pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
+            خصم {Number(item?.price - item?.endPrice).toLocaleString("en")} د.ع
           </div>
         )}
 

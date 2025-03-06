@@ -5,10 +5,10 @@ import { useAppStore } from "@/lib/store";
 
 const Invoice = () => {
   const { getTotal, voucher, cart } = useCartStore();
-  const { deliveryCost } = useAppStore();
+  const { settings } = useAppStore();
 
   const subTotal = getTotal() || 0;
-  const delivery_cost = deliveryCost ;
+  const delivery_cost = parseInt(settings?.delivery) || 0;
 
   // Calculate product discounts
   const productDiscount = cart.reduce((total, item) => {
@@ -35,7 +35,7 @@ const Invoice = () => {
   }
 
   const totalDiscount = (productDiscount || 0) + (voucherDiscount || 0);
-  const realTotal = subTotal - totalDiscount + deliveryCost;
+  const realTotal = subTotal - totalDiscount + delivery_cost;
 
   const roundToNearest250 = (num) => {
     const total = Math.ceil(num / 250) * 250;
@@ -64,7 +64,9 @@ const Invoice = () => {
           {voucherDiscount > 0 && (
             <div className="flex items-center justify-between mt-[8px]">
               <p>قيمة الخصم</p>
-              <p className="text-red-500">{voucherDiscount.toLocaleString()}- د.ع</p>
+              <p className="text-red-500">
+                {voucherDiscount.toLocaleString()}- د.ع
+              </p>
             </div>
           )}
           <div className="flex items-center justify-between mt-[8px]">

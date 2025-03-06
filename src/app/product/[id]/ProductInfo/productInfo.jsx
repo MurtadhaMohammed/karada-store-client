@@ -14,7 +14,6 @@ import {
   TbShare2,
   TbTruckDelivery,
 } from "react-icons/tb";
-import { TiStarFullOutline } from "react-icons/ti";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { IMAGE_URL } from "@/lib/api";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -49,22 +48,19 @@ const OptionTag = ({ name, color, active = false, onClick }) => {
   );
 };
 
-const ProductInfo = ({ product, settings }) => {
+const ProductInfo = ({ product }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
   const [isMore, setIsMore] = useState(false);
+  const { settings } = useAppStore();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { toggleFav, favorites, setDeliveryCost } = useAppStore();
+  const { toggleFav, favorites } = useAppStore();
   const [activeOption, setActiveOption] = useState(
     product?.options?.[0] || null
   );
   const [price, setPrice] = useState(product?.price);
   const [endPrice, setEndPrice] = useState(product?.endPrice);
   const swiperRef = useRef(null);
-
-  useEffect(() => {
-    setDeliveryCost(parseFloat(settings[0]?.value));
-  }, [settings, setDeliveryCost]);
 
   useEffect(() => {
     if (activeOption?.price) {
@@ -287,7 +283,7 @@ const ProductInfo = ({ product, settings }) => {
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px] text-[#444]">
-            عادة مايتم توصيل المنتجات {settings[6]?.value}
+            عادة مايتم توصيل المنتجات {settings?.time}
           </span>
         </div>
         <div className="mt-[16px] mb-[8px] flex flex-wrap">

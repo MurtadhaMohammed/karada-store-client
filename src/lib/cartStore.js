@@ -4,7 +4,6 @@ export const useCartStore = create((set, get) => ({
   cart: [],
   voucher: null, // Stores the entire voucher object
   totalPrice: 0,
-  deliveryCost: 5000, // Adjust as needed
 
   setCart: (cart) => set({ cart }),
 

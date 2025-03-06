@@ -9,7 +9,7 @@ export const createOrder = async (
   router,
   installmentId,
   platform,
-  deliveryCost,
+  delivery_cost,
   note
 ) => {
   try {
@@ -27,7 +27,7 @@ export const createOrder = async (
         order_type: order.order_type,
         installmentId: installmentId,
         platform: platform,
-        delivery_cost: deliveryCost,
+        delivery_cost,
         note,
       },
     });
