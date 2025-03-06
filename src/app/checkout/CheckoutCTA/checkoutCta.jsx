@@ -23,6 +23,8 @@ const CheckoutCTA = () => {
     isPhoneValidated,
     validateAddress,
     setValidateAddress,
+    setNote,
+    note,
   } = useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
@@ -80,9 +82,17 @@ const CheckoutCTA = () => {
       order_type,
       platform,
       installmentId,
+      note,
     });
-  }, [userInfo, userCheckoutInfo, items, voucher, order_type, installmentId]);
-
+  }, [
+    userInfo,
+    userCheckoutInfo,
+    items,
+    voucher,
+    order_type,
+    installmentId,
+    note,
+  ]);
 
   const handleOrderCreation = async () => {
     setLoading(true);
@@ -95,9 +105,11 @@ const CheckoutCTA = () => {
       router,
       platform,
       installmentId,
-      deliveryCost
+      deliveryCost,
+      note
     );
     setLoading(false);
+    setNote("");
   };
 
   const handleButtonClick = () => {

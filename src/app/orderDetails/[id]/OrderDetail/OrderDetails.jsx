@@ -174,7 +174,7 @@ const OrderDetails = ({ params }) => {
                     {/* Price */}
                     <div className="text-sm font-bold shrink-0">
                       {shouldStrikeThrough ? (
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col items-end">
                           <p className="line-through text-gray-400">
                             {Number(displayPrice).toLocaleString("en")} د.ع
                           </p>
@@ -201,12 +201,19 @@ const OrderDetails = ({ params }) => {
 
             <div className="flex items-center justify-between flex-col w-full gap-4  border border-[#eee] p-5 rounded-lg">
               <div className="flex items-center justify-between w-full">
+                <p>الملاحظات : </p>
+                <b className="text-[16px]">
+                  {order?.note || "لا يوجد ملاحظات"}
+                </b>
+              </div>
+              <div className="w-[100%] h-[1px] bg-[#eee]" />
+              <div className="flex items-center justify-between w-full">
                 <p>سعر التوصيل : </p>
                 <b className="text-[16px]">
                   {Number(order?.delivery_cost || 0).toLocaleString("en")} د.ع
                 </b>
               </div>
-              <div className="w-[80%] h-[1px] bg-[#eee]" />
+              <div className="w-[100%] h-[1px] bg-[#eee]" />
               <div className="flex items-center justify-between w-full">
                 <p>مجموع الطلب : </p>
                 <b className="text-[16px]">
