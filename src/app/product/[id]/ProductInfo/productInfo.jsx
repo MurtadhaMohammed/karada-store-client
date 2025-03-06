@@ -62,6 +62,7 @@ const ProductInfo = ({ product }) => {
   const [endPrice, setEndPrice] = useState(product?.endPrice);
   const swiperRef = useRef(null);
 
+
   useEffect(() => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);

@@ -11,6 +11,8 @@ import Container from "@/components/UI/Container/container";
 import { useAppStore } from "@/lib/store";
 import dayjs from "dayjs";
 import OrdersDetailsSkeleton from "../Skeleton/skeleton";
+import Link from "next/link";
+import { BiSupport } from "react-icons/bi";
 
 const OrderDetails = ({ params }) => {
   const [discounts, setDiscounts] = useState([]);
@@ -202,9 +204,11 @@ const OrderDetails = ({ params }) => {
             <div className="flex items-center justify-between flex-col w-full gap-4  border border-[#eee] p-5 rounded-lg">
               <div className="flex items-center justify-between w-full">
                 <p>الملاحظات : </p>
-                <b className="text-[16px]">
-                  {order?.note || "لا يوجد ملاحظات"}
-                </b>
+                {!order?.note || order?.note === "" ? (
+                  <p className="font-normal text-[#a5a5a5]">لا يوجد ملاحظات</p>
+                ) : (
+                  <b className="text-[16px]">{order?.note}</b>
+                )}
               </div>
               <div className="w-[100%] h-[1px] bg-[#eee]" />
               <div className="flex items-center justify-between w-full">
@@ -221,6 +225,14 @@ const OrderDetails = ({ params }) => {
                 </b>
               </div>
             </div>
+
+            <Link
+              href={"/contactUs"}
+              className="flex items-center justify-center w-full gap-4 border border-violet-600 p-4 pl-5 pr-5 shadow-md rounded-[12px] mt-[16px] active:opacity-45 transition-all"
+            >
+              <span className="text-violet-600 font-bold">تواصل مع الدعم</span>
+              <BiSupport className="text-violet-600 text-[22px]" />
+            </Link>
           </div>
         </div>
       </>
