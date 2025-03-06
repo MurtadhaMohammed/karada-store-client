@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdTime } from "react-icons/io";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { apiCall, IMAGE_URL } from "@/lib/api";
@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import OrdersDetailsSkeleton from "../Skeleton/skeleton";
 
 const OrderDetails = ({ params }) => {
+  const [discounts, setDiscounts] = useState([]);
   const { data: order, isLoading } = useQuery({
     queryKey: [`related-${params.id}`, params],
     queryFn: () =>
@@ -23,6 +24,26 @@ const OrderDetails = ({ params }) => {
     enabled: !!params.id,
     select: (data) => data?.order,
   });
+
+  useEffect(() => {
+    if (!order?.id) return;
+    setDiscounts(order?.discount);
+  }, [order]);
+
+  const handleDiscount = (id) => {
+    if (!id) return 1;
+    const now = new Date();
+    const validDiscount = discounts.find((discount) => {
+      const startDate = new Date(discount.start_at);
+      const endDate = new Date(discount.end_at);
+      const isActive = discount.active;
+      const isWithinRange = endDate > now && startDate <= now;
+
+      return discount.id === id && isActive && isWithinRange;
+    });
+    const discountValue = validDiscount ? (100 - validDiscount.value) / 100 : 1;
+    return discountValue;
+  };
 
   const order_status = order?.order_status || "Created"; // Default status to prevent errors
   const address = order?.address || "غير متوفر";
@@ -120,46 +141,78 @@ const OrderDetails = ({ params }) => {
             </div>
           </div>
           <div className="p-[16px] border-t border-[#eee] ">
-            {order.items.map((item, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between w-full gap-4 mb-[16px] border border-[#eee] p-3 rounded-lg"
-              >
-                <div className="flex items-center gap-4 w-full">
-                  {/* Image */}
-                  <Image
-                    src={`${IMAGE_URL}/${item.thumbnail1}`}
-                    width={40}
-                    height={40}
-                    alt="thumbnail"
-                    className="rounded-[8px] shrink-0"
-                  />
+            {order.items.map((item, i) => {
+              const displayPrice = item.l1?.price || item.price;
+              const shouldStrikeThrough =
+                displayPrice >
+                displayPrice * handleDiscount(item?.discount_id || null);
+              return (
+                <div
+                  key={i}
+                  className="flex items-center justify-between w-full gap-4 mb-4 border border-[#eee] p-3 rounded-lg"
+                >
+                  <div className="flex items-center gap-4 w-full">
+                    {/* Image */}
+                    <Image
+                      src={`${IMAGE_URL}/${item.thumbnail1}`}
+                      width={40}
+                      height={40}
+                      alt="thumbnail"
+                      className="rounded-lg shrink-0"
+                    />
 
-                  {/* Text Container */}
-                  <div className="flex flex-col w-full overflow-hidden">
-                    {/* Title (Truncated) */}
-                    <p className="text-[14px] font-bold truncate overflow-hidden whitespace-nowrap max-w-[160px]">
-                      {item.name}
-                    </p>
+                    {/* Text Container */}
+                    <div className="flex flex-col w-full overflow-hidden">
+                      <p className="text-sm font-bold truncate max-w-[160px]">
+                        {item.name}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate max-w-[160px]">
+                        {item.shortDescription}
+                      </p>
+                    </div>
 
-                    {/* Description (Truncated) */}
-                    <p className="text-[12px] text-[#666] truncate overflow-hidden whitespace-nowrap max-w-[160px]">
-                      {item.shortDescription}
-                    </p>
+                    {/* Price */}
+                    <div className="text-sm font-bold shrink-0">
+                      {shouldStrikeThrough ? (
+                        <div className="flex flex-col items-center">
+                          <p className="line-through text-gray-400">
+                            {Number(displayPrice).toLocaleString("en")} د.ع
+                          </p>
+                          <p className="text-[15px]">
+                            {item.qt} ×{" "}
+                            {Number(
+                              displayPrice *
+                                handleDiscount(item?.discount_id || null)
+                            ).toLocaleString("en")}{" "}
+                            د.ع
+                          </p>
+                        </div>
+                      ) : (
+                        <p>
+                          {item.qt} × {Number(item.price).toLocaleString("en")}{" "}
+                          د.ع
+                        </p>
+                      )}
+                    </div>
                   </div>
-
-                  {/* Price */}
-                  <p className="text-[12px] font-bold shrink-0">
-                    {item?.qt} * {Number(item.price).toLocaleString("en")}
-                  </p>
                 </div>
+              );
+            })}
+
+            <div className="flex items-center justify-between flex-col w-full gap-4  border border-[#eee] p-5 rounded-lg">
+              <div className="flex items-center justify-between w-full">
+                <p>سعر التوصيل : </p>
+                <b className="text-[16px]">
+                  {Number(order?.delivery_cost || 0).toLocaleString("en")} د.ع
+                </b>
               </div>
-            ))}
-            <div className="flex items-center justify-between w-full gap-4  border border-[#eee] p-3 rounded-lg">
-              <p>مجموع الطلب : </p>
-              <b className="text-[16px]">
-                {Number(order?.total_price || 0).toLocaleString("en")} د.ع
-              </b>
+              <div className="w-[80%] h-[1px] bg-[#eee]" />
+              <div className="flex items-center justify-between w-full">
+                <p>مجموع الطلب : </p>
+                <b className="text-[16px]">
+                  {Number(order?.total_price || 0).toLocaleString("en")} د.ع
+                </b>
+              </div>
             </div>
           </div>
         </div>
