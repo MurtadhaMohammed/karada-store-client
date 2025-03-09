@@ -14,6 +14,7 @@ import OrdersDetailsSkeleton from "../Skeleton/skeleton";
 
 const OrderDetails = ({ params }) => {
   const [discounts, setDiscounts] = useState([]);
+  const [createdAt, setCreatedAt] = useState(null);
   const { data: order, isLoading } = useQuery({
     queryKey: [`related-${params.id}`, params],
     queryFn: () =>
@@ -28,17 +29,18 @@ const OrderDetails = ({ params }) => {
   useEffect(() => {
     if (!order?.id) return;
     setDiscounts(order?.discount);
+    setCreatedAt(order?.created_at);
   }, [order]);
 
   const handleDiscount = (id) => {
     if (!id) return 1;
-    const now = new Date();
+
     const validDiscount = discounts.find((discount) => {
       const startDate = new Date(discount.start_at);
       const endDate = new Date(discount.end_at);
+      const createdDate = new Date(createdAt);
       const isActive = discount.active;
-      const isWithinRange = endDate > now && startDate <= now;
-
+      const isWithinRange = endDate > createdDate && startDate <= createdDate;
       return discount.id === id && isActive && isWithinRange;
     });
     const discountValue = validDiscount ? (100 - validDiscount.value) / 100 : 1;
@@ -217,7 +219,10 @@ const OrderDetails = ({ params }) => {
               <div className="flex items-center justify-between w-full">
                 <p>مجموع الطلب : </p>
                 <b className="text-[16px]">
-                  {Number(order?.total_price || 0).toLocaleString("en")} د.ع
+                  {Number(
+                    order?.total_price + order?.delivery_cost || 0
+                  ).toLocaleString("en")}{" "}
+                  د.ع
                 </b>
               </div>
             </div>
