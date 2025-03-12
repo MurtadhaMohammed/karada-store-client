@@ -6,6 +6,7 @@ import { useAppStore } from "@/lib/store";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { IMAGE_URL } from "@/lib/api";
 import { useEffect } from "react";
+import { Autoplay } from "swiper/modules";
 
 // Import Swiper styles
 import "swiper/css";
@@ -48,6 +49,12 @@ export default function SliderBanner({ banners, title }) {
             slidesPerView={1}
             onSlideChange={(e) => setCurrent(e?.activeIndex)}
             className="w-[100%]"
+            loop={true} // ✅ Enable infinite looping
+            autoplay={{
+              delay: 3000, // ✅ Auto-swipe every 3 seconds
+              disableOnInteraction: false, // ✅ Continue autoplay even after interaction
+            }}
+            modules={[Autoplay]} 
           >
             {slider?.map((el) => (
               <SwiperSlide

@@ -58,7 +58,7 @@ const DefaultCard = ({
               toggleFav(item?.id);
             }}
           >
-            <div className="absolute flex items-center justify-center top-3 left-3 z-10 h-[32px] w-[32px] rounded-[8px] shadow-lg shadow-[#ff000041] bg-gradient-to-r from-[#ff0000] to-[#fb797b] text-[#fff]">
+            <div className="absolute flex items-center justify-center top-2 left-2 z-10 h-[30px] w-[30px] rounded-[8px] shadow-lg shadow-[#ff000041] bg-gradient-to-r from-[#ff0000] to-[#fb797b] text-[#fff]">
               <FaHeart className="text-[18px] text-[#fff]" />
             </div>
           </div>
@@ -68,7 +68,7 @@ const DefaultCard = ({
               e.stopPropagation();
               toggleFav(item?.id);
             }}
-            className="absolute flex items-center justify-center top-3 left-3 z-10 h-[32px] w-[32px] rounded-[8px] bg-gradient-to-r from-[#f6f6f6] to-[#fff] text-[#fff] border border-[#f6f6f6]"
+            className="absolute flex items-center justify-center top-2 left-2 z-10 h-[30px] w-[30px] rounded-[8px] bg-gradient-to-r from-[#f6f6f6] to-[#fff] text-[#fff] border border-[#f6f6f6]"
           >
             <FaRegHeart className="text-[18px] text-[#000]" />
           </div>
