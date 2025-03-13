@@ -21,7 +21,7 @@ const BrandBanner = ({ list = [] }) => {
   return (
     <div className=" mt-[8px] mb-[8px] pt-[24px] pb-[24px] bg-[#eee] md:bg-[transparent]">
       <Container>
-        <div className="grid md:grid-cols-10 grid-cols-5  gap-3  justify-center">
+        <div className="grid md:grid-cols-10 grid-cols-5  gap-2  justify-center">
           {filterdBrands?.map((brand, i) => (
             <div
               key={i}

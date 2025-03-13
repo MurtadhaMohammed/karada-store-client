@@ -8,8 +8,8 @@ const Container = ({ children, noPadding }) => {
     <div
       className="m-auto"
       style={{
-        paddingLeft: noPadding && !isScreenMd ? 0 : 16,
-        paddingRight: noPadding && !isScreenMd ? 0 : 16,
+        paddingLeft: noPadding && !isScreenMd ? 0 : 14,
+        paddingRight: noPadding && !isScreenMd ? 0 : 14,
         maxWidth: noPadding && !isScreenMd ? 'calc(1000px - 32px)' : 1000
       }}
     >

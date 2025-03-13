@@ -25,7 +25,7 @@ const OffersBanner = ({ title, list = [], bannerId }) => {
         </div>
       </Container>
       <Container noPadding>
-        <div className="md:grid md:grid-cols-4 flex gap-3 overflow-x-auto no-scrollbar md:pl-0 md:pr-0 pl-[16px] pr-[16px] pb-[16px] pt-3">
+        <div className="md:grid md:grid-cols-4 flex gap-2 overflow-x-auto no-scrollbar md:pl-0 md:pr-0 pl-[16px] pr-[16px] pb-[16px] pt-3">
           {list.slice(0, 4).map((el, i) => (
             <DefaultCard bannerType="OfferBanner" key={i} item={el} />
           ))}

@@ -85,9 +85,9 @@ const ProductList = ({ groupId, groupName }) => {
 );
 
   return (
-    <div className="pt-[12px]">
+    <div className="pt-[8px]">
       <Container>
-        <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 md:gap-6  gap-4 overflow-x-auto no-scrollbar">
+        <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 md:gap-6  gap-2 overflow-x-auto no-scrollbar">
           {data?.pages?.map((page) =>
             page?.products?.map((el, i) => (
               <DefaultCard isGrid key={`${el.id}-${i}`} item={el} />

@@ -22,7 +22,7 @@ const DefaultCard = ({
   return (
     <div
       className={`flex-none rounded-xl flex flex-col border border-[#eee] relative overflow-hidden bg-white active:opacity-50 transition-all ${
-        isGrid ? "w-[100%]" : "md:w-[100%]  w-[186px]"
+        isGrid ? "w-[100%]" : "md:w-[100%]  w-[190px]"
       }`}
       style={
         bannerType === "OfferBanner" ? { border: "4px solid #a88fea" } : {}
@@ -97,11 +97,12 @@ const DefaultCard = ({
         </div>
         <div className="p-3 pt-2 pb-2 border-t border-t-[#eee] flex flex-col justify-between flex-1 h-[100%]">
           <div>
-            <h2
-              className={`font-semih2old text-black text-[14px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis`}
-            >
-              {item?.name}
-            </h2>
+          <h2
+  className="font-semibold text-black text-[14px] overflow-hidden text-ellipsis whitespace-normal line-clamp-2"
+>
+  {item?.name}
+</h2>
+
             <p
               className={`text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis`}
             >

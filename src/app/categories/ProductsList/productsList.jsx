@@ -39,10 +39,10 @@ const ProductList = () => {
   if (isError || error) return <div>Error loading products.</div>;
 
   return (
-    <div className="pt-[16px]">
+    <div className="pt-[12px]">
       <Motion>
         <Container>
-          <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 gap-4 overflow-x-auto no-scrollbar">
+          <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 gap-2 overflow-x-auto no-scrollbar">
             {data?.pages?.map((page) =>
               page?.products?.map((el, i) => (
                 <DefaultCard isGrid key={`${el.id}-${i}`} item={el} />
