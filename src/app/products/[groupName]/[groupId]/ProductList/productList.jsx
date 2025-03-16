@@ -1,6 +1,5 @@
 "use client";
 import DefaultCard from "@/components/DefaultCard/defaultCard";
-import Button from "@/components/UI/Button/button";
 import Container from "@/components/UI/Container/container";
 import { apiCall } from "@/lib/api";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -11,7 +10,8 @@ import { VscSearchStop } from "react-icons/vsc";
 import { useEffect } from "react";
 
 const ProductList = ({ groupId, groupName }) => {
-  const { querySearch, queryString, setSearchResult, setPageTitle } = useAppStore();
+  const { querySearch, queryString, setSearchResult, setPageTitle } =
+    useAppStore();
   const limit = 12;
 
   const getUrl = (pageParam) => ({
@@ -48,7 +48,7 @@ const ProductList = ({ groupId, groupName }) => {
   useEffect(() => {
     if (data?.pages) {
       const total = data.pages[0]?.total;
-      setSearchResult(total); 
+      setSearchResult(total);
     }
   }, [data, setSearchResult]);
 
@@ -60,29 +60,29 @@ const ProductList = ({ groupId, groupName }) => {
       groupId !== "all" &&
       groupName !== "brand"
     )
-    setPageTitle(data?.pages[0]?.bannerTitle);
+      setPageTitle(data?.pages[0]?.bannerTitle);
     else if (
       data &&
       data?.pages[0]?.products?.length > 0 &&
       groupName === "brand"
     )
-    setPageTitle(data.pages[0]?.products[0]?.brand?.name);
+      setPageTitle(data.pages[0]?.products[0]?.brand?.name);
     else if (groupName === "brand") setPageTitle("...");
   }, [data]);
-  
+
   if (isLoading) return <ProductSkeleton />;
   if (isError || error) return <div>Error loading products.</div>;
   if (data?.pages[0]?.total === 0)
     return (
-  <Empty
-  icon={<VscSearchStop className="text-[100px]" />}
-  title="لا توجد نتائج!."
-  msg="لاتوجد منتجات مطابقة لبحثك"
-  href={"/"}
-  top={14}
-  // buttonText={"عودة للرئيسية"}
-  />
-);
+      <Empty
+        icon={<VscSearchStop className="text-[100px]" />}
+        title="لا توجد نتائج!."
+        msg="لاتوجد منتجات مطابقة لبحثك"
+        href={"/"}
+        top={14}
+        // buttonText={"عودة للرئيسية"}
+      />
+    );
 
   return (
     <div className="pt-[8px]">
