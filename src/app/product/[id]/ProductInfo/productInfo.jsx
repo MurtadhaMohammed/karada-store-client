@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { motion } from "framer-motion";
 import { FiSearch } from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
 import {
   TbHeart,
   TbHeartFilled,
@@ -61,7 +62,6 @@ const ProductInfo = ({ product }) => {
   const [price, setPrice] = useState(product?.price);
   const [endPrice, setEndPrice] = useState(product?.endPrice);
   const swiperRef = useRef(null);
-
 
   useEffect(() => {
     if (activeOption?.price) {
@@ -219,6 +219,22 @@ const ProductInfo = ({ product }) => {
                 <IconButton
                   rounded={"8px"}
                   className="p-2 bg-[#fff] rounded-[8px] border border-[#eee] "
+                  icon={<FaWhatsapp color="#25D366" className="text-[22px]" />}
+                  onClick={() => {
+                    const productUrl = window.location.href;
+                    const phoneNumber = "+9647826989747";
+                    const message = `مرحبًا، أود الاستفسار عن هذا المنتج:\n${productUrl}`;
+                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+                      message
+                    )}`;
+
+                    window.open(whatsappUrl, "_blank");
+                  }}
+                />
+                <div className="w-[8px]" />
+                <IconButton
+                  rounded={"8px"}
+                  className="p-2 bg-[#fff] rounded-[8px] border border-[#eee] "
                   icon={<FiSearch className="text-[22px]" />}
                   onClick={() => router.push("/products/search/all")}
                 />
@@ -287,6 +303,25 @@ const ProductInfo = ({ product }) => {
             عادة مايتم توصيل المنتجات {settings?.time}
           </span>
         </div>
+        {/* <div>
+          <button
+            onClick={() => {
+              const productUrl = window.location.href;
+              const phoneNumber = "+9647826989747";
+              const message = `مرحبًا، أود الاستفسار عن هذا المنتج:\n${productUrl}`;
+              const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+                message
+              )}`;
+
+              window.open(whatsappUrl, "_blank");
+            }}
+            className="mt-4 h-[48px] w-[100%] rounded-[16px] bg-[#fff] flex items-center justify-center border border-[#9C5DEE] transition-all active:scale-95"
+          >
+            <b className="flex items-center gap-2">
+              تواصل معنا للاستفسار عن المنتج <FaWhatsapp size={22} />
+            </b>
+          </button>
+        </div> */}
         <div className="mt-[16px] mb-[8px] flex flex-wrap">
           {product?.options?.map((option, index) => (
             <OptionTag

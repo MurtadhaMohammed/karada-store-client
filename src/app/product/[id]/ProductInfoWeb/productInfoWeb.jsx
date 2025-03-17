@@ -3,6 +3,7 @@ import Container from "@/components/UI/Container/container";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { FaWhatsapp } from "react-icons/fa";
 import {
   TbTruckDelivery,
   TbShare2,
@@ -197,6 +198,15 @@ const ProductInfoWeb = ({ product }) => {
                 <TbShare2 className="text-[22px]" />
                 <span className="text-[14px] text-gray-700 font-bold">
                   شارك المنتج
+                </span>
+              </button>
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-2 p-2 bg-[#fff] rounded-[8px] border border-[#eee] hover:bg-gray-100 transition"
+              >
+                <FaWhatsapp color="#25D366" size={20} className="text-[22px]" />
+                <span className="text-[14px] text-gray-700 font-bold">
+                  للاستفسار
                 </span>
               </button>
             </div>

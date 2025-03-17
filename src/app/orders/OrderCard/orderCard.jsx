@@ -198,7 +198,7 @@ const OrderCard = ({ order }) => {
       color: "text-[#000]",
       bg: "",
       text: (
-        <div className="flex items-center items-center gap-4">
+        <div className="flex items-center gap-4">
           تم انهاء الطلب{" "}
           <FaCheck className="hidden sm:block w-6 h-6 text-violet-600" />
         </div>
