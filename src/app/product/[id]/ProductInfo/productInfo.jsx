@@ -216,7 +216,7 @@ const ProductInfo = ({ product }) => {
                 </motion.b>
               </div>
               <div className="flex items-center">
-                <IconButton
+                {/* <IconButton
                   rounded={"8px"}
                   className="p-2 bg-[#fff] rounded-[8px] border border-[#eee] "
                   icon={<FaWhatsapp color="#25D366" className="text-[22px]" />}
@@ -230,7 +230,7 @@ const ProductInfo = ({ product }) => {
 
                     window.open(whatsappUrl, "_blank");
                   }}
-                />
+                /> */}
                 <div className="w-[8px]" />
                 <IconButton
                   rounded={"8px"}
@@ -303,7 +303,7 @@ const ProductInfo = ({ product }) => {
             عادة مايتم توصيل المنتجات {settings?.time}
           </span>
         </div>
-        {/* <div>
+        <div>
           <button
             onClick={() => {
               const productUrl = window.location.href;
@@ -315,13 +315,14 @@ const ProductInfo = ({ product }) => {
 
               window.open(whatsappUrl, "_blank");
             }}
-            className="mt-4 h-[48px] w-[100%] rounded-[16px] bg-[#fff] flex items-center justify-center border border-[#9C5DEE] transition-all active:scale-95"
+            className=" mt-4 h-[40px] w-[100%] rounded-[16px] bg-[#fff] flex items-center justify-between border px-4 border-[#656565] transition-all active:scale-95"
           >
-            <b className="flex items-center gap-2">
-              تواصل معنا للاستفسار عن المنتج <FaWhatsapp size={22} />
-            </b>
+            <p className="flex items-center gap-2">
+             للأستفسار والتواصل
+            </p>
+            <FaWhatsapp size={28} color="#1CC638"/>
           </button>
-        </div> */}
+        </div>
         <div className="mt-[16px] mb-[8px] flex flex-wrap">
           {product?.options?.map((option, index) => (
             <OptionTag

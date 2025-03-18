@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import OrdersDetailsSkeleton from "../Skeleton/skeleton";
 import Link from "next/link";
 import { BiSupport } from "react-icons/bi";
+import { FcCancel } from "react-icons/fc";
 
 const OrderDetails = ({ params }) => {
   const [discounts, setDiscounts] = useState([]);
@@ -233,11 +234,15 @@ const OrderDetails = ({ params }) => {
 
             <Link
               href={"/contactUs"}
-              className="flex items-center justify-center w-full gap-4 border border-violet-600 p-4 pl-5 pr-5 shadow-md rounded-[12px] mt-[16px] active:opacity-45 transition-all"
+              className="flex items-center justify-center w-full gap-4 border border-violet-600 p-4 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
             >
               <span className="text-violet-600 font-bold">تواصل مع الدعم</span>
               <BiSupport className="text-violet-600 text-[22px]" />
             </Link>
+            <div className="flex items-center justify-center w-full gap-4 border border-red-600 p-4 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all">
+              <span className="text-red-600 font-bold">الغاء الطلب</span>
+              <FcCancel className="text-red-600 text-[22px]" />
+            </div>
           </div>
         </div>
       </>

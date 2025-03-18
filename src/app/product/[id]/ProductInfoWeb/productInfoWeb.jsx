@@ -201,7 +201,16 @@ const ProductInfoWeb = ({ product }) => {
                 </span>
               </button>
               <button
-                onClick={handleShare}
+                onClick={() => {
+                  const productUrl = window.location.href;
+                  const phoneNumber = "+9647826989747";
+                  const message = `مرحبًا، أود الاستفسار عن هذا المنتج:\n${productUrl}`;
+                  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+                    message
+                  )}`;
+
+                  window.open(whatsappUrl, "_blank");
+                }}
                 className="flex items-center gap-2 p-2 bg-[#fff] rounded-[8px] border border-[#eee] hover:bg-gray-100 transition"
               >
                 <FaWhatsapp color="#25D366" size={20} className="text-[22px]" />
