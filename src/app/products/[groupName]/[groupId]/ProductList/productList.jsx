@@ -1,5 +1,7 @@
 "use client";
 import DefaultCard from "@/components/DefaultCard/defaultCard";
+
+import Button from "@/components/UI/Button/button";
 import Container from "@/components/UI/Container/container";
 import { apiCall } from "@/lib/api";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -8,6 +10,7 @@ import { useAppStore } from "@/lib/store";
 import Empty from "@/components/Empty/empty";
 import { VscSearchStop } from "react-icons/vsc";
 import { useEffect } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const ProductList = ({ groupId, groupName }) => {
   const { querySearch, queryString, setSearchResult, setPageTitle } =
@@ -87,28 +90,25 @@ const ProductList = ({ groupId, groupName }) => {
   return (
     <div className="pt-[8px]">
       <Container>
-        <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 md:gap-6  gap-2 overflow-x-auto no-scrollbar">
+        <InfiniteScroll
+          dataLength={
+            data?.pages?.reduce(
+              (acc, page) => acc + page?.products?.length,
+              0
+            ) || 0
+          }
+          next={fetchNextPage}
+          hasMore={hasNextPage}
+          className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 md:gap-6 gap-2 overflow-x-auto no-scrollbar"
+        >
           {data?.pages?.map((page) =>
             page?.products?.map((el, i) => (
               <DefaultCard isGrid key={`${el.id}-${i}`} item={el} />
             ))
           )}
-        </div>
+        </InfiniteScroll>
+        {isFetchingNextPage && <ProductSkeleton size={4} />}
       </Container>
-      {isFetchingNextPage && <ProductSkeleton size={4} />}
-      {hasNextPage && data?.pages[0]?.total > limit && (
-        <Container>
-          <button
-            className={
-              "w-full h-[48px] rounded-[8px] border border-[#eee] mt-[26px] bg-[#fff]"
-            }
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-          >
-            عرض المزيد
-          </button>
-        </Container>
-      )}
     </div>
   );
 };
