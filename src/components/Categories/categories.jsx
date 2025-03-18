@@ -6,7 +6,7 @@ import Container from "../UI/Container/container";
 import style from "./style.module.css";
 import { useAppStore } from "@/lib/store";
 import { IMAGE_URL } from "@/lib/api";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
@@ -26,23 +26,17 @@ const Categories = ({ isBanner = true, list = [] }) => {
   const searchParams = useSearchParams();
   const categoryRefs = useRef({});
   const scrollContainerRef = useRef(null);
+  const router = useRouter();
   const [showCircleLeft, setShowCircleLeft] = useState(false);
   const [showCircleRight, setShowCirlcRight] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
 
-  const handleScrollToBothSides = ( side) => {
+  const handleScrollToBothSides = (side) => {
     if (scrollContainerRef.current) {
-      if (side === "left") {
-        scrollContainerRef.current.scrollBy({
-          left: -500,
-          behavior: "smooth",
-        });
-      } else if (side === "right") {
-        scrollContainerRef.current.scrollBy({
-          left: 500,
-          behavior: "smooth",
-        });
-      }
+      scrollContainerRef.current.scrollBy({
+        left: side === "left" ? -500 : 500,
+        behavior: "smooth",
+      });
       setIsClicked(true);
       setTimeout(() => setIsClicked(false), 500);
     }
@@ -85,6 +79,9 @@ const Categories = ({ isBanner = true, list = [] }) => {
   const handleCategoryClick = (id) => {
     if (isBanner) return;
     setSelectedCategoryId(id);
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set("init", id);
+    router.push(`?${newParams.toString()}`, { scroll: false });
   };
 
   useEffect(() => {
