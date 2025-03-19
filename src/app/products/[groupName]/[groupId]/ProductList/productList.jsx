@@ -1,6 +1,5 @@
 "use client";
 import DefaultCard from "@/components/DefaultCard/defaultCard";
-
 import Button from "@/components/UI/Button/button";
 import Container from "@/components/UI/Container/container";
 import { apiCall } from "@/lib/api";
