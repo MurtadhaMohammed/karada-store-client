@@ -6,7 +6,7 @@ import { apiCall, IMAGE_URL } from "@/lib/api";
 import Image from "next/image";
 import { FaCheck } from "react-icons/fa6";
 import styles from "./style.module.css";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import Container from "@/components/UI/Container/container";
 import { useAppStore } from "@/lib/store";
 import dayjs from "dayjs";
@@ -32,7 +32,23 @@ const OrderDetails = ({ params }) => {
     select: (data) => data?.order,
   });
 
-  console.log(order, "order");
+  const { mutate: cancelOrder, isPending: isCancelLoading } = useMutation({
+    mutationFn: async () => {
+      try {
+        const response = await apiCall({
+          pathname: `/client/order/cancel-order/${params.id}`,
+          method: "PUT",
+          auth: true,
+        });
+        if (response) {
+          openModal("cancelationModal");
+        }
+      } catch (error) {
+        console.error("Error canceling order:", error);
+      }
+    },
+  });
+
 
   useEffect(() => {
     if (!order?.id) return;
@@ -151,7 +167,7 @@ const OrderDetails = ({ params }) => {
             </div>
           </div>
           <div className="p-[16px] border-t border-[#eee] ">
-            {order.items.map((item, i) => {
+            {order?.items.map((item, i) => {
               const displayPrice = item.l1?.price || item.price;
               const shouldStrikeThrough =
                 displayPrice >
@@ -171,7 +187,6 @@ const OrderDetails = ({ params }) => {
                       className="rounded-lg shrink-0"
                     />
 
-                    {/* Text Container */}
                     <div className="flex flex-col w-full overflow-hidden">
                       <p className="text-sm font-bold truncate max-w-[160px]">
                         {item.name}
@@ -181,7 +196,6 @@ const OrderDetails = ({ params }) => {
                       </p>
                     </div>
 
-                    {/* Price */}
                     <div className="text-sm font-bold shrink-0">
                       {shouldStrikeThrough ? (
                         <div className="flex flex-col items-end">
@@ -244,10 +258,12 @@ const OrderDetails = ({ params }) => {
               <span className="text-violet-600 font-bold">تواصل مع الدعم</span>
               <BiSupport className="text-violet-600 text-[22px]" />
             </Link>
-            <div  onClick={() => openModal("cancelationModal")} className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-4 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all">
-              <span className="text-red-600 font-bold">الغاء الطلب</span>
+            {order_status !== "Canceled" && (
+              <button onClick={() => cancelOrder()} className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-4 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all">
+              <span  className="text-red-600 font-bold">الغاء الطلب</span>
               <FcCancel className="text-red-600 text-[22px]" />
-            </div>
+            </button>
+            )}
           </div>
         </div>
         <CancelationModal orderId={order?.id}/>
