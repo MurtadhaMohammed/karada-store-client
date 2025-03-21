@@ -16,6 +16,8 @@ const ListBanner = ({
   noMore = false,
   isRelated = false,
 }) => {
+  list = noMore ? list : list.slice(0, 4);
+
   if (list.length === 0) return;
   return (
     <div className="md:pt-[24px] pt-[16px] ">
@@ -46,15 +48,13 @@ const ListBanner = ({
             isCreative ? "gap-4" : "gap-2"
           }`}
         >
-          {list
-            .slice(0, 4)
-            .map((el, i) =>
-              isCreative ? (
-                <CreatviceCard key={i} index={i} item={el} />
-              ) : (
-                <DefaultCard key={i} item={el} isGrid={isRelated} />
-              )
-            )}
+          {list.map((el, i) =>
+            isCreative ? (
+              <CreatviceCard key={i} index={i} item={el} />
+            ) : (
+              <DefaultCard key={i} item={el} isGrid={isRelated} />
+            )
+          )}
         </div>
       </Container>
     </div>

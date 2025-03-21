@@ -303,6 +303,19 @@ const ProductInfo = ({ product }) => {
             عادة مايتم توصيل المنتجات {settings?.time}
           </span>
         </div>
+
+        <div className="mt-[16px] mb-[8px] flex flex-wrap">
+          {product?.options?.map((option, index) => (
+            <OptionTag
+              key={index}
+              name={option.name}
+              color={option.color}
+              active={option === activeOption}
+              onClick={() => handleOptionClick(option, index)}
+            />
+          ))}
+        </div>
+
         <div>
           <button
             onClick={() => {
@@ -315,25 +328,13 @@ const ProductInfo = ({ product }) => {
 
               window.open(whatsappUrl, "_blank");
             }}
-            className=" mt-4 h-[40px] w-[100%] rounded-[16px] bg-[#fff] flex items-center justify-between border px-4 border-[#656565] transition-all active:scale-95"
+            className="mb-[24px] h-[48px] w-[100%] rounded-[12px] bg-[#fff] flex items-center justify-between border pr-[16px] pl-[12px] border-[#eee] shadow-md  transition-all active:scale-95"
           >
-            <p className="flex items-center gap-2">
-             للأستفسار والتواصل
-            </p>
-            <FaWhatsapp size={28} color="#1CC638"/>
+            <p className="text-[16px]">للأستفسار والتواصل</p>
+            <FaWhatsapp size={28} color="#1CC638" />
           </button>
         </div>
-        <div className="mt-[16px] mb-[8px] flex flex-wrap">
-          {product?.options?.map((option, index) => (
-            <OptionTag
-              key={index}
-              name={option.name}
-              color={option.color}
-              active={option === activeOption}
-              onClick={() => handleOptionClick(option, index)}
-            />
-          ))}
-        </div>
+
         <p className="text-[14px] ">تفاصيل المنتج</p>
         <ul
           className="text-[14px] text-gray-600 mt-[8px] mb-[24px] p-4 bg-gradient-to-br from-gray-100 to-white rounded-[8px] border border-[#eee] overflow-hidden relative pb-[50px] transition-all"
