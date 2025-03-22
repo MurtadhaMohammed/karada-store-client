@@ -182,7 +182,7 @@ const OrderDetails = ({ params }) => {
                               {Number(displayPrice).toLocaleString("en")} د.ع
                             </p>
                             <p className="text-[15px]">
-                              {item.qt} ×{" "}
+                              {item?.qt > 1 && `${item?.qt} * `}{" "}
                               {Number(
                                 displayPrice *
                                   handleDiscount(item?.discount_id || null)
@@ -192,7 +192,7 @@ const OrderDetails = ({ params }) => {
                           </div>
                         ) : (
                           <p>
-                            {item.qt} ×{" "}
+                            {item?.qt > 1 && `${item?.qt} * `}{" "}
                             {Number(item.price).toLocaleString("en")} د.ع
                           </p>
                         )}

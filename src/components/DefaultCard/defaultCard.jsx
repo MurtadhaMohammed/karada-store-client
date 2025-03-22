@@ -82,9 +82,10 @@ const DefaultCard = ({
             <div className="absolute bottom-2 left-0 right-0 flex items-center justify-center z-10">
               <ul className="m-0 p-0 flex items-center">
                 {item?.options?.map(
-                  (op) =>
+                  (op, i) =>
                     op?.color && (
                       <li
+                      key={i}
                         className="w-[14px] h-[14px] rounded-full bg-[#eee] ml-[2px] mr-[2px] shadow-md"
                         style={{
                           background: op?.color,
