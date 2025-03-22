@@ -154,7 +154,7 @@ const SearchBar = ({ disabled = false }) => {
     setShowSuggestions(false);
   };
   return (
-    <div>
+    <div className={isSearch ? "sticky top-[61px] z-20": ""}>
       <Link href={disabled ? "" : "/products/search/all"}>
         <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
           <Container>

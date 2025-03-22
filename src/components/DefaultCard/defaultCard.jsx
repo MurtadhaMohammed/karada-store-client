@@ -77,10 +77,27 @@ const DefaultCard = ({
         ""
       )}
       <Link href={`/product/${item?.id}`} className="flex flex-col h-full">
-        <div className={`flex items-center justify-center`}>
+        <div className={`relative`}>
+          {item?.options && item?.options?.length > 0 && (
+            <div className="absolute bottom-2 left-0 right-0 flex items-center justify-center z-10">
+              <ul className="m-0 p-0 flex items-center">
+                {item?.options?.map(
+                  (op) =>
+                    op?.color && (
+                      <li
+                        className="w-[14px] h-[14px] rounded-full bg-[#eee] ml-[2px] mr-[2px] shadow-md"
+                        style={{
+                          background: op?.color,
+                        }}
+                      ></li>
+                    )
+                )}
+              </ul>
+            </div>
+          )}
           <div
             className={`w-full relative ${
-              isGrid ? "aspect-w-1 aspect-h-1" : "h-[186px]"
+             "aspect-w-1 aspect-h-1" 
             }`}
           >
             <Image

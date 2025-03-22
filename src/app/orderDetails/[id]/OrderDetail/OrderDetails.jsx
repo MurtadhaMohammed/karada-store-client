@@ -122,8 +122,8 @@ const OrderDetails = ({ params }) => {
                 <div className="flex item-center justify-between border-b border-gray-400 pb-3">
                   <p className="text-sm text-gray-200">رقم الطلب</p>
                   <div className="flex item-center gap-2 text-lg font-semibold">
-                    <BiCopy className="cursor-pointer hover:text-gray-300 transition" />
-                    <span>{order?.track_id}</span>
+                    <BiCopy className="cursor-pointer hover:text-gray-300 transition " />
+                    <span className="block -mt-[4px]">{order?.track_id}</span>
                   </div>
                 </div>
 
