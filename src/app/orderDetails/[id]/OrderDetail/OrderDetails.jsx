@@ -14,13 +14,12 @@ import OrdersDetailsSkeleton from "../Skeleton/skeleton";
 import Link from "next/link";
 import { BiSupport } from "react-icons/bi";
 import { FcCancel } from "react-icons/fc";
-import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
-import CancelationModal from "@/components/CancelationModal/cancelationModal";
+import ConfirmModal from "@/components/ConfirmModal/confirmModal";
 
 const OrderDetails = ({ params }) => {
   const [discounts, setDiscounts] = useState([]);
   const [createdAt, setCreatedAt] = useState(null);
-  const {openModal} = useBottomSheetModal();
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const { data: order, isLoading } = useQuery({
     queryKey: [`related-${params.id}`, params],
     queryFn: () =>
@@ -31,24 +30,6 @@ const OrderDetails = ({ params }) => {
     enabled: !!params.id,
     select: (data) => data?.order,
   });
-
-  const { mutate: cancelOrder, isPending: isCancelLoading } = useMutation({
-    mutationFn: async () => {
-      try {
-        const response = await apiCall({
-          pathname: `/client/order/cancel-order/${params.id}`,
-          method: "PUT",
-          auth: true,
-        });
-        if (response) {
-          openModal("cancelationModal");
-        }
-      } catch (error) {
-        console.error("Error canceling order:", error);
-      }
-    },
-  });
-
 
   useEffect(() => {
     if (!order?.id) return;
@@ -258,15 +239,22 @@ const OrderDetails = ({ params }) => {
               <span className="text-violet-600 font-bold">تواصل مع الدعم</span>
               <BiSupport className="text-violet-600 text-[22px]" />
             </Link>
-            {order_status !== "Canceled" && (
-              <button onClick={() => cancelOrder()} className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-4 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all">
-              <span  className="text-red-600 font-bold">الغاء الطلب</span>
-              <FcCancel className="text-red-600 text-[22px]" />
-            </button>
+            {order_status !== "Canceled" && order_status === "Created" && (
+              <button
+                onClick={() => setShowCancelConfirm(true)}
+                className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-4 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
+              >
+                <span className="text-red-600 font-bold">الغاء الطلب</span>
+                <FcCancel className="text-red-600 text-[22px]" />
+              </button>
             )}
           </div>
         </div>
-        <CancelationModal orderId={order?.id}/>
+        <ConfirmModal
+          isOpen={showCancelConfirm}
+          onClose={() => setShowCancelConfirm(false)}
+          orderId={order?.id}
+        />
       </>
     </Container>
   );
