@@ -167,7 +167,6 @@ const SideMenu = () => {
           />
           {showPolicies && (
             <div className="mr-7">
-              {" "}
               <MenuItem
                 title={"سياسة الخصوصية"}
                 icon={<BiBook className="text-[20px]" />}
