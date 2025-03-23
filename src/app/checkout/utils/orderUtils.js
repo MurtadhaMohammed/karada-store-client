@@ -31,7 +31,7 @@ export const createOrder = async (
         note,
       },
     });
-    if (!response.error||!response==null) {
+    if (response?.status == 200) {
       clearCart();
       if (response?.status == "Not Logged In" && !isLogin) {
         setIsOtp(true);
