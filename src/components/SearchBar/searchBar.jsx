@@ -42,6 +42,7 @@ const SearchBar = ({ disabled = false }) => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isFoucsed, setIsFocused] = useState(false);
   const { querySearch, setQuerySearch, setQueryString, searchResult } =
     useAppStore();
 
@@ -69,7 +70,7 @@ const SearchBar = ({ disabled = false }) => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-      if (search.length > 0) setShowSuggestions(true);
+      if (isFoucsed) setShowSuggestions(true);
     }, 300);
 
     return () => clearTimeout(handler);
@@ -82,9 +83,13 @@ const SearchBar = ({ disabled = false }) => {
         pathname: `/client/product/search?q=${debouncedSearch}`,
       });
     },
-    enabled: isSearch && debouncedSearch.length > 1,
+    enabled: isSearch,
     keepPreviousData: true,
   });
+
+  useEffect(() => {
+    console.log("suggestions", suggestions);
+  }, [suggestions]);
 
   const { data: categories = [], isFetching: isFetchingCategories } = useQuery({
     queryKey: ["categories"],
@@ -110,7 +115,7 @@ const SearchBar = ({ disabled = false }) => {
   };
 
   const handleKeyDown = ({ key }) => {
-    if (key === "Enter" && search?.length > 2) submitSearch();
+    if (key === "Enter") submitSearch();
   };
 
   const handleFilter = (el) => {
@@ -149,7 +154,7 @@ const SearchBar = ({ disabled = false }) => {
     setShowSuggestions(false);
   };
   return (
-    <div>
+    <div className={isSearch ? "sticky top-[61px] z-20": ""}>
       <Link href={disabled ? "" : "/products/search/all"}>
         <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
           <Container>
@@ -181,34 +186,61 @@ const SearchBar = ({ disabled = false }) => {
                 readOnly={!isSearch}
                 className="w-[100%] rounded-[8px] h-[48px] pl-[46px] pr-[16px] outline-none border border-[#eee] text-[18px]"
                 placeholder="ابحث عن منتج"
+                onFocus={() => {
+                  setIsSearch(true);
+                  setIsFocused(true);
+                  setShowSuggestions(true);
+                }}
+                onBlur={() => {
+                  setTimeout(() => setIsFocused(false), 200); // Delay hiding to allow clicking on a suggestion
+                }}
               />
 
               {isSearch &&
                 showSuggestions &&
-                suggestions?.products?.length > 0 && (
-                  <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
+                isFoucsed &&
+                suggestions?.products?.length >= 0 && (
+                  <div className="absolute bg-white border border-gray-200 w-full mt-2 pt-4 pb-4 rounded-[8px] shadow-lg z-50">
                     {isFetching ? (
-                      <div className="p-2 text-gray-500">جاري التحميل...</div>
+                      <div className="pr-4 text-gray-500">جاري التحميل...</div>
                     ) : (
                       <div>
-                        <div className="p-2  flex justify-between">
+                        {/* <div className="p-2  flex justify-between">
                           <div className="text-gray-500">قائمة المقترحات:</div>
                           <div onClick={closeSuggestions} className="">
                             <IoCloseSharp size={22} />
                           </div>
+                        </div> */}
+
+                        <div className="absolute -bottom-[100px] flex justify-center p-6 w-full">
+                          <div
+                            onClick={closeSuggestions}
+                            className="w-[58px] h-[58px] rounded-full bg-[#eee] flex items-center justify-center shadow-lg active:opacity-50 transition-all"
+                          >
+                            <IoCloseSharp size={32} />
+                          </div>
                         </div>
 
-                        {suggestions.products?.map((item) => (
-                          <div
-                            key={item.id}
-                            className="flex justify-between items-center"
-                          >
+                        {suggestions?.products?.map((item) => (
+                          <div key={item.id}>
                             <Link key={item.id} href={`/product/${item.id}`}>
                               <div
-                                className="p-2 hover:bg-gray-100 cursor-pointer"
+                                className="w-full flex items-center p-4 pt-1 pb-1 hover:bg-gray-100 cursor-pointer"
                                 onClick={() => setSearch(item.name)}
                               >
-                                {item.name}
+                                <div className="pure-skeleton  !w-[40px] h-[40px] rounded-md overflow-hidden relative">
+                                  <Image
+                                    src={`${IMAGE_URL}/${item?.image[0]?.url}`}
+                                    width={40}
+                                    height={40}
+                                  />
+                                </div>
+                                <div className="flex-1 pr-4">
+                                  <p className="text-[14px]">{item?.name}</p>
+                                  <p className="text-[12px] text-[#a5a5a5]">
+                                    {item?.shortDescription || "..."}
+                                  </p>
+                                </div>
                               </div>
                             </Link>
                           </div>
@@ -220,7 +252,7 @@ const SearchBar = ({ disabled = false }) => {
 
               {isSearch &&
                 showSuggestions &&
-                search.length > 2 &&
+                isFoucsed &&
                 suggestions?.products?.length === 0 &&
                 !isFetching && (
                   <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50 flex justify-between items-center">
