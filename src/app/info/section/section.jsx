@@ -49,7 +49,7 @@ export const Section = ({
       }}
     >
       <Container>
-        <div className="flex items-center justify-between py-[16px] bg-[#fff] rounded-[12px] px-4 pl-2 border border-[#eee] mb-[12px]">
+        <div className="flex items-center justify-between py-[16px] bg-[#fff] rounded-[12px] px-4 pl-2 mb-[12px]">
           <div className="flex items-center">
             <div>{icon}</div>
             <div className="mr-[12px]">
