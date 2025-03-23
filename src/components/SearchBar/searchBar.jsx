@@ -87,9 +87,6 @@ const SearchBar = ({ disabled = false }) => {
     keepPreviousData: true,
   });
 
-  useEffect(() => {
-    console.log("suggestions", suggestions);
-  }, [suggestions]);
 
   const { data: categories = [], isFetching: isFetchingCategories } = useQuery({
     queryKey: ["categories"],

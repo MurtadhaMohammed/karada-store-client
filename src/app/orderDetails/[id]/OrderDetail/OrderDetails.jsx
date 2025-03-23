@@ -8,7 +8,7 @@ import { useAppStore } from "@/lib/store";
 import dayjs from "dayjs";
 import OrdersDetailsSkeleton from "../Skeleton/skeleton";
 import Link from "next/link";
-import { BiCopy, BiSupport } from "react-icons/bi";
+import { BiCheck, BiCopy, BiSupport } from "react-icons/bi";
 import { FcCancel } from "react-icons/fc";
 import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import CancelationModal from "@/components/CancelationModal/cancelationModal";
@@ -18,6 +18,7 @@ const OrderDetails = ({ params }) => {
   const [discounts, setDiscounts] = useState([]);
   const [createdAt, setCreatedAt] = useState(null);
   const { openModal } = useBottomSheetModal();
+  const [copied, setCopied] = useState(false);
   const { data: order, isLoading } = useQuery({
     queryKey: [`related-${params.id}`, params],
     queryFn: () =>
@@ -94,6 +95,12 @@ const OrderDetails = ({ params }) => {
     setPageTitle("تفاصيل الطلب");
   }, []);
 
+  const copyToClipboard = (trackId) => {
+    navigator.clipboard.writeText(trackId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   if (isLoading) return <OrdersDetailsSkeleton />;
   return (
     <div>
@@ -121,8 +128,17 @@ const OrderDetails = ({ params }) => {
                 {/* Order Number */}
                 <div className="flex item-center justify-between border-b border-gray-400 pb-3">
                   <p className="text-sm text-gray-200">رقم الطلب</p>
-                  <div className="flex item-center gap-2 text-lg font-semibold">
-                    <BiCopy className="cursor-pointer hover:text-gray-300 transition " />
+                  <div className="flex items-center gap-2 text-lg font-semibold">
+                    <button
+                      onClick={() => copyToClipboard(order?.track_id)}
+                      className="cursor-pointer transition-all duration-300 flex items-center justify-center"
+                    >
+                      {copied ? (
+                        <BiCheck className="text-white w-6 h-6 transition-colors duration-300" />
+                      ) : (
+                        <BiCopy className="hover:text-gray-300 transition-colors duration-300" />
+                      )}
+                    </button>
                     <span className="block -mt-[4px]">{order?.track_id}</span>
                   </div>
                 </div>
@@ -131,7 +147,7 @@ const OrderDetails = ({ params }) => {
                 <div className="flex item-center justify-between border-b border-gray-400 pb-3">
                   <p className="text-sm text-gray-200">تاريخ الطلب</p>
                   <p className="text-sm">
-                    {dayjs(order?.create_at).format("YYYY-MM-DD hh:mm A")}
+                    {dayjs(order?.created_at).format("YYYY-MM-DD hh:mm A")}
                   </p>
                 </div>
 
