@@ -12,14 +12,15 @@ import { useAppStore } from "@/lib/store";
 import dayjs from "dayjs";
 import OrdersDetailsSkeleton from "../Skeleton/skeleton";
 import Link from "next/link";
-import { BiSupport } from "react-icons/bi";
+import { BiCheck, BiCopy, BiSupport } from "react-icons/bi";
 import { FcCancel } from "react-icons/fc";
 import ConfirmModal from "@/components/ConfirmModal/confirmModal";
 
 const OrderDetails = ({ params }) => {
   const [discounts, setDiscounts] = useState([]);
   const [createdAt, setCreatedAt] = useState(null);
-  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const { openModal } = useBottomSheetModal();
+  const [copied, setCopied] = useState(false);
   const { data: order, isLoading } = useQuery({
     queryKey: [`related-${params.id}`, params],
     queryFn: () =>
@@ -114,6 +115,12 @@ const OrderDetails = ({ params }) => {
     setPageTitle(`طلب رقم ${params.id}`);
   }, []);
 
+  const copyToClipboard = (trackId) => {
+    navigator.clipboard.writeText(trackId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   if (isLoading) return <OrdersDetailsSkeleton />;
   return (
     <Container>
@@ -136,14 +143,45 @@ const OrderDetails = ({ params }) => {
                   {dayjs(order?.create_at).format("YYYY-MM-DD")}
                 </p>
               </div>
-              <div className="flex items-center text-[14px] text-[#666] mt-[6px]">
-                <HiOutlineLocationMarker />
-                <p className="mr-[4px]">{address}</p>
-              </div>
-              <div className="h-[4px] rounded-[24px] bg-[#eee] mt-[16px]">
-                <div
-                  className={`h-[4px] rounded-[24px] ${statusTheme[order_status]?.bar}`}
-                ></div>
+            </div>
+            <div className="relative mx-[16px] py-6 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl border border-dashed border-[#fff]">
+              {/* Left and Right circular cutouts (without dashed border) */}
+              <div className="w-[30px] h-[30px] absolute -right-[20px] top-1/2 -translate-y-1/2 bg-white rounded-full"></div>
+              <div className="w-[30px] h-[30px] absolute -left-[20px] top-1/2 -translate-y-1/2 bg-white rounded-full"></div>
+
+              {/* Order details */}
+              <div className="flex flex-col gap-4">
+                {/* Order Number */}
+                <div className="flex item-center justify-between border-b border-gray-400 pb-3">
+                  <p className="text-sm text-gray-200">رقم الطلب</p>
+                  <div className="flex items-center gap-2 text-lg font-semibold">
+                    <button
+                      onClick={() => copyToClipboard(order?.track_id)}
+                      className="cursor-pointer transition-all duration-300 flex items-center justify-center"
+                    >
+                      {copied ? (
+                        <BiCheck className="text-white w-6 h-6 transition-colors duration-300" />
+                      ) : (
+                        <BiCopy className="hover:text-gray-300 transition-colors duration-300" />
+                      )}
+                    </button>
+                    <span className="block -mt-[4px]">{order?.track_id}</span>
+                  </div>
+                </div>
+
+                {/* Order Date */}
+                <div className="flex item-center justify-between border-b border-gray-400 pb-3">
+                  <p className="text-sm text-gray-200">تاريخ الطلب</p>
+                  <p className="text-sm">
+                    {dayjs(order?.created_at).format("YYYY-MM-DD hh:mm A")}
+                  </p>
+                </div>
+
+                {/* Full Address */}
+                <div className="flex item-center justify-between">
+                  <p className="text-sm text-gray-200">العنوان الكامل</p>
+                  <p className="text-sm">{address}</p>
+                </div>
               </div>
             </div>
           </div>
