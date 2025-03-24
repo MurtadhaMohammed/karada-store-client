@@ -47,10 +47,13 @@ const Voucher = () => {
         return;
       }
 
-      if (
-        cart.some((item) => item.product.discount !== null) &&
-        !response.voucher.apply_over_discount
-      ) {
+      console.log(cart);
+
+      const hasDiscountedItems = cart.some(
+        (item) => item?.product?.endPrice < item?.product?.price 
+      );
+
+      if (hasDiscountedItems && !response?.voucher?.apply_over_discount) {
         setLoading(false);
         setError("لا يمكن تطبيق هذه القسيمة على سلة تحتوي على تخفيض.");
         return;

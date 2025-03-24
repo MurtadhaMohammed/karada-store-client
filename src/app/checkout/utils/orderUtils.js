@@ -31,9 +31,12 @@ export const createOrder = async (
         note,
       },
     });
-    if (response) {
+
+    console.log("response", response);
+
+    if (response?.order) {
       clearCart();
-      if (response?.status == "Not Logged In" && !isLogin) {
+      if (response?.status === "Not Logged In" && !isLogin) {
         setIsOtp(true);
         setOtp("");
         router.replace("/login?phone=" + order.phone);

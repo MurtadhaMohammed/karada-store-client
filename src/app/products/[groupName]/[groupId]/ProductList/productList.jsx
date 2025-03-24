@@ -10,6 +10,7 @@ import Empty from "@/components/Empty/empty";
 import { VscSearchStop } from "react-icons/vsc";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import RandomProducts from "@/app/products/randomProducts/randomProducts";
 
 const ProductList = ({ groupId, groupName }) => {
   const { querySearch, queryString, setSearchResult, setPageTitle } =
@@ -76,14 +77,16 @@ const ProductList = ({ groupId, groupName }) => {
   if (isError || error) return <div>Error loading products.</div>;
   if (data?.pages[0]?.total === 0)
     return (
-      <Empty
-        icon={<VscSearchStop className="text-[100px]" />}
-        title="لا توجد نتائج!."
-        msg="لاتوجد منتجات مطابقة لبحثك"
-        href={"/"}
-        top={14}
-        // buttonText={"عودة للرئيسية"}
-      />
+      // <Empty
+      //   icon={<VscSearchStop className="text-[100px]" />}
+      //   title="لا توجد نتائج!."
+      //   msg="لاتوجد منتجات مطابقة لبحثك"
+      //   href={"/"}
+      //   top={14}
+      //   // buttonText={"عودة للرئيسية"}
+      // />
+      
+      <RandomProducts />
     );
 
   return (
