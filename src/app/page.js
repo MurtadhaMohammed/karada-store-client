@@ -88,7 +88,6 @@ export default async function Home() {
       // Render the banner content normally if no valid link is found
       return <div key={banner.id}>{bannerContent()}</div>;
     };
-
     return (
       <div className="pb-[100px]">
         <SearchBar />
