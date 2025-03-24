@@ -10,6 +10,7 @@ import Link from "next/link";
 import { URL } from "@/lib/api";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 import BrandBanner from "@/components/brandBanner/brandBanner";
+import GridBanner from "@/components/GridBanner/gridBanner";
 async function getViews() {
   const res = await fetch(`${URL}/client/view/homeView`, {
     method: "GET",
@@ -91,10 +92,13 @@ export default async function Home() {
     return (
       <div className="pb-[100px]">
         <SearchBar />
+        {/* <GridBanner banner={{}} /> */}
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (
-          <div><ErrorBoundary /></div>
+          <div>
+            <ErrorBoundary />
+          </div>
         )}
       </div>
     );

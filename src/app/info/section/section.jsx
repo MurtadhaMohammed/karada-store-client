@@ -42,7 +42,6 @@ export const Section = ({
             case "logout":
               logout();
               break;
-
             default:
               break;
           }
