@@ -42,7 +42,6 @@ const SearchBar = ({ disabled = false }) => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [isFoucsed, setIsFocused] = useState(false);
   const { querySearch, setQuerySearch, setQueryString, searchResult } =
     useAppStore();
 
@@ -70,7 +69,7 @@ const SearchBar = ({ disabled = false }) => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-      if (isFoucsed) setShowSuggestions(true);
+      if (search.length > 0) setShowSuggestions(true);
     }, 300);
 
     return () => clearTimeout(handler);
@@ -83,10 +82,9 @@ const SearchBar = ({ disabled = false }) => {
         pathname: `/client/product/search?q=${debouncedSearch}`,
       });
     },
-    enabled: isSearch,
+    enabled: isSearch && debouncedSearch.length > 1,
     keepPreviousData: true,
   });
-
 
   const { data: categories = [], isFetching: isFetchingCategories } = useQuery({
     queryKey: ["categories"],
@@ -112,7 +110,7 @@ const SearchBar = ({ disabled = false }) => {
   };
 
   const handleKeyDown = ({ key }) => {
-    if (key === "Enter") submitSearch();
+    if (key === "Enter" && search?.length > 2) submitSearch();
   };
 
   const handleFilter = (el) => {
@@ -151,7 +149,7 @@ const SearchBar = ({ disabled = false }) => {
     setShowSuggestions(false);
   };
   return (
-    <div className={isSearch ? "sticky top-[61px] z-20": ""}>
+    <div>
       <Link href={disabled ? "" : "/products/search/all"}>
         <div className="bg-gradient-to-b from-[#f0eeff] to-transparent md:pt-[24px] md:pb-[24px] pt-[16px] pb-[16px] -mb-[12px] z-10">
           <Container>
@@ -183,20 +181,11 @@ const SearchBar = ({ disabled = false }) => {
                 readOnly={!isSearch}
                 className="w-[100%] rounded-[8px] h-[48px] pl-[46px] pr-[16px] outline-none border border-[#eee] text-[18px]"
                 placeholder="ابحث عن منتج"
-                onFocus={() => {
-                  setIsSearch(true);
-                  setIsFocused(true);
-                  setShowSuggestions(true);
-                }}
-                onBlur={() => {
-                  setTimeout(() => setIsFocused(false), 200); // Delay hiding to allow clicking on a suggestion
-                }}
               />
 
               {isSearch &&
                 showSuggestions &&
-                isFoucsed &&
-                suggestions?.products?.length >= 0 && (
+                suggestions?.products?.length > 0 && (
                   <div className="absolute bg-white border border-gray-200 w-full mt-2 pt-4 pb-4 rounded-[8px] shadow-lg z-50">
                     {isFetching ? (
                       <div className="pr-4 text-gray-500">جاري التحميل...</div>
@@ -210,15 +199,12 @@ const SearchBar = ({ disabled = false }) => {
                         </div> */}
 
                         <div className="absolute -bottom-[100px] flex justify-center p-6 w-full">
-                          <div
-                            onClick={closeSuggestions}
-                            className="w-[58px] h-[58px] rounded-full bg-[#eee] flex items-center justify-center shadow-lg active:opacity-50 transition-all"
-                          >
+                          <div onClick={closeSuggestions} className="w-[58px] h-[58px] rounded-full bg-[#eee] flex items-center justify-center shadow-lg active:opacity-50 transition-all">
                             <IoCloseSharp size={32} />
                           </div>
                         </div>
 
-                        {suggestions?.products?.map((item) => (
+                        {suggestions.products?.map((item) => (
                           <div key={item.id}>
                             <Link key={item.id} href={`/product/${item.id}`}>
                               <div
@@ -249,7 +235,7 @@ const SearchBar = ({ disabled = false }) => {
 
               {isSearch &&
                 showSuggestions &&
-                isFoucsed &&
+                search.length > 2 &&
                 suggestions?.products?.length === 0 &&
                 !isFetching && (
                   <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50 flex justify-between items-center">

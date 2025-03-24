@@ -3,7 +3,7 @@ import Button from "../UI/Button/button";
 const Empty = ({ icon, title, msg, top = 18, href, buttonText }) => {
   return (
     <div
-      className="flex items-center justify-center p-6 rotate-3 "
+      className="flex items-center justify-center p-6"
       style={{ marginTop: `${top}vh` }}
     >
       <div className="text-center flex justify-center items-center gap-4">
