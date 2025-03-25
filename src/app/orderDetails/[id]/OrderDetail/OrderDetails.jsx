@@ -19,8 +19,8 @@ import ConfirmModal from "@/components/ConfirmModal/confirmModal";
 const OrderDetails = ({ params }) => {
   const [discounts, setDiscounts] = useState([]);
   const [createdAt, setCreatedAt] = useState(null);
-  const { openModal } = useBottomSheetModal();
   const [copied, setCopied] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const { data: order, isLoading } = useQuery({
     queryKey: [`related-${params.id}`, params],
     queryFn: () =>
