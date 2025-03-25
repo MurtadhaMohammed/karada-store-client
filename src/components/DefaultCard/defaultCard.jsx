@@ -86,9 +86,10 @@ const DefaultCard = ({
                     op?.color && (
                       <li
                       key={i}
-                        className="w-[14px] h-[14px] rounded-full bg-[#eee] ml-[2px] mr-[2px] shadow-md"
+                        className="w-[14px] h-[14px] rounded-full bg-[#eee] ml-[2px] mr-[2px] "
                         style={{
                           background: op?.color,
+                          boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25) inset",
                         }}
                       ></li>
                     )
