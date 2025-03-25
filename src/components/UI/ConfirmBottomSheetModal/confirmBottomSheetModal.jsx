@@ -13,9 +13,9 @@ export const ConfirmBottomSheetModal = ({
   return (
     <Sheet isOpen={isOpen} onClose={onClose} detent={detent}>
       <Sheet.Container>
-        <Sheet.Header />
+        {/* <Sheet.Header /> */}
         <Sheet.Content>
-          {title && <div>{title}</div>}
+        {title && <div className="pt-6">{title}</div>}
           <Sheet.Scroller className="w-full">{children}</Sheet.Scroller>
           {footer && <div>{footer}</div>}
         </Sheet.Content>

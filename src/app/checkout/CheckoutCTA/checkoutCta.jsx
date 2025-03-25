@@ -10,6 +10,7 @@ import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomShee
 import { InstallmentModal } from "../Payments/InstallmentModal/InstallmentModal";
 import { OtpModal } from "../Payments/OtpModal/OtpModal";
 import { createOrder } from "../utils/orderUtils";
+import RedirectOrderCreation from "@/components/RedirectOrderCreation/redirectOrderCreaton";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
@@ -39,6 +40,7 @@ const CheckoutCTA = () => {
   const [sessionId, setSessionId] = useState(null);
   const [order_type, setOrderType] = useState();
   const [isDataProvided, setIsDataProvided] = useState(false);
+  const [showRedirectModal, setShowRedirectModal] = useState(false);
   const [order, setOrder] = useState(null);
   const { installmentId, setInstallmentId, platform, setPlatform, settings } =
     useAppStore();
@@ -91,7 +93,7 @@ const CheckoutCTA = () => {
 
   const handleOrderCreation = async () => {
     setLoading(true);
-    await createOrder(
+    const result = await createOrder(
       order,
       isLogin,
       setIsOtp,
@@ -105,6 +107,9 @@ const CheckoutCTA = () => {
     );
     setLoading(false);
     setNote("");
+    if (result?.order && isLogin && result?.status !== "Not Logged In") {
+      setShowRedirectModal(true);
+    }
   };
 
   const handleButtonClick = () => {
@@ -198,6 +203,10 @@ const CheckoutCTA = () => {
         clearCart={clearCart}
         router={router}
       />
+ 
+ {showRedirectModal && (
+  <RedirectOrderCreation onClose={() => setShowRedirectModal(false)} />
+)}
     </div>
   );
 };

@@ -40,10 +40,9 @@ export const createOrder = async (
         setIsOtp(true);
         setOtp("");
         router.replace("/login?phone=" + order.phone);
-      } else {
-        router.replace("/orders");
-      }
+      } 
     }
+    return response;
   } catch (error) {
     console.error("Error creating order:", error);
   }
