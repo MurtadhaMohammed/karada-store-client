@@ -2,6 +2,8 @@
 import { ConfirmBottomSheetModal } from "../UI/ConfirmBottomSheetModal/confirmBottomSheetModal";
 import Container from "@/components/UI/Container/container";
 import { useRouter } from "next/navigation";
+import { FaHome } from "react-icons/fa";
+import { RiShoppingBag3Line } from "react-icons/ri";
 
 const RedirectOrderCreation = () => {
   const router = useRouter();
@@ -24,18 +26,18 @@ const RedirectOrderCreation = () => {
             router.replace("/");
             onClose?.();
           }}
-          className="bg-[#fff] border border-violet-600 py-2 rounded-lg"
+          className="bg-[#fff] border border-violet-600 py-3 rounded-lg flex items-center justify-center"
         >
-        الصفحة الرئيسية
+         الصفحة الرئيسية <FaHome size={20} color="#6547E0" className="mr-2"/>
         </button>
         <button
           onClick={() => {
             router.replace("/orders");
             onClose?.();
           }}
-          className="bg-[#f6f6f6] border py-2 rounded-lg"
+          className="bg-[#f6f6f6] border py-3 rounded-lg flex items-center justify-center"
         >
-          الطلبات السابقة
+          الطلبات السابقة <RiShoppingBag3Line size={20}  className="mr-2"/>
         </button>
       </div>
      </Container>
