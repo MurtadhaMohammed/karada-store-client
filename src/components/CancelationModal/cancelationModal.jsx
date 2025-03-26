@@ -27,11 +27,14 @@ const CancelationModal = ({ orderId }) => {
   });
 
   const reasons = [
-    { id: "gotAnotherOrder", label: "تم الحصول على طلب آخر" },
-    { id: "changedMind", label: "تغيرت الرغبة" },
-    { id: "delayedDelivery", label: "تأخر التوصيل" },
+    { id: "ordered-by-mistake", label: "طلبت المنتج بالخطأ" },
+    { id: "too-expensive", label: "أشعر أن السعر مرتفع" },
+    { id: "found-cheaper-elsewhere", label: "رأيته في مكان اخر بسعر أقل" },
+    { id: "change-payment-method", label: "أريد تغيير طريقة الدفع" },
+    { id: "change-delivery-address", label: "أريد تغيير عنوان التوصيل" },
     { id: "other", label: "سبب آخر" },
   ];
+  
 
   const handleSubmit = () => {
     const selectedReasonLabel =
