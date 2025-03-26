@@ -202,10 +202,10 @@ const SideMenu = () => {
               />
             </div>
           )}
-          <MenuItem
+          {/* <MenuItem
             title={"مشاركة التطبيق"}
             icon={<LuShare2 className="text-[24px]" />}
-          />
+          /> */}
           {isLogin && (
             <MenuItem
               onClick={logout}
