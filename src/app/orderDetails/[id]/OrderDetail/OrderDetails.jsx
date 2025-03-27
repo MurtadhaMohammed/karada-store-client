@@ -245,9 +245,7 @@ const OrderDetails = ({ params }) => {
                     <div className="w-[100%] h-[1px] bg-[#eee]" />
                     <div className="flex item-center justify-between w-full">
                       <p>كود الخصم : </p>
-                      <b
-                        className="text-[16px] monospace"
-                      >
+                      <b className="monospace text-[16px]">
                         {order?.voucher.code}
                       </b>
                     </div>
