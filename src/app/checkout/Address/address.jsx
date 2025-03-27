@@ -51,7 +51,6 @@ const Address = () => {
     });
   }, [address, phone, name]);
   
-  console.log(note);
   useEffect(() => {
     if (validateAddress) {
       setHandelError("يرجى ملء جميع الحقول");

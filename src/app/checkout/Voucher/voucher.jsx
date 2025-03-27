@@ -33,24 +33,25 @@ const Voucher = () => {
         },
       });
 
-      if (response.error === "Voucher not found") {
-        setError("القسيمة غير موجودة");
-        setLoading(false);
-        return;
-      } else if (response.error === "Voucher expired") {
-        setError("القسيمة منتهية");
-        setLoading(false);
-        return;
-      } else if (response.error === "Voucher is only valid for first order") {
-        setError("القسيمة تعمل على اول طلب فقــــــط");
+      const errorMessages = {
+        "Voucher not found": "القسيمة غير موجودة",
+        "Invalid voucher": "القسيمة غير موجودة",
+        "Voucher expired": "القسيمة منتهية",
+        "Voucher is only valid for first order": "القسيمة تعمل على أول طلب فقط",
+        "Voucher usage limit per user reached":
+          "وصلت إلى الحد الأقصى لاستخدام القسيمة",
+        "Voucher not yet active": "لم يتم تفعيل القسيمة بعد",
+        "Voucher usage limit reached": "لقد تم استخدام هذه القسيمة بالفعل",
+      };
+
+      if (response.error && errorMessages[response.error]) {
+        setError(errorMessages[response.error]);
         setLoading(false);
         return;
       }
 
-      console.log(cart);
-
       const hasDiscountedItems = cart.some(
-        (item) => item?.product?.endPrice < item?.product?.price 
+        (item) => item?.product?.endPrice < item?.product?.price
       );
 
       if (hasDiscountedItems && !response?.voucher?.apply_over_discount) {
