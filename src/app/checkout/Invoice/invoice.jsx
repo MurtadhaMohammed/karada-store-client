@@ -10,17 +10,21 @@ const Invoice = () => {
   const subTotal = getTotal() || 0;
   const delivery_cost = parseInt(settings?.delivery) || 0;
 
-  // Calculate product discounts
+  // Updated product discount calculation
   const productDiscount = cart.reduce((total, item) => {
-    const discount =
-      item?.product?.discount?.active &&
-      item?.product?.discount?.end_at > new Date()
-        ? item?.product?.discount?.value || 0
-        : 0;
-    return total + discount * item.qt;
+    // Check if endPrice is valid and in the future
+    const isValidEndPrice = 
+      item?.product?.endPrice && 
+      item?.product?.endPrice < item?.product?.price && 
+      new Date(item?.product?.endPrice_date) > new Date();
+    
+    const discount = isValidEndPrice 
+      ? (item?.product?.price - item?.product?.endPrice) * item.qt 
+      : 0;
+    
+    return total + discount;
   }, 0);
 
-  // Calculate voucher discount with capping
   let voucherDiscount = 0;
   if (voucher) {
     if (voucher.type === "%") {
@@ -43,6 +47,7 @@ const Invoice = () => {
   };
 
   const roundedTotal = roundToNearest250(realTotal || 0);
+
   return (
     <div className="rounded-[8px] border border-[#eee] mt-[24px] bg-white">
       <div className="flex items-center p-[16px]">
@@ -55,17 +60,11 @@ const Invoice = () => {
             <p>المجموع</p>
             <p>{subTotal.toLocaleString()} د.ع</p>
           </div>
-          {productDiscount > 0 && (
-            <div className="flex items-center justify-between mt-[8px]">
-              <p>خصم المنتجات</p>
-              <p>{productDiscount.toLocaleString()}- د.ع</p>
-            </div>
-          )}
-          {voucherDiscount > 0 && (
+          {totalDiscount > 0 && (
             <div className="flex items-center justify-between mt-[8px]">
               <p>قيمة الخصم</p>
               <p className="text-red-500">
-                {voucherDiscount.toLocaleString()}- د.ع
+                {totalDiscount.toLocaleString()}- د.ع
               </p>
             </div>
           )}
