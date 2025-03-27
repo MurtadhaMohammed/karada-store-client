@@ -17,6 +17,7 @@ const DefaultCard = ({
   handleRemoveFav = () => {},
 }) => {
   // const isScreenMd = useIsScreenMd();
+  // console.log(item)
   const { favorites, toggleFav } = useAppStore();
 
   return (
@@ -32,7 +33,7 @@ const DefaultCard = ({
         <div className="absolute top-2 left-2 z-10">
           <IconButton
             onClick={(e) => {
-              e.stopPropagation(); // Stop event from bubbling up
+              e.stopPropagation(); 
               handleRemoveFav(item?.id);
             }}
             className="bg-[#f6f6f6] p-2 rounded-full"
