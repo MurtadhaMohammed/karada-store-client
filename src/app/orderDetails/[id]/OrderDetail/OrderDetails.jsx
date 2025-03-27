@@ -294,14 +294,14 @@ const OrderDetails = ({ params }) => {
                 <BiSupport className="text-violet-600 text-[22px]" />
               </Link>
               {order_status !== "Canceled" && order_status === "Created" && (
-                <button
-                  onClick={() => setShowCancelConfirm(true)}
-                  className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-4 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
-                >
-                  <span className="text-red-600 font-bold">الغاء الطلب</span>
-                  <FcCancel className="text-red-600 text-[22px]" />
-                </button>
-              )}
+              <button
+                onClick={() => setShowCancelConfirm(true)}
+                className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-3 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
+              >
+                <span className="text-red-600 font-bold">الغاء الطلب</span>
+                <FcCancel className="text-red-600 text-[22px]" />
+              </button>
+            )}
               {/* <div
                 onClick={() => openModal("cancelationModal")}
                 className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-3 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"

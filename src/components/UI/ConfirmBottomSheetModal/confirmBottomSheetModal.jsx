@@ -9,11 +9,12 @@ export const ConfirmBottomSheetModal = ({
   title = null,
   detent = "full-height",
   children,
+  isHeader = true,
 }) => {
   return (
     <Sheet isOpen={isOpen} onClose={onClose} detent={detent}>
       <Sheet.Container>
-        {/* <Sheet.Header /> */}
+        {isHeader && <Sheet.Header />}
         <Sheet.Content>
         {title && <div className="pt-6">{title}</div>}
           <Sheet.Scroller className="w-full">{children}</Sheet.Scroller>

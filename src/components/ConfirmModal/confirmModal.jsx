@@ -6,7 +6,7 @@ import CancelationModal from "@/components/CancelationModal/cancelationModal";
 import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 
 const ConfirmModal = ({ isOpen, onClose, orderId }) => {
-    const { openModal } = useBottomSheetModal(); 
+    const { openModal, closeModal } = useBottomSheetModal(); 
   const { mutate: cancelOrder, isPending: isCancelLoading } = useMutation({
     mutationFn: async () => {
       await apiCall({
@@ -18,12 +18,9 @@ const ConfirmModal = ({ isOpen, onClose, orderId }) => {
     onSuccess: () => {
       onClose();
       openModal("cancelationModal");
+      queryClient.invalidateQueries("orders");
     },
   });
-
-  const handleConfirm = () => {
-    cancelOrder();
-  };
 
   return (
     <div>
