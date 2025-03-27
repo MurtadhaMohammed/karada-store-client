@@ -17,6 +17,7 @@ const RedirectOrderCreation = () => {
           <b>تم انشاء الطلب بنجاح</b>
         </Container>
       }
+      isHeader={false}
     >
      <Container>
      <div className="flex flex-col gap-3 pb-4 mt-6">
