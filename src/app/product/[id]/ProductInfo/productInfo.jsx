@@ -316,7 +316,7 @@ const ProductInfo = ({ product }) => {
           ))}
         </div>
 
-        <div>
+        {/* <div>
           <button
             onClick={() => {
               const productUrl = window.location.href;
@@ -333,7 +333,7 @@ const ProductInfo = ({ product }) => {
             <p className="text-[16px]">للأستفسار والتواصل</p>
             <FaWhatsapp size={28} color="#1CC638" />
           </button>
-        </div>
+        </div> */}
 
         <p className="text-[14px] ">تفاصيل المنتج</p>
         <ul
