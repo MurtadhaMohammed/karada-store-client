@@ -8,7 +8,7 @@ import { useAppStore } from "@/lib/store";
 import dayjs from "dayjs";
 import OrdersDetailsSkeleton from "../Skeleton/skeleton";
 import Link from "next/link";
-import { BiCopy, BiCheck,BiSupport } from "react-icons/bi";
+import { BiCopy, BiCheck, BiSupport } from "react-icons/bi";
 import { FcCancel } from "react-icons/fc";
 import RelatedList from "../RelatedList/relatedList";
 import ConfirmModal from "@/components/ConfirmModal/confirmModal";
@@ -95,9 +95,20 @@ const OrderDetails = ({ params }) => {
     },
   };
   const { setPageTitle } = useAppStore();
+
   useEffect(() => {
     setPageTitle("تفاصيل الطلب");
   }, []);
+
+  const totalBeforeDiscount = () => {
+    if (order && order.items && order.items.length > 0) {
+      const total = order.items.reduce(
+        (acc, item) => acc + item?.l1?.price || item.price * item.qt,
+        0
+      );
+      return total;
+    }
+  };
 
   if (isLoading) return <OrdersDetailsSkeleton />;
   return (
@@ -159,7 +170,8 @@ const OrderDetails = ({ params }) => {
 
             <div className="p-[16px]">
               {order?.items?.map((item, i) => {
-                const displayPrice = item.l1?.price || item.price;
+                const displayPrice =
+                  item?.endPrice || item.l1?.price || item.price;
                 const shouldStrikeThrough =
                   displayPrice >
                   displayPrice * handleDiscount(item?.discount_id || null);
@@ -189,26 +201,27 @@ const OrderDetails = ({ params }) => {
                       </div>
 
                       {/* Price */}
-                      <div className="text-sm font-bold shrink-0">
-                        {shouldStrikeThrough ? (
+                      <div className="text-sm font-bold flex flex-col items-center justify-center shrink-0">
+                        {item?.endPrice && item?.endPrice < item?.price ? (
                           <div className="flex flex-col item-end">
                             <p className="line-through text-gray-400">
-                              {Number(displayPrice).toLocaleString("en")} د.ع
+                              {Number(item?.price).toLocaleString("en")} د.ع
                             </p>
                             <p className="text-[15px]">
                               {item?.qt > 1 && `${item?.qt} * `}{" "}
-                              {Number(
-                                displayPrice *
-                                  handleDiscount(item?.discount_id || null)
-                              ).toLocaleString("en")}{" "}
+                              {Number(item?.endPrice * item?.qt).toLocaleString(
+                                "en"
+                              )}{" "}
                               د.ع
                             </p>
                           </div>
                         ) : (
-                          <p>
-                            {item?.qt > 1 && `${item?.qt} * `}{" "}
-                            {Number(item.price).toLocaleString("en")} د.ع
-                          </p>
+                          <div className="flex item-center justify-center">
+                            <p className="text-center">
+                              {item?.qt > 1 && `${item?.qt} * `}{" "}
+                              {Number(item.price).toLocaleString("en")} د.ع
+                            </p>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -227,6 +240,33 @@ const OrderDetails = ({ params }) => {
                     <b className="text-[16px]">{order?.note}</b>
                   )}
                 </div>
+                {order.voucher && (
+                  <>
+                    <div className="w-[100%] h-[1px] bg-[#eee]" />
+                    <div className="flex item-center justify-between w-full">
+                      <p>كود الخصم : </p>
+                      <b
+                        className="text-[16px] monospace"
+                      >
+                        {order?.voucher.code}
+                      </b>
+                    </div>
+                  </>
+                )}
+                {totalBeforeDiscount() !== order?.total_price && (
+                  <>
+                    <div className="w-[100%] h-[1px] bg-[#eee]" />
+                    <div className="flex item-center justify-between w-full">
+                      <p>مجموع الخصم : </p>
+                      <b className="text-[16px]">
+                        {Number(
+                          totalBeforeDiscount() - order?.total_price
+                        ).toLocaleString("en")}{" "}
+                        د.ع
+                      </b>
+                    </div>
+                  </>
+                )}
                 <div className="w-[100%] h-[1px] bg-[#eee]" />
                 <div className="flex item-center justify-between w-full">
                   <p>سعر التوصيل : </p>
@@ -256,14 +296,14 @@ const OrderDetails = ({ params }) => {
                 <BiSupport className="text-violet-600 text-[22px]" />
               </Link>
               {order_status !== "Canceled" && order_status === "Created" && (
-              <button
-                onClick={() => setShowCancelConfirm(true)}
-                className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-4 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
-              >
-                <span className="text-red-600 font-bold">الغاء الطلب</span>
-                <FcCancel className="text-red-600 text-[22px]" />
-              </button>
-            )}
+                <button
+                  onClick={() => setShowCancelConfirm(true)}
+                  className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-4 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
+                >
+                  <span className="text-red-600 font-bold">الغاء الطلب</span>
+                  <FcCancel className="text-red-600 text-[22px]" />
+                </button>
+              )}
               {/* <div
                 onClick={() => openModal("cancelationModal")}
                 className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-3 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
@@ -275,10 +315,10 @@ const OrderDetails = ({ params }) => {
           </div>
 
           <ConfirmModal
-          isOpen={showCancelConfirm}
-          onClose={() => setShowCancelConfirm(false)}
-          orderId={order?.id}
-        />
+            isOpen={showCancelConfirm}
+            onClose={() => setShowCancelConfirm(false)}
+            orderId={order?.id}
+          />
         </>
       </Container>
       {/* <RelatedList productId={productId} /> */}
