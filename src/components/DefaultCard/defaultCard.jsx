@@ -41,10 +41,10 @@ const DefaultCard = ({
         </div>
       )}
 
-      {item?.discount &&
-        dayjs(item.discount.end_at).isValid() &&
-        dayjs(item.discount.end_at).isAfter(dayjs()) &&
-        item?.discount?.active === true && (
+      {item?.endPrice &&
+        item?.endPrice < item?.price &&
+        dayjs(item.endPrice_date).isValid() &&
+        dayjs(item.endPrice_date).isAfter(dayjs()) && (
           <div className="absolute top-3 right-3 z-10 p-[6px] pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
             خصم {Number(item?.price - item?.endPrice).toLocaleString("en")} د.ع
           </div>
@@ -85,11 +85,10 @@ const DefaultCard = ({
                   (op, i) =>
                     op?.color && (
                       <li
-                      key={i}
-                        className="w-[14px] h-[14px] rounded-full bg-[#eee] ml-[2px] mr-[2px] "
+                        key={i}
+                        className="w-[14px] h-[14px] rounded-full bg-[#eee] ml-[2px] mr-[2px] shadow-sm"
                         style={{
                           background: op?.color,
-                          boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.25) inset",
                         }}
                       ></li>
                     )
@@ -97,11 +96,7 @@ const DefaultCard = ({
               </ul>
             </div>
           )}
-          <div
-            className={`w-full relative ${
-             "aspect-w-1 aspect-h-1" 
-            }`}
-          >
+          <div className={`w-full relative ${"aspect-w-1 aspect-h-1"}`}>
             <Image
               src={`${IMAGE_URL}/${item?.thumbnail1}`}
               fill
