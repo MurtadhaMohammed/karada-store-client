@@ -203,6 +203,10 @@ body {
   }
 }
 
+.monospace {
+  font-family: monospace !important;
+}
+
 
 .brand-active{
   border-color: #8b5cf6;
