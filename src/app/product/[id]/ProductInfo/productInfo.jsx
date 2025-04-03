@@ -115,7 +115,9 @@ const ProductInfo = ({ product }) => {
   const shownimages =
     activeOption?.images?.length > 0
       ? activeOption.images
-      : product?.image?.map((img) => img.url);
+      : product?.image
+          ?.sort((a, b) => Number(a.priority) - Number(b.priority))
+          .map((img) => img.url);
 
   return (
     <div className="md:hidden block">
