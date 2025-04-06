@@ -4,7 +4,7 @@ import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 
 const Invoice = () => {
-  const { getTotal, voucher, cart } = useCartStore();
+  const { voucher, cart } = useCartStore();
   const { settings } = useAppStore();
 
   const subTotal = cart.reduce(
