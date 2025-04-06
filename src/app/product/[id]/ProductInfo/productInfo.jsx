@@ -115,7 +115,9 @@ const ProductInfo = ({ product }) => {
   const shownimages =
     activeOption?.images?.length > 0
       ? activeOption.images
-      : product?.image?.map((img) => img.url);
+      : product?.image
+          ?.sort((a, b) => Number(a.priority) - Number(b.priority))
+          .map((img) => img.url);
 
   return (
     <div className="md:hidden block">
@@ -316,7 +318,7 @@ const ProductInfo = ({ product }) => {
           ))}
         </div>
 
-        <div>
+        {/* <div>
           <button
             onClick={() => {
               const productUrl = window.location.href;
@@ -333,7 +335,7 @@ const ProductInfo = ({ product }) => {
             <p className="text-[16px]">للأستفسار والتواصل</p>
             <FaWhatsapp size={28} color="#1CC638" />
           </button>
-        </div>
+        </div> */}
 
         <p className="text-[14px] ">تفاصيل المنتج</p>
         <ul

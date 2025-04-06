@@ -202,7 +202,7 @@ const ProductInfoWeb = ({ product }) => {
                   شارك المنتج
                 </span>
               </button>
-              <button
+              {/* <button
                 onClick={() => {
                   const productUrl = window.location.href;
                   const phoneNumber = "+9647826989747";
@@ -219,7 +219,7 @@ const ProductInfoWeb = ({ product }) => {
                 <span className="text-[14px] text-gray-700 font-bold">
                   للاستفسار
                 </span>
-              </button>
+              </button> */}
             </div>
             <h4 className="text-[18px]">{product?.name}</h4>
             {price === endPrice ? (

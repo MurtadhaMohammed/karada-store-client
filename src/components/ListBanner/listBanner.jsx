@@ -17,7 +17,6 @@ const ListBanner = ({
   isRelated = false,
 }) => {
   list = noMore ? list : list.slice(0, 4);
-
   if (list.length === 0) return;
   return (
     <div className="md:pt-[24px] pt-[16px] ">
