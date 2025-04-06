@@ -7,21 +7,24 @@ const Invoice = () => {
   const { getTotal, voucher, cart } = useCartStore();
   const { settings } = useAppStore();
 
-  const subTotal = getTotal() || 0;
+  const subTotal = cart.reduce(
+    (total, item) => total + item?.product?.price * item.qt,
+    0
+  );
   const delivery_cost = parseInt(settings?.delivery) || 0;
 
   // Updated product discount calculation
   const productDiscount = cart.reduce((total, item) => {
     // Check if endPrice is valid and in the future
-    const isValidEndPrice = 
-      item?.product?.endPrice && 
-      item?.product?.endPrice < item?.product?.price && 
+    const isValidEndPrice =
+      item?.product?.endPrice &&
+      item?.product?.endPrice < item?.product?.price &&
       new Date(item?.product?.endPrice_date) > new Date();
-    
-    const discount = isValidEndPrice 
-      ? (item?.product?.price - item?.product?.endPrice) * item.qt 
+
+    const discount = isValidEndPrice
+      ? (item?.product?.price - item?.product?.endPrice) * item.qt
       : 0;
-    
+
     return total + discount;
   }, 0);
 
