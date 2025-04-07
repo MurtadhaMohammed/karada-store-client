@@ -35,7 +35,15 @@ const LoginFormWeb = () => {
     const value = e.target.value;
     setPhone(value);
   };
-  const handleChange = (otp) => setOtp(otp);
+  const handleChange = (otp) => {
+    setOtp(otp);
+  };
+
+  useEffect(() => {
+    if (otp?.length === 6 && !loading) {
+      handleVerify();
+    }
+  }, [otp]);
 
   const globalPhone = userInfo?.phone;
   const handleLogin = async () => {

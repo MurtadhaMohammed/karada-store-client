@@ -99,6 +99,12 @@ const LoginForm = () => {
     }
   }, [isLogin]);
 
+  useEffect(() => {
+    if (otp?.length === 6 && !loading) {
+      handleVerify();
+    }
+  }, [otp]);
+
   if (isOtp)
     return (
       <div className="pt-[60px] h-[100vh] overflow-hidden">
@@ -161,7 +167,11 @@ const LoginForm = () => {
           </Container>
         </div>
         <div>
-          {error && <p className="text-red-500 flex items-center justify-center p-[16px]">{error}</p>}
+          {error && (
+            <p className="text-red-500 flex items-center justify-center p-[16px]">
+              {error}
+            </p>
+          )}
         </div>
       </div>
     );
@@ -207,9 +217,7 @@ const LoginForm = () => {
           </div>
         </Container>
       </div>
-      <div>
-        {error && <p className="text-red-500 p-[16px] ">{error}</p>}
-      </div>
+      <div>{error && <p className="text-red-500 p-[16px] ">{error}</p>}</div>
     </div>
   );
 };
