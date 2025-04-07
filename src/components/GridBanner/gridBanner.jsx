@@ -1,12 +1,13 @@
 "use client";
 
+import { IMAGE_URL } from "@/lib/api";
 import Container from "../UI/Container/container";
 
 const GridBanner = () => {
-  let hasBanner = false;
-  const bannerAlignment = "bottom"; //| // "bottom" | "left" | "right" = "left"; // Change as needed
+  let hasBanner = true;
+  const bannerAlignment = "left"; //| // "bottom" | "left" | "right" = "left"; // Change as needed
 
-  const list = [{}, {}, {}, {}];
+  const list = [{}, {}];
   const banner = {}; // Example banner object
 
   const parseGridCols = () => {
@@ -44,8 +45,14 @@ const GridBanner = () => {
             {list.map((_, i) => (
               <div
                 key={i}
-                className="w-full aspect-w-1 aspect-h-1 bg-[#eee] rounded-[12px]"
-              ></div>
+                className="w-full aspect-w-1 aspect-h-1 bg-[#eee] rounded-[12px] overflow-hidden"
+              >
+                <img
+                  src={`${IMAGE_URL}/image-iI8oQt.jpg`}
+                  className="w-full h-full object-cover"
+                  alt=""
+                />
+              </div>
             ))}
           </div>
           {/* Banner (Bottom/Right) */}
@@ -58,7 +65,9 @@ const GridBanner = () => {
                     ? "w-full aspect-[3/1]" // Wide for top/bottom
                     : "h-full aspect-[1/1]" // Square for left/right
                 }`}
-              ></div>
+              >
+                <img src={`${IMAGE_URL}/image-iI8oQt.jpg`} alt="" />
+              </div>
             )}
         </div>
       </Container>

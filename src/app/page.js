@@ -62,6 +62,8 @@ export default async function Home() {
             );
           case "Category":
             return <Categories list={banner.categories} />;
+          case "Grid":
+            return <GridBanner banner={banner} />;
           case "CreativeBanner":
             return (
               <ListBanner
@@ -92,6 +94,7 @@ export default async function Home() {
       <div className="pb-[100px]">
         <SearchBar />
         {/* <GridBanner banner={{}} /> */}
+        <GridBanner />;
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (
