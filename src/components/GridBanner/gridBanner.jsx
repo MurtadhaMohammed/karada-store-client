@@ -17,7 +17,6 @@ const GridBanner = ({
     return cols < 2 ? 2 : cols;
   };
 
-  console.log(banner);
 
   return (
     <div className="py-[16px]">
