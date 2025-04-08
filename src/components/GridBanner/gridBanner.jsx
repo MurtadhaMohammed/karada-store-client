@@ -2,18 +2,22 @@
 
 import { IMAGE_URL } from "@/lib/api";
 import Container from "../UI/Container/container";
+import Link from "next/link";
 
-const GridBanner = () => {
-  let hasBanner = true;
-  const bannerAlignment = "left"; //| // "bottom" | "left" | "right" = "left"; // Change as needed
-
-  const list = [{}, {}];
-  const banner = {}; // Example banner object
-
+const GridBanner = ({
+  bannerImage,
+  link,
+  grid,
+  hasBanner,
+  bannerAlignment,
+  banner,
+}) => {
   const parseGridCols = () => {
-    let cols = Math.ceil(list.length / 2);
+    let cols = Math.ceil(grid?.length / 2);
     return cols < 2 ? 2 : cols;
   };
+
+  console.log(banner);
 
   return (
     <div className="py-[16px]">
@@ -29,29 +33,39 @@ const GridBanner = () => {
           {hasBanner &&
             (bannerAlignment === "top" || bannerAlignment === "left") &&
             banner && (
-              <div
-                className={`bg-[#eee] rounded-[12px] flex items-center justify-center ${
-                  ["top", "bottom"].includes(bannerAlignment)
-                    ? "w-full aspect-[3/1]" // Wide for top/bottom
-                    : "h-full aspect-[1/1]" // Square for left/right
-                }`}
-              ></div>
+              <Link href={link}>
+                <div
+                  className={`bg-[#eee] rounded-[12px] flex items-center justify-center ${
+                    ["top", "bottom"].includes(bannerAlignment)
+                      ? "w-full aspect-[3/1]" // Wide for top/bottom
+                      : "h-full aspect-[1/1]" // Square for left/right
+                  }`}
+                >
+                  <img
+                    src={`${IMAGE_URL}/${bannerImage}`}
+                    className="w-full h-full object-cover rounded-[12px]"
+                    alt=""
+                  />
+                </div>
+              </Link>
             )}
 
           {/* Grid Items */}
           <div
             className={`grid gap-2 relative ${`grid-cols-${parseGridCols()}`}`}
           >
-            {list.map((_, i) => (
+            {grid?.map((_, i) => (
               <div
                 key={i}
                 className="w-full aspect-w-1 aspect-h-1 bg-[#eee] rounded-[12px] overflow-hidden"
               >
-                <img
-                  src={`${IMAGE_URL}/image-iI8oQt.jpg`}
-                  className="w-full h-full object-cover"
-                  alt=""
-                />
+                <Link href={_.link}>
+                  <img
+                    src={`${IMAGE_URL}/${_.image}`}
+                    className="w-full h-full object-cover rounded-[12px]"
+                    alt=""
+                  />
+                </Link>
               </div>
             ))}
           </div>
@@ -59,15 +73,21 @@ const GridBanner = () => {
           {hasBanner &&
             (bannerAlignment === "bottom" || bannerAlignment === "right") &&
             banner && (
-              <div
-                className={`bg-[#eee] rounded-[12px] flex items-center justify-center ${
-                  ["top", "bottom"].includes(bannerAlignment)
-                    ? "w-full aspect-[3/1]" // Wide for top/bottom
-                    : "h-full aspect-[1/1]" // Square for left/right
-                }`}
-              >
-                <img src={`${IMAGE_URL}/image-iI8oQt.jpg`} alt="" />
-              </div>
+              <Link href={link}>
+                <div
+                  className={`bg-[#eee] rounded-[12px] flex items-center justify-center ${
+                    ["top", "bottom"].includes(bannerAlignment)
+                      ? "w-full aspect-[3/1]" // Wide for top/bottom
+                      : "h-full aspect-[1/1]" // Square for left/right
+                  }`}
+                >
+                  <img
+                    src={`${IMAGE_URL}/${bannerImage}`}
+                    className="w-full h-full object-cover rounded-[12px]"
+                    alt=""
+                  />
+                </div>
+              </Link>
             )}
         </div>
       </Container>
