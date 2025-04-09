@@ -6,14 +6,15 @@ import { FiMinus, FiPlus } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import CartCTA from "../CartCTA/cartCta";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useCartStore } from "@/lib/cartStore";
-import { IMAGE_URL } from "@/lib/api";
+import { apiCall, IMAGE_URL } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
 import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { isEnglish } from "@/helper/isEnglish";
+import Skeleton from "./skeleton";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -111,9 +112,13 @@ const CartItem = ({ item }) => {
 };
 
 const CartList = () => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { cart, getItemsTotal, getTotal } = useCartStore();
+  const { cart, setCart, getItemsTotal, getTotal } = useCartStore();
   const total = getTotal();
+
+  const hasCheckedRef = useRef(false);
+
   useEffect(() => {
     router.prefetch("/checkout");
   }, [router]);
@@ -122,6 +127,26 @@ const CartList = () => {
     const randomIndex = Math.floor(Math.random() * cart.length);
     return cart[randomIndex]?.product?.id;
   }, [cart?.length]);
+
+  const checkCart = async () => {
+    if (cart.length > 0) {
+      setLoading(true);
+      const result = await apiCall({
+        pathname: "/client/cart/cart-check",
+        method: "POST",
+        data: cart,
+      });
+      setLoading(false);
+      setCart(result?.cart || []);
+    }
+  };
+
+  useEffect(() => {
+    if (!hasCheckedRef.current && cart.length > 0) {
+      hasCheckedRef.current = true;
+      checkCart();
+    }
+  }, [cart]);
 
   if (getItemsTotal() === 0)
     return (
@@ -136,18 +161,16 @@ const CartList = () => {
 
   return (
     <div className="mb-[16px]">
-      {/* <Container>
-        <div className="mt-[16px]">
-          <InstallmentBanner />
-        </div>
-      </Container> */}
-
       <Container>
         <InstallmentBanner className={"none"} price={total} margin={16} />
       </Container>
+      {loading ? (
+        <Skeleton />
+      ) : (
+        getItemsTotal() !== 0 &&
+        cart?.map((el, i) => <CartItem key={i} item={el} />)
+      )}
 
-      {getItemsTotal() !== 0 &&
-        cart?.map((el, i) => <CartItem key={i} item={el} />)}
       <RelatedList productId={productId} />
       <CartCTA />
     </div>
