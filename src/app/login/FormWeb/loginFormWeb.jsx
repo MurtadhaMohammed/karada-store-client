@@ -39,12 +39,7 @@ const LoginFormWeb = () => {
     setOtp(otp);
   };
 
-  useEffect(() => {
-    if (otp?.length === 6 && !loading) {
-      handleVerify();
-    }
-  }, [otp, handleVerify, loading]);
-
+  
   const globalPhone = userInfo?.phone;
   const handleLogin = async () => {
     if (phone !== "07700000000" && validateIraqiPhoneNumber(phone) === false)
@@ -106,7 +101,12 @@ const LoginFormWeb = () => {
       if (_name) setName(_name);
     }
   }, [isLogin]);
-
+  useEffect(() => {
+    if (otp?.length === 6 && !loading) {
+      handleVerify();
+    }
+  }, [otp, handleVerify, loading]);
+  
   if (isOtp)
     return (
       <>
