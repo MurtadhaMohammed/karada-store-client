@@ -44,7 +44,7 @@ const QtButton = ({ value, product }) => {
   );
 };
 
-const CartItem = ({ item }) => {
+const CartItem = ({ item, outOfStock = false }) => {
   const loadImageUrl = () => {
     let image = item?.product?.thumbnail1;
     if (item?.product?.l1?.uuid) image = item?.product?.l1?.images[0];
@@ -85,25 +85,29 @@ const CartItem = ({ item }) => {
                   `${item?.product?.shortDescription}`}
               </p>
             </div>
-            <div className="flex items-end justify-between w-full">
-              {item?.product?.endPrice !== item.product.price ? (
-                <div className="flex flex-col items-start">
-                  <p className="text-[14px] block line-through text-[#a5a5a5]">
-                    {Number(item.product.price).toLocaleString("en")}
-                  </p>
+            {!outOfStock ? (
+              <div className="flex items-end justify-between w-full">
+                {item?.product?.endPrice !== item.product.price ? (
+                  <div className="flex flex-col items-start">
+                    <p className="text-[14px] block line-through text-[#a5a5a5]">
+                      {Number(item.product.price).toLocaleString("en")}
+                    </p>
+                    <b className="text-[16px]">
+                      {Number(item.product.endPrice).toLocaleString("en")}{" "}
+                      <span className="text-[14px]">د.ع</span>
+                    </b>
+                  </div>
+                ) : (
                   <b className="text-[16px]">
-                    {Number(item.product.endPrice).toLocaleString("en")}{" "}
+                    {Number(displayPrice).toLocaleString("en")}{" "}
                     <span className="text-[14px]">د.ع</span>
                   </b>
-                </div>
-              ) : (
-                <b className="text-[16px]">
-                  {Number(displayPrice).toLocaleString("en")}{" "}
-                  <span className="text-[14px]">د.ع</span>
-                </b>
-              )}
-              <QtButton value={item?.qt} product={item?.product} />
-            </div>
+                )}
+                <QtButton value={item?.qt} product={item?.product} />
+              </div>
+            ) : (
+              <p>تم أزالة هذا المنتج من السلة لعدم توفره</p>
+            )}
           </div>
         </div>
       </Container>
@@ -113,6 +117,7 @@ const CartItem = ({ item }) => {
 
 const CartList = () => {
   const [loading, setLoading] = useState(false);
+  // const [outOfStock, setOutOfStock] = useState([]);
   const router = useRouter();
   const { cart, setCart, getItemsTotal, getTotal } = useCartStore();
   const total = getTotal();
@@ -130,14 +135,59 @@ const CartList = () => {
 
   const checkCart = async () => {
     if (cart.length > 0) {
+      const itemsId = cart.map((item) => item.product.id);
       setLoading(true);
+
       const result = await apiCall({
-        pathname: "/client/cart/cart-check",
+        pathname: "/client/order/cart-check",
         method: "POST",
-        data: cart,
+        data: itemsId,
       });
+
       setLoading(false);
-      setCart(result?.cart || []);
+
+      if (result?.success === true && Array.isArray(result.product)) {
+        const updatedProducts = result.product;
+
+        // const outOfStockItems = cart
+        //   .map((item) => {
+        //     const updatedItem = updatedProducts.find(
+        //       (uItem) => uItem.id === item.product.id
+        //     );
+
+        //     if (updatedItem && updatedItem.out_of_stock === true) {
+        //       return {
+        //         ...item,
+        //         product: { ...item.product, ...updatedItem },
+        //       };
+        //     }
+
+        //     return null;
+        //   })
+        //   .filter(Boolean);
+
+        const filteredCart = cart
+          .map((item) => {
+            const updatedItem = updatedProducts.find(
+              (uItem) => uItem.id === item.product.id
+            );
+
+            if (updatedItem && updatedItem.out_of_stock === false) {
+              return {
+                ...item,
+                product: { ...item.product, ...updatedItem },
+              };
+            }
+
+            return null;
+          })
+          .filter(Boolean);
+
+        // if (outOfStockItems.length > 0) {
+        //   setOutOfStock(outOfStockItems);
+        // }
+        setCart(filteredCart || []);
+      }
     }
   };
 
@@ -167,8 +217,27 @@ const CartList = () => {
       {loading ? (
         <Skeleton />
       ) : (
-        getItemsTotal() !== 0 &&
-        cart?.map((el, i) => <CartItem key={i} item={el} />)
+        getItemsTotal() !== 0 && (
+          <>
+            {cart?.map((el, i) => (
+              <CartItem key={i} item={el} />
+            ))}
+            {/* {outOfStock.length > 0
+              ? outOfStock.map((item, i) => (
+                  <>
+                    <div className="flex gap-4 items-center my-[16px] text-[16px]">
+                      <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
+                      <div className="text-[#666]">
+                        {outOfStock.length} من المنتجات غير متوفرة
+                      </div>
+                      <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
+                    </div>
+                    <CartItem key={i} item={item} outOfStock={true} />
+                  </>
+                ))
+              : null} */}
+          </>
+        )
       )}
 
       <RelatedList productId={productId} />

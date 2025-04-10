@@ -26,8 +26,6 @@ export default async function Home() {
 
     const banners = viewData.banners;
 
-    console.log(banners);
-
     const renderBanner = (banner) => {
       const bannerContent = () => {
         switch (banner.type) {
