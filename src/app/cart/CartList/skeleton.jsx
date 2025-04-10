@@ -7,7 +7,7 @@ const CartSkeleton = () => {
       <Container>
 
           {[...Array(3)].map((_, i) => (
-            <div className="flex gap-4 mb-[16px]">
+            <div key={i} className="flex gap-4 mb-[16px]">
               <div className="border border-[#eee] pt-[16px] pb-[16px] w-full !h-[80px] !w-[80px] rounded-[16px] bg-gray-300 animate-pulse "></div>
               <div className="flex-1 flex flex-col justify-between items-start">
                 <div className="flex flex-col items-start">
