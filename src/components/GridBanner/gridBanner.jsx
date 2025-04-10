@@ -44,7 +44,8 @@ const GridBanner = ({
                     src={`${IMAGE_URL}/${bannerImage}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
-                    layout="fill"
+                    fill
+                    style={{ objectFit: "cover" }}
                   />
                 </div>
               </Link>
@@ -64,7 +65,8 @@ const GridBanner = ({
                     src={`${IMAGE_URL}/${_.image}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
-                    layout="fill"
+                    fill
+                    style={{ objectFit: "cover" }}
                   />
                 </Link>
               </div>
@@ -86,7 +88,8 @@ const GridBanner = ({
                     src={`${IMAGE_URL}/${bannerImage}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
-                    layout="fill"
+                    fill
+                    style={{ objectFit: "cover" }}
                   />
                 </div>
               </Link>
