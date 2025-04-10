@@ -40,12 +40,10 @@ const GridBanner = ({
                       : "h-full aspect-[1/1]" // Square for left/right
                   }`}
                 >
-                  <Image
+                  <img
                     src={`${IMAGE_URL}/${bannerImage}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
-                    fill
-                    style={{ objectFit: "cover" }}
                   />
                 </div>
               </Link>
@@ -61,12 +59,10 @@ const GridBanner = ({
                 className="w-full aspect-w-1 aspect-h-1 bg-[#eee] rounded-[12px] overflow-hidden"
               >
                 <Link href={_.link}>
-                  <Image
+                  <img
                     src={`${IMAGE_URL}/${_.image}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
-                    fill
-                    style={{ objectFit: "cover" }}
                   />
                 </Link>
               </div>
@@ -84,12 +80,10 @@ const GridBanner = ({
                       : "h-full aspect-[1/1]" // Square for left/right
                   }`}
                 >
-                  <Image
+                  <img
                     src={`${IMAGE_URL}/${bannerImage}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
-                    fill
-                    style={{ objectFit: "cover" }}
                   />
                 </div>
               </Link>
