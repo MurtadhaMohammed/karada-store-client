@@ -3,6 +3,7 @@
 import { IMAGE_URL } from "@/lib/api";
 import Container from "../UI/Container/container";
 import Link from "next/link";
+import Image from "next/image";
 
 const GridBanner = ({
   bannerImage,
@@ -16,7 +17,6 @@ const GridBanner = ({
     let cols = Math.ceil(grid?.length / 2);
     return cols < 2 ? 2 : cols;
   };
-
 
   return (
     <div className="py-[16px]">
@@ -40,10 +40,11 @@ const GridBanner = ({
                       : "h-full aspect-[1/1]" // Square for left/right
                   }`}
                 >
-                  <img
+                  <Image
                     src={`${IMAGE_URL}/${bannerImage}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
+                    layout="fill"
                   />
                 </div>
               </Link>
@@ -59,10 +60,11 @@ const GridBanner = ({
                 className="w-full aspect-w-1 aspect-h-1 bg-[#eee] rounded-[12px] overflow-hidden"
               >
                 <Link href={_.link}>
-                  <img
+                  <Image
                     src={`${IMAGE_URL}/${_.image}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
+                    layout="fill"
                   />
                 </Link>
               </div>
@@ -80,10 +82,11 @@ const GridBanner = ({
                       : "h-full aspect-[1/1]" // Square for left/right
                   }`}
                 >
-                  <img
+                  <Image
                     src={`${IMAGE_URL}/${bannerImage}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
+                    layout="fill"
                   />
                 </div>
               </Link>

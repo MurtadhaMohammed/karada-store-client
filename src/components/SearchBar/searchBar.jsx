@@ -50,7 +50,7 @@ const SearchBar = ({ disabled = false }) => {
 
   useEffect(() => {
     if (pathname === "/products/search/all") setIsSearch(true);
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     if (isSearch && inputRef.current) {
@@ -64,7 +64,7 @@ const SearchBar = ({ disabled = false }) => {
       .map((key) => `&${key}=true`)
       .join("");
     setQueryString(_queryString);
-  }, [filters]);
+  }, [filters, setQueryString]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -216,6 +216,7 @@ const SearchBar = ({ disabled = false }) => {
                                     src={`${IMAGE_URL}/${item?.image[0]?.url}`}
                                     width={40}
                                     height={40}
+                                    alt={item?.name || "Product Image"}
                                   />
                                 </div>
                                 <div className="flex-1 pr-4">

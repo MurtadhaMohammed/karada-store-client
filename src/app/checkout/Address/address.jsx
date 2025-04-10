@@ -22,9 +22,9 @@ const Address = () => {
   const [phoneError, setPhoneError] = useState(null);
   const [addressError, setAddressError] = useState(null);
   const [nameError, setNameError] = useState(null);
-  
+
   const [handelError, setHandelError] = useState(null);
-  
+
   useEffect(() => {
     const token = localStorage.getItem("karada-token");
     if (token) {
@@ -32,7 +32,6 @@ const Address = () => {
       setPhone(userInfo.phone || "");
       setName(userInfo.name || "");
       const isValid = validateIraqiPhoneNumber(userInfo.phone || "");
-      // setPhoneError(isValid ? null : "يرجى إدخال رقم هاتف صالح");
       setIsPhoneValidated(isValid);
     }
     setUserCheckoutInfo({
@@ -40,17 +39,25 @@ const Address = () => {
       phone,
       name,
     });
-  }, []);
-  
+  }, [
+    userInfo.address,
+    userInfo.phone,
+    userInfo.name,
+    setIsPhoneValidated,
+    setUserCheckoutInfo,
+    address,
+    phone,
+    name,
+  ]);
+
   useEffect(() => {
     setUserCheckoutInfo({
       address,
       phone,
       name,
-      
     });
-  }, [address, phone, name]);
-  
+  }, [address, phone, name, setUserCheckoutInfo]);
+
   useEffect(() => {
     if (validateAddress) {
       setHandelError("يرجى ملء جميع الحقول");
@@ -74,7 +81,6 @@ const Address = () => {
   const handleNameChange = (e) => {
     const value = e.target.value;
     setName(value);
-    // setNameError(value.trim() ? null : "يرجى إدخال الاسم");
   };
 
   return (

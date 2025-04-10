@@ -37,7 +37,7 @@ export default function SliderBanner({ banners, title }) {
   const slider = banners?.slider;
   useEffect(() => {
     setPageTitle(title);
-  }, []);
+  }, [setPageTitle, title]);
 
   if (banners?.banner_ids?.length === 0) return;
   return (

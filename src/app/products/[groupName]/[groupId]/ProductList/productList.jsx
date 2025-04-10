@@ -71,7 +71,7 @@ const ProductList = ({ groupId, groupName }) => {
     )
       setPageTitle(data.pages[0]?.products[0]?.brand?.name);
     else if (groupName === "brand") setPageTitle("...");
-  }, [data]);
+  }, [data, groupName, groupId, setPageTitle]);
 
   if (isLoading) return <ProductSkeleton />;
   if (isError || error) return <div>Error loading products.</div>;
@@ -85,7 +85,7 @@ const ProductList = ({ groupId, groupName }) => {
       //   top={14}
       //   // buttonText={"عودة للرئيسية"}
       // />
-      
+
       <RandomProducts />
     );
 

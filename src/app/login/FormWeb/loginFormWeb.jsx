@@ -43,7 +43,7 @@ const LoginFormWeb = () => {
     if (otp?.length === 6 && !loading) {
       handleVerify();
     }
-  }, [otp]);
+  }, [otp,handleVerify,loading]);
 
   const globalPhone = userInfo?.phone;
   const handleLogin = async () => {

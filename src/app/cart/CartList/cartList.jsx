@@ -6,7 +6,7 @@ import { FiMinus, FiPlus } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import CartCTA from "../CartCTA/cartCta";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react"; 
 import { useCartStore } from "@/lib/cartStore";
 import { apiCall, IMAGE_URL } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
@@ -117,7 +117,6 @@ const CartItem = ({ item, outOfStock = false }) => {
 
 const CartList = () => {
   const [loading, setLoading] = useState(false);
-  // const [outOfStock, setOutOfStock] = useState([]);
   const router = useRouter();
   const { cart, setCart, getItemsTotal, getTotal } = useCartStore();
   const total = getTotal();
@@ -131,9 +130,9 @@ const CartList = () => {
   const productId = useMemo(() => {
     const randomIndex = Math.floor(Math.random() * cart.length);
     return cart[randomIndex]?.product?.id;
-  }, [cart?.length]);
+  }, [cart]);
 
-  const checkCart = async () => {
+  const checkCart = useCallback(async () => {
     if (cart.length > 0) {
       const itemsId = cart.map((item) => item.product.id);
       setLoading(true);
@@ -148,23 +147,6 @@ const CartList = () => {
 
       if (result?.success === true && Array.isArray(result.product)) {
         const updatedProducts = result.product;
-
-        // const outOfStockItems = cart
-        //   .map((item) => {
-        //     const updatedItem = updatedProducts.find(
-        //       (uItem) => uItem.id === item.product.id
-        //     );
-
-        //     if (updatedItem && updatedItem.out_of_stock === true) {
-        //       return {
-        //         ...item,
-        //         product: { ...item.product, ...updatedItem },
-        //       };
-        //     }
-
-        //     return null;
-        //   })
-        //   .filter(Boolean);
 
         const filteredCart = cart
           .map((item) => {
@@ -183,20 +165,17 @@ const CartList = () => {
           })
           .filter(Boolean);
 
-        // if (outOfStockItems.length > 0) {
-        //   setOutOfStock(outOfStockItems);
-        // }
         setCart(filteredCart || []);
       }
     }
-  };
+  }, [cart, setCart]);
 
   useEffect(() => {
     if (!hasCheckedRef.current && cart.length > 0) {
       hasCheckedRef.current = true;
       checkCart();
     }
-  }, [cart]);
+  }, [cart, checkCart]);
 
   if (getItemsTotal() === 0)
     return (
@@ -222,20 +201,6 @@ const CartList = () => {
             {cart?.map((el, i) => (
               <CartItem key={i} item={el} />
             ))}
-            {/* {outOfStock.length > 0
-              ? outOfStock.map((item, i) => (
-                  <>
-                    <div className="flex gap-4 items-center my-[16px] text-[16px]">
-                      <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
-                      <div className="text-[#666]">
-                        {outOfStock.length} من المنتجات غير متوفرة
-                      </div>
-                      <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
-                    </div>
-                    <CartItem key={i} item={item} outOfStock={true} />
-                  </>
-                ))
-              : null} */}
           </>
         )
       )}

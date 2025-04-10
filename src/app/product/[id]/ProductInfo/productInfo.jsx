@@ -67,8 +67,10 @@ const ProductInfo = ({ product }) => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
       setEndPrice(activeOption?.endPrice); //TODO : handl endprice from BE --done
-    } else setPrice(product?.price);
-  }, [activeOption]);
+    } else {
+      setPrice(product?.price);
+    }
+  }, [activeOption, product?.price]);
 
   useEffect(() => {
     setActiveOption(product?.options?.[0] || null);
