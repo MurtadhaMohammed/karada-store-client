@@ -318,24 +318,20 @@ const ProductInfo = ({ product }) => {
           ))}
         </div>
 
-        {/* <div>
-          <button
-            onClick={() => {
-              const productUrl = window.location.href;
-              const phoneNumber = "+9647826989747";
-              const message = `مرحبًا، أود الاستفسار عن هذا المنتج:\n${productUrl}`;
-              const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-                message
-              )}`;
-
-              window.open(whatsappUrl, "_blank");
-            }}
-            className="mb-[24px] h-[48px] w-[100%] rounded-[12px] bg-[#fff] flex items-center justify-between border pr-[16px] pl-[12px] border-[#eee] shadow-md  transition-all active:scale-95"
+        <a
+          href={`https://wa.me/9647740300006?text=${encodeURIComponent(
+            `مرحبًا، أود الاستفسار عن هذا المنتج:\nhttps://karadastore.iq/product/${product.id}`
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button 
+          className="mb-[24px] h-[48px] w-[100%] rounded-[12px] bg-[#fff] flex items-center justify-between border pr-[16px] pl-[12px] border-[#eee] shadow-md  transition-all active:scale-95"
           >
             <p className="text-[16px]">للأستفسار والتواصل</p>
             <FaWhatsapp size={28} color="#1CC638" />
           </button>
-        </div> */}
+        </a>
 
         <p className="text-[14px] ">تفاصيل المنتج</p>
         <ul
