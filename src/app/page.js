@@ -103,8 +103,6 @@ export default async function Home() {
     return (
       <div className="pb-[100px]">
         <SearchBar />
-        {/* <GridBanner banner={{}} /> */}
-        <GridBanner />;
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (
