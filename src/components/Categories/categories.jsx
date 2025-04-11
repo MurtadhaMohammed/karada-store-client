@@ -68,11 +68,11 @@ const Categories = ({ isBanner = true, list = [] }) => {
       } else {
         setShowCircleLeft(false);
       }
-      if (scrollLeft < 0) {
-        setShowCirlcRight(true);
-      } else {
-        setShowCirlcRight(false);
-      }
+        if(scrollLeft < 0) {
+          setShowCirlcRight(true);
+        } else {
+          setShowCirlcRight(false);
+        }
     }
   };
 
@@ -94,6 +94,14 @@ const Categories = ({ isBanner = true, list = [] }) => {
       scrollContainer.addEventListener("scroll", handleScroll);
     }
 
+    // if (selectedCategoryId && categoryRefs.current[selectedCategoryId]) {
+    //   categoryRefs.current[selectedCategoryId].scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "center",
+    //     inline: "center",
+    //   });
+    // }
+
     if (list.length > 0) {
       if (initCategoryId) {
         const targetId = parseInt(initCategoryId);
@@ -108,7 +116,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
         scrollContainer.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [list, searchParams, selectedCategoryId, setSelectedCategoryId]);
+  }, [list, searchParams]);
 
   return (
     <div className={isBanner ? "border-b border-b-[#eee]" : ""}>
@@ -151,26 +159,26 @@ const Categories = ({ isBanner = true, list = [] }) => {
               </Wrapper>
             ))}
             {showCircleLeft && (
-              <>
-                <div
-                  className={`absolute left-[6px] w-[48px] h-[48px] rounded-full bg-[#f6f6f6] z-10 flex items-center justify-center cursor-pointer shadow-md border-none animate-scaling transition-transform duration-400 ${
-                    isClicked ? "scale-75" : ""
-                  } hidden md:flex`}
-                  onClick={() => handleScrollToBothSides("left")}
-                >
-                  <MdKeyboardArrowLeft size={30} />
-                </div>
-              </>
-            )}
-            {showCircleRight && (
+             <>
               <div
-                className={`absolute right-[6px] w-[48px] h-[48px] rounded-full bg-[#f6f6f6] z-10 flex items-center justify-center cursor-pointer shadow-md border-none animate-scaling transition-transform duration-400 ${
+                className={`absolute left-[6px] w-[48px] h-[48px] rounded-full bg-[#f6f6f6] z-10 flex items-center justify-center cursor-pointer shadow-md border-none animate-scaling transition-transform duration-400 ${
                   isClicked ? "scale-75" : ""
                 } hidden md:flex`}
-                onClick={() => handleScrollToBothSides("right")}
+                onClick={() => handleScrollToBothSides("left")}
               >
-                <MdKeyboardArrowRight size={30} />
+                <MdKeyboardArrowLeft size={30} />
               </div>
+             </>
+            )}
+            {showCircleRight && (
+               <div
+               className={`absolute right-[6px] w-[48px] h-[48px] rounded-full bg-[#f6f6f6] z-10 flex items-center justify-center cursor-pointer shadow-md border-none animate-scaling transition-transform duration-400 ${
+                 isClicked ? "scale-75" : ""
+               } hidden md:flex`}
+               onClick={() => handleScrollToBothSides("right")}
+             >
+               <MdKeyboardArrowRight size={30} />
+             </div>
             )}
           </div>
         </div>

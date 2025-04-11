@@ -1,11 +1,11 @@
 "use client";
-import  { useMemo, useState, useEffect } from "react";
 import Container from "@/components/UI/Container/container";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { GiConfirmed } from "react-icons/gi";
 import Ripples from "react-ripples";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
+import { useMemo, useState, useEffect, use } from "react";
 import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import { InstallmentModal } from "../Payments/InstallmentModal/InstallmentModal";
 import { OtpModal } from "../Payments/OtpModal/OtpModal";
@@ -61,12 +61,11 @@ const CheckoutCTA = () => {
       l1: item.product.l1,
     }));
   }, [cart]);
-
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const platformQuery = queryParams.get("platform");
     setPlatform(platformQuery);
-  }, [setPlatform]);
+  }, []);
 
   useEffect(() => {
     setOrder({
@@ -88,7 +87,6 @@ const CheckoutCTA = () => {
     items,
     voucher,
     order_type,
-    platform,
     installmentId,
     note,
   ]);
@@ -205,10 +203,10 @@ const CheckoutCTA = () => {
         clearCart={clearCart}
         router={router}
       />
-
-      {showRedirectModal && (
-        <RedirectOrderCreation onClose={() => setShowRedirectModal(false)} />
-      )}
+ 
+ {showRedirectModal && (
+  <RedirectOrderCreation onClose={() => setShowRedirectModal(false)} />
+)}
     </div>
   );
 };

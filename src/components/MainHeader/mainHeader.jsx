@@ -56,7 +56,7 @@ const MainHeader = () => {
       default:
         break;
     }
-  }, [pathname, setPageTitle]);
+  }, [pathname]);
 
   if (pathname.split("/")[1] === "product") return;
 

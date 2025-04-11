@@ -7,7 +7,7 @@ import { queryClient } from "@/lib/queryClient";
 import { useAppStore } from "@/lib/store";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import { Suspense, useEffect, useCallback } from "react";
+import { Suspense, useEffect } from "react";
 import HomeSkeleton from "./Skeleton/skeleton";
 
 export function ReactQueryProvider({ fontStyle, children }) {
@@ -15,15 +15,25 @@ export function ReactQueryProvider({ fontStyle, children }) {
     setIsLogin,
     updateUserInfo,
     setFavorites,
+    // deviceOSName,
+    // setDeviceOSName,
     setPlatform,
     platform,
     setSettings,
   } = useAppStore();
   const { setCart } = useCartStore();
+  // const [platform, setPlatform] = useState(null);
 
   const pathname = usePathname();
+  useEffect(() => {
+    init();
+    initFav();
+    // initDevice();
+    initPlatform();
+    initSettings();
+  }, []);
 
-  const initSettings = useCallback(async () => {
+  const initSettings = async () => {
     try {
       const resp = await apiCall({ pathname: "/client/settings" });
       let obj = {};
@@ -34,25 +44,33 @@ export function ReactQueryProvider({ fontStyle, children }) {
     } catch (error) {
       console.log(error);
     }
-  }, [setSettings]);
+  };
 
-  const initPlatform = useCallback(() => {
+  const initPlatform = () => {
     if (typeof window !== "undefined") {
       const queryParams = new URLSearchParams(window.location.search);
       const platformQuery = queryParams.get("platform");
       setPlatform(platformQuery);
     }
-  }, [setPlatform]);
+  };
 
-  const initFav = useCallback(() => {
+  // const initDevice = async () => {
+  //   if (typeof window !== "undefined") {
+  //     const parser = new UAParser();
+  //     const result = parser.getResult();
+  //     setDeviceOSName(result?.os?.name);
+  //   }
+  // };
+
+  const initFav = () => {
     if (typeof window !== "undefined") {
       const storedFavorites =
         JSON.parse(localStorage.getItem("favorites_product")) || [];
       setFavorites(storedFavorites.map((id) => parseInt(id)));
     }
-  }, [setFavorites]);
+  };
 
-  const init = useCallback(async () => {
+  const init = async () => {
     if (typeof window !== "undefined") {
       let token = localStorage.getItem("karada-token");
       let user = localStorage.getItem("karada-user");
@@ -80,14 +98,7 @@ export function ReactQueryProvider({ fontStyle, children }) {
         updateUserInfo(user);
       }
     }
-  }, [setCart, setIsLogin, updateUserInfo]);
-
-  useEffect(() => {
-    init();
-    initFav();
-    initPlatform();
-    initSettings();
-  }, [init, initFav, initPlatform, initSettings]);
+  };
 
   const deviceStatment = () => {
     if (platform === "ios") {

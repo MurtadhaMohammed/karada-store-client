@@ -73,7 +73,7 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
   useEffect(() => {
     setImageLoaded(false);
     scrollToImage(currentIndex);
-  }, [currentIndex, scrollToImage]);
+  }, [currentIndex]);
 
   if (!isOpen) return null;
 

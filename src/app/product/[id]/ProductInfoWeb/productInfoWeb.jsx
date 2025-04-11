@@ -93,7 +93,7 @@ const ProductInfoWeb = ({ product }) => {
     } else {
       setPrice(product?.price);
     }
-  }, [activeOption,product?.price]);
+  }, [activeOption]);
 
   const handleOptionClick = (option, index) => {
     if (option.images.length > 0) {

@@ -12,8 +12,7 @@ const SingleBanner = ({ banner, title }) => {
 
   useEffect(() => {
     setPageTitle(title);
-  }, [setPageTitle, title]);
-
+  }, []);
   return (
     <div className="md:mt-[24px] md:mb-[24px] mt-[16px] mb-[16px]">
       <Container>

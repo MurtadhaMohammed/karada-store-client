@@ -64,7 +64,7 @@ const SideMenu = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const platformQuery = queryParams.get("platform");
     setPlatform(platformQuery);
-  }, [setPlatform]);
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("karada-token");

@@ -26,7 +26,7 @@ const ProductList = () => {
         JSON.parse(localStorage.getItem("favorites_product")) || [];
       setFavorites(storedFavorites.map((id) => parseInt(id)));
     }
-  }, [setFavorites]);
+  }, []);
 
   const { data, isLoading } = useQuery({
     queryKey: ["favorites", favorites],

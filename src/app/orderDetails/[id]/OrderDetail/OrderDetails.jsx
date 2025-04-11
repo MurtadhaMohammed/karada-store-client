@@ -98,7 +98,7 @@ const OrderDetails = ({ params }) => {
 
   useEffect(() => {
     setPageTitle("تفاصيل الطلب");
-  }, [setPageTitle]);
+  }, []);
 
   const totalBeforeDiscount = () => {
     if (order && order.items && order.items.length > 0) {
