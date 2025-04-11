@@ -103,7 +103,7 @@ const OrderDetails = ({ params }) => {
   const totalBeforeDiscount = () => {
     if (order && order.items && order.items.length > 0) {
       const total = order.items.reduce(
-        (acc, item) => acc + item?.l1?.price || item.price * item.qt,
+        (acc, item) => acc + item?.l1?.price * item.qt || item.price * item.qt,
         0
       );
       return total;
