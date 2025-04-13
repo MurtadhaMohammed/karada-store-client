@@ -54,7 +54,7 @@ export default function SliderBanner({ banners, title }) {
               delay: 3000, // ✅ Auto-swipe every 3 seconds
               disableOnInteraction: false, // ✅ Continue autoplay even after interaction
             }}
-            modules={[Autoplay]} 
+            modules={[Autoplay]}
           >
             {slider?.map((el) => (
               <SwiperSlide

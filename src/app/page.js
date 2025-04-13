@@ -25,6 +25,7 @@ export default async function Home() {
     const viewData = await getViews();
 
     const banners = viewData.banners;
+
     const renderBanner = (banner) => {
       const bannerContent = () => {
         switch (banner.type) {
@@ -62,6 +63,17 @@ export default async function Home() {
             );
           case "Category":
             return <Categories list={banner.categories} />;
+          case "grid":
+            return (
+              <GridBanner
+                banner={banner}
+                bannerImage={banner?.img}
+                link={banner?.link}
+                grid={banner?.grid}
+                hasBanner={banner?.has_banner}
+                bannerAlignment={banner?.bannerAlignment}
+              />
+            );
           case "CreativeBanner":
             return (
               <ListBanner
@@ -91,7 +103,6 @@ export default async function Home() {
     return (
       <div className="pb-[100px]">
         <SearchBar />
-        {/* <GridBanner banner={{}} /> */}
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (

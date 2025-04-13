@@ -199,7 +199,10 @@ const SearchBar = ({ disabled = false }) => {
                         </div> */}
 
                         <div className="absolute -bottom-[100px] flex justify-center p-6 w-full">
-                          <div onClick={closeSuggestions} className="w-[58px] h-[58px] rounded-full bg-[#eee] flex items-center justify-center shadow-lg active:opacity-50 transition-all">
+                          <div
+                            onClick={closeSuggestions}
+                            className="w-[58px] h-[58px] rounded-full bg-[#eee] flex items-center justify-center shadow-lg active:opacity-50 transition-all"
+                          >
                             <IoCloseSharp size={32} />
                           </div>
                         </div>

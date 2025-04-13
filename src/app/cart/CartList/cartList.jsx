@@ -6,14 +6,15 @@ import { FiMinus, FiPlus } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import CartCTA from "../CartCTA/cartCta";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react"; 
 import { useCartStore } from "@/lib/cartStore";
-import { IMAGE_URL } from "@/lib/api";
+import { apiCall, IMAGE_URL } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
 import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { isEnglish } from "@/helper/isEnglish";
+import Skeleton from "./skeleton";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -43,7 +44,7 @@ const QtButton = ({ value, product }) => {
   );
 };
 
-const CartItem = ({ item }) => {
+const CartItem = ({ item, outOfStock = false }) => {
   const loadImageUrl = () => {
     let image = item?.product?.thumbnail1;
     if (item?.product?.l1?.uuid) image = item?.product?.l1?.images[0];
@@ -84,25 +85,29 @@ const CartItem = ({ item }) => {
                   `${item?.product?.shortDescription}`}
               </p>
             </div>
-            <div className="flex items-end justify-between w-full">
-              {item?.product?.endPrice !== item.product.price ? (
-                <div className="flex flex-col items-start">
-                  <p className="text-[14px] block line-through text-[#a5a5a5]">
-                    {Number(item.product.price).toLocaleString("en")}
-                  </p>
+            {!outOfStock ? (
+              <div className="flex items-end justify-between w-full">
+                {item?.product?.endPrice !== item.product.price ? (
+                  <div className="flex flex-col items-start">
+                    <p className="text-[14px] block line-through text-[#a5a5a5]">
+                      {Number(item.product.price).toLocaleString("en")}
+                    </p>
+                    <b className="text-[16px]">
+                      {Number(item.product.endPrice).toLocaleString("en")}{" "}
+                      <span className="text-[14px]">د.ع</span>
+                    </b>
+                  </div>
+                ) : (
                   <b className="text-[16px]">
-                    {Number(item.product.endPrice).toLocaleString("en")}{" "}
+                    {Number(displayPrice).toLocaleString("en")}{" "}
                     <span className="text-[14px]">د.ع</span>
                   </b>
-                </div>
-              ) : (
-                <b className="text-[16px]">
-                  {Number(displayPrice).toLocaleString("en")}{" "}
-                  <span className="text-[14px]">د.ع</span>
-                </b>
-              )}
-              <QtButton value={item?.qt} product={item?.product} />
-            </div>
+                )}
+                <QtButton value={item?.qt} product={item?.product} />
+              </div>
+            ) : (
+              <p>تم أزالة هذا المنتج من السلة لعدم توفره</p>
+            )}
           </div>
         </div>
       </Container>
@@ -111,9 +116,13 @@ const CartItem = ({ item }) => {
 };
 
 const CartList = () => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { cart, getItemsTotal, getTotal } = useCartStore();
+  const { cart, setCart, getItemsTotal, getTotal } = useCartStore();
   const total = getTotal();
+
+  const hasCheckedRef = useRef(false);
+
   useEffect(() => {
     router.prefetch("/checkout");
   }, [router]);
@@ -121,7 +130,52 @@ const CartList = () => {
   const productId = useMemo(() => {
     const randomIndex = Math.floor(Math.random() * cart.length);
     return cart[randomIndex]?.product?.id;
-  }, [cart?.length]);
+  }, [cart]);
+
+  const checkCart = useCallback(async () => {
+    if (cart.length > 0) {
+      const itemsId = cart.map((item) => item.product.id);
+      setLoading(true);
+
+      const result = await apiCall({
+        pathname: "/client/order/cart-check",
+        method: "POST",
+        data: itemsId,
+      });
+
+      setLoading(false);
+
+      if (result?.success === true && Array.isArray(result.product)) {
+        const updatedProducts = result.product;
+
+        const filteredCart = cart
+          .map((item) => {
+            const updatedItem = updatedProducts.find(
+              (uItem) => uItem.id === item.product.id
+            );
+
+            if (updatedItem && updatedItem.out_of_stock === false) {
+              return {
+                ...item,
+                product: { ...item.product, ...updatedItem },
+              };
+            }
+
+            return null;
+          })
+          .filter(Boolean);
+
+        setCart(filteredCart || []);
+      }
+    }
+  }, [cart, setCart]);
+
+  useEffect(() => {
+    if (!hasCheckedRef.current && cart.length > 0) {
+      hasCheckedRef.current = true;
+      checkCart();
+    }
+  }, [cart, checkCart]);
 
   if (getItemsTotal() === 0)
     return (
@@ -136,18 +190,21 @@ const CartList = () => {
 
   return (
     <div className="mb-[16px]">
-      {/* <Container>
-        <div className="mt-[16px]">
-          <InstallmentBanner />
-        </div>
-      </Container> */}
-
       <Container>
         <InstallmentBanner className={"none"} price={total} margin={16} />
       </Container>
+      {loading ? (
+        <Skeleton />
+      ) : (
+        getItemsTotal() !== 0 && (
+          <>
+            {cart?.map((el, i) => (
+              <CartItem key={i} item={el} />
+            ))}
+          </>
+        )
+      )}
 
-      {getItemsTotal() !== 0 &&
-        cart?.map((el, i) => <CartItem key={i} item={el} />)}
       <RelatedList productId={productId} />
       <CartCTA />
     </div>
