@@ -210,7 +210,7 @@ const ProductInfo = ({ product }) => {
                   }}
                   className="mt-1 mr-[8px] text-[18px] whitespace-nowrap overflow-hidden text-ellipsis"
                   style={{
-                    maxWidth: 180,
+                    maxWidth: 140,
                     visibility: scrollPosition > 200 ? "visible" : "hidden",
                   }}
                 >
@@ -218,21 +218,6 @@ const ProductInfo = ({ product }) => {
                 </motion.b>
               </div>
               <div className="flex items-center">
-                {/* <IconButton
-                  rounded={"8px"}
-                  className="p-2 bg-[#fff] rounded-[8px] border border-[#eee] "
-                  icon={<FaWhatsapp color="#25D366" className="text-[22px]" />}
-                  onClick={() => {
-                    const productUrl = window.location.href;
-                    const phoneNumber = "+9647826989747";
-                    const message = `مرحبًا، أود الاستفسار عن هذا المنتج:\n${productUrl}`;
-                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-                      message
-                    )}`;
-
-                    window.open(whatsappUrl, "_blank");
-                  }}
-                /> */}
                 <div className="w-[8px]" />
                 <IconButton
                   rounded={"8px"}
