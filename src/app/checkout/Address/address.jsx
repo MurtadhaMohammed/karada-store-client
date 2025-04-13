@@ -64,6 +64,7 @@ const Address = () => {
     setPhone(value);
     const isValid = validateIraqiPhoneNumber(value);
     setIsPhoneValidated(isValid);
+    setPhoneError(isValid && value.length === 11 ? null : "يرجى إدخال رقم يبدأ بـ 07 و متكون 11 رقم");
   };
 
   const handleAddressChange = (e) => {
