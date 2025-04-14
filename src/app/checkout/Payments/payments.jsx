@@ -20,10 +20,10 @@ const Payments = () => {
     setInstallment(false);
     setSelected("cash");
   };
-  // const handleInstallmentClick = () => {
-  //   setInstallment(true);
-  //   setSelected("installment");
-  // };
+  const handleInstallmentClick = () => {
+    setInstallment(true);
+    setSelected("installment");
+  };
 
   const payments = [
     {
@@ -32,12 +32,12 @@ const Payments = () => {
       disabled: false,
       onClick: handleCashClick,
     },
-    // {
-    //   value: "installment",
-    //   label: "شراء بالتقسيط",
-    //   disabled: false,
-    //   onClick: handleInstallmentClick,
-    // },
+    {
+      value: "installment",
+      label: "شراء بالتقسيط",
+      disabled: false,
+      onClick: handleInstallmentClick,
+    },
   ];
 
   return (

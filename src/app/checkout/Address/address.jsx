@@ -5,7 +5,6 @@ import { GrLocation } from "react-icons/gr";
 import { useAppStore } from "@/lib/store";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 import { jwtDecode } from "jwt-decode";
-import { set } from "nprogress";
 
 const Address = () => {
   const {
@@ -14,18 +13,18 @@ const Address = () => {
     setIsPhoneValidated,
     setUserCheckoutInfo,
     validateAddress,
+    note,
+    setNote,
   } = useAppStore();
   const [address, setAddress] = useState(userInfo?.address || "");
   const [phone, setPhone] = useState(userInfo?.phone || "");
   const [name, setName] = useState(userInfo?.name || "");
-  const [notes, setNotes] = useState("");
-
   const [phoneError, setPhoneError] = useState(null);
   const [addressError, setAddressError] = useState(null);
   const [nameError, setNameError] = useState(null);
-
+  
   const [handelError, setHandelError] = useState(null);
-
+  
   useEffect(() => {
     const token = localStorage.getItem("karada-token");
     if (token) {
@@ -40,19 +39,18 @@ const Address = () => {
       address,
       phone,
       name,
-      notes: "",
     });
   }, []);
-
+  
   useEffect(() => {
     setUserCheckoutInfo({
       address,
       phone,
       name,
-      notes,
+      
     });
-  }, [address, phone, name, notes]);
-
+  }, [address, phone, name]);
+  
   useEffect(() => {
     if (validateAddress) {
       setHandelError("يرجى ملء جميع الحقول");
@@ -65,14 +63,13 @@ const Address = () => {
     const value = e.target.value;
     setPhone(value);
     const isValid = validateIraqiPhoneNumber(value);
-    // setPhoneError(value.trim() ? null : isValid ? null : "يرجى إدخال رقم هاتف صالح");
     setIsPhoneValidated(isValid);
+    setPhoneError(isValid && value.length === 11 ? null : "يرجى إدخال رقم يبدأ بـ 07 و متكون 11 رقم");
   };
 
   const handleAddressChange = (e) => {
     const value = e.target.value;
     setAddress(value);
-    // setAddressError(value.trim() ? null : "يرجى إدخال العنوان");
   };
 
   const handleNameChange = (e) => {
@@ -137,8 +134,8 @@ const Address = () => {
         <div>
           <Input
             hint="ملاحظات"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
           />
         </div>
       </div>

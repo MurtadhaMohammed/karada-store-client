@@ -6,7 +6,7 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 const OrderCard = () => {
   return (
     <div
-      className={`border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px]`}
+      className={`border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px] bg-white`}
       style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
     >
       <div className="flex p-[16px]">

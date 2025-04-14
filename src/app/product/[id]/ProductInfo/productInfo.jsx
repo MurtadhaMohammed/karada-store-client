@@ -8,13 +8,13 @@ import { useState, useEffect, useRef } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { motion } from "framer-motion";
 import { FiSearch } from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
 import {
   TbHeart,
   TbHeartFilled,
   TbShare2,
   TbTruckDelivery,
 } from "react-icons/tb";
-import { TiStarFullOutline } from "react-icons/ti";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { IMAGE_URL } from "@/lib/api";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -53,6 +53,7 @@ const ProductInfo = ({ product }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
   const [isMore, setIsMore] = useState(false);
+  const { settings } = useAppStore();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { toggleFav, favorites } = useAppStore();
   const [activeOption, setActiveOption] = useState(
@@ -108,12 +109,15 @@ const ProductInfo = ({ product }) => {
   };
 
   const isAddToCartDisabled =
-    product?.options?.length > 0 && activeOption === null;
+    (product?.options?.length > 0 && activeOption === null) ||
+    product.out_of_stock;
 
   const shownimages =
     activeOption?.images?.length > 0
       ? activeOption.images
-      : product?.image?.map((img) => img.url);
+      : product?.image
+          ?.sort((a, b) => Number(a.priority) - Number(b.priority))
+          .map((img) => img.url);
 
   return (
     <div className="md:hidden block">
@@ -206,7 +210,7 @@ const ProductInfo = ({ product }) => {
                   }}
                   className="mt-1 mr-[8px] text-[18px] whitespace-nowrap overflow-hidden text-ellipsis"
                   style={{
-                    maxWidth: 180,
+                    maxWidth: 140,
                     visibility: scrollPosition > 200 ? "visible" : "hidden",
                   }}
                 >
@@ -214,6 +218,7 @@ const ProductInfo = ({ product }) => {
                 </motion.b>
               </div>
               <div className="flex items-center">
+                <div className="w-[8px]" />
                 <IconButton
                   rounded={"8px"}
                   className="p-2 bg-[#fff] rounded-[8px] border border-[#eee] "
@@ -268,6 +273,11 @@ const ProductInfo = ({ product }) => {
           </div>
         )}
 
+        {product.out_of_stock ? (
+          <p className="text-[14px] text-red-600 mt-[8px]">
+            هذا المنتج غير متوفر حالياً
+          </p>
+        ) : null}
         <p className="text-[14px] text-gray-600 mt-[8px]">
           {product?.shortDescription}
         </p>
@@ -277,9 +287,10 @@ const ProductInfo = ({ product }) => {
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px] text-[#444]">
-            عادة مايتم توصيل المنتجات في 3-5 أيام
+            عادة مايتم توصيل المنتجات {settings?.time}
           </span>
         </div>
+
         <div className="mt-[16px] mb-[8px] flex flex-wrap">
           {product?.options?.map((option, index) => (
             <OptionTag
@@ -291,6 +302,22 @@ const ProductInfo = ({ product }) => {
             />
           ))}
         </div>
+
+        <a
+          href={`https://wa.me/9647740300006?text=${encodeURIComponent(
+            `مرحبًا، أود الاستفسار عن هذا المنتج:\nhttps://karadastore.iq/product/${product.id}`
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button 
+          className="mb-[24px] h-[48px] w-[100%] rounded-[12px] bg-[#fff] flex items-center justify-between border pr-[16px] pl-[12px] border-[#eee] shadow-md  transition-all active:scale-95"
+          >
+            <p className="text-[16px]">للأستفسار والتواصل</p>
+            <FaWhatsapp size={28} color="#1CC638" />
+          </button>
+        </a>
+
         <p className="text-[14px] ">تفاصيل المنتج</p>
         <ul
           className="text-[14px] text-gray-600 mt-[8px] mb-[24px] p-4 bg-gradient-to-br from-gray-100 to-white rounded-[8px] border border-[#eee] overflow-hidden relative pb-[50px] transition-all"

@@ -8,9 +8,10 @@ import { apiCall } from "@/lib/api";
 import ProductSkeleton from "../Skeleton/skeleton";
 import Empty from "@/components/Empty/empty";
 import { BiBlanket } from "react-icons/bi";
+import { useAppStore } from "@/lib/store";
 
 const ProductList = () => {
-  const [favorites, setFavorites] = useState([]);
+  const { favorites, setFavorites } = useAppStore();
 
   const handleRemoveFav = (id) => {
     let old = JSON.parse(localStorage.getItem("favorites_product")) || [];

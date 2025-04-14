@@ -42,7 +42,7 @@ export const BottomSheetModal = ({
   return (
     <Sheet isOpen={searchParams.get(name)} onClose={onClose} detent={detent}>
       <Sheet.Container>
-        <Sheet.Header />
+      <Sheet.Header />
         <Sheet.Content>
           {title && <div>{title}</div>}
           <Sheet.Scroller className="w-full">{children}</Sheet.Scroller>

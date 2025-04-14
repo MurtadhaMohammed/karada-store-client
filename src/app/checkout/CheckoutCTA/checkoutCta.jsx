@@ -10,6 +10,7 @@ import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomShee
 import { InstallmentModal } from "../Payments/InstallmentModal/InstallmentModal";
 import { OtpModal } from "../Payments/OtpModal/OtpModal";
 import { createOrder } from "../utils/orderUtils";
+import RedirectOrderCreation from "@/components/RedirectOrderCreation/redirectOrderCreaton";
 
 const CheckoutCTA = () => {
   const searchParams = useSearchParams();
@@ -23,6 +24,8 @@ const CheckoutCTA = () => {
     isPhoneValidated,
     validateAddress,
     setValidateAddress,
+    setNote,
+    note,
   } = useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
@@ -37,9 +40,10 @@ const CheckoutCTA = () => {
   const [sessionId, setSessionId] = useState(null);
   const [order_type, setOrderType] = useState();
   const [isDataProvided, setIsDataProvided] = useState(false);
+  const [showRedirectModal, setShowRedirectModal] = useState(false);
   const [order, setOrder] = useState(null);
-  const { installmentId, setInstallmentId } = useAppStore();
-  const [platform, setPlatform] = useState(null);
+  const { installmentId, setInstallmentId, platform, setPlatform, settings } =
+    useAppStore();
 
   useEffect(() => {
     if (userCheckoutInfo) {
@@ -49,7 +53,6 @@ const CheckoutCTA = () => {
     }
   }, [userCheckoutInfo]);
 
-  console.log(userInfo);
   const items = useMemo(() => {
     return cart?.map((item) => ({
       id: item.product.id,
@@ -58,6 +61,11 @@ const CheckoutCTA = () => {
       l1: item.product.l1,
     }));
   }, [cart]);
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const platformQuery = queryParams.get("platform");
+    setPlatform(platformQuery);
+  }, []);
 
   useEffect(() => {
     setOrder({
@@ -69,22 +77,39 @@ const CheckoutCTA = () => {
       voucher_id: voucher ? voucher.id : null,
       store_id: 1,
       order_type,
+      platform,
       installmentId,
+      note,
     });
-  }, [userInfo, userCheckoutInfo, items, voucher, order_type, installmentId]);
+  }, [
+    userInfo,
+    userCheckoutInfo,
+    items,
+    voucher,
+    order_type,
+    installmentId,
+    note,
+  ]);
 
-  useEffect(() => {
-    console.log(order);
-  }, [order]);
-  useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const platformQuery = queryParams.get("platform");
-    setPlatform(platformQuery);
-  }, []);
   const handleOrderCreation = async () => {
     setLoading(true);
-    await createOrder(order, isLogin, setIsOtp, setOtp, clearCart, router, platformQuery );
+    const result = await createOrder(
+      order,
+      isLogin,
+      setIsOtp,
+      setOtp,
+      clearCart,
+      router,
+      platform,
+      installmentId,
+      parseInt(settings?.delivery) || 0,
+      note
+    );
     setLoading(false);
+    setNote("");
+    if (result?.order && isLogin && result?.status !== "Not Logged In") {
+      setShowRedirectModal(true);
+    }
   };
 
   const handleButtonClick = () => {
@@ -178,6 +203,10 @@ const CheckoutCTA = () => {
         clearCart={clearCart}
         router={router}
       />
+ 
+ {showRedirectModal && (
+  <RedirectOrderCreation onClose={() => setShowRedirectModal(false)} />
+)}
     </div>
   );
 };

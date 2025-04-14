@@ -14,7 +14,9 @@ const ListBanner = ({
   list,
   isCreative = false,
   noMore = false,
+  isRelated = false,
 }) => {
+  list = noMore ? list : list.slice(0, 4);
   if (list.length === 0) return;
   return (
     <div className="md:pt-[24px] pt-[16px] ">
@@ -38,16 +40,20 @@ const ListBanner = ({
         </div>
       </Container>
       <Container noPadding>
-        <div className={`md:grid md:grid-cols-4 flex overflow-x-auto no-scrollbar md:pl-0 md:pr-0 pl-[16px] pr-[16px] pb-[16px] pt-2 ${isCreative ? "gap-4": "gap-3"}`}>
-          {list
-            .slice(0, 4)
-            .map((el, i) =>
-              isCreative ? (
-                <CreatviceCard key={i} index={i} item={el} />
-              ) : (
-                <DefaultCard key={i} item={el} />
-              )
-            )}
+        <div
+          className={`md:grid md:grid-cols-4 ${
+            isRelated ? "grid grid-cols-2" : "flex"
+          } overflow-x-auto no-scrollbar md:pl-0 md:pr-0 pl-[16px] pr-[16px] pb-[16px] pt-2 ${
+            isCreative ? "gap-4" : "gap-2"
+          }`}
+        >
+          {list.map((el, i) =>
+            isCreative ? (
+              <CreatviceCard key={i} index={i} item={el} />
+            ) : (
+              <DefaultCard key={i} item={el} isGrid={isRelated} />
+            )
+          )}
         </div>
       </Container>
     </div>

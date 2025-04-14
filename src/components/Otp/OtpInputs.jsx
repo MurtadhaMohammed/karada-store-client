@@ -52,7 +52,6 @@ const OtpInputs = ({ numInputs = 6, onChange }) => {
     // Focus the last non-empty input field
     const lastFilledIndex = newOtp.findIndex((val) => !val);
     inputsRef.current[lastFilledIndex !== -1 ? lastFilledIndex : 0].focus();
-    console.log(newOtp)
   };
 
   return (

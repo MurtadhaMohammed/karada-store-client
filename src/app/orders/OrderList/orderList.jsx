@@ -22,7 +22,7 @@ const OrderList = () => {
   });
 
   if (isLoading) return <OrdersSkeleton />;
-  if (isError || error )
+  if (isError || error)
     return (
       <Empty
         icon={<TbFaceIdError className="text-[100px]" />}
@@ -67,11 +67,16 @@ const OrderList = () => {
             <OrderCard key={i} order={el} />
           ))}
 
-        <div className="flex gap-4 items-center mb-[16px] text-[16px]">
-          <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
-          <div className="text-[#666]">الطلبات السابقة</div>
-          <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
-        </div>
+        {data?.orders?.filter(
+          (el) =>
+            el.order_status === "Canceled" || el.order_status === "Completed"
+        )?.length !== 0 && (
+          <div className="flex gap-4 items-center mb-[16px] text-[16px]">
+            <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
+            <div className="text-[#666]">الطلبات السابقة</div>
+            <span className="block h-[1px] flex-1 bg-[#f0f0f0]" />
+          </div>
+        )}
         {data?.orders
           ?.filter(
             (el) =>

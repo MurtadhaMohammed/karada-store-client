@@ -9,8 +9,8 @@ import Link from "next/link";
 
 import { URL } from "@/lib/api";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
-import DownloadBanner from "@/components/DownloadBanner/DownloadBanner";
 import BrandBanner from "@/components/brandBanner/brandBanner";
+import GridBanner from "@/components/GridBanner/gridBanner";
 async function getViews() {
   const res = await fetch(`${URL}/client/view/homeView`, {
     method: "GET",
@@ -33,8 +33,10 @@ export default async function Home() {
             return <SliderBanner banners={banner} />;
           case "SinglePure":
             return <SingleBannerPure banner={banner} />;
-          case "Single":
-            return <SingleBanner banner={banner} />;
+          // case "Single":
+          //   return <SingleBanner banner={banner} />;
+          case "Brand":
+            return <BrandBanner list={banner.brand_ids} />;
           case "List":
             return (
               <ListBanner
@@ -61,6 +63,17 @@ export default async function Home() {
             );
           case "Category":
             return <Categories list={banner.categories} />;
+          case "grid":
+            return (
+              <GridBanner
+                banner={banner}
+                bannerImage={banner?.img}
+                link={banner?.link}
+                grid={banner?.grid}
+                hasBanner={banner?.has_banner}
+                bannerAlignment={banner?.bannerAlignment}
+              />
+            );
           case "CreativeBanner":
             return (
               <ListBanner
@@ -87,15 +100,15 @@ export default async function Home() {
       // Render the banner content normally if no valid link is found
       return <div key={banner.id}>{bannerContent()}</div>;
     };
-
     return (
       <div className="pb-[100px]">
         <SearchBar />
-        {/* <DownloadBanner /> */}
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (
-          <div>No banners available</div>
+          <div>
+            <ErrorBoundary />
+          </div>
         )}
       </div>
     );

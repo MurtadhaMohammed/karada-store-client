@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import Image from "next/image";
@@ -27,32 +27,37 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
   const handleCloseModal = () => {
     onClose();
     setCurrentIndex(0);
-  }
+  };
 
-  const scrollToImage = (index) => {
-    if (containerRef.current) {
-      const thumbnail = containerRef.current.children[0].children[index];
-      if (thumbnail) {
-        const thumbnailOffset = thumbnail.offsetLeft;
-        // const containerWidth = containerRef.current.offsetWidth;
-        if (index > 6) {
-          const prevThumbnailOffset = prevThumbnailOffsetRef.current;
-          if (thumbnailOffset > prevThumbnailOffset && images.length -8 > index) {
-            containerRef.current.scrollBy({
-              left: 70,
-              behavior: "smooth",
-            });
-          } else if (thumbnailOffset < prevThumbnailOffset) {
-            containerRef.current.scrollBy({
-              left: -70,
-              behavior: "smooth",
-            });
+  const scrollToImage = useCallback(
+    (index) => {
+      if (containerRef.current) {
+        const thumbnail = containerRef.current.children[0].children[index];
+        if (thumbnail) {
+          const thumbnailOffset = thumbnail.offsetLeft;
+          if (index > 6) {
+            const prevThumbnailOffset = prevThumbnailOffsetRef.current;
+            if (
+              thumbnailOffset > prevThumbnailOffset &&
+              images.length - 8 > index
+            ) {
+              containerRef.current.scrollBy({
+                left: 70,
+                behavior: "smooth",
+              });
+            } else if (thumbnailOffset < prevThumbnailOffset) {
+              containerRef.current.scrollBy({
+                left: -70,
+                behavior: "smooth",
+              });
+            }
+            prevThumbnailOffsetRef.current = thumbnailOffset;
           }
-          prevThumbnailOffsetRef.current = thumbnailOffset;
         }
       }
-    }
-  };
+    },
+    [images]
+  );
 
   useEffect(() => {
     if (isOpen) {

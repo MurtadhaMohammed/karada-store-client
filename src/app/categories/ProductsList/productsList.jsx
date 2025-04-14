@@ -1,6 +1,7 @@
 "use client";
 
 import DefaultCard from "@/components/DefaultCard/defaultCard";
+import InfiniteScroll from "react-infinite-scroll-component";
 import Motion from "@/components/Motion/motion";
 import Container from "@/components/UI/Container/container";
 import { apiCall, URL } from "@/lib/api";
@@ -39,32 +40,29 @@ const ProductList = () => {
   if (isError || error) return <div>Error loading products.</div>;
 
   return (
-    <div className="pt-[16px]">
+    <div className="pt-[12px]">
       <Motion>
         <Container>
-          <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 gap-4 overflow-x-auto no-scrollbar">
+          <InfiniteScroll
+            dataLength={
+              data?.pages?.reduce(
+                (acc, page) => acc + page?.products?.length,
+                0
+              ) || 0
+            }
+            next={fetchNextPage}
+            hasMore={!!hasNextPage}
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 overflow-x-auto no-scrollbar"
+          >
             {data?.pages?.map((page) =>
               page?.products?.map((el, i) => (
                 <DefaultCard isGrid key={`${el.id}-${i}`} item={el} />
               ))
             )}
-          </div>
+          </InfiniteScroll>
         </Container>
-      </Motion>
+      </Motion>{" "}
       {isFetchingNextPage && <ListSkeleton size={4} />}
-      {hasNextPage && data?.pages[0]?.total > limit && (
-        <Container>
-          <button
-            className={
-              "w-full h-[48px] rounded-[8px] border border-[#eee] mt-[26px] bg-[#fff]"
-            }
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-          >
-            عرض المزيد
-          </button>
-        </Container>
-      )}
     </div>
   );
 };

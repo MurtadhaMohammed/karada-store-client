@@ -1,141 +1,23 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { IoMdTime } from "react-icons/io";
-import { HiOutlineLocationMarker } from "react-icons/hi";
+import React, { useEffect, useMemo, useState } from "react";
 import { apiCall, IMAGE_URL } from "@/lib/api";
 import Image from "next/image";
-import { FaCheck } from "react-icons/fa6";
-import { HiChevronDown } from "react-icons/hi2";
-import styles from "./style.module.css";
-import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import Container from "@/components/UI/Container/container";
 import { useAppStore } from "@/lib/store";
-import { GoChevronLeft } from "react-icons/go";
 import dayjs from "dayjs";
-
-const ImageGroup = ({ thumbnails }) => {
-  return (
-    <div className={`w-[100px] h-[100px] relative`}>
-      {thumbnails?.length === 1 && (
-        <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] overflow-hidden relative">
-          <Image
-            src={`${IMAGE_URL}/${thumbnails[0]}`}
-            fill
-            style={{ objectFit: "cover" }}
-            alt="Thumbnail"
-          />
-        </div>
-      )}
-
-      {thumbnails?.length === 2 && (
-        <div className="relative h-full border border-[#eee] rounded-[8px] overflow-hidden">
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
-              fill
-              style={{ objectFit: "cover" }}
-              alt="Thumbnail 1"
-              className="relative"
-            />
-          </div>
-          <div className="absolute inset-0 bg-[#0000002e] flex items-center justify-center text-[#fff]">
-            +1
-          </div>
-        </div>
-      )}
-
-      {thumbnails?.length === 3 && (
-        <div
-          className="relative h-full grid grid-cols-2 gap-1 overflow-hidden"
-          style={{ direction: "ltr" }}
-        >
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
-              fill
-              style={{ objectFit: "cover" }}
-              alt="Thumbnail 1"
-            />
-          </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[1]}`}
-              fill
-              style={{ objectFit: "cover" }}
-              alt="Thumbnail 2"
-            />
-          </div>
-          <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
-            <Image
-              src={`${IMAGE_URL}/${thumbnails[2]}`}
-              fill
-              style={{ objectFit: "cover" }}
-              alt="Thumbnail 3"
-            />
-          </div>
-        </div>
-      )}
-
-      {thumbnails?.length === 4 && (
-        <div
-          className="relative h-full grid grid-cols-2 gap-1 overflow-hidden"
-          style={{ direction: "ltr" }}
-        >
-          {[0, 1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden"
-            >
-              <Image
-                src={`${IMAGE_URL}/${thumbnails[i]}`}
-                fill
-                style={{ objectFit: "cover" }}
-                alt={`Thumbnail ${i + 1}`}
-              />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {thumbnails?.length > 4 && (
-        <div
-          className="relative h-[100%] grid grid-cols-2 gap-1 overflow-hidden"
-          style={{ direction: "ltr" }}
-        >
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative"
-            >
-              <Image
-                src={`${IMAGE_URL}/${thumbnails[i]}`}
-                fill
-                style={{ objectFit: "cover" }}
-                alt={`Thumbnail ${i + 1}`}
-              />
-            </div>
-          ))}
-          <div className="relative h-full rounded-[8px] overflow-hidden">
-            <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
-              <Image
-                src={`${IMAGE_URL}/${thumbnails[3]}`}
-                fill
-                style={{ objectFit: "cover" }}
-                alt="Thumbnail 4"
-              />
-            </div>
-            <div className="absolute inset-0 bg-[#0000002e] flex items-center justify-center text-[#fff]">
-              +{thumbnails.length - 3}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+import OrdersDetailsSkeleton from "../Skeleton/skeleton";
+import Link from "next/link";
+import { BiCopy, BiCheck, BiSupport } from "react-icons/bi";
+import { FcCancel } from "react-icons/fc";
+import RelatedList from "../RelatedList/relatedList";
+import ConfirmModal from "@/components/ConfirmModal/confirmModal";
 
 const OrderDetails = ({ params }) => {
+  const [discounts, setDiscounts] = useState([]);
+  const [createdAt, setCreatedAt] = useState(null);
+  const [copied, setCopied] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const { data: order, isLoading } = useQuery({
     queryKey: [`related-${params.id}`, params],
     queryFn: () =>
@@ -146,195 +28,299 @@ const OrderDetails = ({ params }) => {
     enabled: !!params.id,
     select: (data) => data?.order,
   });
+  const copyToClipboard = (trackId) => {
+    navigator.clipboard.writeText(trackId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  useEffect(() => {
+    if (!order?.id) return;
+    setDiscounts(order?.discount);
+    setCreatedAt(order?.created_at);
+  }, [order]);
+
+  const productId = useMemo(() => {
+    if (order && order.items && order.items.length > 0) {
+      const randomIndex = Math.floor(Math.random() * order.items.length);
+      return order.items[randomIndex]?.id;
+    }
+  }, [order]);
+
+  const handleDiscount = (id) => {
+    if (!id) return 1;
+    const validDiscount = discounts.find((discount) => {
+      const startDate = new Date(discount.start_at);
+      const endDate = new Date(discount.end_at);
+      const createdDate = new Date(createdAt);
+      const isActive = discount.active;
+      const isWithinRange = endDate > createdDate && startDate <= createdDate;
+      return discount.id === id && isActive && isWithinRange;
+    });
+    const discountValue = validDiscount ? (100 - validDiscount.value) / 100 : 1;
+    return discountValue;
+  };
 
   const order_status = order?.order_status || "Created"; // Default status to prevent errors
-  const thumbnails = order?.items?.map((item) => item.thumbnail1) || [];
   const address = order?.address || "غير متوفر";
-  const formattedDate = order?.created_at
-    ? new Date(order.created_at).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      })
-    : "غير متوفر";
 
   const statusTheme = {
     Created: {
-      color: "text-[#d3d3d3]",
-      text: "طلبك قيد الموافقة",
-      bar: `bg-gradient-to-r from-[#d3d3d3] to-[#e6e6e6] ${styles.statusBar20}`,
+      color: "text-[#a5a5a5] bg-[#f6f6f6] border border-[#a5a5a5]",
+      text: "قيد الموافقة",
     },
     Accepted: {
-      color: "text-blue-300",
+      color: "text-blue-600 bg-blue-100 border border-blue-600",
       text: "تم قبول الطلب",
-      bar: `bg-gradient-to-r from-blue-400 to-blue-300 ${styles.statusBar40}`,
     },
     Packaging: {
-      color: "text-yellow-400",
-      border: "border-yellow-300",
+      color: "text-yellow-600  border border-yellow-400  bg-yellow-100",
       text: "طلبك قيد التجهيز",
-      bar: `bg-gradient-to-r from-yellow-400 to-yellow-300 ${styles.statusBar60}`,
     },
     Shipping: {
-      color: "text-orange-400",
-      border: "border-[#3ab54a]",
+      color: "text-orange-500 bg-orange-100 border border-orange-500",
       text: "طلبك قيد الشحن",
-      bar: `bg-gradient-to-r  from-orange-500 to-orange-400 ${styles.statusBar80}`,
     },
     Delivered: {
-      color: "text-[#52c41a]",
-      bg: "bg-gradient-to-r from-[#52c41a] to-[#8dee5e]",
+      color: "text-[#22b636] bg-green-100 border border-[#22b636] ",
       text: "تم توصيل الطلب",
-      bar: `bg-gradient-to-r from-[#3ab54a] to-[#22b636] ${styles.statusBar100}`,
     },
     Completed: {
-      color: "text-[#000]",
-      text: (
-        <div className="flex items-center gap-2">
-          تم انهاء الطلب
-          <FaCheck className="hidden sm:block w-6 h-6 text-violet-600" />
-        </div>
-      ),
-      bar: "bg-[#F6F6F6]",
+      color: "text-[#22b636] bg-green-100 border border-[#22b636] ",
+      text: "الطلب مكتمل",
     },
     Canceled: {
-      color: "text-[#ff4d4f]",
-      bar: "bg-[#F6F6F6]",
+      color: "text-[#ff4d4f] bg-red-100 border border-[#ff4d4f]",
       text: "تم الغاء طلبك",
     },
   };
   const { setPageTitle } = useAppStore();
+
   useEffect(() => {
-    setPageTitle(`طلب رقم ${params.id}`);
+    setPageTitle("تفاصيل الطلب");
   }, []);
+
+  const totalBeforeDiscount = () => {
+    if (order && order.items && order.items.length > 0) {
+      const total = order.items.reduce(
+        (acc, item) => acc + item?.l1?.price * item.qt || item.price * item.qt,
+        0
+      );
+      return total;
+    }
+  };
+
+  if (isLoading) return <OrdersDetailsSkeleton />;
   return (
-    <Container>
-      {isLoading ? (
-        <div
-          className="border border-[#eee] rounded-[16px] overflow-hidden mt-[8px] mb-[18px]"
-          style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
-        >
-          <div className="flex p-[16px]">
-            <div className="w-[100px] h-[100px] bg-gray-300 rounded-[8px] animate-pulse"></div>
-            <div className="mr-[12px] flex flex-col justify-evenly flex-1">
-              <p className="w-[140px] h-2 bg-gray-300 rounded-[8px] animate-pulse"></p>
-
-              <div className="flex items-center text-[14px] gap-2 text-[#666]">
-                <IoMdTime />
-                <p className="w-14 h-2 bg-gray-300 rounded-[8px] animate-pulse"></p>
-              </div>
-              <div className="flex items-center text-[14px] gap-2 text-[#666]">
-                <HiOutlineLocationMarker />
-                <p className="w-14 h-2 bg-gray-300 rounded-[8px] animate-pulse"></p>
-              </div>
-              <div className="h-[4px] rounded-[24px] bg-[#eee]"></div>
-            </div>
-            <div>
-              <button className=" px-[8px] py-[4px] text-[14px] flex items-center">
-                <span className="flex items-center gap-2 font-bold">
-                  <p className="hidden sm:block">تفاصيل الطلب</p>
-                </span>
-              </button>
-            </div>
-          </div>
-
-          <div className="p-[16px] border-t border-[#eee]">
-            <div className="flex items-center gap-4">
-              <div>
-                <div className="text-[20px] text-[#666]">المنتجات:</div>
-
-                <div className="flex items-center gap-4 mt-[8px]">
-                  <div className="w-14 h-14 bg-gray-300 rounded-[8px] animate-pulse"></div>
-                  <div className="flex flex-col justify-between items-start">
-                    <p className="w-[100px] h-2 bg-gray-300 rounded-[8px] mt-1 animate-pulse"></p>{" "}
-                    <p className="w-14 h-2 bg-gray-300 rounded-[8px] mt-1 animate-pulse"></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 mt-[16px]">
-              <p>مجموع الطلب:</p>
-              <p className="w-14 h-2 bg-gray-300 rounded-[8px] animate-pulse"></p>
-            </div>
-          </div>
-        </div>
-      ) : (
+    <div>
+      <Container>
         <>
           <div
-            className="border border-[#eee] rounded-[16px] overflow-hidden mt-[8px] mb-[18px]"
+            className="border border-[#eee] rounded-[16px] overflow-hidden mt-[16px] mb-[18px] bg-white"
             style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
           >
-            <div className={`flex ${styles.customeSize} p-[16px]`}>
-              <ImageGroup thumbnails={thumbnails} />
-              <div className="mr-[12px] flex flex-col justify-evenly flex-1">
-                <b
-                  className={`text-[18px] ${statusTheme[order_status]?.color} line-clamp-1`}
-                >
-                  {statusTheme[order_status]?.text}
-                </b>
-                <div className="flex items-center text-[14px] text-[#666]">
-                  <IoMdTime />
-                  <p className="mr-[4px] hidden sm:block">{formattedDate}</p>
-                  <p className="mr-[4px] block sm:hidden">
-                    {dayjs(order.create_at).format("YYYY-MM-DD")}
+            <div className="flex item-center justify-between p-[16px] ">
+              <p>حالة الطلب</p>
+              <div
+                className={`px-3 py-1 rounded-lg bg-[#f6f6f6] ${statusTheme[order_status]?.color}`}
+              >
+                {statusTheme[order_status]?.text}
+              </div>
+            </div>
+            <div className="relative mx-[16px] py-6 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl border border-dashed border-[#fff]">
+              {/* Left and Right circular cutouts (without dashed border) */}
+              <div className="w-[30px] h-[30px] absolute -right-[20px] top-1/2 -translate-y-1/2 bg-white rounded-full"></div>
+              <div className="w-[30px] h-[30px] absolute -left-[20px] top-1/2 -translate-y-1/2 bg-white rounded-full"></div>
+
+              {/* Order details */}
+              <div className="flex flex-col gap-4">
+                {/* Order Number */}
+                <div className="flex item-center justify-between border-b border-gray-400 pb-3">
+                  <p className="text-sm text-gray-200">رقم الطلب</p>
+                  <div className="flex items-center gap-2 text-lg font-semibold">
+                    <button
+                      onClick={() => copyToClipboard(order?.track_id)}
+                      className="cursor-pointer transition-all duration-300 flex items-center justify-center"
+                    >
+                      {copied ? (
+                        <BiCheck className="text-white w-6 h-6 transition-colors duration-300" />
+                      ) : (
+                        <BiCopy className="hover:text-gray-300 transition-colors duration-300" />
+                      )}
+                    </button>
+                    <span className="block -mt-[4px]">{order?.track_id}</span>
+                  </div>
+                </div>
+
+                {/* Order Date */}
+                <div className="flex item-center justify-between border-b border-gray-400 pb-3">
+                  <p className="text-sm text-gray-200">تاريخ الطلب</p>
+                  <p className="text-sm">
+                    {dayjs(order?.created_at).format("YYYY-MM-DD hh:mm A")}
                   </p>
                 </div>
-                <div className="flex items-center text-[14px] text-[#666]">
-                  <HiOutlineLocationMarker />
-                  <p className="mr-[4px]">{address}</p>
-                </div>
-                <div className="h-[4px] rounded-[24px] bg-[#eee]">
-                  <div
-                    className={`h-[4px] rounded-[24px] ${statusTheme[order_status]?.bar}`}
-                  ></div>
+
+                {/* Full Address */}
+                <div className="flex item-center justify-between">
+                  <p className="text-sm text-gray-200">العنوان الكامل</p>
+                  <p className="text-sm">{address}</p>
                 </div>
               </div>
             </div>
-            <div className="p-[16px] border-t border-[#eee]">
-              <div className="flex items-center w-full gap-4">
-                <div>
-                  <div className="text-[20px] text-[#666]">المنتجات:</div>
-                  {order.items.map((item, i) => (
-                    <div
-                      key={i}
-                      className="flex items-start justify-between w-full gap-4 mt-[8px]"
-                    >
-                      <div className="flex items-start justify-start gap-4">
-                        <Image
-                          src={`${IMAGE_URL}/${item.thumbnail1}`}
-                          width={60}
-                          height={60}
-                          alt="thumbnail"
-                          className="rounded-[8px]"
-                        />
-                        <div className="flex flex-col justify-start items-start">
-                          <p className="text-[14px] font-bold">{item.name}</p>
-                          <div className="text-[14px] text-[#666] flex items-center gap-2">
-                            <span className="text-black">
-                              {Number(item.price).toLocaleString("en")} IQD
-                            </span>
-                            <span>-</span>
-                            <span className="text-black">x{item.qt}</span>
+
+            <div className="p-[16px]">
+              {order?.items?.map((item, i) => {
+                const displayPrice =
+                  item?.endPrice || item.l1?.price || item.price;
+                const shouldStrikeThrough =
+                  displayPrice >
+                  displayPrice * handleDiscount(item?.discount_id || null);
+                return (
+                  <div
+                    key={i}
+                    className="flex item-center justify-between w-full gap-4 mb-4 border border-[#eee] p-3 rounded-lg"
+                  >
+                    <div className="flex item-center gap-4 w-full">
+                      {/* Image */}
+                      <Image
+                        src={`${IMAGE_URL}/${item.thumbnail1}`}
+                        width={40}
+                        height={40}
+                        alt="thumbnail"
+                        className="rounded-lg shrink-0"
+                      />
+
+                      {/* Text Container */}
+                      <div className="flex flex-col w-full overflow-hidden">
+                        <p className="text-sm font-bold truncate max-w-[160px]">
+                          {item.name}
+                        </p>
+                        <p className="text-xs text-gray-500 truncate max-w-[160px]">
+                          {item.shortDescription}
+                        </p>
+                      </div>
+
+                      {/* Price */}
+                      <div className="text-sm font-bold flex flex-col items-center justify-center shrink-0">
+                        {item?.endPrice && item?.endPrice < item?.price ? (
+                          <div className="flex flex-col item-end">
+                            <p className="line-through text-gray-400">
+                              {Number(item?.price).toLocaleString("en")} د.ع
+                            </p>
+                            <p className="text-[15px]">
+                              {item?.qt > 1 && `${item?.qt} * `}{" "}
+                              {Number(item?.endPrice * item?.qt).toLocaleString(
+                                "en"
+                              )}{" "}
+                              د.ع
+                            </p>
                           </div>
-                        </div>
+                        ) : (
+                          <div className="flex item-center justify-center">
+                            <p className="text-center">
+                              {item?.qt > 1 && `${item?.qt} * `}{" "}
+                              {Number(item.price).toLocaleString("en")} د.ع
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
-                  ))}
+                  </div>
+                );
+              })}
+
+              <div className="flex item-center justify-between flex-col w-full gap-4  border border-[#eee] p-5 rounded-lg">
+                <div className="flex item-center justify-between w-full">
+                  <p>الملاحظات : </p>
+                  {!order?.note || order?.note === "" ? (
+                    <p className="font-normal text-[#a5a5a5]">
+                      لا يوجد ملاحظات
+                    </p>
+                  ) : (
+                    <b className="text-[16px]">{order?.note}</b>
+                  )}
+                </div>
+                {order.voucher && (
+                  <>
+                    <div className="w-[100%] h-[1px] bg-[#eee]" />
+                    <div className="flex item-center justify-between w-full">
+                      <p>كود الخصم : </p>
+                      <b className="monospace text-[16px]">
+                        {order?.voucher.code}
+                      </b>
+                    </div>
+                  </>
+                )}
+                {totalBeforeDiscount() !== order?.total_price && (
+                  <>
+                    <div className="w-[100%] h-[1px] bg-[#eee]" />
+                    <div className="flex item-center justify-between w-full">
+                      <p>مجموع الخصم : </p>
+                      <b className="text-[16px]">
+                        {Number(
+                          totalBeforeDiscount() - order?.total_price
+                        ).toLocaleString("en")}{" "}
+                        د.ع
+                      </b>
+                    </div>
+                  </>
+                )}
+                <div className="w-[100%] h-[1px] bg-[#eee]" />
+                <div className="flex item-center justify-between w-full">
+                  <p>سعر التوصيل : </p>
+                  <b className="text-[16px]">
+                    {Number(order?.delivery_cost || 0).toLocaleString("en")} د.ع
+                  </b>
+                </div>
+                <div className="w-[100%] h-[1px] bg-[#eee]" />
+                <div className="flex item-center justify-between w-full">
+                  <p>مجموع الطلب : </p>
+                  <b className="text-[16px]">
+                    {Number(
+                      order?.total_price + order?.delivery_cost || 0
+                    ).toLocaleString("en")}{" "}
+                    د.ع
+                  </b>
                 </div>
               </div>
-              <div className="flex items-center gap-2 mt-[16px]">
-                <p>مجموع الطلب:</p>
-                <p>
-                  {Number(order?.total_price || 0).toLocaleString("en")} IQD
-                </p>
-              </div>
+
+              <Link
+                href={"/contactUs"}
+                className="flex items-center justify-center w-full gap-4 border border-violet-600 p-3 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
+              >
+                <span className="text-violet-600 font-bold">
+                  تواصل مع الدعم
+                </span>
+                <BiSupport className="text-violet-600 text-[22px]" />
+              </Link>
+              {order_status !== "Canceled" && order_status === "Created" && (
+              <button
+                onClick={() => setShowCancelConfirm(true)}
+                className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-3 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
+              >
+                <span className="text-red-600 font-bold">الغاء الطلب</span>
+                <FcCancel className="text-red-600 text-[22px]" />
+              </button>
+            )}
+              {/* <div
+                onClick={() => openModal("cancelationModal")}
+                className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-3 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
+              >
+                <span className="text-red-600 font-bold">الغاء الطلب</span>
+                <FcCancel className="text-red-600 text-[22px]" />
+              </div> */}
             </div>
           </div>
+
+          <ConfirmModal
+            isOpen={showCancelConfirm}
+            onClose={() => setShowCancelConfirm(false)}
+            orderId={order?.id}
+          />
         </>
-      )}
-    </Container>
+      </Container>
+      {/* <RelatedList productId={productId} /> */}
+    </div>
   );
 };
 

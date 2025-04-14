@@ -1,20 +1,33 @@
 "use client";
 import { PiInvoice } from "react-icons/pi";
 import { useCartStore } from "@/lib/cartStore";
+import { useAppStore } from "@/lib/store";
 
 const Invoice = () => {
-  const { getTotal, voucher, cart } = useCartStore();
+  const { voucher, cart } = useCartStore();
+  const { settings } = useAppStore();
 
-  const subTotal = getTotal() || 0;
-  const deliveryCost = 5000;
+  const subTotal = cart.reduce(
+    (total, item) => total + item?.product?.price * item.qt,
+    0
+  );
+  const delivery_cost = parseInt(settings?.delivery) || 0;
 
-  // Calculate product discounts
+  // Updated product discount calculation
   const productDiscount = cart.reduce((total, item) => {
-    const discount = item?.product?.discount || 0;
-    return total + discount * item.qt;
+    // Check if endPrice is valid and in the future
+    const isValidEndPrice =
+      item?.product?.endPrice &&
+      item?.product?.endPrice < item?.product?.price &&
+      new Date(item?.product?.endPrice_date) > new Date();
+
+    const discount = isValidEndPrice
+      ? (item?.product?.price - item?.product?.endPrice) * item.qt
+      : 0;
+
+    return total + discount;
   }, 0);
 
-  // Calculate voucher discount with capping
   let voucherDiscount = 0;
   if (voucher) {
     if (voucher.type === "%") {
@@ -22,14 +35,14 @@ const Invoice = () => {
     } else {
       voucherDiscount = voucher.value || 0;
     }
-  
+
     if (voucher.max_amount && voucherDiscount > voucher.max_amount) {
       voucherDiscount = voucher.max_amount;
     }
   }
 
   const totalDiscount = (productDiscount || 0) + (voucherDiscount || 0);
-  const realTotal = subTotal - totalDiscount + deliveryCost;
+  const realTotal = subTotal - totalDiscount + delivery_cost;
 
   const roundToNearest250 = (num) => {
     const total = Math.ceil(num / 250) * 250;
@@ -37,6 +50,7 @@ const Invoice = () => {
   };
 
   const roundedTotal = roundToNearest250(realTotal || 0);
+
   return (
     <div className="rounded-[8px] border border-[#eee] mt-[24px] bg-white">
       <div className="flex items-center p-[16px]">
@@ -49,21 +63,17 @@ const Invoice = () => {
             <p>المجموع</p>
             <p>{subTotal.toLocaleString()} د.ع</p>
           </div>
-          {productDiscount > 0 && (
-            <div className="flex items-center justify-between mt-[8px]">
-              <p>خصم المنتجات</p>
-              <p>{productDiscount.toLocaleString()}- د.ع</p>
-            </div>
-          )}
-          {voucherDiscount > 0 && (
+          {totalDiscount > 0 && (
             <div className="flex items-center justify-between mt-[8px]">
               <p>قيمة الخصم</p>
-              <p className="text-red-500">{voucherDiscount.toLocaleString()}- د.ع</p>
+              <p className="text-red-500">
+                {totalDiscount.toLocaleString()}- د.ع
+              </p>
             </div>
           )}
           <div className="flex items-center justify-between mt-[8px]">
             <p>كلفة التوصيل</p>
-            <p>{deliveryCost.toLocaleString()} د.ع</p>
+            <p>{delivery_cost.toLocaleString()} د.ع</p>
           </div>
         </div>
 

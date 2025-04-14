@@ -198,7 +198,7 @@ const OrderCard = ({ order }) => {
       color: "text-[#000]",
       bg: "",
       text: (
-        <div className="flex items-center items-center gap-4">
+        <div className="flex items-center gap-4">
           تم انهاء الطلب{" "}
           <FaCheck className="hidden sm:block w-6 h-6 text-violet-600" />
         </div>
@@ -220,9 +220,10 @@ const OrderCard = ({ order }) => {
   });
 
   return (
-    <div
-      className={`border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px] `}
+    <Link
+      className={`block border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px] bg-white active:opacity-45 transition-all`}
       style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
+      href={`/orderDetails/${order?.id}`}
     >
       <div className="flex p-[16px]">
         <ImageGroup thumbnails={thumbnails} />
@@ -265,7 +266,7 @@ const OrderCard = ({ order }) => {
           </button> */}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

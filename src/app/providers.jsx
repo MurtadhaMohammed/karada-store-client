@@ -1,14 +1,13 @@
 // app/providers.tsx
 "use client"; // Important for client-side components
 
-import { isTokenValid, reNewToken } from "@/lib/api";
+import { apiCall, isTokenValid, reNewToken } from "@/lib/api";
 import { useCartStore } from "@/lib/cartStore";
 import { queryClient } from "@/lib/queryClient";
 import { useAppStore } from "@/lib/store";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { Suspense, useEffect } from "react";
-import { UAParser } from "ua-parser-js";
 import HomeSkeleton from "./Skeleton/skeleton";
 
 export function ReactQueryProvider({ fontStyle, children }) {
@@ -16,25 +15,53 @@ export function ReactQueryProvider({ fontStyle, children }) {
     setIsLogin,
     updateUserInfo,
     setFavorites,
-    deviceOSName,
-    setDeviceOSName,
+    // deviceOSName,
+    // setDeviceOSName,
+    setPlatform,
+    platform,
+    setSettings,
   } = useAppStore();
   const { setCart } = useCartStore();
+  // const [platform, setPlatform] = useState(null);
 
   const pathname = usePathname();
   useEffect(() => {
     init();
     initFav();
-    initDevice();
+    // initDevice();
+    initPlatform();
+    initSettings();
   }, []);
 
-  const initDevice = async () => {
-    if (typeof window !== "undefined") {
-      const parser = new UAParser();
-      const result = parser.getResult();
-      setDeviceOSName(result?.os?.name);
+  const initSettings = async () => {
+    try {
+      const resp = await apiCall({ pathname: "/client/settings" });
+      let obj = {};
+      resp.map((el) => {
+        obj[el?.type] = el.value;
+      });
+      setSettings(obj);
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  const initPlatform = () => {
+    if (typeof window !== "undefined") {
+      const queryParams = new URLSearchParams(window.location.search);
+      const platformQuery = queryParams.get("platform");
+      setPlatform(platformQuery);
+    }
+  };
+
+  // const initDevice = async () => {
+  //   if (typeof window !== "undefined") {
+  //     const parser = new UAParser();
+  //     const result = parser.getResult();
+  //     setDeviceOSName(result?.os?.name);
+  //   }
+  // };
+
   const initFav = () => {
     if (typeof window !== "undefined") {
       const storedFavorites =
@@ -74,9 +101,9 @@ export function ReactQueryProvider({ fontStyle, children }) {
   };
 
   const deviceStatment = () => {
-    if (deviceOSName === "macOS") {
+    if (platform === "ios") {
       return true;
-    } else if (deviceOSName === "Android") {
+    } else if (platform === "android") {
       return true;
     } else {
       return false;

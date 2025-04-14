@@ -5,7 +5,7 @@ import Ripples from "react-ripples";
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { OtpInput } from "reactjs-otp-input";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { apiCall, URL } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
@@ -35,8 +35,11 @@ const LoginFormWeb = () => {
     const value = e.target.value;
     setPhone(value);
   };
-  const handleChange = (otp) => setOtp(otp);
+  const handleChange = (otp) => {
+    setOtp(otp);
+  };
 
+  
   const globalPhone = userInfo?.phone;
   const handleLogin = async () => {
     if (phone !== "07700000000" && validateIraqiPhoneNumber(phone) === false)
@@ -61,7 +64,7 @@ const LoginFormWeb = () => {
     }
   };
 
-  const handleVerify = async () => {
+  const handleVerify = useCallback(async () => {
     setLoading(true);
     const phoneFromParams = searchParams.get("phone");
     const resp = await apiCall({
@@ -83,7 +86,7 @@ const LoginFormWeb = () => {
     } else {
       setError("يرجى إدخال رمز التحقق صحيح");
     }
-  };
+  }, [otp, globalPhone, router, searchParams, updateUserInfo, setIsLogin]);
 
   useEffect(() => {
     const phoneFromParams = searchParams.get("phone");
@@ -98,7 +101,12 @@ const LoginFormWeb = () => {
       if (_name) setName(_name);
     }
   }, [isLogin]);
-
+  useEffect(() => {
+    if (otp?.length === 6 && !loading) {
+      handleVerify();
+    }
+  }, [otp, loading]);
+  
   if (isOtp)
     return (
       <>

@@ -43,12 +43,21 @@ const MenuItem = ({
 };
 
 const SideMenu = () => {
-  const { isMenu, setIsMenu, isLogin, setIsLogin, userInfo, updateUserInfo,setIsOtp,setOtp } =
-    useAppStore();
+  const {
+    isMenu,
+    setIsMenu,
+    isLogin,
+    setIsLogin,
+    userInfo,
+    updateUserInfo,
+    setIsOtp,
+    setOtp,
+    platform,
+    setPlatform,
+  } = useAppStore();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [platform, setPlatform] = useState(null);
   const [showPolicies, setShowPolicies] = useState(false);
 
   useEffect(() => {
@@ -78,7 +87,6 @@ const SideMenu = () => {
         },
       });
       if (resp?.success) {
-        console.log(resp?.success);
         setLoading(false);
         setIsModalOpen(false);
         logout();
@@ -169,7 +177,6 @@ const SideMenu = () => {
           />
           {showPolicies && (
             <div className="mr-7">
-              {" "}
               <MenuItem
                 title={"سياسة الخصوصية"}
                 icon={<BiBook className="text-[20px]" />}
@@ -204,10 +211,10 @@ const SideMenu = () => {
               />
             </div>
           )}
-          <MenuItem
+          {/* <MenuItem
             title={"مشاركة التطبيق"}
             icon={<LuShare2 className="text-[24px]" />}
-          />
+          /> */}
           {isLogin && (
             <MenuItem
               onClick={logout}
@@ -244,31 +251,34 @@ const SideMenu = () => {
         />
       )}
 
-<p className="absolute bottom-4 text-center left-0 right-0 text-[14px] text-[#a5a5a5]">
-  Powered by{" "}
-  {platform === "ios" || platform === "android" ? (
-    <a
-      className="text-[#0000ff]"
-      href="https://puretik.com"
-      onClick={(e) => {
-        e.preventDefault();
-        window.open("https://puretik.com", "_blank", "noopener,noreferrer");
-      }}
-    >
-      PureTik
-    </a>
-  ) : (
-    <a
-      className="text-[#0000ff]"
-      href="https://puretik.com"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      PureTik
-    </a>
-  )}
-</p>
-
+      <p className="absolute bottom-4 text-center left-0 right-0 text-[14px] text-[#a5a5a5]">
+        Powered by{" "}
+        {platform === "ios" || platform === "android" ? (
+          <a
+            className="text-[#0000ff]"
+            href="https://puretik.com"
+            onClick={(e) => {
+              e.preventDefault();
+              window.open(
+                "https://puretik.com",
+                "_blank",
+                "noopener,noreferrer"
+              );
+            }}
+          >
+            PureTik
+          </a>
+        ) : (
+          <a
+            className="text-[#0000ff]"
+            href="https://puretik.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            PureTik
+          </a>
+        )}
+      </p>
     </Drawer>
   );
 };

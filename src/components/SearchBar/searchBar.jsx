@@ -186,29 +186,47 @@ const SearchBar = ({ disabled = false }) => {
               {isSearch &&
                 showSuggestions &&
                 suggestions?.products?.length > 0 && (
-                  <div className="absolute bg-white border border-gray-200 w-full mt-2 rounded-[8px] shadow-lg z-50">
+                  <div className="absolute bg-white border border-gray-200 w-full mt-2 pt-4 pb-4 rounded-[8px] shadow-lg z-50">
                     {isFetching ? (
-                      <div className="p-2 text-gray-500">جاري التحميل...</div>
+                      <div className="pr-4 text-gray-500">جاري التحميل...</div>
                     ) : (
                       <div>
-                        <div className="p-2  flex justify-between">
+                        {/* <div className="p-2  flex justify-between">
                           <div className="text-gray-500">قائمة المقترحات:</div>
                           <div onClick={closeSuggestions} className="">
                             <IoCloseSharp size={22} />
                           </div>
+                        </div> */}
+
+                        <div className="absolute -bottom-[100px] flex justify-center p-6 w-full">
+                          <div
+                            onClick={closeSuggestions}
+                            className="w-[58px] h-[58px] rounded-full bg-[#eee] flex items-center justify-center shadow-lg active:opacity-50 transition-all"
+                          >
+                            <IoCloseSharp size={32} />
+                          </div>
                         </div>
 
                         {suggestions.products?.map((item) => (
-                          <div
-                            key={item.id}
-                            className="flex justify-between items-center"
-                          >
+                          <div key={item.id}>
                             <Link key={item.id} href={`/product/${item.id}`}>
                               <div
-                                className="p-2 hover:bg-gray-100 cursor-pointer"
+                                className="w-full flex items-center p-4 pt-1 pb-1 hover:bg-gray-100 cursor-pointer"
                                 onClick={() => setSearch(item.name)}
                               >
-                                {item.name}
+                                <div className="pure-skeleton  !w-[40px] h-[40px] rounded-md overflow-hidden relative">
+                                  <Image
+                                    src={`${IMAGE_URL}/${item?.image[0]?.url}`}
+                                    width={40}
+                                    height={40}
+                                  />
+                                </div>
+                                <div className="flex-1 pr-4">
+                                  <p className="text-[14px]">{item?.name}</p>
+                                  <p className="text-[12px] text-[#a5a5a5]">
+                                    {item?.shortDescription || "..."}
+                                  </p>
+                                </div>
                               </div>
                             </Link>
                           </div>

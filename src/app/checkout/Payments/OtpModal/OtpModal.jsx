@@ -7,7 +7,7 @@ import {
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { MdSecurityUpdateGood } from "react-icons/md";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Ripples from "react-ripples";
 import { apiCall } from "@/lib/api";
 import { createOrder } from "../../utils/orderUtils";
@@ -29,15 +29,13 @@ export const OtpModal = ({
   const [Note, setNote] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const { setInstallmentId } = useAppStore();
-  const { setInstallment } = useAppStore();
-  const [platform, setPlatform] = useState(null);
+  const { setInstallment, platform, setPlatform } = useAppStore();
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const platformQuery = queryParams.get("platform");
-    setPlatform(platformQuery);
-  }, []);
+  // useEffect(() => {
+  //   const queryParams = new URLSearchParams(window.location.search);
+  //   const platformQuery = queryParams.get("platform");
+  //   setPlatform(platformQuery);
+  // }, []);
 
   const handleInstallmentSetup = (installmentId) => {
     if (installmentId) {
@@ -48,8 +46,7 @@ export const OtpModal = ({
         setOtp,
         clearCart,
         router,
-        installmentId,
-        platformQuery
+        installmentId
       );
     }
   };

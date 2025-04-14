@@ -26,6 +26,12 @@ export const useAppStore = create((set, get) => ({
   searchResult: null,
   validateAddress: false,
   deviceOSName: "",
+  platform: null,
+  note: "",
+  settings: {},
+  setSettings: (settings) => set({ settings }),
+  setNote: (note) => set({ note }),
+  setPlatform: (platform) => set({ platform }),
   setDeviceOSName: (deviceOSName) => set({ deviceOSName }),
   setValidateAddress: (validateAddress) =>
     set({ validateAddress: validateAddress }),
