@@ -193,7 +193,7 @@ const ProductInfo = ({ product }) => {
         >
           <Container>
             <div className="flex items-start justify-between z-50">
-              <div className="flex items-center flex-1">
+              <div className="flex items-center flex-1 min-w-0">
                 <IconButton
                   rounded={"50%"}
                   className={`bg-[#fff] rounded-full border border-[#eee] p-2 text-[24px] transition-all`}
@@ -208,9 +208,9 @@ const ProductInfo = ({ product }) => {
                   transition={{
                     duration: 0.3,
                   }}
-                  className="mt-1 mr-[8px] text-[18px] whitespace-nowrap overflow-hidden text-ellipsis"
+                  className="mt-1 mr-[8px] text-[18px]  overflow-hidden text-ellipsis whitespace-nowrap "
                   style={{
-                    maxWidth: 140,
+                   maxWidth: "calc(80% - 15px)",
                     visibility: scrollPosition > 200 ? "visible" : "hidden",
                   }}
                 >
