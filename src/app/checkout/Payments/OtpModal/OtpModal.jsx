@@ -12,6 +12,7 @@ import Ripples from "react-ripples";
 import { apiCall } from "@/lib/api";
 import { createOrder } from "../../utils/orderUtils";
 import { useAppStore } from "@/lib/store";
+import RedirectOrderCreation from "@/components/RedirectOrderCreation/redirectOrderCreaton";
 
 export const OtpModal = ({
   sessionId,
@@ -30,6 +31,7 @@ export const OtpModal = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { setInstallment, platform, setPlatform } = useAppStore();
+  const [showRedirect, setShowRedirect] = useState(false);
 
   // useEffect(() => {
   //   const queryParams = new URLSearchParams(window.location.search);
@@ -68,7 +70,9 @@ export const OtpModal = ({
       if (result.succeeded === true) {
         handleInstallmentSetup(result.data?.installmentId);
         setInstallment(false);
-        onFinish();
+        closeModal();
+        setShowRedirect(true);
+        // onFinish();
       } else {
         setErrorMessage(result.message || "حدث خطأ أثناء التحقق من الرمز.");
       }
@@ -81,6 +85,8 @@ export const OtpModal = ({
   };
 
   return (
+   <>
+   {showRedirect && <RedirectOrderCreation />}
     <BottomSheetModal
       title={
         <Container>
@@ -133,7 +139,9 @@ export const OtpModal = ({
             />
           </div>
         </div>
+        
       </Container>
     </BottomSheetModal>
+   </>
   );
 };
