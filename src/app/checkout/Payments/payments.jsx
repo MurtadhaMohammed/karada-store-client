@@ -8,6 +8,7 @@ import {
   useBottomSheetModal,
 } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import { useAppStore } from "@/lib/store";
+import { InstallmentModal } from "./InstallmentModal/InstallmentModal";
 
 
 const Payments = () => {
@@ -94,13 +95,13 @@ const Payments = () => {
           closeModal();
         }}
       />
-      {/* <InstallmentModal
+      <InstallmentModal
         onFinish={(value) => {
           setCardInfo(value);
           setSelected("installment");
           closeModal();
         }}
-      /> */}
+      />
     </div>
   );
 };

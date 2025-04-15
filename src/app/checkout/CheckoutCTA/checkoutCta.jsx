@@ -42,8 +42,14 @@ const CheckoutCTA = () => {
   const [isDataProvided, setIsDataProvided] = useState(false);
   const [showRedirectModal, setShowRedirectModal] = useState(false);
   const [order, setOrder] = useState(null);
-  const { installmentId, setInstallmentId, platform, setPlatform, settings } =
-    useAppStore();
+  const {
+    installmentId,
+    setInstallmentId,
+    platform,
+    setPlatform,
+    settings,
+    setInstallmentOrder,
+  } = useAppStore();
 
   useEffect(() => {
     if (userCheckoutInfo) {
@@ -121,7 +127,21 @@ const CheckoutCTA = () => {
     }
     if (isInstallment === true) {
       setOrderType("Installment");
-      openModal("installmentModal");
+      setInstallmentOrder({
+        user_id: userInfo.id,
+        user_name: userCheckoutInfo.name,
+        phone: userCheckoutInfo.phone,
+        address: userCheckoutInfo.address,
+        items,
+        voucher_id: voucher ? voucher.id : null,
+        store_id: 1,
+        order_type: "Installment",
+        platform,
+        installmentId,
+        note,
+      });
+      router.push("/installment");
+      // openModal("installmentModal");
     } else {
       handleOrderCreation();
     }
@@ -203,10 +223,10 @@ const CheckoutCTA = () => {
         clearCart={clearCart}
         router={router}
       />
- 
- {showRedirectModal && (
-  <RedirectOrderCreation onClose={() => setShowRedirectModal(false)} />
-)}
+
+      {showRedirectModal && (
+        <RedirectOrderCreation onClose={() => setShowRedirectModal(false)} />
+      )}
     </div>
   );
 };

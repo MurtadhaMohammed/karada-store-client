@@ -27,7 +27,7 @@ export const createOrder = async (
         order_type: order.order_type,
         installmentId: installmentId,
         platform: platform,
-        delivery_cost,
+        delivery_cost: delivery_cost,
         note,
       },
     });

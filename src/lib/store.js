@@ -29,6 +29,8 @@ export const useAppStore = create((set, get) => ({
   platform: null,
   note: "",
   settings: {},
+  installmentOrder: {},
+  setInstallmentOrder: (installmentOrder) => set({ installmentOrder }),
   setSettings: (settings) => set({ settings }),
   setNote: (note) => set({ note }),
   setPlatform: (platform) => set({ platform }),
