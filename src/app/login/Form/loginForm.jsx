@@ -61,7 +61,7 @@ const LoginForm = () => {
     }
   };
 
-  const handleVerify = useCallback(async () => {
+  const handleVerify = async () => {
     setLoading(true);
     const phoneFromParams = searchParams.get("phone");
     const resp = await apiCall({
@@ -83,7 +83,7 @@ const LoginForm = () => {
     } else {
       setError("يرجى إدخال رمز التحقق صحيح");
     }
-  }, [otp, globalPhone, router, searchParams, updateUserInfo, setIsLogin]);
+  };
 
   useEffect(() => {
     const phoneFromParams = searchParams.get("phone");
@@ -103,7 +103,7 @@ const LoginForm = () => {
     if (otp?.length === 6 && !loading) {
       handleVerify();
     }
-  }, [otp, loading]);
+  }, [otp]);
 
   if (isOtp)
     return (

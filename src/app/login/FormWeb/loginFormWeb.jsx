@@ -105,7 +105,7 @@ const LoginFormWeb = () => {
     if (otp?.length === 6 && !loading) {
       handleVerify();
     }
-  }, [otp, loading]);
+  }, [otp]);
   
   if (isOtp)
     return (
