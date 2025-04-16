@@ -1,6 +1,6 @@
 import { apiCall } from "@/lib/api";
 
-export const createOrder = async (
+export const createOrder = async ({
   order,
   isLogin,
   setIsOtp,
@@ -11,7 +11,7 @@ export const createOrder = async (
   platform,
   delivery_cost,
   note
-) => {
+}) => {
   try {
     const response = await apiCall({
       pathname: `/client/order/create-order`,
@@ -25,10 +25,10 @@ export const createOrder = async (
         voucher_id: order.voucher_id,
         store_id: 1,
         order_type: order.order_type,
-        installmentId: installmentId,
-        platform: platform,
-        delivery_cost: delivery_cost,
-        note,
+        installmentId: order?.installmentId || installmentId,
+        platform: order?.platform || platform,
+        delivery_cost,
+        note: order?.note || note,
       },
     });
 
@@ -40,7 +40,7 @@ export const createOrder = async (
         setIsOtp(true);
         setOtp("");
         router.replace("/login?phone=" + order.phone);
-      } 
+      }
     }
     return response;
   } catch (error) {

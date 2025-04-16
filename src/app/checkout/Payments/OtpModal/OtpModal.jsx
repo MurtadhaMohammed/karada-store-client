@@ -39,7 +39,7 @@ export const OtpModal = ({
 
   const handleInstallmentSetup = (installmentId) => {
     if (installmentId) {
-      createOrder(
+      createOrder({
         order,
         isLogin,
         setIsOtp,
@@ -47,7 +47,7 @@ export const OtpModal = ({
         clearCart,
         router,
         installmentId
-      );
+    });
     }
   };
 

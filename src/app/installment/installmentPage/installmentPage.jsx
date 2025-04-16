@@ -77,18 +77,18 @@ const InstallmentPage = () => {
 
   const handleInstallmentSetup = (installmentId) => {
     if (installmentId) {
-      const delivery_cost = parseInt(settings?.delivery || 0);
-      createOrder(
-        installmentOrder,
+      const delivery_cost = parseInt(settings?.delivery_cost || 0);
+      createOrder({
+        order:installmentOrder,
         isLogin,
         setIsOtp,
         setOtp,
         clearCart,
         router,
-        installmentId,
+        // installmentId,
         delivery_cost,
-        note
-      );
+        // note
+    });
       setInstallmentOrder({});
     }
   };

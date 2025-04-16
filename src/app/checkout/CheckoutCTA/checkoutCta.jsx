@@ -99,7 +99,7 @@ const CheckoutCTA = () => {
 
   const handleOrderCreation = async () => {
     setLoading(true);
-    const result = await createOrder(
+    const result = await createOrder({
       order,
       isLogin,
       setIsOtp,
@@ -108,9 +108,9 @@ const CheckoutCTA = () => {
       router,
       platform,
       installmentId,
-      parseInt(settings?.delivery) || 0,
-      note
-    );
+      delivery_cost: parseInt(settings?.delivery_cost) || 0,
+      note,
+    });
     setLoading(false);
     setNote("");
     if (result?.order && isLogin && result?.status !== "Not Logged In") {
@@ -126,7 +126,7 @@ const CheckoutCTA = () => {
       setValidateAddress(false);
     }
     if (isInstallment === true) {
-      setOrderType("Installment");
+      // setOrderType("Installment");
       setInstallmentOrder({
         user_id: userInfo.id,
         user_name: userCheckoutInfo.name,
