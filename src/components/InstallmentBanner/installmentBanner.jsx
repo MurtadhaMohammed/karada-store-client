@@ -2,10 +2,8 @@ import Image from "next/image";
 import { useAppStore } from "@/lib/store";
 const InstallmentBanner = ({ price, margin = 0 }) => {
   const { settings } = useAppStore();
-
-  const installedPrice = (price * settings?.installment) / 10;
-
-
+   const installedPrice =
+    (price * settings?.installment) / 10 || (price * 1.2) / 10;
 
   return (
     <div

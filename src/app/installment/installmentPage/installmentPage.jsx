@@ -157,14 +157,22 @@ const InstallmentPage = () => {
             </div>
             <div className="mt-[24px]">
               <p className="mr-[6px] mb-[8px]">
-                ادخل رقم الحساب المكون من 10 مراتب
+                ادخل رقم يوم البطاقه او رقم الحساب
               </p>
               <Input
                 hint="رقم البطاقة"
                 type="tel"
                 prefix={<BsCreditCard2Front className="text-[20px]" />}
                 value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCardNumber(value);
+                  if (value.length !== 10 && value.length !== 16) {
+                    setErrorMessage("ادخل رقم البطاقه او رقم الحساب");
+                  } else {
+                    setErrorMessage("");
+                  }
+                }}
                 disabled={showOTP}
               />
             </div>
