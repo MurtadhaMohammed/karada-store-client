@@ -185,10 +185,10 @@ const InstallmentPageWeb = () => {
               </div>
             )}
           </div>
-          <div className="fixed bottom-0 left-0 right-0 z-50 w-full">
+          <div className="fixed bottom-10 left-0 right-0 z-50 w-full">
             <Container>
               <div
-                className="active:scale-[0.96] transition-all shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] mb-[20px]"
+                className="active:scale-[0.96] bg-white transition-all shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] mb-[20px]"
                 style={{
                   display: "inline-flex",
                   borderRadius: 16,
