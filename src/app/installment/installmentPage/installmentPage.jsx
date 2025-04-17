@@ -35,9 +35,10 @@ const InstallmentPage = () => {
   } = useAppStore();
   const router = useRouter();
   const PlanId = 10;
-  const total = getTotal();
+  const cartTotal = getTotal();
   const noOfMonths = 10;
-  const installment = (total * 1.2) / noOfMonths;
+  const installment = (cartTotal * settings.installment) / noOfMonths;
+  const total = installment * noOfMonths;
 
   const handleInstallment = async () => {
     console.log("handleInstallment");
@@ -147,6 +148,10 @@ const InstallmentPage = () => {
               <p>القسط الشهري</p>
               <p>IQD {installment}</p>
             </div>
+            <div className="flex bg-white items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
+              <p>مجموع السلة</p>
+              <p>IQD {cartTotal}</p>
+            </div>
             <div className="flex bg-white  items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
               <p>عدد الاشهر</p>
               <p>{noOfMonths} اشهر</p>
@@ -157,8 +162,7 @@ const InstallmentPage = () => {
             </div>
             <div className="mt-[24px]">
               <p className="mr-[6px] mb-[8px]">
-                ادخل رقم يوم البطاقه او رقم الحساب
-              </p>
+              ادخل رقم الحساب المكون من 10 مراتب              </p>
               <Input
                 hint="رقم البطاقة"
                 type="tel"
