@@ -35,12 +35,12 @@ const InstallmentPageWeb = () => {
   } = useAppStore();
   const router = useRouter();
   const PlanId = 10;
-  const total = getTotal();
+  const cartTotal = getTotal();
   const noOfMonths = 10;
-  const installment = (total * 1.2) / noOfMonths;
+  const installment = (cartTotal * settings.installment) / noOfMonths;
+  const total = installment * noOfMonths;
 
   const handleInstallment = async () => {
-    console.log("handleInstallment");
 
     setLoading(true);
     try {
@@ -77,7 +77,6 @@ const InstallmentPageWeb = () => {
 
   const handleInstallmentSetup = (installmentId) => {
     if (installmentId) {
-      const delivery_cost = parseInt(settings?.delivery_cost || 0);
       createOrder({
         order: installmentOrder,
         isLogin,
@@ -85,9 +84,9 @@ const InstallmentPageWeb = () => {
         setOtp,
         clearCart,
         router,
-        // installmentId,
-        delivery_cost,
-        // note
+        installmentId,
+        delivery_cost: parseInt(settings?.delivery),
+        note,
       });
       setInstallmentOrder({});
     }
@@ -130,7 +129,7 @@ const InstallmentPageWeb = () => {
 
   return (
     <Container>
-      <div>
+      <div className="relative">
         {(errorMessage || Message) && (
           <div
             className={
@@ -141,11 +140,15 @@ const InstallmentPageWeb = () => {
           </div>
         )}
         {/* installment */}
-        <div className="rounded-[8px] mt-[16px] mb-[60px]">
+        <div className="rounded-[8px] mt-[16px] mb-[60px] relative">
           <div className="pt-0">
             <div className="flex bg-white items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
               <p>القسط الشهري</p>
               <p>IQD {installment}</p>
+            </div>
+            <div className="flex bg-white items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
+              <p>مجموع السلة</p>
+              <p>IQD {cartTotal}</p>
             </div>
             <div className="flex bg-white  items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
               <p>عدد الاشهر</p>
@@ -182,36 +185,35 @@ const InstallmentPageWeb = () => {
               </div>
             )}
           </div>
-        </div>
-
-        <div className="pointer-events-none  z-50 w-full">
-          <Container>
-            <div
-              className="active:scale-[0.96] transition-all shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] mb-[20px]"
-              style={{
-                display: "inline-flex",
-                borderRadius: 16,
-                overflow: "hidden",
-                width: "100%",
-              }}
-            >
-              <Ripples className="!grid w-[100%]">
-                <button
-                  onClick={showOTP ? handleInstallmentOtp : handleInstallment}
-                  className="flex items-center justify-center h-[56px] rounded-[16px] bg-gradient-to-r text-violet-600 p-6 border-2 border-violet-600"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <AiOutlineLoading3Quarters className="animate-spin w-8 h-8 text-violet-600" />
-                  ) : (
-                    <span className="ml-[8px] font-bold text-[18px]">
-                      التالي
-                    </span>
-                  )}
-                </button>
-              </Ripples>
-            </div>
-          </Container>
+          <div className="fixed bottom-0 left-0 right-0 z-50 w-full">
+            <Container>
+              <div
+                className="active:scale-[0.96] transition-all shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] mb-[20px]"
+                style={{
+                  display: "inline-flex",
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  width: "100%",
+                }}
+              >
+                <Ripples className="!grid w-[100%]">
+                  <button
+                    onClick={showOTP ? handleInstallmentOtp : handleInstallment}
+                    className="flex items-center justify-center h-[56px] rounded-[16px] bg-gradient-to-r text-violet-600 p-6 border-2 border-violet-600"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <AiOutlineLoading3Quarters className="animate-spin w-8 h-8 text-violet-600" />
+                    ) : (
+                      <span className="ml-[8px] font-bold text-[18px]">
+                        التالي
+                      </span>
+                    )}
+                  </button>
+                </Ripples>
+              </div>
+            </Container>
+          </div>
         </div>
       </div>
     </Container>

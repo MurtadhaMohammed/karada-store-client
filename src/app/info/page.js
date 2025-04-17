@@ -38,7 +38,7 @@ export default async function Info() {
         link="/policies/payments"
       />
       <Section
-        title={"سياسة الإسرجاع "}
+        title={"سياسة الاسترجاع "}
         icon={<TbCreditCardRefund className="text-[26px]" />}
         link="/policies/refund"
       />

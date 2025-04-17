@@ -10,8 +10,9 @@ export const createOrder = async ({
   installmentId,
   platform,
   delivery_cost,
-  note
+  note,
 }) => {
+
   try {
     const response = await apiCall({
       pathname: `/client/order/create-order`,
@@ -32,7 +33,6 @@ export const createOrder = async ({
       },
     });
 
-    console.log("response", response);
 
     if (response?.order) {
       clearCart();
