@@ -78,7 +78,7 @@ const InstallmentPage = () => {
 
   const handleInstallmentSetup = (installmentId) => {
     if (installmentId) {
-      const delivery_cost = parseInt(settings?.delivery_cost || 0);
+      const delivery_cost = parseInt(settings?.delivery || 0);
       createOrder({
         order: installmentOrder,
         isLogin,

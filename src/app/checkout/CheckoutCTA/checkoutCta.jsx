@@ -108,7 +108,7 @@ const CheckoutCTA = () => {
       router,
       platform,
       installmentId,
-      delivery_cost: parseInt(settings?.delivery_cost) || 0,
+      delivery_cost: parseInt(settings?.delivery) || 0,
       note,
     });
     setLoading(false);
