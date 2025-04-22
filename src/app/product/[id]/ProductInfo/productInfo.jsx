@@ -22,6 +22,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import ProductCTA from "../ProductCTA/ProductCTA";
 import { useAppStore } from "@/lib/store";
+import { BsExclamation } from "react-icons/bs";
 
 const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
@@ -290,6 +291,14 @@ const ProductInfo = ({ product }) => {
             عادة مايتم توصيل المنتجات {settings?.time}
           </span>
         </div>
+        {product?.insurance && product?.insurance?.content && (
+          <div className="flex items-center mt-[16px]">
+            <BsExclamation className="text-[16px]" />
+            <span className="mr-[8px] text-[14px]">
+              {product?.insurance?.content}
+            </span>
+          </div>
+        )}
 
         <div className="mt-[16px] mb-[8px] flex flex-wrap">
           {product?.options?.map((option, index) => (
@@ -310,9 +319,7 @@ const ProductInfo = ({ product }) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <button 
-          className="mb-[24px] h-[48px] w-[100%] rounded-[12px] bg-[#fff] flex items-center justify-between border pr-[16px] pl-[12px] border-[#eee] shadow-md  transition-all active:scale-95"
-          >
+          <button className="mb-[24px] h-[48px] w-[100%] rounded-[12px] bg-[#fff] flex items-center justify-between border pr-[16px] pl-[12px] border-[#eee] shadow-md  transition-all active:scale-95">
             <p className="text-[16px]">للأستفسار والتواصل</p>
             <FaWhatsapp size={28} color="#1CC638" />
           </button>
