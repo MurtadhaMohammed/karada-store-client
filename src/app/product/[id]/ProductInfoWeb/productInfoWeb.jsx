@@ -252,12 +252,14 @@ const ProductInfoWeb = ({ product }) => {
                 عادة مايتم توصيل المنتجات {settings?.time}
               </span>
             </div>
-            <div className="flex items-center mt-[16px]">
-              <BsExclamation className="text-[19px]" />
-              <span className="mr-[8px] text-[14px]">
-                {product?.insurance?.content}
-              </span>
-            </div>
+            {product?.insurance && product?.insurance?.content && (
+              <div className="flex items-center mt-[16px]">
+                <BsExclamation className="text-[19px]" />
+                <span className="mr-[8px] text-[14px]">
+                  {product?.insurance?.content}
+                </span>
+              </div>
+            )}
             <div className="mt-4 pt-4">
               {product?.options && product?.options.length > 0 && (
                 <div>
