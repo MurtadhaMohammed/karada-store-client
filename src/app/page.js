@@ -68,7 +68,7 @@ export default async function Home() {
               <GridBanner
                 banner={banner}
                 bannerImage={banner?.img}
-                link={banner?.link}
+                link={banner?.link || "/"}
                 grid={banner?.grid}
                 hasBanner={banner?.has_banner}
                 bannerAlignment={banner?.bannerAlignment}

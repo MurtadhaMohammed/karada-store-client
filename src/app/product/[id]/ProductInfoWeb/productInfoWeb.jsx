@@ -18,6 +18,7 @@ import ProductCtaWeb from "../ProductCTAWeb/productCtaWeb";
 import ImageModal from "@/components/ImageModal/imageModal";
 import IconButton from "@/components/UI/IconButton/iconButton";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+import { BsExclamation } from "react-icons/bs";
 const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
     <button
@@ -203,11 +204,11 @@ const ProductInfoWeb = ({ product }) => {
                 </span>
               </button>
               <a
-               href={`https://wa.me/9647740300006?text=${encodeURIComponent(
-                `مرحبًا، أود الاستفسار عن هذا المنتج:\nhttps://karadastore.iq/product/${product.id}`
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
+                href={`https://wa.me/9647740300006?text=${encodeURIComponent(
+                  `مرحبًا، أود الاستفسار عن هذا المنتج:\nhttps://karadastore.iq/product/${product.id}`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 p-2 bg-[#fff] rounded-[8px] border border-[#eee] hover:bg-gray-100 transition"
               >
                 <FaWhatsapp color="#25D366" size={20} className="text-[22px]" />
@@ -249,6 +250,12 @@ const ProductInfoWeb = ({ product }) => {
               <TbTruckDelivery className="text-[16px]" />
               <span className="mr-[8px] text-[14px]">
                 عادة مايتم توصيل المنتجات {settings?.time}
+              </span>
+            </div>
+            <div className="flex items-center mt-[16px]">
+              <BsExclamation className="text-[19px]" />
+              <span className="mr-[8px] text-[14px]">
+                {product?.insurance?.content}
               </span>
             </div>
             <div className="mt-4 pt-4">
