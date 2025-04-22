@@ -162,7 +162,7 @@ const InstallmentPage = () => {
             </div>
             <div className="mt-[24px]">
               <p className="mr-[6px] mb-[8px]">
-              ادخل رقم الحساب المكون من 10 مراتب              </p>
+              ادخل رقم الحساب المكون من 10 مراتب او 16 مرتبة          </p>
               <Input
                 hint="رقم البطاقة"
                 type="tel"
