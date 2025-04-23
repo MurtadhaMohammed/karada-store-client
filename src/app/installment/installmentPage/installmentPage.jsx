@@ -41,8 +41,6 @@ const InstallmentPage = () => {
   const total = installment * noOfMonths;
 
   const handleInstallment = async () => {
-    console.log("handleInstallment");
-
     setLoading(true);
     try {
       const result = await apiCall({
@@ -86,7 +84,7 @@ const InstallmentPage = () => {
         setOtp,
         clearCart,
         router,
-        // installmentId,
+        installmentId,
         delivery_cost,
         // note
       });
