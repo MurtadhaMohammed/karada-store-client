@@ -99,11 +99,6 @@ const LoginForm = () => {
     }
   }, [isLogin]);
 
-  useEffect(() => {
-    if (otp?.length === 6 && !loading) {
-      handleVerify();
-    }
-  }, [otp]);
 
   if (isOtp)
     return (

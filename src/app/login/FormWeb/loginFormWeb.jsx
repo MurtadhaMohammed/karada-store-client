@@ -101,12 +101,7 @@ const LoginFormWeb = () => {
       if (_name) setName(_name);
     }
   }, [isLogin]);
-  useEffect(() => {
-    if (otp?.length === 6 && !loading) {
-      handleVerify();
-    }
-  }, [otp]);
-  
+
   if (isOtp)
     return (
       <>
