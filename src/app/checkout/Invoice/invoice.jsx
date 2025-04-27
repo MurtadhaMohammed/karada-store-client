@@ -7,11 +7,15 @@ const Invoice = () => {
   const { voucher, cart } = useCartStore();
   const { settings } = useAppStore();
 
+  console.log("settings", settings);
   const subTotal = cart.reduce(
     (total, item) => total + item?.product?.price * item.qt,
     0
   );
-  const delivery_cost = parseInt(settings?.delivery) || 0;
+  const delivery_cost =
+    subTotal > 1000000
+      ? parseInt(settings?.extraDelivery) || 0
+      : parseInt(settings?.delivery) || 0;
 
   // Updated product discount calculation
   const productDiscount = cart.reduce((total, item) => {

@@ -76,8 +76,11 @@ const InstallmentPage = () => {
 
   const handleInstallmentSetup = (installmentId) => {
     if (installmentId) {
-      const delivery_cost = parseInt(settings?.delivery || 0);
-      createOrder({
+      const delivery_cost =
+      total > 1000000
+        ? parseInt(settings?.extraDelivery) || 0
+        : parseInt(settings?.delivery) || 0;
+        createOrder({
         order: installmentOrder,
         isLogin,
         setIsOtp,

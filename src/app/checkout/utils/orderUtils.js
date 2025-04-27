@@ -12,6 +12,7 @@ export const createOrder = async ({
   delivery_cost,
   note,
 }) => {
+  console.log("order",order)
 
   try {
     const response = await apiCall({

@@ -51,6 +51,18 @@ const CheckoutCTA = () => {
     setInstallmentOrder,
   } = useAppStore();
 
+
+  const calculateTotalPrice = useMemo(() => {
+    return cart.reduce((total, item) => total + item?.product?.qt * item?.product?.endPrice || item?.product?.price, 0);
+  }, [cart]);
+
+  const deliveryCost = useMemo(() => {
+    return calculateTotalPrice >= 1000000
+      ? parseInt(settings?.extraDelivery) || 0
+      : parseInt(settings?.delivery) || 0;
+  }, [calculateTotalPrice, settings]);
+
+
   useEffect(() => {
     if (userCheckoutInfo) {
       setAddress(userCheckoutInfo?.address);
@@ -108,7 +120,7 @@ const CheckoutCTA = () => {
       router,
       platform,
       installmentId,
-      delivery_cost: parseInt(settings?.delivery) || 0,
+      delivery_cost: deliveryCost || 0,
       note,
     });
     setLoading(false);
