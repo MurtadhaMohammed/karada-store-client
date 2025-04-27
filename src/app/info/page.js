@@ -31,7 +31,7 @@ export default async function Info() {
         </div>
       </Container>
       <ThreeSection
-        titles={["سياسات التوصيل", "سياسات الدفع", "سياسات الاسترجاع"]}
+        titles={[" التوصيل", " الدفع", " الاسترجاع"]}
         links={["/policies/delivery", "/policies/payments", "/policies/refund"]}
         icons={[
           <FaTruck className="text-[20px]" />,
