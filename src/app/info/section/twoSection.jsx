@@ -2,7 +2,6 @@
 
 import Container from "@/components/UI/Container/container";
 import { useAppStore } from "@/lib/store";
-import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 
 export const TwoSection = ({
@@ -12,9 +11,7 @@ export const TwoSection = ({
   icons = [],
   hasAccess = true,
 }) => {
-  const router = useRouter();
-  const { updateUserInfo, setOtp, setIsOtp, isLogin, setIsLogin } =
-    useAppStore();
+  const { isLogin } = useAppStore();
 
   if (!hasAccess && !isLogin) return null;
 
@@ -22,20 +19,18 @@ export const TwoSection = ({
     <Container>
       <div className="flex w-full gap-1">
         {titles.map((title, index) => (
-          <button
+          <a
             key={index}
-            className="block w-full flex items-center justify-center active:opacity-45 w-full transition-all app-links mt-[16px]"
-            onClick={() => {
-              if (links[index]) {
-                router.push(links[index]);
-              }
-            }}
+            href={links[index]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center active:opacity-45 transition-all app-links mt-4"
           >
-            <div className="flex items-center justify-center bg-white w-[100%] gap-3 rounded-[16px] px-[16px] py-[16px]">
+            <div className="flex items-center justify-center bg-white w-full gap-3 rounded-[16px] px-4 py-4">
               <div>{icons[index]}</div>
-              <h3 className="text-[16px] text-cente">{title}</h3>
+              <h3 className="text-[16px] text-center">{title}</h3>
             </div>
-          </button>
+          </a>
         ))}
       </div>
     </Container>

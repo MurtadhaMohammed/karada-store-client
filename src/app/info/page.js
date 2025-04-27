@@ -8,6 +8,7 @@ import { MdOutlinePayment } from "react-icons/md";
 import Container from "@/components/UI/Container/container";
 import { ThreeSection } from "./section/threeSection";
 import { TwoSection } from "./section/twoSection";
+import Image from "next/image";
 
 export default async function Info() {
   return (
@@ -52,12 +53,12 @@ export default async function Info() {
       <TwoSection
         titles={["فيسبوك", "انستغرام"]}
         links={[
-          "https://www.facebook.com/karada.gaming/",
-          "https://www.instagram.com/karada.store.elc",
+          "https://www.facebook.com/karada.gaming",
+          "https://www.instagram.com/karada.store.elc?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
         ]}
         icons={[
-          <FaFacebook className="text-[20px]" />,
-          <FaInstagram className="text-[20px]" />,
+          <Image src="/facebook.svg" alt="instagram" width={30} height={30} />,
+          <Image src="/instagram.svg" alt="instagram" width={30} height={30} />,
         ]}
       />
 
