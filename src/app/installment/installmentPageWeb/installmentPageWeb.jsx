@@ -144,11 +144,11 @@ const InstallmentPageWeb = () => {
           <div className="pt-0">
             <div className="flex bg-white items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
               <p>القسط الشهري</p>
-              <p>IQD {installment}</p>
+              <p> {installment.toLocaleString("en")} د.ع</p>
             </div>
             <div className="flex bg-white items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
               <p>مجموع السلة</p>
-              <p>IQD {cartTotal}</p>
+              <p> {cartTotal.toLocaleString("en")} د.ع</p>
             </div>
             <div className="flex bg-white  items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
               <p>عدد الاشهر</p>
@@ -156,7 +156,7 @@ const InstallmentPageWeb = () => {
             </div>
             <div className="flex bg-white  items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
               <p className="text-[#666]">المبلغ الاجمالي:</p>
-              <b className="text-[24px]">IQD {total}</b>
+              <b className="text-[24px]"> {total.toLocaleString("en")} د.ع</b>
             </div>
             <div className="mt-[24px]">
               <p className="mr-[6px] mb-[8px]">

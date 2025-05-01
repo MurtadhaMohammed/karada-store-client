@@ -77,10 +77,10 @@ const InstallmentPage = () => {
   const handleInstallmentSetup = (installmentId) => {
     if (installmentId) {
       const delivery_cost =
-      total > 1000000
-        ? parseInt(settings?.extraDelivery) || 0
-        : parseInt(settings?.delivery) || 0;
-        createOrder({
+        total > 1000000
+          ? parseInt(settings?.extraDelivery) || 0
+          : parseInt(settings?.delivery) || 0;
+      createOrder({
         order: installmentOrder,
         isLogin,
         setIsOtp,
@@ -147,23 +147,24 @@ const InstallmentPage = () => {
           <div className="pt-0">
             <div className="flex bg-white items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
               <p>القسط الشهري</p>
-              <p>IQD {installment}</p>
+              <p> {installment.toLocaleString("en")} د.ع</p>
             </div>
             <div className="flex bg-white items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[16px]">
               <p>مجموع السلة</p>
-              <p>IQD {cartTotal}</p>
+              <p> {cartTotal.toLocaleString("en")} د.ع</p>
             </div>
             <div className="flex bg-white  items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
               <p>عدد الاشهر</p>
               <p>{noOfMonths} اشهر</p>
             </div>
-            <div className="flex bg-white  items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
+            <div className="flex bg-white  items-center justify-between text-nowrap rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
               <p className="text-[#666]">المبلغ الاجمالي:</p>
-              <b className="text-[24px]">IQD {total}</b>
+              <b className="text-[20px]"> {total.toLocaleString("en")} د.ع</b>
             </div>
             <div className="mt-[24px]">
               <p className="mr-[6px] mb-[8px]">
-              ادخل رقم الحساب المكون من 10 مراتب او 16 مرتبة          </p>
+                ادخل رقم الحساب المكون من 10 مراتب او 16 مرتبة{" "}
+              </p>
               <Input
                 hint="رقم البطاقة"
                 type="tel"
