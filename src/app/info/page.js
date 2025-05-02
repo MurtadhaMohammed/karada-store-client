@@ -35,9 +35,9 @@ export default async function Info() {
         titles={[" التوصيل", " الدفع", " الاسترجاع"]}
         links={["/policies/delivery", "/policies/payments", "/policies/refund"]}
         icons={[
-          <FaTruck className="text-[20px]" />,
-          <MdOutlinePayment className="text-[20px]" />,
-          <TbCreditCardRefund className="text-[20px]" />,
+          <FaTruck className="text-[20px]" key="delivery-icon" />,
+          <MdOutlinePayment className="text-[20px]" key="payment-icon" />,
+          <TbCreditCardRefund className="text-[20px]" key="refund-icon" />,
         ]}
       />
       <Container>
@@ -57,8 +57,8 @@ export default async function Info() {
           "https://www.instagram.com/karada.store.elc?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
         ]}
         icons={[
-          <Image src="/facebook.svg" alt="instagram" width={30} height={30} />,
-          <Image src="/instagram.svg" alt="instagram" width={30} height={30} />,
+          <Image src="/facebook.svg" alt="instagram" width={30} height={30} key="facebook-icon" />,
+          <Image src="/instagram.svg" alt="instagram" width={30} height={30} key="instagram-icon" />,
         ]}
       />
 
