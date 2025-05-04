@@ -65,7 +65,6 @@ export default async function Info() {
       <Section
         hasAccess={false}
         title={<span className="text-[#ff0000]">تسجيل خروج</span>}
-        icon={<LuLogOut className="text-[26px] text-[#ff0000]" />}
         action={"logout"}
       />
       <div className="pt-[100px]"></div>

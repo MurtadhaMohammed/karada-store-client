@@ -30,6 +30,8 @@ export const useAppStore = create((set, get) => ({
   note: "",
   settings: {},
   installmentOrder: {},
+  errorMessage: "",
+  setErrorMessage: (errorMessage) => set({ errorMessage }),
   setInstallmentOrder: (installmentOrder) => set({ installmentOrder }),
   setSettings: (settings) => set({ settings }),
   setNote: (note) => set({ note }),

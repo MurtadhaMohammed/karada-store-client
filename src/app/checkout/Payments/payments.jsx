@@ -1,6 +1,6 @@
 "use client";
 import { BsCreditCard2Front } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MasterCardModal,
 } from "./MasterCardModal/masterCardModal";
@@ -16,6 +16,16 @@ const Payments = () => {
   const [cardInfo, setCardInfo] = useState({});
   const { openModal, closeModal } = useBottomSheetModal();
   const {isInstallment, setInstallment} = useAppStore();
+
+  useEffect(() => {
+    if (isInstallment) {
+      setSelected("installment");
+    } else {
+      setSelected("cash");
+    }
+  }, [isInstallment]);
+
+
   
   const handleCashClick = () => {
     setInstallment(false);

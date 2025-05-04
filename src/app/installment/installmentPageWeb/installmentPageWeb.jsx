@@ -12,6 +12,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { MdSecurityUpdateGood } from "react-icons/md";
 import { useAppStore } from "@/lib/store";
 import { createOrder } from "@/app/checkout/utils/orderUtils";
+import { IoWarningOutline } from "react-icons/io5";
 
 const InstallmentPageWeb = () => {
   const { getTotal, clearCart } = useCartStore();
@@ -41,7 +42,10 @@ const InstallmentPageWeb = () => {
   const total = installment * noOfMonths;
 
   const handleInstallment = async () => {
-
+    if (cardNumber.length !== 10 && cardNumber.length !== 16) {
+      setErrorMessage(" خطاء في رقم البطاقة");
+      return;
+    }
     setLoading(true);
     try {
       const result = await apiCall({
@@ -131,12 +135,13 @@ const InstallmentPageWeb = () => {
     <Container>
       <div className="relative">
         {(errorMessage || Message) && (
-          <div
-            className={
-              errorMessage ? "text-red-600 mb-4" : "text-black mb-4 mt-2"
-            }
-          >
-            {errorMessage || Message}
+          <div className="sticky top-0 bg-white rounded-[8px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] my-[16px] border border-[#eee] shadow-md active:scale-[0.96] active:opacity-50 transition-all pointer-events-none select-none">
+            <div className="flex items-center gap-[8px]">
+              <IoWarningOutline className="h-[40px] w-[44px] text-red-500" />
+              <p className="text-[16px] block tight-custom flex-1">
+                {errorMessage || Message}
+              </p>
+            </div>
           </div>
         )}
         {/* installment */}
