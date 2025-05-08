@@ -59,7 +59,7 @@ const InstallmentPage = () => {
         },
       });
 
-      if (result.succeeded) {
+      if (result.succeeded==true) {
         setCardInfo({ number: cardNumber, sessionId: result.sessionId });
         setSessionId(result.sessionId);
         setMessage(result.message || "");
