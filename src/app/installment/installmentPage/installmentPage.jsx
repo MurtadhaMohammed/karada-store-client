@@ -42,7 +42,7 @@ const InstallmentPage = () => {
   const total = installment * noOfMonths;
 
   const handleInstallment = async () => {
-    if (cardNumber.length !== 10 && cardNumber.length !== 16) {
+    if (cardNumber.length <= 10) {
       setErrorMessage(" خطاء في رقم البطاقة");
       return;
     }
