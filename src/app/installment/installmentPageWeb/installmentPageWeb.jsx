@@ -42,7 +42,7 @@ const InstallmentPageWeb = () => {
   const total = installment * noOfMonths;
 
   const handleInstallment = async () => {
-    if (cardNumber.length !== 10 && cardNumber.length !== 16) {
+    if (cardNumber.length < 10) {
       setErrorMessage(" خطاء في رقم البطاقة");
       return;
     }
@@ -165,7 +165,7 @@ const InstallmentPageWeb = () => {
             </div>
             <div className="mt-[24px]">
               <p className="mr-[6px] mb-[8px]">
-                ادخل رقم الحساب المكون من 10 مراتب
+                ادخل رقم الحساب المكون من 10 مراتب او 16 مرتبة{" "}
               </p>
               <Input
                 hint="رقم البطاقة"
