@@ -282,6 +282,14 @@ const ProductInfo = ({ product }) => {
         <p className="text-[14px] text-gray-600 mt-[8px]">
           {product?.shortDescription}
         </p>
+        {product?.code && (
+          <div className="flex items-center mt-2">
+            <span className="text-[14px] text-gray-500">كود المنتج:</span>
+            <span className="ml-2 text-[14px] font-mono bg-[#f6f6f6] px-2 py-1 rounded">
+              {product.code}
+            </span>
+          </div>
+        )}
         <div className="mt-[16px]">
           <InstallmentBanner price={endPrice} />
         </div>
