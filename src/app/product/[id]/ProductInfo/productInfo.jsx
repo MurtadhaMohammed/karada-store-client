@@ -285,7 +285,7 @@ const ProductInfo = ({ product }) => {
         {product?.code && (
           <div className="flex items-center mt-2">
             <span className="text-[14px] text-gray-500">كود المنتج:</span>
-            <span className="ml-2 text-[14px] font-mono bg-[#f6f6f6] px-2 py-1 rounded">
+            <span className="ml-2 text-[14px] font-mono underline">
               {product.code}
             </span>
           </div>
