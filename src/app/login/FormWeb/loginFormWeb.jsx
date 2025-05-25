@@ -5,7 +5,7 @@ import Ripples from "react-ripples";
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { OtpInput } from "reactjs-otp-input";
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { apiCall, URL } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
@@ -20,7 +20,6 @@ const LoginFormWeb = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [orderCreated, setOrderCreated] = useState(false);
-  const autoLoginAttemptedRef = useRef(false);
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -48,6 +47,11 @@ const LoginFormWeb = () => {
     // Prevent double login requests - don't allow manual login if auto-login already triggered OTP mode
     if (isOtp) {
       setError("تم إرسال رمز التحقق بالفعل");
+      return;
+    }
+
+    // Prevent double login requests while already loading
+    if (loading) {
       return;
     }
 
@@ -190,12 +194,11 @@ const LoginFormWeb = () => {
     updateUserInfo,
     setIsLogin,
     clearCart,
-  ]);
-  useEffect(() => {
+  ]);  useEffect(() => {
     const phoneFromParams = searchParams.get("phone");
     const orderData = searchParams.get("orderData");
 
-    // Save order data if available
+    // Save order data if available (but don't auto-login in web form to prevent duplicates)
     if (orderData) {
       try {
         const decodedOrderData = JSON.parse(decodeURIComponent(orderData));
@@ -206,62 +209,12 @@ const LoginFormWeb = () => {
       }
     }
 
-    if (phoneFromParams && !autoLoginAttemptedRef.current && !isOtp) {
-      setPhone(phoneFromParams);
-      autoLoginAttemptedRef.current = true; // Prevent multiple attempts
-
-      // Automatically trigger login when redirected with phone parameter
-      const autoLogin = async () => {
-        setLoading(true);
-        try {
-          // Format phone number correctly
-          let formattedPhone = phoneFromParams;
-
-          // Make sure phone starts with "07"
-          if (
-            !formattedPhone.startsWith("07") &&
-            formattedPhone.startsWith("7")
-          ) {
-            formattedPhone = "0" + formattedPhone;
-          }
-
-          console.log("Auto-sending OTP to:", formattedPhone);
-
-          // Get name from localStorage or use default
-          const savedName =
-            localStorage.getItem("karada-account-name") || "Guest User";
-
-          // Using apiCall to ensure request is visible in network tab
-          // This is particularly important when redirected from checkout
-          const resp = await apiCall({
-            pathname: `/client/auth/login`,
-            method: "POST",
-            data: {
-              name: savedName,
-              phone: formattedPhone,
-            },
-          });
-
-          if (resp?.message === "Login Success") {
-            setIsOtp(true);
-            setError(null);
-          } else {
-            setError("فشل إرسال رمز التحقق، يرجى المحاولة مرة أخرى");
-          }
-        } catch (err) {
-          console.error("Auto login error:", err);
-          setError("حدث خطأ أثناء إرسال رمز التحقق");
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      autoLogin();
-    } else if (phoneFromParams && !isOtp) {
-      // Just set the phone if already attempted but not in OTP mode
+    // Only set phone from params but don't auto-login to prevent duplicate requests
+    // Auto-login is handled by the mobile form only
+    if (phoneFromParams) {
       setPhone(phoneFromParams);
     }
-  }, [searchParams, isOtp, setIsOtp, setError]);
+  }, [searchParams]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

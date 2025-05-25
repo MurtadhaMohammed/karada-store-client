@@ -172,6 +172,13 @@ const OrderDetails = ({ params }) => {
               {order?.items?.map((item, i) => {
                 const displayPrice =
                   item?.endPrice || item.l1?.price || item.price;
+
+                const isDiscountValid =
+                  item?.endPrice &&
+                  item?.endPrice < item?.price &&
+                  item?.endPrice_date &&
+                  new Date(item.endPrice_date) > new Date();
+
                 const shouldStrikeThrough =
                   displayPrice >
                   displayPrice * handleDiscount(item?.discount_id || null);
@@ -202,13 +209,13 @@ const OrderDetails = ({ params }) => {
 
                       {/* Price */}
                       <div className="text-sm font-bold flex flex-col items-center justify-center shrink-0">
-                        {item?.endPrice && item?.endPrice < item?.price ? (
+                        {isDiscountValid ? (
                           <div className="flex flex-col item-end">
                             <p className="line-through text-gray-400">
                               {Number(item?.price).toLocaleString("en")} د.ع
                             </p>
                             <p className="text-[15px]">
-                              {item?.qt > 1 && `${item?.qt} * `}{" "}
+                              {item?.qt > 1 && `${item?.qt} * `}
                               {Number(item?.endPrice * item?.qt).toLocaleString(
                                 "en"
                               )}{" "}
@@ -218,7 +225,7 @@ const OrderDetails = ({ params }) => {
                         ) : (
                           <div className="flex item-center justify-center">
                             <p className="text-center">
-                              {item?.qt > 1 && `${item?.qt} * `}{" "}
+                              {item?.qt > 1 && `${item?.qt} * `}
                               {Number(item.price).toLocaleString("en")} د.ع
                             </p>
                           </div>
@@ -294,14 +301,14 @@ const OrderDetails = ({ params }) => {
                 <BiSupport className="text-violet-600 text-[22px]" />
               </Link>
               {order_status !== "Canceled" && order_status === "Created" && (
-              <button
-                onClick={() => setShowCancelConfirm(true)}
-                className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-3 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
-              >
-                <span className="text-red-600 font-bold">الغاء الطلب</span>
-                <FcCancel className="text-red-600 text-[22px]" />
-              </button>
-            )}
+                <button
+                  onClick={() => setShowCancelConfirm(true)}
+                  className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-3 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
+                >
+                  <span className="text-red-600 font-bold">الغاء الطلب</span>
+                  <FcCancel className="text-red-600 text-[22px]" />
+                </button>
+              )}
               {/* <div
                 onClick={() => openModal("cancelationModal")}
                 className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-3 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
