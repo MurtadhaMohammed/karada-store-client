@@ -18,6 +18,7 @@ import ProductCtaWeb from "../ProductCTAWeb/productCtaWeb";
 import ImageModal from "@/components/ImageModal/imageModal";
 import IconButton from "@/components/UI/IconButton/iconButton";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+import { BsExclamation } from "react-icons/bs";
 const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
     <button
@@ -82,6 +83,7 @@ const ProductInfoWeb = ({ product }) => {
   const [modalImageIndex, setModalImageIndex] = useState(0);
   const { toggleFav, favorites, settings } = useAppStore();
 
+  console.log("Product Info Web", product);
   useEffect(() => {
     setActiveOption(product?.options?.[0] || null);
   }, [product?.options]);
@@ -203,11 +205,11 @@ const ProductInfoWeb = ({ product }) => {
                 </span>
               </button>
               <a
-               href={`https://wa.me/9647740300006?text=${encodeURIComponent(
-                `مرحبًا، أود الاستفسار عن هذا المنتج:\nhttps://karadastore.iq/product/${product.id}`
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
+                href={`https://wa.me/9647740300006?text=${encodeURIComponent(
+                  `مرحبًا، أود الاستفسار عن هذا المنتج:\nhttps://karadastore.iq/product/${product.id}`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 p-2 bg-[#fff] rounded-[8px] border border-[#eee] hover:bg-gray-100 transition"
               >
                 <FaWhatsapp color="#25D366" size={20} className="text-[22px]" />
@@ -245,12 +247,26 @@ const ProductInfoWeb = ({ product }) => {
             <p className="text-[14px] text-gray-600 mt-[8px]">
               {product?.shortDescription}
             </p>
+            {product?.code && (
+              <div className="flex items-center mt-2">
+                <span className="text-[14px] text-gray-500">كود المنتج:</span>
+                <span className="ml-2 text-[14px] font-mono bg-[#f6f6f6] px-2 py-1 rounded">{product.code}</span>
+              </div>
+            )}
             <div className="flex items-center mt-[16px]">
               <TbTruckDelivery className="text-[16px]" />
               <span className="mr-[8px] text-[14px]">
                 عادة مايتم توصيل المنتجات {settings?.time}
               </span>
             </div>
+            {product?.insurance && product?.insurance?.content && (
+              <div className="flex items-center mt-[16px]">
+                <BsExclamation className="text-[19px]" />
+                <span className="mr-[8px] text-[14px]">
+                  {product?.insurance?.content}
+                </span>
+              </div>
+            )}
             <div className="mt-4 pt-4">
               {product?.options && product?.options.length > 0 && (
                 <div>

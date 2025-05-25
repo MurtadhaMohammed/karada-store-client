@@ -5,18 +5,22 @@ import Ripples from "react-ripples";
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { OtpInput } from "reactjs-otp-input";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { apiCall, URL } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 import OtpInputs from "@/components/Otp/OtpInputs";
+import { processPendingOrder } from "@/app/checkout/utils/orderUtils";
+import { useCartStore } from "@/lib/cartStore";
 
 const LoginFormWeb = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [orderCreated, setOrderCreated] = useState(false);
+  const autoLoginAttemptedRef = useRef(false);
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -30,6 +34,7 @@ const LoginFormWeb = () => {
     setIsOtp,
     userInfo,
   } = useAppStore();
+  const { clearCart } = useCartStore();
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
@@ -39,61 +44,224 @@ const LoginFormWeb = () => {
     setOtp(otp);
   };
 
-  
-  const globalPhone = userInfo?.phone;
-  const handleLogin = async () => {
+  const globalPhone = userInfo?.phone;  const handleLogin = async () => {
+    // Prevent double login requests - don't allow manual login if auto-login already triggered OTP mode
+    if (isOtp) {
+      setError("تم إرسال رمز التحقق بالفعل");
+      return;
+    }
+
+    // Format phone number correctly
+    let formattedPhone = phone;
     if (phone !== "07700000000" && validateIraqiPhoneNumber(phone) === false)
       return setError("يرجى إدخال رقم هاتف صالح");
-    setLoading(true);
-    const resp = await apiCall({
-      pathname: `/client/auth/login`,
-      method: "POST",
-      data: {
-        name,
-        phone,
-      },
-    });
 
-    setLoading(false);
-    if (resp?.message == "Login Success") {
-      setIsOtp(true);
-      setError(null);
-      router.replace(`/login?phone=${phone}`);
-    } else {
-      setError("يرجى إدخال رقم هاتف صالح");
+    // Make sure phone starts with "07"
+    if (!formattedPhone.startsWith("07") && formattedPhone.startsWith("7")) {
+      formattedPhone = "0" + formattedPhone;
+    }
+
+    // Get pending order data from URL if available
+    const orderData = searchParams.get("orderData");
+    if (orderData) {
+      try {
+        // Parse and save order data in localStorage
+        const decodedOrderData = JSON.parse(decodeURIComponent(orderData));
+        console.log("Saving order data:", decodedOrderData);
+        localStorage.setItem("pending_order", JSON.stringify(decodedOrderData));
+      } catch (err) {
+        console.error("Error parsing order data:", err);
+      }
+    }
+
+    console.log("Sending login request with phone:", formattedPhone);
+    setLoading(true);
+    try {
+      const resp = await apiCall({
+        pathname: `/client/auth/login`,
+        method: "POST",
+        data: {
+          name,
+          phone: formattedPhone,
+        },
+      });
+
+      console.log("Login response:", resp);
+      setLoading(false);
+      if (resp?.message == "Login Success") {
+        setIsOtp(true);
+        setError(null);
+        router.replace(`/login?phone=${formattedPhone}`);
+      } else {
+        setError("فشل إرسال رمز التحقق، يرجى التأكد من رقم الهاتف");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setLoading(false);
+      setError("حدث خطأ في الاتصال بالخادم. يرجى المحاولة مرة أخرى");
     }
   };
 
   const handleVerify = useCallback(async () => {
     setLoading(true);
     const phoneFromParams = searchParams.get("phone");
-    const resp = await apiCall({
-      pathname: `/client/auth/verify`,
-      method: "POST",
-      data: {
-        otp,
-        phone: phoneFromParams || globalPhone,
-      },
-    });
-    setLoading(false);
-    if (resp.accessToken) {
-      localStorage.setItem("karada-token", resp.accessToken);
-      localStorage.setItem("karada-refreshToken", resp.refreshToken);
-      localStorage.setItem("karada-user", JSON.stringify(resp.user));
-      updateUserInfo(resp.user);
-      router.replace("/");
-      setIsLogin(true);
-    } else {
-      setError("يرجى إدخال رمز التحقق صحيح");
-    }
-  }, [otp, globalPhone, router, searchParams, updateUserInfo, setIsLogin]);
 
+    // Format phone number correctly
+    let formattedPhone = phoneFromParams || globalPhone;
+
+    // Make sure phone starts with "07"
+    if (!formattedPhone.startsWith("07") && formattedPhone.startsWith("7")) {
+      formattedPhone = "0" + formattedPhone;
+    }
+
+    console.log("Verifying OTP for phone:", formattedPhone);
+
+    try {
+      const resp = await apiCall({
+        pathname: `/client/auth/verify`,
+        method: "POST",
+        data: {
+          otp,
+          phone: formattedPhone,
+        },
+      });      if (resp.accessToken) {
+        localStorage.setItem("karada-token", resp.accessToken);
+        localStorage.setItem("karada-refreshToken", resp.refreshToken);
+        localStorage.setItem("karada-user", JSON.stringify(resp.user));
+        updateUserInfo(resp.user);
+        setIsLogin(true);
+        
+        // Check if there's a pending order and process it immediately
+        const hasPendingOrder = localStorage.getItem("pending_order") !== null;
+        if (hasPendingOrder) {
+          try {
+            setOrderCreated(true);            console.log("OTP verification successful. User tokens saved.");
+            console.log("Processing pending order for verified user:", resp.user);
+
+            // Keep loading state active while processing order
+            setLoading(true);
+            setError("جاري إنشاء الطلب...");
+
+            // Process the order directly after successful OTP verification
+            const orderResult = await processPendingOrder(resp.user, clearCart);
+
+            console.log("Order processing result:", orderResult);
+
+            if (orderResult?.order) {
+              // Order was created successfully
+              localStorage.removeItem("pending_order"); // Clear pending order
+              setError("تم إنشاء الطلب بنجاح! سيتم توجيهك إلى صفحة الطلبات...");
+              setLoading(false);
+              // Show success message before redirect
+              setTimeout(() => {
+                router.replace("/orders");
+              }, 1500);
+            } else {
+              // Order creation failed, redirect to checkout
+              setLoading(false);
+              setError("فشل إنشاء الطلب. سيتم إعادة توجيهك إلى صفحة الدفع.");
+              setTimeout(() => {
+                router.replace("/checkout");
+              }, 2000);
+            }
+          } catch (err) {
+            console.error("Error processing pending order:", err);
+            setLoading(false);
+            router.replace("/");
+          }
+        } else {
+          setLoading(false);
+          router.replace("/");
+        }
+      } else {
+        setLoading(false);
+        setError("يرجى إدخال رمز التحقق صحيح");
+      }
+    } catch (err) {
+      console.error("Verification error:", err);
+      setLoading(false);
+      setError("حدث خطأ أثناء التحقق من الرمز");
+    }
+  }, [
+    otp,
+    globalPhone,
+    router,
+    searchParams,
+    updateUserInfo,
+    setIsLogin,
+    clearCart,
+  ]);
   useEffect(() => {
     const phoneFromParams = searchParams.get("phone");
-    if (phoneFromParams) {
+    const orderData = searchParams.get("orderData");
+
+    // Save order data if available
+    if (orderData) {
+      try {
+        const decodedOrderData = JSON.parse(decodeURIComponent(orderData));
+        console.log("Auto-saving order data:", decodedOrderData);
+        localStorage.setItem("pending_order", JSON.stringify(decodedOrderData));
+      } catch (err) {
+        console.error("Error parsing order data:", err);
+      }
+    }
+
+    if (phoneFromParams && !autoLoginAttemptedRef.current && !isOtp) {
+      setPhone(phoneFromParams);
+      autoLoginAttemptedRef.current = true; // Prevent multiple attempts
+
+      // Automatically trigger login when redirected with phone parameter
+      const autoLogin = async () => {
+        setLoading(true);
+        try {
+          // Format phone number correctly
+          let formattedPhone = phoneFromParams;
+
+          // Make sure phone starts with "07"
+          if (
+            !formattedPhone.startsWith("07") &&
+            formattedPhone.startsWith("7")
+          ) {
+            formattedPhone = "0" + formattedPhone;
+          }
+
+          console.log("Auto-sending OTP to:", formattedPhone);
+
+          // Get name from localStorage or use default
+          const savedName =
+            localStorage.getItem("karada-account-name") || "Guest User";
+
+          // Using apiCall to ensure request is visible in network tab
+          // This is particularly important when redirected from checkout
+          const resp = await apiCall({
+            pathname: `/client/auth/login`,
+            method: "POST",
+            data: {
+              name: savedName,
+              phone: formattedPhone,
+            },
+          });
+
+          if (resp?.message === "Login Success") {
+            setIsOtp(true);
+            setError(null);
+          } else {
+            setError("فشل إرسال رمز التحقق، يرجى المحاولة مرة أخرى");
+          }
+        } catch (err) {
+          console.error("Auto login error:", err);
+          setError("حدث خطأ أثناء إرسال رمز التحقق");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      autoLogin();
+    } else if (phoneFromParams && !isOtp) {
+      // Just set the phone if already attempted but not in OTP mode
       setPhone(phoneFromParams);
     }
-  }, [searchParams]);
+  }, [searchParams, isOtp, setIsOtp, setError]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -101,12 +269,7 @@ const LoginFormWeb = () => {
       if (_name) setName(_name);
     }
   }, [isLogin]);
-  useEffect(() => {
-    if (otp?.length === 6 && !loading) {
-      handleVerify();
-    }
-  }, [otp]);
-  
+
   if (isOtp)
     return (
       <>

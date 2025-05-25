@@ -6,7 +6,7 @@ import { FiMinus, FiPlus } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import CartCTA from "../CartCTA/cartCta";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState, useCallback } from "react"; 
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useCartStore } from "@/lib/cartStore";
 import { apiCall, IMAGE_URL } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
@@ -190,9 +190,11 @@ const CartList = () => {
 
   return (
     <div className="mb-[16px]">
-      <Container>
-        <InstallmentBanner className={"none"} price={total} margin={16} />
-      </Container>
+      <div className="bg-white py-[16px]">
+        <Container>
+          <InstallmentBanner className={"none"} price={total}/>
+        </Container>
+      </div>
       {loading ? (
         <Skeleton />
       ) : (

@@ -26,6 +26,13 @@ const CheckoutCTA = () => {
     setValidateAddress,
     setNote,
     note,
+    installmentId,
+    setInstallmentId,
+    platform,
+    setPlatform,
+    settings,
+    setInstallmentOrder,
+    setErrorMessage,
   } = useAppStore();
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
@@ -42,8 +49,21 @@ const CheckoutCTA = () => {
   const [isDataProvided, setIsDataProvided] = useState(false);
   const [showRedirectModal, setShowRedirectModal] = useState(false);
   const [order, setOrder] = useState(null);
-  const { installmentId, setInstallmentId, platform, setPlatform, settings } =
-    useAppStore();
+
+  const calculateTotalPrice = useMemo(() => {
+    return cart.reduce(
+      (total, item) =>
+        total + item?.product?.qt * item?.product?.endPrice ||
+        item?.product?.price,
+      0
+    );
+  }, [cart]);
+
+  const deliveryCost = useMemo(() => {
+    return calculateTotalPrice >= 1000000
+      ? parseInt(settings?.extraDelivery) || 0
+      : parseInt(settings?.delivery) || 0;
+  }, [calculateTotalPrice, settings]);
 
   useEffect(() => {
     if (userCheckoutInfo) {
@@ -90,38 +110,76 @@ const CheckoutCTA = () => {
     installmentId,
     note,
   ]);
-
   const handleOrderCreation = async () => {
-    setLoading(true);
-    const result = await createOrder(
-      order,
-      isLogin,
-      setIsOtp,
-      setOtp,
-      clearCart,
-      router,
-      platform,
-      installmentId,
-      parseInt(settings?.delivery) || 0,
-      note
-    );
-    setLoading(false);
-    setNote("");
-    if (result?.order && isLogin && result?.status !== "Not Logged In") {
+    try {
+      setLoading(true);
+
+      const result = await createOrder({
+        order,
+        isLogin,
+        setIsOtp,
+        setOtp,
+        clearCart,
+        router,
+        platform,
+        installmentId,
+        delivery_cost: deliveryCost || 0,
+        note,
+        setErrorMessage,
+      });
+
+      setLoading(false);
+      setNote("");
+
+      if (!result) {
+        setErrorMessage("حدث خطأ أثناء إرسال الطلب. الرجاء المحاولة لاحقًا.");
+        return;
+      }
+
+      // Handle redirect to login case
+      if (result.status === "redirect_to_login") {
+        // The createOrder function will handle the redirect
+        return;
+      }
+
+      if (!result.order) {
+        setErrorMessage("فشل إنشاء الطلب. تحقق من المعلومات وحاول مرة أخرى.");
+        return;
+      }
+
+      // If we got here, the order was created successfully
       setShowRedirectModal(true);
+    } catch (err) {
+      setLoading(false);
+      setErrorMessage("حدث خطأ غير متوقع. الرجاء المحاولة لاحقاً.");
+      console.error("Order creation error:", err);
     }
   };
 
   const handleButtonClick = () => {
     if (!isDataProvided) {
+      setErrorMessage("يرجى استكمال البيانات قبل تأكيد الطلب.");
       setValidateAddress(true);
       return;
     } else {
       setValidateAddress(false);
     }
     if (isInstallment === true) {
-      setOrderType("Installment");
-      openModal("installmentModal");
+      setInstallmentOrder({
+        user_id: userInfo.id,
+        user_name: userCheckoutInfo.name,
+        phone: userCheckoutInfo.phone,
+        address: userCheckoutInfo.address,
+        items,
+        voucher_id: voucher ? voucher.id : null,
+        store_id: 1,
+        order_type: "Installment",
+        platform,
+        installmentId,
+        note,
+      });
+      setErrorMessage("");
+      router.push("/installment");
     } else {
       handleOrderCreation();
     }
@@ -203,10 +261,10 @@ const CheckoutCTA = () => {
         clearCart={clearCart}
         router={router}
       />
- 
- {showRedirectModal && (
-  <RedirectOrderCreation onClose={() => setShowRedirectModal(false)} />
-)}
+
+      {showRedirectModal && (
+        <RedirectOrderCreation onClose={() => setShowRedirectModal(false)} />
+      )}
     </div>
   );
 };
