@@ -41,10 +41,16 @@ const LoginForm = () => {
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     setPhone(value);
-  };  const handleLogin = async () => {
+  };
+  const handleLogin = async () => {
     // Prevent double login requests - don't allow manual login if auto-login already triggered OTP mode
     if (isOtp) {
       setError("تم إرسال رمز التحقق بالفعل");
+      return;
+    }
+
+    // Prevent double login requests while already loading
+    if (loading) {
       return;
     }
 
@@ -131,9 +137,13 @@ const LoginForm = () => {
         setIsLogin(true);
         const hasPendingOrder = localStorage.getItem("pending_order") !== null;
         if (hasPendingOrder) {
-          try {            setOrderCreated(true);
+          try {
+            setOrderCreated(true);
             console.log("OTP verification successful. User tokens saved.");
-            console.log("Processing pending order for verified user:", resp.user);
+            console.log(
+              "Processing pending order for verified user:",
+              resp.user
+            );
 
             // Keep loading state active while processing order
             setLoading(true);
@@ -194,12 +204,9 @@ const LoginForm = () => {
         console.error("Error parsing order data:", err);
       }
     }
-
     if (phoneFromParams && !autoLoginAttemptedRef.current && !isOtp) {
       setPhone(phoneFromParams);
-      autoLoginAttemptedRef.current = true; // Prevent multiple attempts
-
-      // Automatically trigger login when redirected with phone parameter
+      autoLoginAttemptedRef.current = true; // Prevent multiple attempts      // Automatically trigger login when redirected with phone parameter
       const autoLogin = async () => {
         setLoading(true);
         try {
