@@ -110,7 +110,6 @@ const CheckoutCTA = () => {
     installmentId,
     note,
   ]);
-
   const handleOrderCreation = async () => {
     try {
       setLoading(true);
@@ -126,6 +125,7 @@ const CheckoutCTA = () => {
         installmentId,
         delivery_cost: deliveryCost || 0,
         note,
+        setErrorMessage,
       });
 
       setLoading(false);
@@ -136,14 +136,19 @@ const CheckoutCTA = () => {
         return;
       }
 
+      // Handle redirect to login case
+      if (result.status === "redirect_to_login") {
+        // The createOrder function will handle the redirect
+        return;
+      }
+
       if (!result.order) {
         setErrorMessage("فشل إنشاء الطلب. تحقق من المعلومات وحاول مرة أخرى.");
         return;
       }
 
-      if (isLogin && result?.status !== "Not Logged In") {
-        setShowRedirectModal(true);
-      }
+      // If we got here, the order was created successfully
+      setShowRedirectModal(true);
     } catch (err) {
       setLoading(false);
       setErrorMessage("حدث خطأ غير متوقع. الرجاء المحاولة لاحقاً.");

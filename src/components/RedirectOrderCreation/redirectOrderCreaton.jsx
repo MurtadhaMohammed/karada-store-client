@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { FaHome } from "react-icons/fa";
 import { RiShoppingBag3Line } from "react-icons/ri";
 
-const RedirectOrderCreation = () => {
+const RedirectOrderCreation = ({ onClose = () => {} }) => {
   const router = useRouter();
 
   return (
@@ -25,7 +25,7 @@ const RedirectOrderCreation = () => {
           <button
             onClick={() => {
               router.replace("/");
-              onClose?.();
+              onClose();
             }}
             className="bg-[#fff] border border-violet-600 py-3 rounded-lg flex items-center justify-center active:scale-[0.97] transition-transform duration-100"
           >
@@ -35,7 +35,7 @@ const RedirectOrderCreation = () => {
           <button
             onClick={() => {
               router.replace("/orders");
-              onClose?.();
+              onClose();
             }}
             className="bg-[#f6f6f6] border py-3 rounded-lg flex items-center justify-center active:scale-[0.97] transition-transform duration-100"
           >
