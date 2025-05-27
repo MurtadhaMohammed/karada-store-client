@@ -43,33 +43,27 @@ const LoginFormWeb = () => {
     setOtp(otp);
   };
 
-  const globalPhone = userInfo?.phone;  const handleLogin = async () => {
-    // Prevent double login requests - don't allow manual login if auto-login already triggered OTP mode
+  const globalPhone = userInfo?.phone;
+  const handleLogin = async () => {
     if (isOtp) {
       setError("تم إرسال رمز التحقق بالفعل");
       return;
     }
-
-    // Prevent double login requests while already loading
     if (loading) {
       return;
     }
 
-    // Format phone number correctly
     let formattedPhone = phone;
     if (phone !== "07700000000" && validateIraqiPhoneNumber(phone) === false)
       return setError("يرجى إدخال رقم هاتف صالح");
 
-    // Make sure phone starts with "07"
     if (!formattedPhone.startsWith("07") && formattedPhone.startsWith("7")) {
       formattedPhone = "0" + formattedPhone;
     }
 
-    // Get pending order data from URL if available
     const orderData = searchParams.get("orderData");
     if (orderData) {
       try {
-        // Parse and save order data in localStorage
         const decodedOrderData = JSON.parse(decodeURIComponent(orderData));
         console.log("Saving order data:", decodedOrderData);
         localStorage.setItem("pending_order", JSON.stringify(decodedOrderData));
@@ -77,15 +71,37 @@ const LoginFormWeb = () => {
         console.error("Error parsing order data:", err);
       }
     }
-
     console.log("Sending login request with phone:", formattedPhone);
+
+    // Try to get user name from pending order data first, then fallback to form input
+    let userName = name;
+    try {
+      const pendingOrderStr = localStorage.getItem("pending_order");
+      if (pendingOrderStr) {
+        const pendingOrderData = JSON.parse(pendingOrderStr);
+        if (pendingOrderData?.order?.user_name) {
+          userName = pendingOrderData.order.user_name;
+          console.log("Using user name from pending order:", userName);
+        }
+      }
+    } catch (err) {
+      console.error("Error parsing pending order for user name:", err);
+    }
+
+    // Fallback to form input or localStorage if no name found in pending order
+    if (!userName || userName.trim() === "") {
+      userName =
+        name || localStorage.getItem("karada-account-name") || "Guest User";
+      console.log("Using fallback user name:", userName);
+    }
+
     setLoading(true);
     try {
       const resp = await apiCall({
         pathname: `/client/auth/login`,
         method: "POST",
         data: {
-          name,
+          name: userName,
           phone: formattedPhone,
         },
       });
@@ -128,19 +144,24 @@ const LoginFormWeb = () => {
           otp,
           phone: formattedPhone,
         },
-      });      if (resp.accessToken) {
+      });
+      if (resp.accessToken) {
         localStorage.setItem("karada-token", resp.accessToken);
         localStorage.setItem("karada-refreshToken", resp.refreshToken);
         localStorage.setItem("karada-user", JSON.stringify(resp.user));
         updateUserInfo(resp.user);
         setIsLogin(true);
-        
+
         // Check if there's a pending order and process it immediately
         const hasPendingOrder = localStorage.getItem("pending_order") !== null;
         if (hasPendingOrder) {
           try {
-            setOrderCreated(true);            console.log("OTP verification successful. User tokens saved.");
-            console.log("Processing pending order for verified user:", resp.user);
+            setOrderCreated(true);
+            console.log("OTP verification successful. User tokens saved.");
+            console.log(
+              "Processing pending order for verified user:",
+              resp.user
+            );
 
             // Keep loading state active while processing order
             setLoading(true);
@@ -194,7 +215,8 @@ const LoginFormWeb = () => {
     updateUserInfo,
     setIsLogin,
     clearCart,
-  ]);  useEffect(() => {
+  ]);
+  useEffect(() => {
     const phoneFromParams = searchParams.get("phone");
     const orderData = searchParams.get("orderData");
 

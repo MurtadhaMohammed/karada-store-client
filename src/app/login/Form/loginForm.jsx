@@ -43,23 +43,19 @@ const LoginForm = () => {
     setPhone(value);
   };
   const handleLogin = async () => {
-    // Prevent double login requests - don't allow manual login if auto-login already triggered OTP mode
     if (isOtp) {
       setError("تم إرسال رمز التحقق بالفعل");
       return;
     }
 
-    // Prevent double login requests while already loading
     if (loading) {
       return;
     }
 
-    // Format phone number correctly
     let formattedPhone = phone;
     if (phone !== "07700000000" && validateIraqiPhoneNumber(phone) === false)
       return setError("يرجى إدخال رقم هاتف صالح");
 
-    // Make sure phone starts with "07"
     if (!formattedPhone.startsWith("07") && formattedPhone.startsWith("7")) {
       formattedPhone = "0" + formattedPhone;
     }
@@ -219,21 +215,33 @@ const LoginForm = () => {
             formattedPhone.startsWith("7")
           ) {
             formattedPhone = "0" + formattedPhone;
+          } // Try to get user name from pending order data first, then fallback to localStorage
+          let userName = "Guest User";
+          try {
+            const pendingOrderStr = localStorage.getItem("pending_order");
+            if (pendingOrderStr) {
+              const pendingOrderData = JSON.parse(pendingOrderStr);
+              if (pendingOrderData?.order?.user_name) {
+                userName = pendingOrderData.order.user_name;
+                console.log("Using user name from pending order:", userName);
+              }
+            }
+          } catch (err) {
+            console.error("Error parsing pending order for user name:", err);
           }
 
-          console.log("Auto-sending OTP to:", formattedPhone);
+          // Fallback to localStorage if no name found in pending order
+          if (userName === "Guest User") {
+            userName =
+              localStorage.getItem("karada-account-name") || "Guest User";
+            console.log("Using fallback user name:", userName);
+          }
 
-          // Get name from localStorage or use default
-          const savedName =
-            localStorage.getItem("karada-account-name") || "Guest User";
-
-          // Using a direct fetch call to ensure it's properly visible in network tab
-          // This is particularly important when redirected from checkout
           const resp = await apiCall({
             pathname: `/client/auth/login`,
             method: "POST",
             data: {
-              name: savedName,
+              name: userName,
               phone: formattedPhone,
             },
           });
