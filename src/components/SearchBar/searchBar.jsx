@@ -141,7 +141,6 @@ const SearchBar = ({ disabled = false }) => {
       return [...newFilters, `brand_id=${brandId}`];
     });
   };
-
   const activeTagStyle =
     "bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] border border-[#eee]";
   const unactiveTagStyle = "border border-[#eee] bg-[#fff]";
