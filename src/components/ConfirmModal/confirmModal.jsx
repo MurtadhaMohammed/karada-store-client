@@ -4,8 +4,9 @@ import { useMutation } from "@tanstack/react-query";
 import Container from "../UI/Container/container";
 import CancelationModal from "@/components/CancelationModal/cancelationModal";
 import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
+import { cancelInstallment } from "./cancelInstalment";
 
-const ConfirmModal = ({ isOpen, onClose, orderId }) => {
+const ConfirmModal = ({ isOpen, onClose, orderId,installmentId }) => {
     const { openModal, closeModal } = useBottomSheetModal(); 
   const { mutate: cancelOrder, isPending: isCancelLoading } = useMutation({
     mutationFn: async () => {
@@ -16,6 +17,7 @@ const ConfirmModal = ({ isOpen, onClose, orderId }) => {
       });
     },
     onSuccess: () => {
+      cancelInstallment(installmentId)
       onClose();
       openModal("cancelationModal");
       queryClient.invalidateQueries("orders");

@@ -323,6 +323,7 @@ const OrderDetails = ({ params }) => {
             isOpen={showCancelConfirm}
             onClose={() => setShowCancelConfirm(false)}
             orderId={order?.id}
+            installmentId={order?.installment_id}
           />
         </>
       </Container>
