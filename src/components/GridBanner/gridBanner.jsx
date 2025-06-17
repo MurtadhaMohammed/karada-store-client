@@ -46,7 +46,11 @@ const GridBanner = ({
             )}
 
           {/* Grid Items */}
-          <div className={`grid gap-2 relative ${`grid-cols-${grid?.length}`}`}>
+          <div
+            className={`grid gap-2 relative ${`grid-cols-${
+              ["top", "bottom"].includes(bannerAlignment) ? grid?.length : 2
+            }`}`}
+          >
             {grid?.map((_, i) => (
               <div
                 key={i}
@@ -67,7 +71,7 @@ const GridBanner = ({
           {hasBanner &&
             (bannerAlignment === "bottom" || bannerAlignment === "right") &&
             banner && (
-              <Link href={link} >
+              <Link href={link}>
                 <div
                   className={`bg-[#eee] rounded-[12px] pure-skeleton relative flex items-center justify-center ${
                     ["top", "bottom"].includes(bannerAlignment)
