@@ -109,7 +109,7 @@ export const metadata = {
   ],
   additionalMetaTags: [
     {
-      name: "apple-itunes-app", 
+      name: "apple-itunes-app",
       content:
         "app-id=6741197248, app-argument=https://apps.apple.com/iq/app/karada-store/id6741197248",
     },

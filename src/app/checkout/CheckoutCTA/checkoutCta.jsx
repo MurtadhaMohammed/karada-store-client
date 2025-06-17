@@ -202,10 +202,10 @@ const CheckoutCTA = () => {
         clearCart={clearCart}
         router={router}
       />
- 
- {showRedirectModal && (
-  <RedirectOrderCreation onClose={() => setShowRedirectModal(false)} />
-)}
+
+      {showRedirectModal && (
+        <RedirectOrderCreation onClose={() => setShowRedirectModal(false)} />
+      )}
     </div>
   );
 };
