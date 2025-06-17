@@ -9,12 +9,9 @@ import Empty from "@/components/Empty/empty";
 import { VscSearchStop } from "react-icons/vsc";
 
 const RandomProducts = () => {
-  const limit = 12;
 
   const {
     data,
-    isError,
-    error,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -29,16 +26,6 @@ const RandomProducts = () => {
       return lastPage?.nextPage ? lastPage.nextPage : undefined;
     },
   });
-
-  useEffect(() => {
-    if (data) {
-      console.log("Fetched Data:", data);
-    }
-  }, [data]);
-
-  if (isError) {
-    console.error("API Error:", error);
-  }
 
   return (
     <div className="pt-[8px]">

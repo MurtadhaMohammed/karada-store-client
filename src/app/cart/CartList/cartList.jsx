@@ -6,7 +6,7 @@ import { FiMinus, FiPlus } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import CartCTA from "../CartCTA/cartCta";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState, useCallback } from "react"; 
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useCartStore } from "@/lib/cartStore";
 import { apiCall, IMAGE_URL } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
@@ -14,7 +14,6 @@ import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { isEnglish } from "@/helper/isEnglish";
-import Skeleton from "./skeleton";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -116,7 +115,7 @@ const CartItem = ({ item, outOfStock = false }) => {
 };
 
 const CartList = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { cart, setCart, getItemsTotal, getTotal } = useCartStore();
   const total = getTotal();
@@ -125,6 +124,7 @@ const CartList = () => {
 
   useEffect(() => {
     router.prefetch("/checkout");
+    router.prefetch("/login");
   }, [router]);
 
   const productId = useMemo(() => {
@@ -190,23 +190,12 @@ const CartList = () => {
 
   return (
     <div className="mb-[16px]">
-      <Container>
-        <InstallmentBanner className={"none"} price={total} margin={16} />
-      </Container>
-      {loading ? (
-        <Skeleton />
-      ) : (
-        getItemsTotal() !== 0 && (
-          <>
-            {cart?.map((el, i) => (
-              <CartItem key={i} item={el} />
-            ))}
-          </>
-        )
-      )}
+      {cart?.map((el, i) => (
+        <CartItem key={i} item={el} />
+      ))}
 
       <RelatedList productId={productId} />
-      <CartCTA />
+      <CartCTA loading={loading} />
     </div>
   );
 };

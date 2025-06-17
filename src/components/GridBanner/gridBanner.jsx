@@ -15,7 +15,7 @@ const GridBanner = ({
 }) => {
   const parseGridCols = () => {
     let cols = Math.ceil(grid?.length / 2);
-    return cols < 2 ? 2 : cols;
+    return cols < 2 ? 2 : 4;
   };
 
   return (
@@ -34,16 +34,17 @@ const GridBanner = ({
             banner && (
               <Link href={link}>
                 <div
-                  className={`bg-[#eee] rounded-[12px] flex items-center justify-center ${
+                  className={`bg-[#eee] rounded-[12px] flex items-center justify-center relative overflow-hidden ${
                     ["top", "bottom"].includes(bannerAlignment)
                       ? "w-full aspect-[3/1]" // Wide for top/bottom
                       : "h-full aspect-[1/1]" // Square for left/right
                   }`}
                 >
-                  <img
+                  <Image
                     src={`${IMAGE_URL}/${bannerImage}`}
-                    className="w-full h-full object-cover rounded-[12px]"
+                    className="w-full h-full object-cover "
                     alt=""
+                    fill
                   />
                 </div>
               </Link>

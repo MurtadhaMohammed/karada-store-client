@@ -16,8 +16,6 @@ const DefaultCard = ({
   bannerType = "LIST",
   handleRemoveFav = () => {},
 }) => {
-  // const isScreenMd = useIsScreenMd();
-  // console.log(item)
   const { favorites, toggleFav } = useAppStore();
 
   return (
@@ -87,7 +85,7 @@ const DefaultCard = ({
                     op?.color && (
                       <li
                         key={i}
-                        className="w-[14px] h-[14px] rounded-full bg-[#eee] ml-[2px] mr-[2px] shadow-sm"
+                        className="w-[14px] h-[14px] rounded-full bg-[#eee] ml-[2px] mr-[2px] shadow-md"
                         style={{
                           background: op?.color,
                         }}

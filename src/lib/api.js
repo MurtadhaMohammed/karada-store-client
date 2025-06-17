@@ -20,6 +20,9 @@ export const isTokenValid = (token) => {
 export const reNewToken = async () => {
   try {
     let refreshToken = localStorage.getItem("karada-refreshToken");
+    if (!refreshToken) {
+      return;
+    }
     const resp = await apiCall({
       pathname: "/client/auth/refresh",
       method: "POST",

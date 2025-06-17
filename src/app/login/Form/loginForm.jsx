@@ -1,15 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import Ripples from "react-ripples";
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { OtpInput } from "reactjs-otp-input";
 import { useCallback, useEffect, useState, useRef } from "react";
-import { apiCall, URL } from "@/lib/api";
+import { apiCall } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
-import OtpInputs from "@/components/Otp/OtpInputs";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 
 const LoginForm = () => {
@@ -29,19 +27,15 @@ const LoginForm = () => {
     setIsOtp,
     userInfo,
   } = useAppStore();
-
-  const routerRef = useRef(router);
   const updateUserInfoRef = useRef(updateUserInfo);
   const setIsLoginRef = useRef(setIsLogin);
 
   useEffect(() => {
-    routerRef.current = router;
     updateUserInfoRef.current = updateUserInfo;
     setIsLoginRef.current = setIsLogin;
   }, [router, updateUserInfo, setIsLogin]);
 
   const handleChange = (otp) => setOtp(otp);
-  const globalPhone = userInfo?.phone;
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
@@ -66,7 +60,7 @@ const LoginForm = () => {
       setIsOtp(true);
       setError(null);
       const redirectTo = searchParams.get("redirect");
-      const otpUrl = redirectTo 
+      const otpUrl = redirectTo
         ? `/login?phone=${phone}&redirect=${encodeURIComponent(redirectTo)}`
         : `/login?phone=${phone}`;
       router.replace(otpUrl);
@@ -75,14 +69,14 @@ const LoginForm = () => {
     }
   };
 
-  const handleVerify = useCallback(async () => {
+  const handleVerify = async () => {
     if (loading) return;
     setLoading(true);
-    
+
     try {
       const phoneFromParams = searchParams.get("phone");
       const redirectTo = searchParams.get("redirect");
-      
+
       const resp = await apiCall({
         pathname: `/client/auth/verify`,
         method: "POST",
@@ -98,11 +92,11 @@ const LoginForm = () => {
         localStorage.setItem("karada-user", JSON.stringify(resp.user));
         updateUserInfoRef.current(resp.user);
         setIsLoginRef.current(true);
-        
+
         if (redirectTo) {
-          routerRef.current.push(decodeURIComponent(redirectTo));
+          router.replace(decodeURIComponent(redirectTo));
         } else {
-          routerRef.current.push("/");
+          router.push("/");
         }
       } else {
         setError("يرجى إدخال رمز التحقق صحيح");
@@ -112,7 +106,7 @@ const LoginForm = () => {
     } finally {
       setLoading(false);
     }
-  }, [otp, searchParams, userInfo, loading]);
+  };
 
   useEffect(() => {
     const phoneFromParams = searchParams.get("phone");
@@ -127,6 +121,11 @@ const LoginForm = () => {
       if (_name) setName(_name);
     }
   }, [isLogin]);
+
+  useEffect(() => {
+    router.prefetch("/checkout");
+    router.prefetch("/");
+  }, [router]);
 
   if (isOtp)
     return (

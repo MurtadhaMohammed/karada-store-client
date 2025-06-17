@@ -32,8 +32,6 @@ export const createOrder = async (
       },
     });
 
-    console.log("response", response);
-
     if (response?.order) {
       clearCart();
       if (response?.status === "Not Logged In" && !isLogin) {

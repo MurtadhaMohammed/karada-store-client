@@ -27,13 +27,13 @@ const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="flex flex-row justify-center items-center h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] mx-[4px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
+      className="flex flex-row justify-center items-center h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#f6f6f6] border border-[#eee] mx-[4px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
       style={
         active
           ? {
               borderColor: "#7c3aed",
               color: "#7c3aed",
-              background: "#fff",
+              background: "#f6f6f6",
             }
           : {}
       }

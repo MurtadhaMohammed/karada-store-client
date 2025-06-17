@@ -1,6 +1,6 @@
 "use client";
 import Container from "@/components/UI/Container/container";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { GiConfirmed } from "react-icons/gi";
 import Ripples from "react-ripples";
 import { useCartStore } from "@/lib/cartStore";
@@ -30,7 +30,6 @@ const CheckoutCTA = () => {
   const { cart, clearCart } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
   const { openModal, closeModal } = useBottomSheetModal();
-  const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");

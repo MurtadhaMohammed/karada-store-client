@@ -4,10 +4,9 @@ import { useAppStore } from "@/lib/store";
 import IconButton from "../UI/IconButton/iconButton";
 import Drawer from "../UI/Drawer/drawer";
 import { CgClose } from "react-icons/cg";
-import { LuUser, LuSettings2, LuLogOut, LuShare2 } from "react-icons/lu";
+import { LuUser, LuSettings2, LuLogOut } from "react-icons/lu";
 import { BiSupport, BiBook, BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { MdOutlinePrivacyTip } from "react-icons/md";
-import { FaBookOpen } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import DotAlert from "../UI/DotAlert/dotAlert";
@@ -18,6 +17,7 @@ import { apiCall } from "@/lib/api";
 import { FaTruck } from "react-icons/fa6";
 import { TbCreditCardRefund } from "react-icons/tb";
 import { MdOutlinePayment } from "react-icons/md";
+import { useSearchParams } from "next/navigation";
 
 const MenuItem = ({
   isDot = false,
@@ -36,7 +36,7 @@ const MenuItem = ({
       {icon}
       <div className="relative">
         {isDot && <DotAlert customStyle="top-1 -left-4" />}
-        <p className="mr-[16px] text-[16px]">{title}</p>
+        <div className="mr-[16px] text-[16px]">{title}</div>
       </div>
     </button>
   );
@@ -59,10 +59,10 @@ const SideMenu = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPolicies, setShowPolicies] = useState(false);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const platformQuery = queryParams.get("platform");
+    const platformQuery = searchParams.get("platform");
     setPlatform(platformQuery);
   }, []);
 
@@ -162,13 +162,13 @@ const SideMenu = () => {
             title={
               <div className="flex items-center gap-16">
                 <span>سياسات الإستخدام</span>
-                <button onClick={() => setShowPolicies(!showPolicies)}>
+                <div onClick={() => setShowPolicies(!showPolicies)}>
                   {showPolicies ? (
                     <BiChevronUp className="text-[24px]" />
                   ) : (
                     <BiChevronDown className="text-[24px]" />
                   )}
-                </button>
+                </div>
               </div>
             }
             icon={<MdOutlinePrivacyTip className="text-[24px]" />}
