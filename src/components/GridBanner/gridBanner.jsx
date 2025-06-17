@@ -13,11 +13,6 @@ const GridBanner = ({
   bannerAlignment,
   banner,
 }) => {
-  const parseGridCols = () => {
-    let cols = Math.ceil(grid?.length / 2);
-    return cols < 2 ? 2 : 4;
-  };
-
   return (
     <div className="py-[16px]">
       <Container>
@@ -51,19 +46,18 @@ const GridBanner = ({
             )}
 
           {/* Grid Items */}
-          <div
-            className={`grid gap-2 relative ${`grid-cols-${parseGridCols()}`}`}
-          >
+          <div className={`grid gap-2 relative ${`grid-cols-${grid?.length}`}`}>
             {grid?.map((_, i) => (
               <div
                 key={i}
-                className="w-full aspect-w-1 aspect-h-1 bg-[#eee] rounded-[12px] overflow-hidden"
+                className="w-full aspect-w-1 aspect-h-1 bg-[#eee] rounded-[12px] overflow-hidden relative"
               >
                 <Link href={_.link}>
-                  <img
+                  <Image
                     src={`${IMAGE_URL}/${_.image}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
+                    fill
                   />
                 </Link>
               </div>
