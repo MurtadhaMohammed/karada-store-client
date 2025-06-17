@@ -2,7 +2,6 @@ import SearchBar from "@/components/SearchBar/searchBar";
 import Categories from "@/components/Categories/categories";
 import SliderBanner from "@/components/SliderBanner/sliderBanner";
 import ListBanner from "@/components/ListBanner/listBanner";
-import SingleBanner from "@/components/SingleBanner/singleBanner";
 import OffersBanner from "@/components/offersBanner/offersBanner";
 import SingleBannerPure from "@/components/SingleBannerPure/singleBannerPure";
 import Link from "next/link";
@@ -33,8 +32,6 @@ export default async function Home() {
             return <SliderBanner banners={banner} />;
           case "SinglePure":
             return <SingleBannerPure banner={banner} />;
-          // case "Single":
-          //   return <SingleBanner banner={banner} />;
           case "Brand":
             return <BrandBanner list={banner.brand_ids} />;
           case "List":
@@ -45,14 +42,6 @@ export default async function Home() {
                 list={banner?.products || []}
               />
             );
-          // case "OfferBanner":
-          //   return (
-          //     <BrandBanner
-          //       bannerId={banner.id}
-          //       title={banner.title}
-          //       list={banner?.products || []}
-          //     />
-          //   );
           case "OfferBanner":
             return (
               <OffersBanner

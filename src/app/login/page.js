@@ -3,7 +3,7 @@ import LoginFormWeb from "./FormWeb/loginFormWeb";
 
 export default function Login() {
   return (
-    <div className="pb-[100px] h-[100vh] overflow-hidden">
+    <div className="pb-[100px] h-[100vh] overflow-hidden bg-white">
       <div className="md:hidden block h-full overflow-hidden">
         <LoginForm />
       </div>

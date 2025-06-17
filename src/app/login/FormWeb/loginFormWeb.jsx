@@ -5,23 +5,19 @@ import Ripples from "react-ripples";
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { OtpInput } from "reactjs-otp-input";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { apiCall, URL } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 import OtpInputs from "@/components/Otp/OtpInputs";
-import { processPendingOrder } from "@/app/checkout/utils/orderUtils";
-import { useCartStore } from "@/lib/cartStore";
 
 const LoginFormWeb = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [orderCreated, setOrderCreated] = useState(false);
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const {
     setIsLogin,
@@ -33,7 +29,16 @@ const LoginFormWeb = () => {
     setIsOtp,
     userInfo,
   } = useAppStore();
-  const { clearCart } = useCartStore();
+
+  const routerRef = useRef(router);
+  const updateUserInfoRef = useRef(updateUserInfo);
+  const setIsLoginRef = useRef(setIsLogin);
+
+  useEffect(() => {
+    routerRef.current = router;
+    updateUserInfoRef.current = updateUserInfo;
+    setIsLoginRef.current = setIsLogin;
+  }, [router, updateUserInfo, setIsLogin]);
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
@@ -43,196 +48,77 @@ const LoginFormWeb = () => {
     setOtp(otp);
   };
 
+  
   const globalPhone = userInfo?.phone;
   const handleLogin = async () => {
-    if (isOtp) {
-      setError("تم إرسال رمز التحقق بالفعل");
-      return;
-    }
-    if (loading) {
-      return;
-    }
-
-    let formattedPhone = phone;
     if (phone !== "07700000000" && validateIraqiPhoneNumber(phone) === false)
       return setError("يرجى إدخال رقم هاتف صالح");
-
-    if (!formattedPhone.startsWith("07") && formattedPhone.startsWith("7")) {
-      formattedPhone = "0" + formattedPhone;
-    }
-
-    const orderData = searchParams.get("orderData");
-    if (orderData) {
-      try {
-        const decodedOrderData = JSON.parse(decodeURIComponent(orderData));
-        console.log("Saving order data:", decodedOrderData);
-        localStorage.setItem("pending_order", JSON.stringify(decodedOrderData));
-      } catch (err) {
-        console.error("Error parsing order data:", err);
-      }
-    }
-    console.log("Sending login request with phone:", formattedPhone);
-
-    // Try to get user name from pending order data first, then fallback to form input
-    let userName = name;
-    try {
-      const pendingOrderStr = localStorage.getItem("pending_order");
-      if (pendingOrderStr) {
-        const pendingOrderData = JSON.parse(pendingOrderStr);
-        if (pendingOrderData?.order?.user_name) {
-          userName = pendingOrderData.order.user_name;
-          console.log("Using user name from pending order:", userName);
-        }
-      }
-    } catch (err) {
-      console.error("Error parsing pending order for user name:", err);
-    }
-
-    // Fallback to form input or localStorage if no name found in pending order
-    if (!userName || userName.trim() === "") {
-      userName =
-        name || localStorage.getItem("karada-account-name") || "Guest User";
-      console.log("Using fallback user name:", userName);
-    }
-
     setLoading(true);
-    try {
-      const resp = await apiCall({
-        pathname: `/client/auth/login`,
-        method: "POST",
-        data: {
-          name: userName,
-          phone: formattedPhone,
-        },
-      });
+    const resp = await apiCall({
+      pathname: `/client/auth/login`,
+      method: "POST",
+      data: {
+        name,
+        phone,
+      },
+    });
 
-      console.log("Login response:", resp);
-      setLoading(false);
-      if (resp?.message == "Login Success") {
-        setIsOtp(true);
-        setError(null);
-        router.replace(`/login?phone=${formattedPhone}`);
-      } else {
-        setError("فشل إرسال رمز التحقق، يرجى التأكد من رقم الهاتف");
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-      setLoading(false);
-      setError("حدث خطأ في الاتصال بالخادم. يرجى المحاولة مرة أخرى");
+    setLoading(false);
+    if (resp?.message == "Login Success") {
+      setIsOtp(true);
+      setError(null);
+      const redirectTo = searchParams.get("redirect");
+      const otpUrl = redirectTo 
+        ? `/login?phone=${phone}&redirect=${encodeURIComponent(redirectTo)}`
+        : `/login?phone=${phone}`;
+      router.replace(otpUrl);
+    } else {
+      setError("يرجى إدخال رقم هاتف صالح");
     }
   };
 
   const handleVerify = useCallback(async () => {
+    if (loading) return;
     setLoading(true);
-    const phoneFromParams = searchParams.get("phone");
-
-    // Format phone number correctly
-    let formattedPhone = phoneFromParams || globalPhone;
-
-    // Make sure phone starts with "07"
-    if (!formattedPhone.startsWith("07") && formattedPhone.startsWith("7")) {
-      formattedPhone = "0" + formattedPhone;
-    }
-
-    console.log("Verifying OTP for phone:", formattedPhone);
-
+    
     try {
+      const phoneFromParams = searchParams.get("phone");
+      const redirectTo = searchParams.get("redirect");
+      
       const resp = await apiCall({
         pathname: `/client/auth/verify`,
         method: "POST",
         data: {
           otp,
-          phone: formattedPhone,
+          phone: phoneFromParams || userInfo?.phone,
         },
       });
+
       if (resp.accessToken) {
         localStorage.setItem("karada-token", resp.accessToken);
         localStorage.setItem("karada-refreshToken", resp.refreshToken);
         localStorage.setItem("karada-user", JSON.stringify(resp.user));
-        updateUserInfo(resp.user);
-        setIsLogin(true);
-
-        // Check if there's a pending order and process it immediately
-        const hasPendingOrder = localStorage.getItem("pending_order") !== null;
-        if (hasPendingOrder) {
-          try {
-            setOrderCreated(true);
-            console.log("OTP verification successful. User tokens saved.");
-            console.log(
-              "Processing pending order for verified user:",
-              resp.user
-            );
-
-            // Keep loading state active while processing order
-            setLoading(true);
-            setError("جاري إنشاء الطلب...");
-
-            // Process the order directly after successful OTP verification
-            const orderResult = await processPendingOrder(resp.user, clearCart);
-
-            console.log("Order processing result:", orderResult);
-
-            if (orderResult?.order) {
-              // Order was created successfully
-              localStorage.removeItem("pending_order"); // Clear pending order
-              setError("تم إنشاء الطلب بنجاح! سيتم توجيهك إلى صفحة الطلبات...");
-              setLoading(false);
-              // Show success message before redirect
-              setTimeout(() => {
-                router.replace("/orders");
-              }, 1500);
-            } else {
-              // Order creation failed, redirect to checkout
-              setLoading(false);
-              setError("فشل إنشاء الطلب. سيتم إعادة توجيهك إلى صفحة الدفع.");
-              setTimeout(() => {
-                router.replace("/checkout");
-              }, 2000);
-            }
-          } catch (err) {
-            console.error("Error processing pending order:", err);
-            setLoading(false);
-            router.replace("/");
-          }
+        
+        updateUserInfoRef.current(resp.user);
+        setIsLoginRef.current(true);
+        
+        if (redirectTo) {
+          routerRef.current.push(decodeURIComponent(redirectTo));
         } else {
-          setLoading(false);
-          router.replace("/");
+          routerRef.current.push("/");
         }
       } else {
-        setLoading(false);
         setError("يرجى إدخال رمز التحقق صحيح");
       }
-    } catch (err) {
-      console.error("Verification error:", err);
+    } catch (error) {
+      setError("حدث خطأ أثناء التحقق");
+    } finally {
       setLoading(false);
-      setError("حدث خطأ أثناء التحقق من الرمز");
     }
-  }, [
-    otp,
-    globalPhone,
-    router,
-    searchParams,
-    updateUserInfo,
-    setIsLogin,
-    clearCart,
-  ]);
+  }, [otp, searchParams, userInfo, loading]);
+
   useEffect(() => {
     const phoneFromParams = searchParams.get("phone");
-    const orderData = searchParams.get("orderData");
-
-    // Save order data if available (but don't auto-login in web form to prevent duplicates)
-    if (orderData) {
-      try {
-        const decodedOrderData = JSON.parse(decodeURIComponent(orderData));
-        console.log("Auto-saving order data:", decodedOrderData);
-        localStorage.setItem("pending_order", JSON.stringify(decodedOrderData));
-      } catch (err) {
-        console.error("Error parsing order data:", err);
-      }
-    }
-
-    // Only set phone from params but don't auto-login to prevent duplicate requests
-    // Auto-login is handled by the mobile form only
     if (phoneFromParams) {
       setPhone(phoneFromParams);
     }
@@ -244,7 +130,7 @@ const LoginFormWeb = () => {
       if (_name) setName(_name);
     }
   }, [isLogin]);
-
+  
   if (isOtp)
     return (
       <>
@@ -277,7 +163,6 @@ const LoginFormWeb = () => {
                 gap: "8px",
               }}
             />
-            {/* <OtpInputs onChange={handleChange} /> */}
           </div>
           <div>{error && <p className="text-red-500">{error}</p>}</div>
           <div
@@ -292,7 +177,8 @@ const LoginFormWeb = () => {
             <Ripples className="!grid w-full">
               <button
                 onClick={handleVerify}
-                className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
+                disabled={loading || otp?.length !== 6}
+                className="flex items-center justify-center h-[56px] rounded-[16px] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6 disabled:opacity-50"
               >
                 <span className="ml-[8px] font-bold text-[18px]">
                   {loading ? "جار المصادقة..." : "تأكـــيد"}
