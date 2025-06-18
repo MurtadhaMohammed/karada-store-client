@@ -7,16 +7,36 @@ const Invoice = () => {
   const { voucher, cart } = useCartStore();
   const { settings } = useAppStore();
 
-  const total = cart.reduce(
-    (total, item) => total + item?.product?.price * item.qt,
-    0
-  );
+  const total = cart.reduce((total, item) => {
+    // If there's a selected option (l1), use its price, otherwise use product price
+    const basePrice = item?.product?.l1?.price || item?.product?.price;
+    return total + basePrice * item.qt;
+  }, 0);
 
-  const subTotal = cart.reduce(
-    (total, item) => total + item?.product?.endPrice * item.qt,
-    0
-  );
-  console.log("settings", settings);
+  const subTotal = cart.reduce((total, item) => {
+    // Check if product has a valid discount (at product level)
+    const isValidProductDiscount =
+      item?.product?.endPrice &&
+      item?.product?.endPrice < item?.product?.price &&
+      item?.product?.endPrice_date &&
+      new Date(item?.product?.endPrice_date) > new Date();
+
+    // If there's a selected option (l1), use its pricing
+    if (item?.product?.l1) {
+      const option = item.product.l1;
+      // If product has valid discount, use option's endPrice, otherwise use option's price
+      const priceToUse = isValidProductDiscount
+        ? option.endPrice
+        : option.price;
+      return total + priceToUse * item.qt;
+    }
+
+    // Fallback to product pricing if no option selected
+    const priceToUse = isValidProductDiscount
+      ? item?.product?.endPrice
+      : item?.product?.price;
+    return total + priceToUse * item.qt;
+  }, 0);
 
   const delivery_cost =
     subTotal > 1000000

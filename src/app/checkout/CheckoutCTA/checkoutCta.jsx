@@ -50,12 +50,23 @@ const CheckoutCTA = () => {
   const [order, setOrder] = useState(null);
 
   const calculateTotalPrice = useMemo(() => {
-    return cart.reduce(
-      (total, item) =>
-        total + item?.product?.qt * item?.product?.endPrice ||
-        item?.product?.price,
-      0
-    );
+    return cart.reduce((total, item) => {
+      // Check if product has a valid discount (at product level)
+      const isValidProductDiscount =
+        item?.product?.endPrice &&
+        item?.product?.endPrice < item?.product?.price &&
+        item?.product?.endPrice_date &&
+        new Date(item?.product?.endPrice_date) > new Date();
+
+      // If product has valid discount, ignore l1 and use product endPrice
+      if (isValidProductDiscount) {
+        return total + item?.product?.endPrice * item.qt;
+      }
+
+      // If no discount, use l1 price if available, otherwise product price
+      const priceToUse = item?.product?.l1?.price || item?.product?.price;
+      return total + priceToUse * item.qt;
+    }, 0);
   }, [cart]);
 
   const deliveryCost = useMemo(() => {

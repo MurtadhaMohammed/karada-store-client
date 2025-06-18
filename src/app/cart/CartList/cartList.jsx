@@ -50,9 +50,12 @@ const CartItem = ({ item, outOfStock = false }) => {
     return image;
   };
 
-  const displayPrice = item?.product?.l1
-    ? item?.product?.l1?.price
-    : item?.product?.price;
+  // Check if product has a valid discount (at product level)
+  const isValidProductDiscount =
+    item?.product?.endPrice &&
+    item?.product?.endPrice < item?.product?.price &&
+    item?.product?.endPrice_date &&
+    new Date(item?.product?.endPrice_date) > new Date();
 
   return (
     <div className="border-b border-b-[#eee] pt-[24px] pb-[16px] bg-white">
@@ -86,7 +89,7 @@ const CartItem = ({ item, outOfStock = false }) => {
             </div>
             {!outOfStock ? (
               <div className="flex items-end justify-between w-full">
-                {item?.product?.endPrice !== item.product.price ? (
+                {isValidProductDiscount ? (
                   <div className="flex flex-col items-start">
                     <p className="text-[14px] block line-through text-[#a5a5a5]">
                       {Number(item.product.price).toLocaleString("en")}
@@ -98,7 +101,9 @@ const CartItem = ({ item, outOfStock = false }) => {
                   </div>
                 ) : (
                   <b className="text-[16px]">
-                    {Number(displayPrice).toLocaleString("en")}{" "}
+                    {Number(
+                      item?.product?.l1?.price || item?.product?.price
+                    ).toLocaleString("en")}{" "}
                     <span className="text-[14px]">د.ع</span>
                   </b>
                 )}
