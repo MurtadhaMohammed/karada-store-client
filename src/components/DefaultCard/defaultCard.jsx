@@ -31,7 +31,7 @@ const DefaultCard = ({
         <div className="absolute top-2 left-2 z-10">
           <IconButton
             onClick={(e) => {
-              e.stopPropagation(); 
+              e.stopPropagation();
               handleRemoveFav(item?.id);
             }}
             className="bg-[#f6f6f6] p-2 rounded-full"
@@ -41,13 +41,13 @@ const DefaultCard = ({
       )}
 
       {item?.endPrice &&
-        item?.endPrice < item?.price &&
-        dayjs(item.endPrice_date).isValid() &&
-        dayjs(item.endPrice_date).isAfter(dayjs()) && (
-          <div className="absolute top-3 right-3 z-10 p-[6px] pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
-            خصم {Number(item?.price - item?.endPrice).toLocaleString("en")} د.ع
-          </div>
-        )}
+      item?.endPrice < item?.price &&
+      dayjs(item.endPrice_date).isValid() &&
+      dayjs(item.endPrice_date).isAfter(dayjs()) ? (
+        <div className="absolute top-3 right-3 z-10 p-[6px] pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
+          خصم {Number(item?.price - item?.endPrice).toLocaleString("en")} د.ع
+        </div>
+      ) : null}
 
       {!isFav ? (
         favorites?.find((id) => id === item?.id) ? (

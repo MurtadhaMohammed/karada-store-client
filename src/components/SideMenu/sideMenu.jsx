@@ -202,7 +202,7 @@ const SideMenu = () => {
                 }}
               />
               <MenuItem
-                title={"سياسة الإسرجاع "}
+                title={"سياسة الإسترجاع "}
                 icon={<TbCreditCardRefund className="text-[20px]" />}
                 onClick={() => {
                   setIsMenu(false);

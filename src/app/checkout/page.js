@@ -9,6 +9,7 @@ import Payments from "./Payments/payments";
 import { useAppStore } from "@/lib/store";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import ErrorBanner from "./errorBanner/errorBanner";
 
 export default function Checkout() {
   const { isLogin } = useAppStore();
@@ -43,8 +44,11 @@ export default function Checkout() {
   }
 
   return (
-    <div className="pb-[120px] md:mt-[24px]">
+    <div className="pb-[120px] md:mt-[24px] relative">
       <Container>
+        <div className="sticky top-20">
+          <ErrorBanner />
+        </div>
         <div className="md:grid md:grid-cols-2 md:gap-6">
           <div>
             <Payments />

@@ -4,13 +4,24 @@ import { useState } from "react";
 import { MasterCardModal } from "./MasterCardModal/masterCardModal";
 import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import { useAppStore } from "@/lib/store";
+import { InstallmentModal } from "./InstallmentModal/InstallmentModal";
 
 const Payments = () => {
   const [selected, setSelected] = useState("cash");
   const [cardInfo, setCardInfo] = useState({});
   const { openModal, closeModal } = useBottomSheetModal();
-  const { isInstallment, setInstallment } = useAppStore();
+  const {isInstallment, setInstallment} = useAppStore();
 
+  useEffect(() => {
+    if (isInstallment) {
+      setSelected("installment");
+    } else {
+      setSelected("cash");
+    }
+  }, [isInstallment]);
+
+
+  
   const handleCashClick = () => {
     setInstallment(false);
     setSelected("cash");
@@ -94,13 +105,13 @@ const Payments = () => {
           closeModal();
         }}
       />
-      {/* <InstallmentModal
+      <InstallmentModal
         onFinish={(value) => {
           setCardInfo(value);
           setSelected("installment");
           closeModal();
         }}
-      /> */}
+      />
     </div>
   );
 };

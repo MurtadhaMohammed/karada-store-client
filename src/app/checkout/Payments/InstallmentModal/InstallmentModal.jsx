@@ -39,7 +39,7 @@ export const InstallmentModal = ({ onFinish }) => {
           Identity: cardNumber,
           Amount: total,
           countOfMonth: noOfMonths,
-          PlanId,
+          PlanId:0,
         },
       });
 

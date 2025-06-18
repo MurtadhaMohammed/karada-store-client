@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const Input = ({ hint, value, prefix = null, onChange, type = "text" }) => {
+const Input = ({ hint, value, prefix = null, onChange, type = "text", disabled }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const handleFocus = () => setIsFocus(true);
@@ -28,6 +28,7 @@ const Input = ({ hint, value, prefix = null, onChange, type = "text" }) => {
         value={value}
         type={type}
         onChange={onChange}
+        disabled={disabled}
       />
       {prefix && (
         <div className="absolute left-[16px] top-1/2 transform -translate-y-1/2 flex items-center">

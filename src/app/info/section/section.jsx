@@ -48,18 +48,24 @@ export const Section = ({
       }}
     >
       <Container>
-        <div className="flex items-center justify-between py-[16px] bg-[#fff] rounded-[12px] px-4 pl-2 mb-[12px]">
-          <div className="flex items-center">
-            <div>{icon}</div>
-            <div className="mr-[12px]">
-              <h3 className="text-[16px] font-bold">{title}</h3>
-              <p className="text-[14px] text-[#a5a5a5]">{subtitle}</p>
+        {action === "logout" ? (
+          <div className="flex items-center justify-center py-[16px] bg-[#fff] rounded-[12px] px-4 pl-2 mt-[12px]">
+            <h3 className="text-[14px] text-center font-semibold ">{title}</h3>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between py-[16px] bg-[#fff] rounded-[12px] px-4 pl-2 mt-[12px]">
+            <div className="flex items-center">
+              <div>{icon}</div>
+              <div className="mr-[12px]">
+                <h3 className="text-[14px] font-semibold ">{title}</h3>
+                <p className="text-[12px] text-[#a5a5a5]">{subtitle}</p>
+              </div>
+            </div>
+            <div>
+              <IoIosArrowBack className="text-[20px] ml-[8px]" />
             </div>
           </div>
-          <div>
-            <IoIosArrowBack className="text-[32px]" />
-          </div>
-        </div>
+        )}
       </Container>
     </button>
   );

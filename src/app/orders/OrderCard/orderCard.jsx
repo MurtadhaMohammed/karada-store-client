@@ -242,7 +242,7 @@ const OrderCard = ({ order }) => {
             <IoMdTime />
             <p className="mr-[4px] hidden sm:block">{formattedDate}</p>
             <p className="mr-[4px] block sm:hidden">
-              {dayjs(order.create_at).format("YYYY-MM-DD")}
+              {formattedDate}
             </p>
           </div>
           <div className="flex items-center text-[14px] text-[#666]">
