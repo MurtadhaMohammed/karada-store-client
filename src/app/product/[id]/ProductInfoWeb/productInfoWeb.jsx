@@ -106,7 +106,7 @@ const ProductInfoWeb = ({ product }) => {
 
   const isAddToCartDisabled =
     (product?.options?.length > 0 && activeOption === null) ||
-    product.out_of_stock;
+    product?.out_of_stock;
 
   const openModal = (index) => {
     setIsModalOpen(true);
@@ -239,7 +239,7 @@ const ProductInfoWeb = ({ product }) => {
             {/* <p className="text-[14px] text-gray-600 mt-[8px]">
               {product?.description}
             </p> */}
-            {product.out_of_stock ? (
+            {product?.out_of_stock ? (
               <p className="text-[14px] text-red-600 mt-[8px]">
                 هذا المنتج غير متوفر حالياً
               </p>
