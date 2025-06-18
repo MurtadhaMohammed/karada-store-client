@@ -14,6 +14,7 @@ import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { isEnglish } from "@/helper/isEnglish";
+import CartSkeleton from "../Skeleton/skeleton";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -195,9 +196,9 @@ const CartList = () => {
           <InstallmentBanner className={"none"} price={total}/>
         </Container>
       </div>
-      {/* {loading ? (
-        // <Skeleton />
-      ) : ( */}
+      {loading ? (
+        <CartSkeleton />
+      ) : (
         getItemsTotal() !== 0 && (
           <>
             {cart?.map((el, i) => (
@@ -205,7 +206,7 @@ const CartList = () => {
             ))}
           </>
         )
-      {/* )} */}
+       )}
 
       <RelatedList productId={productId} />
       <CartCTA loading={loading} />
