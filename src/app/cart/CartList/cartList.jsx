@@ -190,22 +190,9 @@ const CartList = () => {
 
   return (
     <div className="mb-[16px]">
-      <div className="bg-white py-[16px]">
-        <Container>
-          <InstallmentBanner className={"none"} price={total}/>
-        </Container>
-      </div>
-      {/* {loading ? (
-        // <Skeleton />
-      ) : ( */}
-        getItemsTotal() !== 0 && (
-          <>
-            {cart?.map((el, i) => (
-              <CartItem key={i} item={el} />
-            ))}
-          </>
-        )
-      {/* )} */}
+      {cart?.map((el, i) => (
+        <CartItem key={i} item={el} />
+      ))}
 
       <RelatedList productId={productId} />
       <CartCTA loading={loading} />
