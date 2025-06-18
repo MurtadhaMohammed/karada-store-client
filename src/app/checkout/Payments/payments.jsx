@@ -1,6 +1,6 @@
 "use client";
 import { BsCreditCard2Front } from "react-icons/bs";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MasterCardModal } from "./MasterCardModal/masterCardModal";
 import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import { useAppStore } from "@/lib/store";
