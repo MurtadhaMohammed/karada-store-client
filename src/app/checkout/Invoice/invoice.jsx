@@ -16,7 +16,12 @@ const Invoice = () => {
     (total, item) => total + item?.product?.endPrice * item.qt,
     0
   );
-  const delivery_cost = parseInt(settings?.delivery) || 0;
+  console.log("settings", settings);
+
+  const delivery_cost =
+    subTotal > 1000000
+      ? parseInt(settings?.extraDelivery) || 0
+      : parseInt(settings?.delivery) || 0;
 
   // Updated product discount calculation
   const productDiscount = cart.reduce((total, item) => {

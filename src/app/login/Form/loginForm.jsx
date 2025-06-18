@@ -5,16 +5,20 @@ import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { OtpInput } from "reactjs-otp-input";
 import { useCallback, useEffect, useState, useRef } from "react";
-import { apiCall } from "@/lib/api";
+import { apiCall, URL } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
+import { processPendingOrder } from "@/app/checkout/utils/orderUtils";
+import { useCartStore } from "@/lib/cartStore";
 
 const LoginForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [orderCreated, setOrderCreated] = useState(false);
+  const autoLoginAttemptedRef = useRef(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const {
@@ -35,25 +39,26 @@ const LoginForm = () => {
     setIsLoginRef.current = setIsLogin;
   }, [router, updateUserInfo, setIsLogin]);
 
+  const { clearCart } = useCartStore();
   const handleChange = (otp) => setOtp(otp);
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     setPhone(value);
   };
-
   const handleLogin = async () => {
+    if (isOtp) {
+      setError("تم إرسال رمز التحقق بالفعل");
+      return;
+    }
+
+    if (loading) {
+      return;
+    }
+
+    let formattedPhone = phone;
     if (phone !== "07700000000" && validateIraqiPhoneNumber(phone) === false)
       return setError("يرجى إدخال رقم هاتف صالح");
-    setLoading(true);
-    const resp = await apiCall({
-      pathname: `/client/auth/login`,
-      method: "POST",
-      data: {
-        name,
-        phone,
-      },
-    });
 
     setLoading(false);
     if (resp?.message == "Login Success") {
@@ -66,6 +71,48 @@ const LoginForm = () => {
       router.replace(otpUrl);
     } else {
       setError("يرجى إدخال رقم هاتف صالح");
+    if (!formattedPhone.startsWith("07") && formattedPhone.startsWith("7")) {
+      formattedPhone = "0" + formattedPhone;
+    }
+
+    // Get pending order data from URL if available
+    const orderData = searchParams.get("orderData");
+    if (orderData) {
+      try {
+        // Parse and save order data in localStorage
+        const decodedOrderData = JSON.parse(decodeURIComponent(orderData));
+        console.log("Saving order data:", decodedOrderData);
+        localStorage.setItem("pending_order", JSON.stringify(decodedOrderData));
+      } catch (err) {
+        console.error("Error parsing order data:", err);
+      }
+    }
+
+    console.log("Sending login request with phone:", formattedPhone);
+    setLoading(true);
+    try {
+      const resp = await apiCall({
+        pathname: `/client/auth/login`,
+        method: "POST",
+        data: {
+          name,
+          phone: formattedPhone,
+        },
+      });
+
+      console.log("Login response:", resp);
+      setLoading(false);
+      if (resp?.message == "Login Success") {
+        setIsOtp(true);
+        setError(null);
+        router.replace(`/login?phone=${formattedPhone}`);
+      } else {
+        setError("فشل إرسال رمز التحقق، يرجى التأكد من رقم الهاتف");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setLoading(false);
+      setError("حدث خطأ في الاتصال بالخادم. يرجى المحاولة مرة أخرى");
     }
   };
 
@@ -107,13 +154,170 @@ const LoginForm = () => {
       setLoading(false);
     }
   };
+    setLoading(true);
+    const phoneFromParams = searchParams.get("phone");
 
+    // Format phone number correctly
+     formattedPhone = phoneFromParams || globalPhone;
+
+    // Make sure phone starts with "07"
+    if (!formattedPhone.startsWith("07") && formattedPhone.startsWith("7")) {
+      formattedPhone = "0" + formattedPhone;
+    }
+
+    console.log("Verifying OTP for phone:", formattedPhone);
+
+    try {
+      const resp = await apiCall({
+        pathname: `/client/auth/verify`,
+        method: "POST",
+        data: {
+          otp,
+          phone: formattedPhone,
+        },
+      });
+
+      if (resp.accessToken) {
+        localStorage.setItem("karada-token", resp.accessToken);
+        localStorage.setItem("karada-refreshToken", resp.refreshToken);
+        localStorage.setItem("karada-user", JSON.stringify(resp.user));
+        updateUserInfo(resp.user);
+        setIsLogin(true);
+        const hasPendingOrder = localStorage.getItem("pending_order") !== null;
+        if (hasPendingOrder) {
+          try {
+            setOrderCreated(true);
+            console.log("OTP verification successful. User tokens saved.");
+            console.log(
+              "Processing pending order for verified user:",
+              resp.user
+            );
+
+            // Keep loading state active while processing order
+            setLoading(true);
+            setError("جاري إنشاء الطلب...");
+
+            // Process the order directly after successful OTP verification
+            const orderResult = await processPendingOrder(resp.user, clearCart);
+
+            console.log("Order processing result:", orderResult);
+
+            if (orderResult?.order) {
+              // Order was created successfully
+              localStorage.removeItem("pending_order"); // Clear pending order
+              setError("تم إنشاء الطلب بنجاح! سيتم توجيهك إلى صفحة الطلبات...");
+              setLoading(false);
+              // Show success message before redirect
+              setTimeout(() => {
+                router.replace("/orders");
+              }, 1500);
+            } else {
+              // Order creation failed, redirect to checkout
+              setLoading(false);
+              setError("فشل إنشاء الطلب. سيتم إعادة توجيهك إلى صفحة الدفع.");
+              setTimeout(() => {
+                router.replace("/checkout");
+              }, 2000);
+            }
+          } catch (err) {
+            console.error("Error processing pending order:", err);
+            setLoading(false);
+            router.replace("/");
+          }
+        } else {
+          setLoading(false);
+          router.replace("/");
+        }
+      } else {
+        setLoading(false);
+        setError("يرجى إدخال رمز التحقق صحيح");
+      }
+    } catch (err) {
+      console.error("OTP verification error:", err);
+      setLoading(false);
+      setError("حدث خطأ أثناء التحقق من الرمز");
+    }
+  };
   useEffect(() => {
     const phoneFromParams = searchParams.get("phone");
-    if (phoneFromParams) {
+    const orderData = searchParams.get("orderData");
+
+    // Save order data if available
+    if (orderData) {
+      try {
+        const decodedOrderData = JSON.parse(decodeURIComponent(orderData));
+        console.log("Auto-saving order data:", decodedOrderData);
+        localStorage.setItem("pending_order", JSON.stringify(decodedOrderData));
+      } catch (err) {
+        console.error("Error parsing order data:", err);
+      }
+    }
+    if (phoneFromParams && !autoLoginAttemptedRef.current && !isOtp) {
+      setPhone(phoneFromParams);
+      autoLoginAttemptedRef.current = true; // Prevent multiple attempts      // Automatically trigger login when redirected with phone parameter
+      const autoLogin = async () => {
+        setLoading(true);
+        try {
+          // Format phone number correctly
+          let formattedPhone = phoneFromParams;
+
+          // Make sure phone starts with "07"
+          if (
+            !formattedPhone.startsWith("07") &&
+            formattedPhone.startsWith("7")
+          ) {
+            formattedPhone = "0" + formattedPhone;
+          } // Try to get user name from pending order data first, then fallback to localStorage
+          let userName = "Guest User";
+          try {
+            const pendingOrderStr = localStorage.getItem("pending_order");
+            if (pendingOrderStr) {
+              const pendingOrderData = JSON.parse(pendingOrderStr);
+              if (pendingOrderData?.order?.user_name) {
+                userName = pendingOrderData.order.user_name;
+                console.log("Using user name from pending order:", userName);
+              }
+            }
+          } catch (err) {
+            console.error("Error parsing pending order for user name:", err);
+          }
+
+          // Fallback to localStorage if no name found in pending order
+          if (userName === "Guest User") {
+            userName =
+              localStorage.getItem("karada-account-name") || "Guest User";
+            console.log("Using fallback user name:", userName);
+          }
+
+          const resp = await apiCall({
+            pathname: `/client/auth/login`,
+            method: "POST",
+            data: {
+              name: userName,
+              phone: formattedPhone,
+            },
+          });
+
+          if (resp?.message === "Login Success") {
+            setIsOtp(true);
+            setError(null);
+          } else {
+            setError("فشل إرسال رمز التحقق، يرجى المحاولة مرة أخرى");
+          }
+        } catch (err) {
+          console.error("Auto login error:", err);
+          setError("حدث خطأ أثناء إرسال رمز التحقق");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      autoLogin();
+    } else if (phoneFromParams && !isOtp) {
+      // Just set the phone if already attempted but not in OTP mode
       setPhone(phoneFromParams);
     }
-  }, [searchParams]);
+  }, [searchParams, isOtp, setIsOtp, setError]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
