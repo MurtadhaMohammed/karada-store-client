@@ -19,6 +19,7 @@ import ImageModal from "@/components/ImageModal/imageModal";
 import IconButton from "@/components/UI/IconButton/iconButton";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { BsExclamation } from "react-icons/bs";
+import { priceCalc } from "@/helper/priceCalc";
 const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
     <button
@@ -83,7 +84,6 @@ const ProductInfoWeb = ({ product }) => {
   const [modalImageIndex, setModalImageIndex] = useState(0);
   const { toggleFav, favorites, settings } = useAppStore();
 
-  console.log("Product Info Web", product);
   useEffect(() => {
     setActiveOption(product?.options?.[0] || null);
   }, [product?.options]);
@@ -91,7 +91,7 @@ const ProductInfoWeb = ({ product }) => {
   useEffect(() => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
-      setEndPrice(activeOption?.endPrice || activeOption?.price);
+       setEndPrice(priceCalc(product, activeOption)?.endPrice);
     } else {
       setPrice(product?.price);
     }
@@ -219,7 +219,7 @@ const ProductInfoWeb = ({ product }) => {
               </a>
             </div>
             <h4 className="text-[18px]">{product?.name}</h4>
-            {price === endPrice ? (
+            {!priceCalc(product)?.hasDiscount  ? (
               <b className="text-[22px] block">
                 {Number(endPrice).toLocaleString("en")}{" "}
                 <span className="text-[14px]">IQD</span>

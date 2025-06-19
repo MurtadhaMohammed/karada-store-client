@@ -10,8 +10,8 @@ import OrdersDetailsSkeleton from "../Skeleton/skeleton";
 import Link from "next/link";
 import { BiCopy, BiCheck, BiSupport } from "react-icons/bi";
 import { FcCancel } from "react-icons/fc";
-import RelatedList from "../RelatedList/relatedList";
 import ConfirmModal from "@/components/ConfirmModal/confirmModal";
+import { priceCalc } from "@/helper/priceCalc";
 
 const OrderDetails = ({ params }) => {
   const [discounts, setDiscounts] = useState([]);
@@ -209,16 +209,19 @@ const OrderDetails = ({ params }) => {
 
                       {/* Price */}
                       <div className="text-sm font-bold flex flex-col items-center justify-center shrink-0">
-                        {isDiscountValid ? (
+                        {priceCalc(item)?.hasDiscount ? (
                           <div className="flex flex-col item-end">
                             <p className="line-through text-gray-400">
-                              {Number(item?.price).toLocaleString("en")} د.ع
+                              {Number(
+                                priceCalc(item, item?.l1)?.price * item?.qt
+                              ).toLocaleString("en")}{" "}
+                              د.ع
                             </p>
                             <p className="text-[15px]">
                               {item?.qt > 1 && `${item?.qt} * `}
-                              {Number(item?.endPrice * item?.qt).toLocaleString(
-                                "en"
-                              )}{" "}
+                              {Number(
+                                priceCalc(item, item?.l1)?.endPrice * item?.qt
+                              ).toLocaleString("en")}{" "}
                               د.ع
                             </p>
                           </div>
@@ -247,7 +250,7 @@ const OrderDetails = ({ params }) => {
                     <b className="text-[16px]">{order?.note}</b>
                   )}
                 </div>
-                {order.voucher && (
+                {order?.voucher && (
                   <>
                     <div className="w-[100%] h-[1px] bg-[#eee]" />
                     <div className="flex item-center justify-between w-full">
@@ -258,7 +261,7 @@ const OrderDetails = ({ params }) => {
                     </div>
                   </>
                 )}
-                {totalBeforeDiscount() !== order?.total_price && (
+                {/* {totalBeforeDiscount() !== order?.total_price && (
                   <>
                     <div className="w-[100%] h-[1px] bg-[#eee]" />
                     <div className="flex item-center justify-between w-full">
@@ -271,7 +274,7 @@ const OrderDetails = ({ params }) => {
                       </b>
                     </div>
                   </>
-                )}
+                )} */}
                 <div className="w-[100%] h-[1px] bg-[#eee]" />
                 <div className="flex item-center justify-between w-full">
                   <p>سعر التوصيل : </p>
