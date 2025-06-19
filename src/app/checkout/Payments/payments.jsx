@@ -39,7 +39,7 @@ const Payments = () => {
     {
       value: "installment",
       label: "شراء بالتقسيط",
-      disabled: false,
+      disabled: true,
       onClick: handleInstallmentClick,
     },
   ];
