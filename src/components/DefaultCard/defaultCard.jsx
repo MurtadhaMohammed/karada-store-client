@@ -7,6 +7,7 @@ import { IMAGE_URL } from "@/lib/api";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { useAppStore } from "@/lib/store";
 import dayjs from "dayjs";
+import { priceCalc } from "@/helper/priceCalc";
 // import { isEnglish } from "@/helper/isEnglish";
 
 const DefaultCard = ({
@@ -40,14 +41,12 @@ const DefaultCard = ({
         </div>
       )}
 
-      {item?.endPrice &&
-      item?.endPrice < item?.price &&
-      dayjs(item.endPrice_date).isValid() &&
-      dayjs(item.endPrice_date).isAfter(dayjs()) ? (
+      {priceCalc(item)?.hasDiscount && (
         <div className="absolute top-3 right-3 z-10 p-[6px] pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
-          خصم {Number(item?.price - item?.endPrice).toLocaleString("en")} د.ع
+          خصم {Number(priceCalc(item)?.discountValue).toLocaleString("en")}{" "}
+          د.ع
         </div>
-      ) : null}
+      )}
 
       {!isFav ? (
         favorites?.find((id) => id === item?.id) ? (
@@ -121,7 +120,17 @@ const DefaultCard = ({
             </p>
           </div>
           <div className="flex items-end justify-between mt-[8px]">
-            <div>
+            {priceCalc(item).hasDiscount && (
+              <h4 className="text-[14px] font-normal text-[#a5a5a5] line-through">
+                {Number(item?.price).toLocaleString("en")}
+                <span className="text-[12px]"> د.ع </span>
+              </h4>
+            )}
+            <h4 className="text-[16px] font-extrabold -mt-1">
+              {Number(priceCalc(item)?.endPrice).toLocaleString("en")}
+              <span className="text-[12px]"> د.ع </span>
+            </h4>
+            {/* <div>
               {item?.price !== item?.endPrice && (
                 <h4 className="text-[14px] font-normal text-[#a5a5a5] line-through">
                   {Number(item?.price).toLocaleString("en")}
@@ -133,7 +142,7 @@ const DefaultCard = ({
                 {Number(item?.endPrice).toLocaleString("en")}
                 <span className="text-[12px]"> د.ع </span>
               </h4>
-            </div>
+            </div> */}
             {/* <div className="flex gap-1">
               <span className="text-[14px] mt-[4.5px]">3.4</span>
               <PiStarFill className="text-[16px] mt-[6px] text-[#FCA120]" />

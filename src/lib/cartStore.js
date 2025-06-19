@@ -1,3 +1,4 @@
+import { priceCalc } from "@/helper/priceCalc";
 import { create } from "zustand";
 
 export const useCartStore = create((set, get) => ({
@@ -71,13 +72,18 @@ export const useCartStore = create((set, get) => ({
 
   getSubTotal: () => {
     return get()
-      .cart.map((item) => item?.product?.price * item.qt)
+      .cart.map(
+        (item) => priceCalc(item?.product, item?.product?.l1)?.price * item.qt
+      )
       .reduce((a, b) => a + b, 0);
   },
 
   getTotal: () => {
     return get()
-      .cart.map((item) => item?.product?.endPrice * item.qt)
+      .cart.map(
+        (item) =>
+          priceCalc(item?.product, item?.product?.l1)?.endPrice * item.qt
+      )
       .reduce((a, b) => a + b, 0);
   },
 
@@ -95,7 +101,7 @@ export const useCartStore = create((set, get) => ({
     set({
       voucher: null,
     });
-  } ,
+  },
 
   setVoucher: (voucher) => {
     set({ voucher });
