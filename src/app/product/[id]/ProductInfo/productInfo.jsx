@@ -23,6 +23,7 @@ import "swiper/css/navigation";
 import ProductCTA from "../ProductCTA/ProductCTA";
 import { useAppStore } from "@/lib/store";
 import { BsExclamation } from "react-icons/bs";
+import { priceCalc } from "@/helper/priceCalc";
 
 const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
@@ -67,7 +68,7 @@ const ProductInfo = ({ product }) => {
   useEffect(() => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
-      setEndPrice(activeOption?.endPrice); //TODO : handl endprice from BE --done
+      setEndPrice(priceCalc(product, activeOption)?.endPrice);
     } else setPrice(product?.price);
   }, [activeOption]);
 
@@ -257,9 +258,9 @@ const ProductInfo = ({ product }) => {
       </div>
       <Container>
         <h4 className="text-[18px] mt-[16px] max-w-[84%]">{product?.name}</h4>
-        {price === endPrice ? (
+        {!priceCalc(product)?.hasDiscount ? (
           <b className="text-[22px] block">
-            {Number(endPrice).toLocaleString("en")}{" "}
+            {Number(price).toLocaleString("en")}{" "}
             <span className="text-[14px]">د.ع</span>
           </b>
         ) : (
