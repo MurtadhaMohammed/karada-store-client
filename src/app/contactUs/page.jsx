@@ -1,8 +1,24 @@
+"use client";
 import React from "react";
-import { MdWhatsapp , MdLocationOn , MdFacebook , MdOutlineNorthWest} from "react-icons/md";
+import {
+  MdWhatsapp,
+  MdLocationOn,
+  MdFacebook,
+  MdOutlineNorthWest,
+} from "react-icons/md";
 import { FaInstagram } from "react-icons/fa";
+import { useAppStore } from "@/lib/store";
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 const Contact = () => {
+  const {platform, setPlatform} = useAppStore();
+    const searchParams = useSearchParams();
+    
+    useEffect(() => {
+      const platformQuery = searchParams.get("platform");
+      setPlatform(platformQuery);
+    }, []);
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 py-12 p-4 mb-6">
       <div className="flex flex-col items-center mb-4">
@@ -24,7 +40,7 @@ const Contact = () => {
         </p>
       </div>
       <div className="w-full max-w-[450px] mx-auto bg-white p-4 rounded-lg shadow-lg">
-      <h2 className="text-lg font-bold text-gray-700 mb-4">العنوان</h2>
+        <h2 className="text-lg font-bold text-gray-700 mb-4">العنوان</h2>
         <a
           href="https://maps.app.goo.gl/gTsAkKSuJDC3o5vs9"
           target="_blank"
@@ -40,36 +56,28 @@ const Contact = () => {
 
         <ul className="space-y-4">
           <li className="border-b pb-3">
-            <h3 className="text-md font-semibold text-gray-700">
-              قسم الكيمنك
-            </h3>
+            <h3 className="text-md font-semibold text-gray-700">قسم الكيمنك</h3>
             <div className="flex items-center text-gray-600">
               <MdWhatsapp className="text-green-500 text-lg" />
-              <p className="mr-2">
-                07704772836
-              </p>
+              <p className="mr-2">07704772836</p>
               <a
-              href="https://wa.me/9647704772836"
-              className="mr-auto"
-              target="_blank"
-              rel="noopener noreferrer"
+                href="https://wa.me/9647704772836"
+                className="mr-auto"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-600 ">
-                <MdOutlineNorthWest className="text-[#25D366] text-lg" />
-              </div>
+                  <MdOutlineNorthWest className="text-[#25D366] text-lg" />
+                </div>
               </a>
             </div>
           </li>
 
           <li className="border-b pb-3">
-            <h3 className="text-md font-semibold text-gray-700">
-              قسم الهواتف
-            </h3>
+            <h3 className="text-md font-semibold text-gray-700">قسم الهواتف</h3>
             <div className="flex items-center text-gray-600">
               <MdWhatsapp className="text-green-500 text-lg" />
-              <p className="mr-2">
-                07740300006
-              </p>
+              <p className="mr-2">07740300006</p>
               <a
                 href="https://wa.me/9647740300006"
                 className="mr-auto"
@@ -77,16 +85,14 @@ const Contact = () => {
                 rel="noopener noreferrer"
               >
                 <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-600 mr-auto">
-                <MdOutlineNorthWest className="text-[#25D366] text-lg" />
-              </div>
+                  <MdOutlineNorthWest className="text-[#25D366] text-lg" />
+                </div>
               </a>
             </div>
           </li>
 
           <li>
-            <h3 className="text-md font-semibold text-gray-700">
-              قسم الصيانة
-            </h3>
+            <h3 className="text-md font-semibold text-gray-700">قسم الصيانة</h3>
             <div className="flex items-center text-gray-600">
               <MdWhatsapp className="text-green-500 text-lg" />
               <p className="mr-2">07722229656</p>
@@ -96,9 +102,9 @@ const Contact = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                 <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-600 mr-auto">
-                <MdOutlineNorthWest className="text-[#25D366] text-lg" />
-              </div>
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-600 mr-auto">
+                  <MdOutlineNorthWest className="text-[#25D366] text-lg" />
+                </div>
               </a>
             </div>
           </li>
@@ -122,7 +128,23 @@ const Contact = () => {
           </li>
           <li className="flex items-center text-gray-600">
             <MdFacebook className="text-blue-500 text-lg" />
-            <a
+           {platform === "ios" || platform === "android" ? (
+             <a
+              href="https://www.facebook.com/share/12L3UWLmmvZ/?mibextid=wwXIfr"
+              className="mr-2"
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  "https://www.facebook.com/share/12L3UWLmmvZ/?mibextid=wwXIfr",
+                  "_blank",
+                  "noopener,noreferrer"
+                );
+              }}
+            >
+              فيسبوك
+            </a>
+            ) : (
+              <a
               href="https://www.facebook.com/karada.gaming"
               className="mr-2"
               target="_blank"
@@ -130,6 +152,7 @@ const Contact = () => {
             >
               فيسبوك
             </a>
+            )}
           </li>
         </ul>
       </div>
