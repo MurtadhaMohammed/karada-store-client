@@ -36,10 +36,7 @@ const Drawer = ({
           [position === "left" ? "paddingLeft" : "paddingRight"]: 40,
         }}
       >
-        <div className="w-full h-full relative">
-
-        {children}
-        </div>
+        <div className="w-full h-full relative">{children}</div>
       </motion.div>
 
       {/* Overlay (clicking it will close the drawer) */}

@@ -13,11 +13,6 @@ const GridBanner = ({
   bannerAlignment,
   banner,
 }) => {
-  const parseGridCols = () => {
-    let cols = Math.ceil(grid?.length / 2);
-    return cols < 2 ? 2 : cols;
-  };
-
   return (
     <div className="py-[16px]">
       <Container>
@@ -34,16 +29,17 @@ const GridBanner = ({
             banner && (
               <Link href={link}>
                 <div
-                  className={`bg-[#eee] rounded-[12px] flex items-center justify-center ${
+                  className={`bg-[#eee] rounded-[12px] flex items-center justify-center pure-skeleton relative overflow-hidden ${
                     ["top", "bottom"].includes(bannerAlignment)
                       ? "w-full aspect-[3/1]" // Wide for top/bottom
                       : "h-full aspect-[1/1]" // Square for left/right
                   }`}
                 >
-                  <img
+                  <Image
                     src={`${IMAGE_URL}/${bannerImage}`}
-                    className="w-full h-full object-cover rounded-[12px]"
+                    className="w-full h-full object-cover "
                     alt=""
+                    fill
                   />
                 </div>
               </Link>
@@ -51,18 +47,21 @@ const GridBanner = ({
 
           {/* Grid Items */}
           <div
-            className={`grid gap-2 relative ${`grid-cols-${parseGridCols()}`}`}
+            className={`grid gap-2 relative ${`grid-cols-${
+              ["top", "bottom"].includes(bannerAlignment) ? grid?.length : 2
+            }`}`}
           >
             {grid?.map((_, i) => (
               <div
                 key={i}
-                className="w-full aspect-w-1 aspect-h-1 bg-[#eee] rounded-[12px] overflow-hidden"
+                className="w-full aspect-w-1 aspect-h-1 bg-[#eee] rounded-[12px] overflow-hidden relative"
               >
-                <Link href={_.link}>
-                  <img
+                <Link href={_.link} className="pure-skeleton">
+                  <Image
                     src={`${IMAGE_URL}/${_.image}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
+                    fill
                   />
                 </Link>
               </div>
@@ -74,16 +73,17 @@ const GridBanner = ({
             banner && (
               <Link href={link}>
                 <div
-                  className={`bg-[#eee] rounded-[12px] flex items-center justify-center ${
+                  className={`bg-[#eee] rounded-[12px] pure-skeleton relative flex items-center justify-center ${
                     ["top", "bottom"].includes(bannerAlignment)
                       ? "w-full aspect-[3/1]" // Wide for top/bottom
                       : "h-full aspect-[1/1]" // Square for left/right
                   }`}
                 >
-                  <img
+                  <Image
                     src={`${IMAGE_URL}/${bannerImage}`}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
+                    fill
                   />
                 </div>
               </Link>

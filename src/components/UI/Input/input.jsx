@@ -13,7 +13,7 @@ const Input = ({ hint, value, prefix = null, onChange, type = "text", disabled }
       <label
         className={`absolute right-[16px] transition-all duration-200  ${
           isFocus || value
-            ? "top-[-10px] text-sm text-black bg-white block pl-[6px] pr-[6px]"
+            ? "top-[-10px] text-sm text-black bg-white rounded-md block pl-[6px] pr-[6px]"
             : "top-[11px] text-[#a5a5a5]"
         }`}
         style={{ pointerEvents: "none" }}

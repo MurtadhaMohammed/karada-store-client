@@ -7,11 +7,17 @@ const Invoice = () => {
   const { voucher, cart } = useCartStore();
   const { settings } = useAppStore();
 
-  console.log("settings", settings);
-  const subTotal = cart.reduce(
+  const total = cart.reduce(
     (total, item) => total + item?.product?.price * item.qt,
     0
   );
+
+  const subTotal = cart.reduce(
+    (total, item) => total + item?.product?.endPrice * item.qt,
+    0
+  );
+  console.log("settings", settings);
+
   const delivery_cost =
     subTotal > 1000000
       ? parseInt(settings?.extraDelivery) || 0
@@ -46,7 +52,7 @@ const Invoice = () => {
   }
 
   const totalDiscount = (productDiscount || 0) + (voucherDiscount || 0);
-  const realTotal = subTotal - totalDiscount + delivery_cost;
+  const realTotal = subTotal + delivery_cost;
 
   const roundToNearest250 = (num) => {
     const total = Math.ceil(num / 250) * 250;
@@ -65,7 +71,7 @@ const Invoice = () => {
         <div className="rounded-[8px] border border-[#eee] p-[16px]">
           <div className="flex items-center justify-between">
             <p>المجموع</p>
-            <p>{subTotal.toLocaleString()} د.ع</p>
+            <p>{total.toLocaleString()} د.ع</p>
           </div>
           {totalDiscount > 0 && (
             <div className="flex items-center justify-between mt-[8px]">

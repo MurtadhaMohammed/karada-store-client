@@ -14,7 +14,6 @@ import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { isEnglish } from "@/helper/isEnglish";
-import Skeleton from "./skeleton";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -116,7 +115,7 @@ const CartItem = ({ item, outOfStock = false }) => {
 };
 
 const CartList = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { cart, setCart, getItemsTotal, getTotal } = useCartStore();
   const total = getTotal();
@@ -125,6 +124,7 @@ const CartList = () => {
 
   useEffect(() => {
     router.prefetch("/checkout");
+    router.prefetch("/login");
   }, [router]);
 
   const productId = useMemo(() => {
@@ -190,25 +190,12 @@ const CartList = () => {
 
   return (
     <div className="mb-[16px]">
-      <div className="bg-white py-[16px]">
-        <Container>
-          <InstallmentBanner className={"none"} price={total}/>
-        </Container>
-      </div>
-      {loading ? (
-        <Skeleton />
-      ) : (
-        getItemsTotal() !== 0 && (
-          <>
-            {cart?.map((el, i) => (
-              <CartItem key={i} item={el} />
-            ))}
-          </>
-        )
-      )}
+      {cart?.map((el, i) => (
+        <CartItem key={i} item={el} />
+      ))}
 
       <RelatedList productId={productId} />
-      <CartCTA />
+      <CartCTA loading={loading} />
     </div>
   );
 };

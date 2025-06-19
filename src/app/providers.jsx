@@ -54,14 +54,6 @@ export function ReactQueryProvider({ fontStyle, children }) {
     }
   };
 
-  // const initDevice = async () => {
-  //   if (typeof window !== "undefined") {
-  //     const parser = new UAParser();
-  //     const result = parser.getResult();
-  //     setDeviceOSName(result?.os?.name);
-  //   }
-  // };
-
   const initFav = () => {
     if (typeof window !== "undefined") {
       const storedFavorites =

@@ -1,15 +1,10 @@
 "use client";
 import { BsCreditCard2Front } from "react-icons/bs";
 import { useEffect, useState } from "react";
-import {
-  MasterCardModal,
-} from "./MasterCardModal/masterCardModal";
-import {
-  useBottomSheetModal,
-} from "@/components/UI/BottomSheetModal/bottomSheetModal";
+import { MasterCardModal } from "./MasterCardModal/masterCardModal";
+import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import { useAppStore } from "@/lib/store";
 import { InstallmentModal } from "./InstallmentModal/InstallmentModal";
-
 
 const Payments = () => {
   const [selected, setSelected] = useState("cash");
@@ -46,7 +41,7 @@ const Payments = () => {
     {
       value: "installment",
       label: "شراء بالتقسيط",
-      disabled: false,
+      disabled: true,
       onClick: handleInstallmentClick,
     },
   ];
@@ -74,10 +69,15 @@ const Payments = () => {
               el?.value === selected
                 ? "border border-violet-600"
                 : "border border-[#eee]"
-            } transition-all ${el.disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+            } transition-all ${
+              el.disabled ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
             <div>
               <p>{el.label}</p>
+              {el?.value === "installment" && el?.disabled && (
+                <small>خدمة الاقساط متوقفه حاليآ.</small>
+              )}
               {el?.value === selected && cardInfo?.number && (
                 <p className={"text-[#a5a5a5] text-[12px]"}>
                   {cardInfo?.number}
@@ -85,7 +85,7 @@ const Payments = () => {
               )}
             </div>
             <div
-               className={`w-[25px] h-[25px] flex items-center justify-center rounded-full border-2 ${
+              className={`w-[25px] h-[25px] flex items-center justify-center rounded-full border-2 ${
                 el?.value === selected ? "border-violet-600" : "border-[#ccc]"
               } rounded-full`}
             >
