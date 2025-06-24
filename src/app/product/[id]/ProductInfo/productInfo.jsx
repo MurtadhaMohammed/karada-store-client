@@ -69,7 +69,10 @@ const ProductInfo = ({ product }) => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
       setEndPrice(priceCalc(product, activeOption)?.endPrice);
-    } else setPrice(product?.price);
+    } else {
+      setPrice(product?.price);
+      setEndPrice(priceCalc(product)?.endPrice);
+    }
   }, [activeOption]);
 
   useEffect(() => {
@@ -275,7 +278,7 @@ const ProductInfo = ({ product }) => {
           </div>
         )}
 
-        {product.out_of_stock ? (
+        {(activeOption && !activeOption?.in_stock) || product.out_of_stock ? (
           <p className="text-[14px] text-red-600 mt-[8px]">
             هذا المنتج غير متوفر حالياً
           </p>

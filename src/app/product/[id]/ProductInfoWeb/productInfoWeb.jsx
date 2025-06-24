@@ -91,9 +91,10 @@ const ProductInfoWeb = ({ product }) => {
   useEffect(() => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
-       setEndPrice(priceCalc(product, activeOption)?.endPrice);
+      setEndPrice(priceCalc(product, activeOption)?.endPrice);
     } else {
       setPrice(product?.price);
+      setEndPrice(priceCalc(product)?.endPrice);
     }
   }, [activeOption]);
 
@@ -219,7 +220,7 @@ const ProductInfoWeb = ({ product }) => {
               </a>
             </div>
             <h4 className="text-[18px]">{product?.name}</h4>
-            {!priceCalc(product)?.hasDiscount  ? (
+            {!priceCalc(product)?.hasDiscount ? (
               <b className="text-[22px] block">
                 {Number(endPrice).toLocaleString("en")}{" "}
                 <span className="text-[14px]">IQD</span>
@@ -239,7 +240,8 @@ const ProductInfoWeb = ({ product }) => {
             {/* <p className="text-[14px] text-gray-600 mt-[8px]">
               {product?.description}
             </p> */}
-            {product.out_of_stock ? (
+            {(activeOption && !activeOption?.in_stock) ||
+            product?.out_of_stock ? (
               <p className="text-[14px] text-red-600 mt-[8px]">
                 هذا المنتج غير متوفر حالياً
               </p>
@@ -250,7 +252,9 @@ const ProductInfoWeb = ({ product }) => {
             {product?.code && (
               <div className="flex items-center mt-2">
                 <span className="text-[14px] text-gray-500">كود المنتج:</span>
-                <span className="ml-2 text-[14px] font-mono bg-[#f6f6f6] px-2 py-1 rounded">{product.code}</span>
+                <span className="ml-2 text-[14px] font-mono bg-[#f6f6f6] px-2 py-1 rounded">
+                  {product.code}
+                </span>
               </div>
             )}
             <div className="flex items-center mt-[16px]">

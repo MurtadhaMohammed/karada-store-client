@@ -2,8 +2,8 @@ import Image from "next/image";
 import { useAppStore } from "@/lib/store";
 const InstallmentBanner = ({ price, margin = 0 }) => {
   const { settings } = useAppStore();
-   const installedPrice =
-    (price * settings?.installment) / 10 || (price * 1.2) / 10;
+  const installedPrice =
+    (price * parseInt(settings?.installment)) / 10 || (price * 1.2) / 10;
 
   return (
     <div
@@ -21,8 +21,9 @@ const InstallmentBanner = ({ price, margin = 0 }) => {
         </div>
         <div>
           <p className="text-[14px] block tight-custom flex-1">
-            قسط طلبك وادفع IQD {Number(installedPrice).toLocaleString("en")}{" "}
-            بالشهر ولمدة 10 اشهر لحاملي بطاقة كي كارد من مصرف الرافدين
+            قسط طلبك وادفع{" "}
+            <b>{Number(installedPrice).toLocaleString("en")} د.ع </b> بالشهر
+            ولمدة 10 اشهر لحاملي بطاقة كي كارد من مصرف الرافدين
           </p>
         </div>
       </div>

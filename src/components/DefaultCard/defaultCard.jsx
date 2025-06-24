@@ -43,8 +43,7 @@ const DefaultCard = ({
 
       {priceCalc(item)?.hasDiscount && (
         <div className="absolute top-3 right-3 z-10 p-[6px] pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
-          خصم {Number(priceCalc(item)?.discountValue).toLocaleString("en")}{" "}
-          د.ع
+          خصم {Number(priceCalc(item)?.discountValue).toLocaleString("en")} د.ع
         </div>
       )}
 
@@ -112,14 +111,13 @@ const DefaultCard = ({
             <h2 className="font-semibold text-black text-[14px] overflow-hidden text-ellipsis whitespace-normal line-clamp-2">
               {item?.name}
             </h2>
-
             <p
               className={`text-gray-600 text-[14px] mt-[1px] whitespace-nowrap overflow-hidden text-ellipsis`}
             >
               {item?.shortDescription}
             </p>
           </div>
-          <div className="flex items-end justify-between mt-[8px]">
+          <div className="mt-[2px]">
             {priceCalc(item).hasDiscount && (
               <h4 className="text-[14px] font-normal text-[#a5a5a5] line-through">
                 {Number(item?.price).toLocaleString("en")}
@@ -130,23 +128,7 @@ const DefaultCard = ({
               {Number(priceCalc(item)?.endPrice).toLocaleString("en")}
               <span className="text-[12px]"> د.ع </span>
             </h4>
-            {/* <div>
-              {item?.price !== item?.endPrice && (
-                <h4 className="text-[14px] font-normal text-[#a5a5a5] line-through">
-                  {Number(item?.price).toLocaleString("en")}
-                  <span className="text-[12px]"> د.ع </span>
-                </h4>
-              )}
-
-              <h4 className="text-[16px] font-extrabold -mt-1">
-                {Number(item?.endPrice).toLocaleString("en")}
-                <span className="text-[12px]"> د.ع </span>
-              </h4>
-            </div> */}
-            {/* <div className="flex gap-1">
-              <span className="text-[14px] mt-[4.5px]">3.4</span>
-              <PiStarFill className="text-[16px] mt-[6px] text-[#FCA120]" />
-            </div> */}
+           
           </div>
         </div>
       </Link>
