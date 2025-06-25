@@ -39,7 +39,12 @@ export function ReactQueryProvider({ fontStyle, children }) {
     if (typeof window !== "undefined") {
       const queryParams = new URLSearchParams(window.location.search);
       const platformQuery = queryParams.get("platform");
-      if (platformQuery === "android") value = "80%";
+      if (
+        platformQuery === "android" ||
+        platformQuery === "Android" ||
+        platformQuery === "ANDROID"
+      )
+        value = "60%";
       const style = document.createElement("style");
       style.innerHTML = `html { -webkit-text-size-adjust: ${value} !important; }`;
       document.head.appendChild(style);
