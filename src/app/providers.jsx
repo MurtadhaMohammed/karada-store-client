@@ -38,7 +38,7 @@ export function ReactQueryProvider({ fontStyle, children }) {
     if (typeof window !== "undefined") {
       const ua = navigator.userAgent.toLowerCase();
       let value = "100%";
-      if (ua.includes("android") && ua.includes("samsungbrowser")) {
+      if (ua.includes("android") || ua.includes("samsungbrowser")) {
         value = "80%";
       }
       const style = document.createElement("style");
