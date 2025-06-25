@@ -31,7 +31,20 @@ export function ReactQueryProvider({ fontStyle, children }) {
     // initDevice();
     initPlatform();
     initSettings();
+    initFontSize();
   }, []);
+
+  const initFontSize = () => {
+    let value = "100%";
+    if (typeof window !== "undefined") {
+      const queryParams = new URLSearchParams(window.location.search);
+      const platformQuery = queryParams.get("platform");
+      if (platformQuery === "android") value = "80%";
+      const style = document.createElement("style");
+      style.innerHTML = `html { -webkit-text-size-adjust: ${value} !important; }`;
+      document.head.appendChild(style);
+    }
+  };
 
   const initSettings = async () => {
     try {
