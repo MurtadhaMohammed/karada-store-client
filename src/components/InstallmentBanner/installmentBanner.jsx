@@ -3,8 +3,8 @@ import { useAppStore } from "@/lib/store";
 const InstallmentBanner = ({ price, margin = 0 }) => {
   const { settings } = useAppStore();
   const installedPrice =
-    (price * parseInt(settings?.installment)) / 10 || (price * 1.2) / 10;
-
+    (price * parseFloat(settings?.installment)) / 10 || (price * 1.2) / 10;
+    
   return (
     <div
       className={`bg-[#f6f6f6] rounded-[8px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] border border-[#eee] shadow-md active:scale-[0.96] active:opacity-50 transition-all pointer-events-none select-none`}
