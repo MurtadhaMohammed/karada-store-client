@@ -1,7 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import { useAppStore } from "./store";
 
-// export const URL = "http://localhost:3003/api";
+// export const URL = "http://localhost:3002/api";
 export const URL = process.env.NEXT_PUBLIC_API_URL;
 // export const URL = "https://store.puretik.com/api";
 // export const URL = "http://85.208.51.126:3002/api";

@@ -23,6 +23,7 @@ import "swiper/css/navigation";
 import ProductCTA from "../ProductCTA/ProductCTA";
 import { useAppStore } from "@/lib/store";
 import { BsExclamation } from "react-icons/bs";
+import { priceCalc } from "@/helper/priceCalc";
 
 const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
@@ -67,8 +68,11 @@ const ProductInfo = ({ product }) => {
   useEffect(() => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
-      setEndPrice(activeOption?.endPrice); //TODO : handl endprice from BE --done
-    } else setPrice(product?.price);
+      setEndPrice(priceCalc(product, activeOption)?.endPrice);
+    } else {
+      setPrice(product?.price);
+      setEndPrice(priceCalc(product)?.endPrice);
+    }
   }, [activeOption]);
 
   useEffect(() => {
@@ -111,7 +115,7 @@ const ProductInfo = ({ product }) => {
 
   const isAddToCartDisabled =
     (product?.options?.length > 0 && activeOption === null) ||
-    product?.out_of_stock;
+    product.out_of_stock;
 
   const shownimages =
     activeOption?.images?.length > 0
@@ -257,9 +261,9 @@ const ProductInfo = ({ product }) => {
       </div>
       <Container>
         <h4 className="text-[18px] mt-[16px] max-w-[84%]">{product?.name}</h4>
-        {price === endPrice ? (
+        {!priceCalc(product)?.hasDiscount ? (
           <b className="text-[22px] block">
-            {Number(endPrice).toLocaleString("en")}{" "}
+            {Number(price).toLocaleString("en")}{" "}
             <span className="text-[14px]">د.ع</span>
           </b>
         ) : (
@@ -274,7 +278,7 @@ const ProductInfo = ({ product }) => {
           </div>
         )}
 
-        {product?.out_of_stock ? (
+        {(activeOption && !activeOption?.in_stock) || product.out_of_stock ? (
           <p className="text-[14px] text-red-600 mt-[8px]">
             هذا المنتج غير متوفر حالياً
           </p>

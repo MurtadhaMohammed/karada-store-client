@@ -4,59 +4,16 @@ import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 
 const Invoice = () => {
-  const { voucher, cart } = useCartStore();
+  const { voucher, getTotal, getSubTotal } = useCartStore();
   const { settings } = useAppStore();
-
-  const total = cart.reduce((total, item) => {
-    // If there's a selected option (l1), use its price, otherwise use product price
-    const basePrice = item?.product?.l1?.price || item?.product?.price;
-    return total + basePrice * item.qt;
-  }, 0);
-
-  const subTotal = cart.reduce((total, item) => {
-    // Check if product has a valid discount (at product level)
-    const isValidProductDiscount =
-      item?.product?.endPrice &&
-      item?.product?.endPrice < item?.product?.price &&
-      item?.product?.endPrice_date &&
-      new Date(item?.product?.endPrice_date) > new Date();
-
-    // If there's a selected option (l1), use its pricing
-    if (item?.product?.l1) {
-      const option = item.product.l1;
-      // If product has valid discount, use option's endPrice, otherwise use option's price
-      const priceToUse = isValidProductDiscount
-        ? option.endPrice
-        : option.price;
-      return total + priceToUse * item.qt;
-    }
-
-    // Fallback to product pricing if no option selected
-    const priceToUse = isValidProductDiscount
-      ? item?.product?.endPrice
-      : item?.product?.price;
-    return total + priceToUse * item.qt;
-  }, 0);
+  const total = getTotal();
+  const subTotal = getSubTotal();
+  const totalDiscount = subTotal - total;
 
   const delivery_cost =
     subTotal > 1000000
       ? parseInt(settings?.extraDelivery) || 0
       : parseInt(settings?.delivery) || 0;
-
-  // Updated product discount calculation
-  const productDiscount = cart.reduce((total, item) => {
-    // Check if endPrice is valid and in the future
-    const isValidEndPrice =
-      item?.product?.endPrice &&
-      item?.product?.endPrice < item?.product?.price &&
-      new Date(item?.product?.endPrice_date) > new Date();
-
-    const discount = isValidEndPrice
-      ? (item?.product?.price - item?.product?.endPrice) * item.qt
-      : 0;
-
-    return total + discount;
-  }, 0);
 
   let voucherDiscount = 0;
   if (voucher) {
@@ -71,12 +28,11 @@ const Invoice = () => {
     }
   }
 
-  const totalDiscount = (productDiscount || 0) + (voucherDiscount || 0);
-  const realTotal = subTotal + delivery_cost;
+  const realTotal = total + delivery_cost;
 
   const roundToNearest250 = (num) => {
-    const total = Math.ceil(num / 250) * 250;
-    return total < 0 ? 0 : total;
+    const _total = Math.ceil(num / 250) * 250;
+    return _total < 0 ? 0 : _total;
   };
 
   const roundedTotal = roundToNearest250(realTotal || 0);
@@ -91,25 +47,27 @@ const Invoice = () => {
         <div className="rounded-[8px] border border-[#eee] p-[16px]">
           <div className="flex items-center justify-between">
             <p>المجموع</p>
-            <p>{total.toLocaleString()} د.ع</p>
+            <p>{total?.toLocaleString("en")} د.ع</p>
           </div>
           {totalDiscount > 0 && (
             <div className="flex items-center justify-between mt-[8px]">
               <p>قيمة الخصم</p>
               <p className="text-red-500">
-                {totalDiscount.toLocaleString()}- د.ع
+                {totalDiscount?.toLocaleString("en")}- د.ع
               </p>
             </div>
           )}
           <div className="flex items-center justify-between mt-[8px]">
             <p>كلفة التوصيل</p>
-            <p>{delivery_cost.toLocaleString()} د.ع</p>
+            <p>{delivery_cost?.toLocaleString("en")} د.ع</p>
           </div>
         </div>
 
         <div className="flex items-center justify-between rounded-[8px] border border-[#eee] p-[16px] pt-[8px] pb-[8px] mt-[8px]">
           <p className="text-[#666]">المبلغ النهائي</p>
-          <b className="text-[24px]">{roundedTotal.toLocaleString()} د.ع</b>
+          <b className="text-[24px]">
+            {roundedTotal?.toLocaleString("en")} د.ع
+          </b>
         </div>
       </div>
     </div>

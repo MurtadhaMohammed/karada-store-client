@@ -12,8 +12,8 @@ import { apiCall, IMAGE_URL } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
 import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
-import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { isEnglish } from "@/helper/isEnglish";
+import { priceCalc } from "@/helper/priceCalc";
 
 const QtButton = ({ value, product }) => {
   const { increase, decrease, removeItem } = useCartStore();
@@ -50,13 +50,6 @@ const CartItem = ({ item, outOfStock = false }) => {
     return image;
   };
 
-  // Check if product has a valid discount (at product level)
-  const isValidProductDiscount =
-    item?.product?.endPrice &&
-    item?.product?.endPrice < item?.product?.price &&
-    item?.product?.endPrice_date &&
-    new Date(item?.product?.endPrice_date) > new Date();
-
   return (
     <div className="border-b border-b-[#eee] pt-[24px] pb-[16px] bg-white">
       <Container>
@@ -89,20 +82,24 @@ const CartItem = ({ item, outOfStock = false }) => {
             </div>
             {!outOfStock ? (
               <div className="flex items-end justify-between w-full">
-                {isValidProductDiscount ? (
+                {priceCalc(item?.product)?.hasDiscount ? (
                   <div className="flex flex-col items-start">
                     <p className="text-[14px] block line-through text-[#a5a5a5]">
-                      {Number(item.product.price).toLocaleString("en")}
+                      {Number(
+                        priceCalc(item?.product, item?.product?.l1)?.price
+                      ).toLocaleString("en")}
                     </p>
                     <b className="text-[16px]">
-                      {Number(item.product.endPrice).toLocaleString("en")}{" "}
+                      {Number(
+                        priceCalc(item?.product, item?.product?.l1)?.endPrice
+                      ).toLocaleString("en")}{" "}
                       <span className="text-[14px]">د.ع</span>
                     </b>
                   </div>
                 ) : (
                   <b className="text-[16px]">
                     {Number(
-                      item?.product?.l1?.price || item?.product?.price
+                      priceCalc(item?.product, item?.product?.l1)?.price
                     ).toLocaleString("en")}{" "}
                     <span className="text-[14px]">د.ع</span>
                   </b>

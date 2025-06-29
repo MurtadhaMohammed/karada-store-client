@@ -22,7 +22,6 @@ const CheckoutCTA = () => {
     setOtp,
     isLogin,
     isPhoneValidated,
-    validateAddress,
     setValidateAddress,
     setNote,
     note,
@@ -34,9 +33,9 @@ const CheckoutCTA = () => {
     setInstallmentOrder,
     setErrorMessage,
   } = useAppStore();
-  const { cart, clearCart } = useCartStore();
+  const { cart, clearCart, getTotal } = useCartStore();
   const voucher = useCartStore((state) => state.voucher);
-  const { openModal, closeModal } = useBottomSheetModal();
+  const { closeModal } = useBottomSheetModal();
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
@@ -49,25 +48,7 @@ const CheckoutCTA = () => {
   const [showRedirectModal, setShowRedirectModal] = useState(false);
   const [order, setOrder] = useState(null);
 
-  const calculateTotalPrice = useMemo(() => {
-    return cart.reduce((total, item) => {
-      // Check if product has a valid discount (at product level)
-      const isValidProductDiscount =
-        item?.product?.endPrice &&
-        item?.product?.endPrice < item?.product?.price &&
-        item?.product?.endPrice_date &&
-        new Date(item?.product?.endPrice_date) > new Date();
-
-      // If product has valid discount, ignore l1 and use product endPrice
-      if (isValidProductDiscount) {
-        return total + item?.product?.endPrice * item.qt;
-      }
-
-      // If no discount, use l1 price if available, otherwise product price
-      const priceToUse = item?.product?.l1?.price || item?.product?.price;
-      return total + priceToUse * item.qt;
-    }, 0);
-  }, [cart]);
+  const calculateTotalPrice = getTotal();
 
   const deliveryCost = useMemo(() => {
     return calculateTotalPrice >= 1000000
@@ -88,7 +69,7 @@ const CheckoutCTA = () => {
       id: item.product.id,
       qt: item.qt,
       store_id: item.product.store_id,
-      l1: item.product.l1,
+      l1: item.product.l1?.uuid,
     }));
   }, [cart]);
   useEffect(() => {
@@ -123,7 +104,6 @@ const CheckoutCTA = () => {
   const handleOrderCreation = async () => {
     try {
       setLoading(true);
-
       const result = await createOrder({
         order,
         isLogin,
@@ -135,6 +115,7 @@ const CheckoutCTA = () => {
         installmentId,
         delivery_cost: deliveryCost || 0,
         note,
+        installmentFee: 0,
         setErrorMessage,
       });
 
@@ -185,6 +166,7 @@ const CheckoutCTA = () => {
         store_id: 1,
         order_type: "Installment",
         platform,
+        installmentFee: settings?.installment,
         installmentId,
         note,
       });

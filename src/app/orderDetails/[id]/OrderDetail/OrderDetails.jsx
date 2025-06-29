@@ -10,14 +10,12 @@ import OrdersDetailsSkeleton from "../Skeleton/skeleton";
 import Link from "next/link";
 import { BiCopy, BiCheck, BiSupport } from "react-icons/bi";
 import { FcCancel } from "react-icons/fc";
-import RelatedList from "../RelatedList/relatedList";
 import ConfirmModal from "@/components/ConfirmModal/confirmModal";
+import { priceCalc } from "@/helper/priceCalc";
 
 const OrderDetails = ({ params }) => {
   const [discounts, setDiscounts] = useState([]);
   const [createdAt, setCreatedAt] = useState(null);
-  const [isInstallment, setIsInstallment] = useState(false);
-
   const [copied, setCopied] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const { data: order, isLoading } = useQuery({
@@ -40,7 +38,6 @@ const OrderDetails = ({ params }) => {
     if (!order?.id) return;
     setDiscounts(order?.discount);
     setCreatedAt(order?.created_at);
-    setIsInstallment(order?.installment_id ? true : false);
   }, [order]);
 
   const productId = useMemo(() => {
@@ -49,6 +46,20 @@ const OrderDetails = ({ params }) => {
       return order.items[randomIndex]?.id;
     }
   }, [order]);
+
+  const handleDiscount = (id) => {
+    if (!id) return 1;
+    const validDiscount = discounts.find((discount) => {
+      const startDate = new Date(discount.start_at);
+      const endDate = new Date(discount.end_at);
+      const createdDate = new Date(createdAt);
+      const isActive = discount.active;
+      const isWithinRange = endDate > createdDate && startDate <= createdDate;
+      return discount.id === id && isActive && isWithinRange;
+    });
+    const discountValue = validDiscount ? (100 - validDiscount.value) / 100 : 1;
+    return discountValue;
+  };
 
   const order_status = order?.order_status || "Created"; // Default status to prevent errors
   const address = order?.address || "غير متوفر";
@@ -83,7 +94,7 @@ const OrderDetails = ({ params }) => {
       text: "تم الغاء طلبك",
     },
   };
-  const { setPageTitle, settings } = useAppStore();
+  const { setPageTitle } = useAppStore();
 
   useEffect(() => {
     setPageTitle("تفاصيل الطلب");
@@ -159,19 +170,18 @@ const OrderDetails = ({ params }) => {
 
             <div className="p-[16px]">
               {order?.items?.map((item, i) => {
+                const displayPrice =
+                  item?.endPrice || item.l1?.price || item.price;
+
                 const isDiscountValid =
-                  typeof item?.endPrice === "number" &&
-                  typeof item?.price === "number" &&
-                  item.endPrice < item.price &&
+                  item?.endPrice &&
+                  item?.endPrice < item?.price &&
                   item?.endPrice_date &&
                   new Date(item.endPrice_date) > new Date();
 
-                const displayPrice = isDiscountValid
-                  ? item.endPrice
-                  : item.l1?.price ?? item.price;
-
-                const showStrikeThrough = isDiscountValid && item.qt > 0;
-
+                const shouldStrikeThrough =
+                  displayPrice >
+                  displayPrice * handleDiscount(item?.discount_id || null);
                 return (
                   <div
                     key={i}
@@ -199,27 +209,27 @@ const OrderDetails = ({ params }) => {
 
                       {/* Price */}
                       <div className="text-sm font-bold flex flex-col items-center justify-center shrink-0">
-                        {showStrikeThrough ? (
+                        {priceCalc(item)?.hasDiscount ? (
                           <div className="flex flex-col item-end">
                             <p className="line-through text-gray-400">
-                              {Number(item.price).toLocaleString("en")} د.ع
+                              {Number(
+                                priceCalc(item, item?.l1)?.price * item?.qt
+                              ).toLocaleString("en")}{" "}
+                              د.ع
                             </p>
                             <p className="text-[15px]">
-                              {item.qt > 1 && `${item.qt} * `}
-                              {Number(item.endPrice * item.qt).toLocaleString(
-                                "en"
-                              )}{" "}
+                              {item?.qt > 1 && `${item?.qt} * `}
+                              {Number(
+                                priceCalc(item, item?.l1)?.endPrice * item?.qt
+                              ).toLocaleString("en")}{" "}
                               د.ع
                             </p>
                           </div>
                         ) : (
                           <div className="flex item-center justify-center">
                             <p className="text-center">
-                              {item.qt > 1 && `${item.qt} * `}
-                              {Number(displayPrice * item.qt).toLocaleString(
-                                "en"
-                              )}{" "}
-                              د.ع
+                              {item?.qt > 1 && `${item?.qt} * `}
+                              {Number(item.price).toLocaleString("en")} د.ع
                             </p>
                           </div>
                         )}
@@ -240,7 +250,7 @@ const OrderDetails = ({ params }) => {
                     <b className="text-[16px]">{order?.note}</b>
                   )}
                 </div>
-                {order.voucher && (
+                {order?.voucher && (
                   <>
                     <div className="w-[100%] h-[1px] bg-[#eee]" />
                     <div className="flex item-center justify-between w-full">
@@ -251,8 +261,7 @@ const OrderDetails = ({ params }) => {
                     </div>
                   </>
                 )}
-
-                {totalBeforeDiscount() !== order?.total_price && (
+                {/* {totalBeforeDiscount() !== order?.total_price && (
                   <>
                     <div className="w-[100%] h-[1px] bg-[#eee]" />
                     <div className="flex item-center justify-between w-full">
@@ -265,22 +274,7 @@ const OrderDetails = ({ params }) => {
                       </b>
                     </div>
                   </>
-                )}
-                {order?.order_type?.toLowerCase() === "installment" && (
-                  <>
-                    <div className="w-[100%] h-[1px] bg-[#eee]" />
-                    <div className="flex item-center justify-between w-full">
-                      <p>مبلغ الاقساط : </p>
-                      <b className="text-[16px]">
-                        {Number(
-                          (order?.total_price * (settings?.installment || 1)) /
-                            10 || 0
-                        ).toLocaleString("en")}{" "}
-                        د.ع
-                      </b>
-                    </div>
-                  </>
-                )}
+                )} */}
                 <div className="w-[100%] h-[1px] bg-[#eee]" />
                 <div className="flex item-center justify-between w-full">
                   <p>سعر التوصيل : </p>
@@ -293,11 +287,7 @@ const OrderDetails = ({ params }) => {
                   <p>مجموع الطلب : </p>
                   <b className="text-[16px]">
                     {Number(
-                      order?.total_price *
-                        (order?.order_type?.toLowerCase() === "installment"
-                          ? settings?.installment || 1
-                          : 1) +
-                        order?.delivery_cost || 0
+                      order?.total_price + order?.delivery_cost || 0
                     ).toLocaleString("en")}{" "}
                     د.ع
                   </b>

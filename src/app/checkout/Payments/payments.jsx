@@ -10,7 +10,7 @@ const Payments = () => {
   const [selected, setSelected] = useState("cash");
   const [cardInfo, setCardInfo] = useState({});
   const { openModal, closeModal } = useBottomSheetModal();
-  const {isInstallment, setInstallment} = useAppStore();
+  const { isInstallment, setInstallment } = useAppStore();
 
   useEffect(() => {
     if (isInstallment) {
@@ -20,8 +20,6 @@ const Payments = () => {
     }
   }, [isInstallment]);
 
-
-  
   const handleCashClick = () => {
     setInstallment(false);
     setSelected("cash");
