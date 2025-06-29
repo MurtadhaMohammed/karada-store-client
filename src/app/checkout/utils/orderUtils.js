@@ -65,6 +65,7 @@ export const createOrder = async ({
   delivery_cost,
   note,
   setErrorMessage,
+  cardNumber,
 }) => {
   console.log("order", order);
 
@@ -114,6 +115,7 @@ export const createOrder = async ({
         platform: order?.platform || platform,
         delivery_cost,
         note: order?.note || note,
+        cardNumber: order?.cardNumber || cardNumber,
       },
     });
 

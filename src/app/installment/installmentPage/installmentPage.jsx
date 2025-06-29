@@ -95,7 +95,8 @@ const InstallmentPage = () => {
         installmentId,
         installmentPercentage: settings?.installment || 1,
         delivery_cost,
-        // note
+        // note,
+        cardNumber,
       });
       setInstallmentOrder({});
     }

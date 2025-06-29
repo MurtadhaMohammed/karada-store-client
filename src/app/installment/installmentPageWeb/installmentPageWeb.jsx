@@ -91,6 +91,7 @@ const InstallmentPageWeb = () => {
         installmentId,
         delivery_cost: parseInt(settings?.delivery),
         note,
+        cardNumber,
       });
       setInstallmentOrder({});
     }
