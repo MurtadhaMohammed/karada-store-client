@@ -28,7 +28,6 @@
 html,
 body {
   scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100% !important;
 
   /* background-color: #f6f6f6 !important; */
   /* overscroll-behavior: none;  */

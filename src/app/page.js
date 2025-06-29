@@ -14,6 +14,7 @@ async function getViews() {
   const res = await fetch(`${URL}/client/view/homeView`, {
     method: "GET",
     cache: "no-cache",
+    // next: { revalidate: 3600 },
   });
   if (!res.ok) throw new Error("Failed to fetch data");
   return res.json();
