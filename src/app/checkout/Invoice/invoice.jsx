@@ -4,7 +4,7 @@ import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 
 const Invoice = () => {
-  const { voucher, getTotal, getSubTotal } = useCartStore();
+  const { voucher, getTotal, getSubTotal, getVoucherDiscount } = useCartStore();
   const { settings } = useAppStore();
   const total = getTotal();
   const subTotal = getSubTotal();
@@ -15,20 +15,10 @@ const Invoice = () => {
       ? parseInt(settings?.extraDelivery) || 0
       : parseInt(settings?.delivery) || 0;
 
-  let voucherDiscount = 0;
-  if (voucher) {
-    if (voucher.type === "%") {
-      voucherDiscount = (voucher.value / 100) * subTotal;
-    } else {
-      voucherDiscount = voucher.value || 0;
-    }
+  const voucherDiscount = getVoucherDiscount();
 
-    if (voucher.max_amount && voucherDiscount > voucher.max_amount) {
-      voucherDiscount = voucher.max_amount;
-    }
-  }
-
-  const realTotal = total + delivery_cost;
+  const totalAfterVoucher = total - voucherDiscount;
+  const realTotal = totalAfterVoucher + delivery_cost;
 
   const roundToNearest250 = (num) => {
     const _total = Math.ceil(num / 250) * 250;
@@ -54,6 +44,14 @@ const Invoice = () => {
               <p>قيمة الخصم</p>
               <p className="text-red-500">
                 {totalDiscount?.toLocaleString("en")}- د.ع
+              </p>
+            </div>
+          )}
+          {voucherDiscount > 0 && (
+            <div className="flex items-center justify-between mt-[8px]">
+              <p>خصم القسيمة</p>
+              <p className="text-green-600">
+                {voucherDiscount?.toLocaleString("en")}- د.ع
               </p>
             </div>
           )}

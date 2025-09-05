@@ -259,6 +259,16 @@ const OrderDetails = ({ params }) => {
                         {order?.voucher.code}
                       </b>
                     </div>
+                    <div className="flex item-center justify-between w-full mt-1">
+                      <p className="text-sm text-gray-500">نطاق التطبيق : </p>
+                      <span className="text-sm text-gray-600">
+                        {order?.voucher.apply_to_all
+                          ? "جميع المنتجات"
+                          : `منتجات محددة (${
+                              order?.voucher.product_ids?.length || 0
+                            })`}
+                      </span>
+                    </div>
                   </>
                 )}
                 {/* {totalBeforeDiscount() !== order?.total_price && (
