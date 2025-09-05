@@ -58,14 +58,16 @@ const Voucher = () => {
       };
 
       if (response.error && errorMessages[response.error]) {
-        setError(errorMessages[response.error]);
+        setError(errorMessages[response.error] || response.error);
         setLoading(false);
         return;
       }
 
       const hasDiscountedItems = cart.some(
-        (item) => item?.product?.endPrice < item?.product?.price
+        (item) =>  item?.product?.endPrice && item?.product?.endPrice < item?.product?.price
       );
+
+      console.log({hasDiscountedItems})
 
       if (hasDiscountedItems && !response?.voucher?.apply_over_discount) {
         setLoading(false);
