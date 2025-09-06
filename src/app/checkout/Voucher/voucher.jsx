@@ -63,11 +63,18 @@ const Voucher = () => {
         return;
       }
 
-      const hasDiscountedItems = cart.some(
-        (item) =>  item?.product?.endPrice && item?.product?.endPrice < item?.product?.price
-      );
+      // const hasDiscountedItems = cart.some(
+      //   (item) =>  item?.product?.endPrice && item?.product?.endPrice < item?.product?.price
+      // );
 
-      console.log({hasDiscountedItems})
+      const hasDiscountedItems = cart.some((item) => {
+        return (
+          item?.product?.endPrice &&
+          item?.product?.endPrice < item?.product?.price &&
+          item?.product?.endPrice_date &&
+          new Date(item?.product?.endPrice_date) > new Date()
+        );
+      });
 
       if (hasDiscountedItems && !response?.voucher?.apply_over_discount) {
         setLoading(false);
