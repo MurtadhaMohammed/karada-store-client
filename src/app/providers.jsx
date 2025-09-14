@@ -88,20 +88,26 @@ export function ReactQueryProvider({ fontStyle, children }) {
 
       if (user && isTokenValid(token)) {
         setIsLogin(true);
-        updateUserInfo(user);
+        updateUserInfo(JSON.parse(user));
       } else {
-        token = await reNewToken();
-        if (!token) {
+        const newTokenData = await reNewToken();
+        if (!newTokenData) {
           setIsLogin(false);
           localStorage.removeItem("karada-token");
           localStorage.removeItem("karada-refreshToken");
+          localStorage.removeItem("karada-user");
           return;
         }
-        localStorage.setItem("karada-token", token);
-        localStorage.setItem("karada-user", user);
-        localStorage.setItem("karada-account-name", user.name);
-        setIsLogin(true);
-        updateUserInfo(user);
+        localStorage.setItem("karada-token", newTokenData.accessToken);
+        if (newTokenData.refreshToken) {
+          localStorage.setItem("karada-refreshToken", newTokenData.refreshToken);
+        }
+        if (newTokenData.user) {
+          localStorage.setItem("karada-user", JSON.stringify(newTokenData.user));
+          localStorage.setItem("karada-account-name", newTokenData.user.name || "");
+          setIsLogin(true);
+          updateUserInfo(newTokenData.user);
+        }
       }
     }
   };

@@ -24,15 +24,20 @@ export const reNewToken = async () => {
     if (!refreshToken) {
       return;
     }
-    const resp = await apiCall({
+    const resp = await fetch(`${URL}/client/auth/refresh`, {
       pathname: "/client/auth/refresh",
       method: "POST",
-      data: {
-        refreshToken,
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        refreshToken,
+      }),
     });
-    if (resp?.accessToken) {
-      return resp;
+    const jsonResp = await resp.json();
+    
+    if (jsonResp?.accessToken) {
+      return jsonResp;
     }
     return;
   } catch (error) {
