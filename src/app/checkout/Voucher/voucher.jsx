@@ -55,6 +55,8 @@ const Voucher = () => {
         "Voucher usage limit reached": "لقد تم استخدام هذه القسيمة بالفعل",
         "This voucher is not applicable to any items in your cart":
           "هذه القسيمة لا تنطبق على أي من المنتجات في سلتك",
+        "Message voucher cannot be applied with discount items":
+          "لا يمكن تطبيق القسيمة النصية على سلة تحتوي على تخفيض",
       };
 
       if (response.error && errorMessages[response.error]) {
@@ -98,7 +100,8 @@ const Voucher = () => {
             }, 0);
         }
 
-        if (checkAmount < voucher.min_amount) {
+        // Skip minimum amount check for message vouchers
+        if (!voucher.msg && checkAmount < voucher.min_amount) {
           setLoading(false);
           setError(
             `الحد الأدنى لهذه القسيمة هو ${voucher.min_amount.toLocaleString()} دينار عراقي.`
@@ -165,29 +168,47 @@ const Voucher = () => {
                     <CiCircleCheck size={24} />
                   </div>
                   <div className="flex-1">
-                    <div>
-                      <span className="text-gray-500 text-sm">كود الخصم</span>
-                      <span className="font-semibold text-indigo-600 p-1">
-                        {voucherDetails.code}
-                      </span>
-                      <span className="text-gray-500 text-sm">بقيمة</span>
-                      <span className="font-semibold text-indigo-600 p-1">
-                        {voucherDetails.type === "%"
-                          ? `${voucherDetails.value}%`
-                          : `${voucherDetails.value.toLocaleString()} IQD`}
-                      </span>
-                    </div>
-                    {!voucherDetails.apply_to_all && (
-                      <div className="text-xs text-gray-500 mt-1">
-                        يطبق على {getVoucherApplicableItems().length} من{" "}
-                        {cart.length} منتجات - خصم:{" "}
-                        {getVoucherDiscount().toLocaleString()} د.ع
+                    {voucherDetails.msg && voucherDetails.msg.trim() !== "" ? (
+                      // Display message voucher
+                      <div>
+                        <span className="text-gray-500 text-sm">كود الخصم</span>
+                        <span className="font-semibold text-indigo-600 p-1">
+                          {voucherDetails.code}
+                        </span>
+                        <div className=" ">
+                          {voucherDetails.msg}
+                        </div>
                       </div>
-                    )}
-                    {voucherDetails.apply_to_all && (
-                      <div className="text-xs text-gray-500 mt-1">
-                        يطبق على جميع المنتجات - خصم:{" "}
-                        {getVoucherDiscount().toLocaleString()} د.ع
+                    ) : (
+                      // Display regular discount voucher
+                      <div>
+                        <div>
+                          <span className="text-gray-500 text-sm">
+                            كود الخصم
+                          </span>
+                          <span className="font-semibold text-indigo-600 p-1">
+                            {voucherDetails.code}
+                          </span>
+                          <span className="text-gray-500 text-sm">بقيمة</span>
+                          <span className="font-semibold text-indigo-600 p-1">
+                            {voucherDetails.type === "%"
+                              ? `${voucherDetails.value}%`
+                              : `${voucherDetails.value.toLocaleString()} IQD`}
+                          </span>
+                        </div>
+                        {!voucherDetails.apply_to_all && (
+                          <div className="text-xs text-gray-500 mt-1">
+                            يطبق على {getVoucherApplicableItems().length} من{" "}
+                            {cart.length} منتجات - خصم:{" "}
+                            {getVoucherDiscount().toLocaleString()} د.ع
+                          </div>
+                        )}
+                        {voucherDetails.apply_to_all && (
+                          <div className="text-xs text-gray-500 mt-1">
+                            يطبق على جميع المنتجات - خصم:{" "}
+                            {getVoucherDiscount().toLocaleString()} د.ع
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
