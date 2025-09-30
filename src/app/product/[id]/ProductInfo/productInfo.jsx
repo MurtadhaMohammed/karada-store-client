@@ -115,7 +115,9 @@ const ProductInfo = ({ product }) => {
 
   const isAddToCartDisabled =
     (product?.options?.length > 0 && activeOption === null) ||
+    !activeOption?.in_stock ||
     product.out_of_stock;
+  product.out_of_stock;
 
   const shownimages =
     activeOption?.images?.length > 0
