@@ -105,11 +105,16 @@ const ProductInfoWeb = ({ product }) => {
     setActiveOption(option);
   };
 
+  // const isAddToCartDisabled =
+  //   (product?.options?.length > 0 && activeOption === null) ||
+  //   !activeOption?.in_stock ||
+  //   product.out_of_stock;
+  // product.out_of_stock;
+
   const isAddToCartDisabled =
-    (product?.options?.length > 0 && activeOption === null) ||
-    !activeOption?.in_stock ||
-    product.out_of_stock;
-  product.out_of_stock;
+  !!product?.out_of_stock ||
+  (activeOption != null && activeOption.in_stock === false);
+
 
   const openModal = (index) => {
     setIsModalOpen(true);
