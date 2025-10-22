@@ -59,7 +59,7 @@ const InstallmentPage = () => {
         },
       });
 
-      if (result.succeeded==true) {
+      if (result.succeeded == true) {
         setCardInfo({ number: cardNumber, sessionId: result.sessionId });
         setSessionId(result.sessionId);
         setMessage(result.message || "");
@@ -93,8 +93,10 @@ const InstallmentPage = () => {
         clearCart,
         router,
         installmentId,
+        installmentPercentage: settings?.installment || 1,
         delivery_cost,
-        // note
+        // note,
+        cardNumber,
       });
       setInstallmentOrder({});
     }

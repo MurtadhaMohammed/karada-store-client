@@ -69,7 +69,10 @@ const ProductInfo = ({ product }) => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
       setEndPrice(priceCalc(product, activeOption)?.endPrice);
-    } else setPrice(product?.price);
+    } else {
+      setPrice(product?.price);
+      setEndPrice(priceCalc(product)?.endPrice);
+    }
   }, [activeOption]);
 
   useEffect(() => {
@@ -111,8 +114,8 @@ const ProductInfo = ({ product }) => {
   };
 
   const isAddToCartDisabled =
-    (product?.options?.length > 0 && activeOption === null) ||
-    product.out_of_stock;
+    !!product?.out_of_stock ||
+    (activeOption != null && activeOption.in_stock === false);
 
   const shownimages =
     activeOption?.images?.length > 0
@@ -275,7 +278,7 @@ const ProductInfo = ({ product }) => {
           </div>
         )}
 
-        {product.out_of_stock ? (
+        {(activeOption && !activeOption?.in_stock) || product.out_of_stock ? (
           <p className="text-[14px] text-red-600 mt-[8px]">
             هذا المنتج غير متوفر حالياً
           </p>

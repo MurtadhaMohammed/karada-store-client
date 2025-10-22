@@ -5,7 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-IBM: 'IBM Plex Sans', sans-serif;
+  --font-IBM: "IBM Plex Sans", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,6 +28,7 @@
 html,
 body {
   scroll-behavior: smooth;
+
   /* background-color: #f6f6f6 !important; */
   /* overscroll-behavior: none;  */
   /* overflow: auto;     */
@@ -43,12 +44,12 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
-.dots{
+.dots {
   direction: ltr;
   text-align: left;
 }
 
-.dot{
+.dot {
   text-align: right;
   direction: ltr;
 }
@@ -60,7 +61,7 @@ body {
   overflow: hidden;
 }
 
-.dtr{
+.dtr {
   direction: ltr;
 }
 
@@ -109,8 +110,6 @@ body {
     transform: scale(0.9) rotate(0deg);
   }
 }
-
-
 
 .btn-loading,
 .btn-loading:before,
@@ -179,7 +178,6 @@ body {
   }
 }
 
-
 .offerBanner-bg {
   background: linear-gradient(to right, #4f46e5, #8b5cf6);
   background-size: 200% 200%;
@@ -207,7 +205,6 @@ body {
   font-family: monospace !important;
 }
 
-
-.brand-active{
+.brand-active {
   border-color: #8b5cf6;
 }

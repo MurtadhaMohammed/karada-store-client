@@ -19,6 +19,7 @@ import ImageModal from "@/components/ImageModal/imageModal";
 import IconButton from "@/components/UI/IconButton/iconButton";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { BsExclamation } from "react-icons/bs";
+import { priceCalc } from "@/helper/priceCalc";
 const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
     <button
@@ -83,7 +84,6 @@ const ProductInfoWeb = ({ product }) => {
   const [modalImageIndex, setModalImageIndex] = useState(0);
   const { toggleFav, favorites, settings } = useAppStore();
 
-  console.log("Product Info Web", product);
   useEffect(() => {
     setActiveOption(product?.options?.[0] || null);
   }, [product?.options]);
@@ -91,9 +91,10 @@ const ProductInfoWeb = ({ product }) => {
   useEffect(() => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
-      setEndPrice(activeOption?.endPrice || activeOption?.price);
+      setEndPrice(priceCalc(product, activeOption)?.endPrice);
     } else {
       setPrice(product?.price);
+      setEndPrice(priceCalc(product)?.endPrice);
     }
   }, [activeOption]);
 
@@ -104,9 +105,16 @@ const ProductInfoWeb = ({ product }) => {
     setActiveOption(option);
   };
 
+  // const isAddToCartDisabled =
+  //   (product?.options?.length > 0 && activeOption === null) ||
+  //   !activeOption?.in_stock ||
+  //   product.out_of_stock;
+  // product.out_of_stock;
+
   const isAddToCartDisabled =
-    (product?.options?.length > 0 && activeOption === null) ||
-    product.out_of_stock;
+  !!product?.out_of_stock ||
+  (activeOption != null && activeOption.in_stock === false);
+
 
   const openModal = (index) => {
     setIsModalOpen(true);
@@ -219,7 +227,7 @@ const ProductInfoWeb = ({ product }) => {
               </a>
             </div>
             <h4 className="text-[18px]">{product?.name}</h4>
-            {price === endPrice ? (
+            {!priceCalc(product)?.hasDiscount ? (
               <b className="text-[22px] block">
                 {Number(endPrice).toLocaleString("en")}{" "}
                 <span className="text-[14px]">IQD</span>
@@ -239,7 +247,8 @@ const ProductInfoWeb = ({ product }) => {
             {/* <p className="text-[14px] text-gray-600 mt-[8px]">
               {product?.description}
             </p> */}
-            {product.out_of_stock ? (
+            {(activeOption && !activeOption?.in_stock) ||
+            product?.out_of_stock ? (
               <p className="text-[14px] text-red-600 mt-[8px]">
                 هذا المنتج غير متوفر حالياً
               </p>
@@ -250,7 +259,9 @@ const ProductInfoWeb = ({ product }) => {
             {product?.code && (
               <div className="flex items-center mt-2">
                 <span className="text-[14px] text-gray-500">كود المنتج:</span>
-                <span className="ml-2 text-[14px] font-mono bg-[#f6f6f6] px-2 py-1 rounded">{product.code}</span>
+                <span className="ml-2 text-[14px] font-mono bg-[#f6f6f6] px-2 py-1 rounded">
+                  {product.code}
+                </span>
               </div>
             )}
             <div className="flex items-center mt-[16px]">

@@ -31,7 +31,21 @@ export function ReactQueryProvider({ fontStyle, children }) {
     // initDevice();
     initPlatform();
     initSettings();
+    initFontSize();
   }, []);
+
+  const initFontSize = () => {
+    if (typeof window !== "undefined") {
+      const ua = navigator.userAgent.toLowerCase();
+      let value = "100%";
+      if (ua.includes("android") || ua.includes("samsungbrowser")) {
+        value = "80%";
+      }
+      const style = document.createElement("style");
+      style.innerHTML = `html { -webkit-text-size-adjust: ${value} !important; }`;
+      document.head.appendChild(style);
+    }
+  };
 
   const initSettings = async () => {
     try {
@@ -74,20 +88,26 @@ export function ReactQueryProvider({ fontStyle, children }) {
 
       if (user && isTokenValid(token)) {
         setIsLogin(true);
-        updateUserInfo(user);
+        updateUserInfo(JSON.parse(user));
       } else {
-        token = await reNewToken();
-        if (!token) {
+        const newTokenData = await reNewToken();
+        if (!newTokenData) {
           setIsLogin(false);
           localStorage.removeItem("karada-token");
           localStorage.removeItem("karada-refreshToken");
+          localStorage.removeItem("karada-user");
           return;
         }
-        localStorage.setItem("karada-token", token);
-        localStorage.setItem("karada-user", user);
-        localStorage.setItem("karada-account-name", user.name);
-        setIsLogin(true);
-        updateUserInfo(user);
+        localStorage.setItem("karada-token", newTokenData.accessToken);
+        if (newTokenData.refreshToken) {
+          localStorage.setItem("karada-refreshToken", newTokenData.refreshToken);
+        }
+        if (newTokenData.user) {
+          localStorage.setItem("karada-user", JSON.stringify(newTokenData.user));
+          localStorage.setItem("karada-account-name", newTokenData.user.name || "");
+          setIsLogin(true);
+          updateUserInfo(newTokenData.user);
+        }
       }
     }
   };

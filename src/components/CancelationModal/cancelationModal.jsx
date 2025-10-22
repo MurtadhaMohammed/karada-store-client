@@ -38,11 +38,11 @@ const CancelationModal = ({ orderId }) => {
       const isNowMobile = window.innerWidth < 768;
       setIsMobile(isNowMobile);
     };
-  
+
     checkMobile(); // initial check
-  
+
     window.addEventListener("resize", checkMobile);
-  
+
     return () => {
       window.removeEventListener("resize", checkMobile);
     };
