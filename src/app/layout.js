@@ -144,10 +144,10 @@ export default function RootLayout({ children }) {
         <meta name="apple-itunes-app" content="app-id=6741197248" />
         {/* Meta Pixel Code */}
         <noscript>
-          <img 
-            height="1" 
-            width="1" 
-            style={{display: 'none'}}
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
             src="https://www.facebook.com/tr?id=1552395819444834&ev=PageView&noscript=1"
             alt=""
           />
