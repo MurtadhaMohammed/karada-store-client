@@ -2,7 +2,6 @@ import SearchBar from "@/components/SearchBar/searchBar";
 import Categories from "@/components/Categories/categories";
 import SliderBanner from "@/components/SliderBanner/sliderBanner";
 import ListBanner from "@/components/ListBanner/listBanner";
-import SingleBanner from "@/components/SingleBanner/singleBanner";
 import OffersBanner from "@/components/offersBanner/offersBanner";
 import SingleBannerPure from "@/components/SingleBannerPure/singleBannerPure";
 import Link from "next/link";
@@ -10,12 +9,15 @@ import { FaUpLong } from "react-icons/fa6";
 
 import { URL } from "@/lib/api";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
+import BrandBanner from "@/components/brandBanner/brandBanner";
+import GridBanner from "@/components/GridBanner/gridBanner";
 import Container from "@/components/UI/Container/container";
 
 async function getViews() {
   const res = await fetch(`${URL}/client/view/homeView`, {
     method: "GET",
     cache: "no-cache",
+    // next: { revalidate: 3600 },
   });
   if (!res.ok) throw new Error("Failed to fetch data");
   return res.json();
@@ -59,8 +61,8 @@ export default async function Home({ searchParams }) {
             return <SliderBanner banners={banner} />;
           case "SinglePure":
             return <SingleBannerPure banner={banner} />;
-          case "Single":
-            return <SingleBanner banner={banner} />;
+          case "Brand":
+            return <BrandBanner list={banner.brand_ids} />;
           case "List":
             return (
               <ListBanner
@@ -79,6 +81,17 @@ export default async function Home({ searchParams }) {
             );
           case "Category":
             return <Categories list={banner.categories} />;
+          case "grid":
+            return (
+              <GridBanner
+                banner={banner}
+                bannerImage={banner?.img}
+                link={banner?.link || "/"}
+                grid={banner?.grid}
+                hasBanner={banner?.has_banner}
+                bannerAlignment={banner?.bannerAlignment}
+              />
+            );
           case "CreativeBanner":
             return (
               <ListBanner
@@ -103,14 +116,15 @@ export default async function Home({ searchParams }) {
 
       return <div key={banner.id}>{bannerContent()}</div>;
     };
-
     return (
       <div className="pb-[100px]">
         {!oiaoia && <SearchBar />}
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (
-          <div>No banners available</div>
+          <div>
+            <ErrorBoundary />
+          </div>
         )}
       </div>
     );

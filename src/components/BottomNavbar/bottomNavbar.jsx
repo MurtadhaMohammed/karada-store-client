@@ -11,6 +11,8 @@ import {
   TbHeartFilled,
   TbBrandFirebase,
 } from "react-icons/tb";
+import { MdOutlineMore, MdMore } from "react-icons/md";
+import { CiSquareMore } from "react-icons/ci";
 
 import Container from "../UI/Container/container";
 import Link from "next/link";
@@ -53,6 +55,7 @@ const BottomNabar = () => {
     "/faivorates",
     "/brands",
     "/orders",
+    "/info",
   ];
 
   useEffect(() => {
@@ -63,6 +66,8 @@ const BottomNabar = () => {
     router.prefetch("/brands");
     router.prefetch("/products/search/all");
     router.prefetch("/contactUs");
+    router.prefetch("/info");
+    router.prefetch("/checkout");
   }, [router]);
 
   return (
@@ -135,7 +140,7 @@ const BottomNabar = () => {
             label={"الطلبات"}
             isActive={pathname === "/faivorates"}
           /> */}
-          <NavItem
+          {/* <NavItem
             to="/faivorates"
             icon={
               pathname === "/faivorates" ? (
@@ -146,6 +151,18 @@ const BottomNabar = () => {
             }
             label={"المفضلة"}
             isActive={pathname === "/faivorates"}
+          /> */}
+          <NavItem
+            to="/info"
+            icon={
+              pathname === "/info" ? (
+                <MdMore className="text-[24px] rotate-180" />
+              ) : (
+                <MdOutlineMore className="text-[24px] rotate-180" />
+              )
+            }
+            label={"المزيد"}
+            isActive={pathname === "/info"}
           />
         </div>
       </Container>

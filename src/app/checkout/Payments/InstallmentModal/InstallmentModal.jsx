@@ -13,10 +13,12 @@ import { useCartStore } from "@/lib/cartStore";
 import { apiCall } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useAppStore } from "@/lib/store";
 
 export const InstallmentModal = ({ onFinish }) => {
   const { closeModal, openModal } = useBottomSheetModal();
   const { getTotal } = useCartStore();
+  const { settings } = useAppStore();
   const [cardNumber, setCardNumber] = useState("");
   const [sessionId, setSessionId] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -24,10 +26,14 @@ export const InstallmentModal = ({ onFinish }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  console.log("InstallmentModal settings:", settings);
+  console.log("InstallmentModal installment:", settings?.installment);
+
   const PlanId = 10;
   const total = getTotal();
   const noOfMonths = 10;
-  const installment = (total * 1.2 / noOfMonths) ;
+  const installment = (total * settings?.installment) / noOfMonths;
+  const totalWithInstallment = total * settings?.installment
 
   const handleInstallment = async () => {
     setLoading(true);
@@ -37,9 +43,9 @@ export const InstallmentModal = ({ onFinish }) => {
         method: "POST",
         data: {
           Identity: cardNumber,
-          Amount: total,
+          Amount: totalWithInstallment,
           countOfMonth: noOfMonths,
-          PlanId,
+          PlanId: 0,
         },
       });
 

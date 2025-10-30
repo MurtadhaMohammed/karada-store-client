@@ -65,7 +65,8 @@ const MainHeader = () => {
     pathname !== "/categories" &&
     `${pathname}?from=${searchParams.get("from")}` !== "/cart?from=home" &&
     pathname !== "/faivorates" &&
-    pathname !== "/brands"
+    pathname !== "/brands" &&
+    pathname !== "/info"
   )
     return (
       <header

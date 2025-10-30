@@ -13,8 +13,15 @@ const RelatedList = ({ productId }) => {
     enabled: !!productId,
   });
 
+  if (!productId) return <></>;
+
   return (
-    <ListBanner noMore title={"قد يعجبك ايضاً"} list={data?.relatedProducts || []} />
+    <ListBanner
+      isRelated
+      noMore
+      title={"قد يعجبك ايضاً"}
+      list={data?.relatedProducts || []}
+    />
   );
 };
 

@@ -36,8 +36,8 @@ export default async function DynamicHomePage({ params }) {
           return (
             <SingleBannerPure key={banner.id} banner={banner} title={title} />
           );
-        case "Single":
-          return <SingleBanner key={banner.id} banner={banner} title={title} />;
+        // case "Single":
+        //   return <SingleBanner key={banner.id} banner={banner} title={title} />;
         case "List":
           return (
             <ListBanner
@@ -79,7 +79,7 @@ export default async function DynamicHomePage({ params }) {
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (
-          <div>No banners available</div>
+          <div><ErrorBoundary /></div>
         )}
       </div>
     );

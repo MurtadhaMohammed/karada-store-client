@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const Input = ({ hint, value, prefix = null, onChange, type = "text" }) => {
+const Input = ({ hint, value, prefix = null, onChange, type = "text", disabled }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const handleFocus = () => setIsFocus(true);
@@ -13,7 +13,7 @@ const Input = ({ hint, value, prefix = null, onChange, type = "text" }) => {
       <label
         className={`absolute right-[16px] transition-all duration-200  ${
           isFocus || value
-            ? "top-[-10px] text-sm text-black bg-white block pl-[6px] pr-[6px]"
+            ? "top-[-10px] text-sm text-black bg-white rounded-md block pl-[6px] pr-[6px]"
             : "top-[11px] text-[#a5a5a5]"
         }`}
         style={{ pointerEvents: "none" }}
@@ -28,6 +28,7 @@ const Input = ({ hint, value, prefix = null, onChange, type = "text" }) => {
         value={value}
         type={type}
         onChange={onChange}
+        disabled={disabled}
       />
       {prefix && (
         <div className="absolute left-[16px] top-1/2 transform -translate-y-1/2 flex items-center">

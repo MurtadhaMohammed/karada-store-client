@@ -8,13 +8,13 @@ import { useState, useEffect, useRef } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { motion } from "framer-motion";
 import { FiSearch } from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
 import {
   TbHeart,
   TbHeartFilled,
   TbShare2,
   TbTruckDelivery,
 } from "react-icons/tb";
-import { TiStarFullOutline } from "react-icons/ti";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
 import { IMAGE_URL } from "@/lib/api";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -22,18 +22,20 @@ import "swiper/css";
 import "swiper/css/navigation";
 import ProductCTA from "../ProductCTA/ProductCTA";
 import { useAppStore } from "@/lib/store";
+import { BsExclamation } from "react-icons/bs";
+import { priceCalc } from "@/helper/priceCalc";
 
 const OptionTag = ({ name, color, active = false, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="flex flex-row justify-center items-center h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#fff] border border-[#eee] mx-[4px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
+      className="flex flex-row justify-center items-center h-[32px] rounded-[24px] pl-[12px] pr-[12px] text-[14px] bg-[#f6f6f6] border border-[#eee] mx-[4px] mb-[12px] active:opacity-60 active:scale-[0.96] transition-all"
       style={
         active
           ? {
               borderColor: "#7c3aed",
               color: "#7c3aed",
-              background: "#fff",
+              background: "#f6f6f6",
             }
           : {}
       }
@@ -53,6 +55,7 @@ const ProductInfo = ({ product }) => {
   const router = useRouter();
   const { scrollPosition } = useScrollPosition();
   const [isMore, setIsMore] = useState(false);
+  const { settings } = useAppStore();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { toggleFav, favorites } = useAppStore();
   const [activeOption, setActiveOption] = useState(
@@ -65,8 +68,11 @@ const ProductInfo = ({ product }) => {
   useEffect(() => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
-      setEndPrice(activeOption?.endPrice); //TODO : handl endprice from BE --done
-    } else setPrice(product?.price);
+      setEndPrice(priceCalc(product, activeOption)?.endPrice);
+    } else {
+      setPrice(product?.price);
+      setEndPrice(priceCalc(product)?.endPrice);
+    }
   }, [activeOption]);
 
   useEffect(() => {
@@ -108,12 +114,15 @@ const ProductInfo = ({ product }) => {
   };
 
   const isAddToCartDisabled =
-    product?.options?.length > 0 && activeOption === null;
+    !!product?.out_of_stock ||
+    (activeOption != null && activeOption.in_stock === false);
 
   const shownimages =
     activeOption?.images?.length > 0
       ? activeOption.images
-      : product?.image?.map((img) => img.url);
+      : product?.image
+          ?.sort((a, b) => Number(a.priority) - Number(b.priority))
+          .map((img) => img.url);
 
   return (
     <div className="md:hidden block">
@@ -206,7 +215,7 @@ const ProductInfo = ({ product }) => {
                   }}
                   className="mt-1 mr-[8px] text-[18px] whitespace-nowrap overflow-hidden text-ellipsis"
                   style={{
-                    maxWidth: 180,
+                    maxWidth: 140,
                     visibility: scrollPosition > 200 ? "visible" : "hidden",
                   }}
                 >
@@ -214,6 +223,7 @@ const ProductInfo = ({ product }) => {
                 </motion.b>
               </div>
               <div className="flex items-center">
+                <div className="w-[8px]" />
                 <IconButton
                   rounded={"8px"}
                   className="p-2 bg-[#fff] rounded-[8px] border border-[#eee] "
@@ -251,16 +261,16 @@ const ProductInfo = ({ product }) => {
       </div>
       <Container>
         <h4 className="text-[18px] mt-[16px] max-w-[84%]">{product?.name}</h4>
-        {price === endPrice ? (
+        {!priceCalc(product)?.hasDiscount ? (
           <b className="text-[22px] block">
-            {Number(endPrice).toLocaleString("en")}{" "}
-            <span className="text-[14px]">IQD</span>
+            {Number(price).toLocaleString("en")}{" "}
+            <span className="text-[14px]">د.ع</span>
           </b>
         ) : (
           <div className="flex items-end">
             <b className="text-[22px] block">
               {Number(endPrice).toLocaleString("en")}{" "}
-              <span className="text-[14px]">IQD</span>
+              <span className="text-[14px]">د.ع</span>
             </b>
             <p className="text-[18px] block mr-[16px] line-through text-[#a5a5a5] italic">
               {Number(price).toLocaleString("en")}
@@ -268,18 +278,40 @@ const ProductInfo = ({ product }) => {
           </div>
         )}
 
+        {(activeOption && !activeOption?.in_stock) || product.out_of_stock ? (
+          <p className="text-[14px] text-red-600 mt-[8px]">
+            هذا المنتج غير متوفر حالياً
+          </p>
+        ) : null}
         <p className="text-[14px] text-gray-600 mt-[8px]">
           {product?.shortDescription}
         </p>
+        {product?.code && (
+          <div className="flex items-center mt-2">
+            <span className="text-[14px] text-gray-500">كود المنتج:</span>
+            <span className="ml-2 text-[14px] font-mono underline">
+              {product.code}
+            </span>
+          </div>
+        )}
         <div className="mt-[16px]">
           <InstallmentBanner price={endPrice} />
         </div>
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
           <span className="mr-[8px] text-[14px] text-[#444]">
-            عادة مايتم توصيل المنتجات في 3-5 أيام
+            عادة مايتم توصيل المنتجات {settings?.time}
           </span>
         </div>
+        {product?.insurance && product?.insurance?.content && (
+          <div className="flex items-center mt-[16px]">
+            <BsExclamation className="text-[16px]" />
+            <span className="mr-[8px] text-[14px]">
+              {product?.insurance?.content}
+            </span>
+          </div>
+        )}
+
         <div className="mt-[16px] mb-[8px] flex flex-wrap">
           {product?.options?.map((option, index) => (
             <OptionTag
@@ -291,6 +323,20 @@ const ProductInfo = ({ product }) => {
             />
           ))}
         </div>
+
+        <a
+          href={`https://wa.me/9647740300006?text=${encodeURIComponent(
+            `مرحبًا، أود الاستفسار عن هذا المنتج:\nhttps://karadastore.iq/product/${product.id}`
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="mb-[24px] h-[48px] w-[100%] rounded-[12px] bg-[#fff] flex items-center justify-between border pr-[16px] pl-[12px] border-[#eee] shadow-md  transition-all active:scale-95">
+            <p className="text-[16px]">للأستفسار والتواصل</p>
+            <FaWhatsapp size={28} color="#1CC638" />
+          </button>
+        </a>
+
         <p className="text-[14px] ">تفاصيل المنتج</p>
         <ul
           className="text-[14px] text-gray-600 mt-[8px] mb-[24px] p-4 bg-gradient-to-br from-gray-100 to-white rounded-[8px] border border-[#eee] overflow-hidden relative pb-[50px] transition-all"

@@ -5,7 +5,7 @@ import Ripples from "react-ripples";
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { OtpInput } from "reactjs-otp-input";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { apiCall, URL } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
@@ -18,7 +18,6 @@ const LoginFormWeb = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const {
     setIsLogin,
@@ -31,12 +30,25 @@ const LoginFormWeb = () => {
     userInfo,
   } = useAppStore();
 
+  const routerRef = useRef(router);
+  const updateUserInfoRef = useRef(updateUserInfo);
+  const setIsLoginRef = useRef(setIsLogin);
+
+  useEffect(() => {
+    routerRef.current = router;
+    updateUserInfoRef.current = updateUserInfo;
+    setIsLoginRef.current = setIsLogin;
+  }, [router, updateUserInfo, setIsLogin]);
+
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     setPhone(value);
   };
-  const handleChange = (otp) => setOtp(otp);
+  const handleChange = (otp) => {
+    setOtp(otp);
+  };
 
+  
   const globalPhone = userInfo?.phone;
   const handleLogin = async () => {
     if (phone !== "07700000000" && validateIraqiPhoneNumber(phone) === false)
@@ -55,35 +67,55 @@ const LoginFormWeb = () => {
     if (resp?.message == "Login Success") {
       setIsOtp(true);
       setError(null);
-      router.replace(`/login?phone=${phone}`);
+      const redirectTo = searchParams.get("redirect");
+      const otpUrl = redirectTo 
+        ? `/login?phone=${phone}&redirect=${encodeURIComponent(redirectTo)}`
+        : `/login?phone=${phone}`;
+      router.replace(otpUrl);
     } else {
       setError("يرجى إدخال رقم هاتف صالح");
     }
   };
 
-  const handleVerify = async () => {
+  const handleVerify = useCallback(async () => {
+    if (loading) return;
     setLoading(true);
-    const phoneFromParams = searchParams.get("phone");
-    const resp = await apiCall({
-      pathname: `/client/auth/verify`,
-      method: "POST",
-      data: {
-        otp,
-        phone: phoneFromParams || globalPhone,
-      },
-    });
-    setLoading(false);
-    if (resp.accessToken) {
-      localStorage.setItem("karada-token", resp.accessToken);
-      localStorage.setItem("karada-refreshToken", resp.refreshToken);
-      localStorage.setItem("karada-user", JSON.stringify(resp.user));
-      updateUserInfo(resp.user);
-      router.replace("/");
-      setIsLogin(true);
-    } else {
-      setError("يرجى إدخال رمز التحقق صحيح");
+    
+    try {
+      const phoneFromParams = searchParams.get("phone");
+      const redirectTo = searchParams.get("redirect");
+      
+      const resp = await apiCall({
+        pathname: `/client/auth/verify`,
+        method: "POST",
+        data: {
+          otp,
+          phone: phoneFromParams || userInfo?.phone,
+        },
+      });
+
+      if (resp.accessToken) {
+        localStorage.setItem("karada-token", resp.accessToken);
+        localStorage.setItem("karada-refreshToken", resp.refreshToken);
+        localStorage.setItem("karada-user", JSON.stringify(resp.user));
+        
+        updateUserInfoRef.current(resp.user);
+        setIsLoginRef.current(true);
+        
+        if (redirectTo) {
+          routerRef.current.push(decodeURIComponent(redirectTo));
+        } else {
+          routerRef.current.push("/");
+        }
+      } else {
+        setError("يرجى إدخال رمز التحقق صحيح");
+      }
+    } catch (error) {
+      setError("حدث خطأ أثناء التحقق");
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [otp, searchParams, userInfo, loading]);
 
   useEffect(() => {
     const phoneFromParams = searchParams.get("phone");
@@ -98,7 +130,7 @@ const LoginFormWeb = () => {
       if (_name) setName(_name);
     }
   }, [isLogin]);
-
+  
   if (isOtp)
     return (
       <>
@@ -131,7 +163,6 @@ const LoginFormWeb = () => {
                 gap: "8px",
               }}
             />
-            {/* <OtpInputs onChange={handleChange} /> */}
           </div>
           <div>{error && <p className="text-red-500">{error}</p>}</div>
           <div
@@ -146,7 +177,8 @@ const LoginFormWeb = () => {
             <Ripples className="!grid w-full">
               <button
                 onClick={handleVerify}
-                className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
+                disabled={loading || otp?.length !== 6}
+                className="flex items-center justify-center h-[56px] rounded-[16px] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6 disabled:opacity-50"
               >
                 <span className="ml-[8px] font-bold text-[18px]">
                   {loading ? "جار المصادقة..." : "تأكـــيد"}

@@ -1,22 +1,26 @@
 "use client";
 import Container from "@/components/UI/Container/container";
-import useScrollPosition from "@/hooks/useScrollPosition";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { TbTruckDelivery , TbShare2 , TbHeart,TbHeartFilled} from "react-icons/tb";
+import { FaWhatsapp } from "react-icons/fa";
+import {
+  TbTruckDelivery,
+  TbShare2,
+  TbHeart,
+  TbHeartFilled,
+} from "react-icons/tb";
 import { IMAGE_URL } from "@/lib/api";
 import "swiper/css";
 import "swiper/css/navigation";
-import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 import ProductCtaWeb from "../ProductCTAWeb/productCtaWeb";
 import ImageModal from "@/components/ImageModal/imageModal";
 import IconButton from "@/components/UI/IconButton/iconButton";
 import InstallmentBanner from "@/components/InstallmentBanner/installmentBanner";
+import { BsExclamation } from "react-icons/bs";
+import { priceCalc } from "@/helper/priceCalc";
 const OptionTag = ({ name, color, active = false, onClick }) => {
-
   return (
     <button
       onClick={onClick}
@@ -78,7 +82,7 @@ const ProductInfoWeb = ({ product }) => {
   const [price, setPrice] = useState(product?.price);
   const [endPrice, setEndPrice] = useState(product?.endPrice);
   const [modalImageIndex, setModalImageIndex] = useState(0);
-  const { toggleFav, favorites } = useAppStore();
+  const { toggleFav, favorites, settings } = useAppStore();
 
   useEffect(() => {
     setActiveOption(product?.options?.[0] || null);
@@ -87,9 +91,10 @@ const ProductInfoWeb = ({ product }) => {
   useEffect(() => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
-      setEndPrice(activeOption?.endPrice || activeOption?.price);
+      setEndPrice(priceCalc(product, activeOption)?.endPrice);
     } else {
       setPrice(product?.price);
+      setEndPrice(priceCalc(product)?.endPrice);
     }
   }, [activeOption]);
 
@@ -100,8 +105,16 @@ const ProductInfoWeb = ({ product }) => {
     setActiveOption(option);
   };
 
+  // const isAddToCartDisabled =
+  //   (product?.options?.length > 0 && activeOption === null) ||
+  //   !activeOption?.in_stock ||
+  //   product.out_of_stock;
+  // product.out_of_stock;
+
   const isAddToCartDisabled =
-    product?.options?.length > 0 && activeOption === null;
+  !!product?.out_of_stock ||
+  (activeOption != null && activeOption.in_stock === false);
+
 
   const openModal = (index) => {
     setIsModalOpen(true);
@@ -115,7 +128,9 @@ const ProductInfoWeb = ({ product }) => {
   const shownimages =
     activeOption?.images?.length > 0
       ? activeOption.images
-      : product?.image?.map((img) => img.url);
+      : product?.image
+          ?.sort((a, b) => Number(a.priority) - Number(b.priority))
+          .map((img) => img.url);
 
   return (
     <div className="mt-[48px] md:block hidden">
@@ -170,24 +185,24 @@ const ProductInfoWeb = ({ product }) => {
           </section>
 
           <section className="border-r border-r-[#eee] pr-8">
-              <InstallmentBanner price={endPrice} />
+            <InstallmentBanner price={endPrice} />
             <div className="flex items-center gap-2 mt-[16px] pb-4">
-            <IconButton
-                  rounded={"8px"}
-                  className={`p-2  rounded-[8px] border border-[#eee] shadow-lg shadow-[#ff000041] ${
-                    favorites?.includes(product?.id)
-                      ? "bg-gradient-to-r from-[#ff0000] to-[#fb797b]"
-                      : "bg-[#fff]"
-                  }`}
-                  icon={
-                    favorites?.includes(product?.id) ? (
-                      <TbHeartFilled className="text-[22px] text-[#fff]" />
-                    ) : (
-                      <TbHeart className="text-[22px]" />
-                    )
-                  }
-                  onClick={() => toggleFav(product?.id)}
-                />
+              <IconButton
+                rounded={"8px"}
+                className={`p-2  rounded-[8px] border border-[#eee] shadow-lg shadow-[#ff000041] ${
+                  favorites?.includes(product?.id)
+                    ? "bg-gradient-to-r from-[#ff0000] to-[#fb797b]"
+                    : "bg-[#fff]"
+                }`}
+                icon={
+                  favorites?.includes(product?.id) ? (
+                    <TbHeartFilled className="text-[22px] text-[#fff]" />
+                  ) : (
+                    <TbHeart className="text-[22px]" />
+                  )
+                }
+                onClick={() => toggleFav(product?.id)}
+              />
               <button
                 onClick={handleShare}
                 className="flex items-center gap-2 p-2 bg-[#fff] rounded-[8px] border border-[#eee] hover:bg-gray-100 transition"
@@ -197,9 +212,22 @@ const ProductInfoWeb = ({ product }) => {
                   شارك المنتج
                 </span>
               </button>
+              <a
+                href={`https://wa.me/9647740300006?text=${encodeURIComponent(
+                  `مرحبًا، أود الاستفسار عن هذا المنتج:\nhttps://karadastore.iq/product/${product.id}`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 p-2 bg-[#fff] rounded-[8px] border border-[#eee] hover:bg-gray-100 transition"
+              >
+                <FaWhatsapp color="#25D366" size={20} className="text-[22px]" />
+                <span className="text-[14px] text-gray-700 font-bold">
+                  للاستفسار
+                </span>
+              </a>
             </div>
             <h4 className="text-[18px]">{product?.name}</h4>
-            {price === endPrice ? (
+            {!priceCalc(product)?.hasDiscount ? (
               <b className="text-[22px] block">
                 {Number(endPrice).toLocaleString("en")}{" "}
                 <span className="text-[14px]">IQD</span>
@@ -219,15 +247,37 @@ const ProductInfoWeb = ({ product }) => {
             {/* <p className="text-[14px] text-gray-600 mt-[8px]">
               {product?.description}
             </p> */}
+            {(activeOption && !activeOption?.in_stock) ||
+            product?.out_of_stock ? (
+              <p className="text-[14px] text-red-600 mt-[8px]">
+                هذا المنتج غير متوفر حالياً
+              </p>
+            ) : null}
             <p className="text-[14px] text-gray-600 mt-[8px]">
               {product?.shortDescription}
             </p>
+            {product?.code && (
+              <div className="flex items-center mt-2">
+                <span className="text-[14px] text-gray-500">كود المنتج:</span>
+                <span className="ml-2 text-[14px] font-mono bg-[#f6f6f6] px-2 py-1 rounded">
+                  {product.code}
+                </span>
+              </div>
+            )}
             <div className="flex items-center mt-[16px]">
               <TbTruckDelivery className="text-[16px]" />
               <span className="mr-[8px] text-[14px]">
-                عادة مايتم توصيل المنتجات في 3-5 أيام
+                عادة مايتم توصيل المنتجات {settings?.time}
               </span>
             </div>
+            {product?.insurance && product?.insurance?.content && (
+              <div className="flex items-center mt-[16px]">
+                <BsExclamation className="text-[19px]" />
+                <span className="mr-[8px] text-[14px]">
+                  {product?.insurance?.content}
+                </span>
+              </div>
+            )}
             <div className="mt-4 pt-4">
               {product?.options && product?.options.length > 0 && (
                 <div>

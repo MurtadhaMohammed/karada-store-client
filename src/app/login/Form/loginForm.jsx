@@ -1,15 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import Ripples from "react-ripples";
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
 import { OtpInput } from "reactjs-otp-input";
-import { useEffect, useState } from "react";
-import { apiCall, URL } from "@/lib/api";
+import { useCallback, useEffect, useState, useRef } from "react";
+import { apiCall } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore } from "@/lib/store";
-import OtpInputs from "@/components/Otp/OtpInputs";
 import { validateIraqiPhoneNumber } from "@/helper/phoneValidation";
 
 const LoginForm = () => {
@@ -18,7 +16,6 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const {
     setIsLogin,
@@ -30,8 +27,15 @@ const LoginForm = () => {
     setIsOtp,
     userInfo,
   } = useAppStore();
+  const updateUserInfoRef = useRef(updateUserInfo);
+  const setIsLoginRef = useRef(setIsLogin);
+
+  useEffect(() => {
+    updateUserInfoRef.current = updateUserInfo;
+    setIsLoginRef.current = setIsLogin;
+  }, [router, updateUserInfo, setIsLogin]);
+
   const handleChange = (otp) => setOtp(otp);
-  const globalPhone = userInfo?.phone;
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
@@ -55,33 +59,52 @@ const LoginForm = () => {
     if (resp?.message == "Login Success") {
       setIsOtp(true);
       setError(null);
-      router.replace(`/login?phone=${phone}`);
+      const redirectTo = searchParams.get("redirect");
+      const otpUrl = redirectTo
+        ? `/login?phone=${phone}&redirect=${encodeURIComponent(redirectTo)}`
+        : `/login?phone=${phone}`;
+      router.replace(otpUrl);
     } else {
       setError("يرجى إدخال رقم هاتف صالح");
     }
   };
 
   const handleVerify = async () => {
+    if (loading) return;
     setLoading(true);
-    const phoneFromParams = searchParams.get("phone");
-    const resp = await apiCall({
-      pathname: `/client/auth/verify`,
-      method: "POST",
-      data: {
-        otp,
-        phone: phoneFromParams || globalPhone,
-      },
-    });
-    setLoading(false);
-    if (resp.accessToken) {
-      router.replace("/");
-      localStorage.setItem("karada-token", resp.accessToken);
-      localStorage.setItem("karada-refreshToken", resp.refreshToken);
-      localStorage.setItem("karada-user", JSON.stringify(resp.user));
-      updateUserInfo(resp.user);
-      setIsLogin(true);
-    } else {
-      setError("يرجى إدخال رمز التحقق صحيح");
+
+    try {
+      const phoneFromParams = searchParams.get("phone");
+      const redirectTo = searchParams.get("redirect");
+
+      const resp = await apiCall({
+        pathname: `/client/auth/verify`,
+        method: "POST",
+        data: {
+          otp,
+          phone: phoneFromParams || userInfo?.phone,
+        },
+      });
+
+      if (resp.accessToken) {
+        localStorage.setItem("karada-token", resp.accessToken);
+        localStorage.setItem("karada-refreshToken", resp.refreshToken);
+        localStorage.setItem("karada-user", JSON.stringify(resp.user));
+        updateUserInfoRef.current(resp.user);
+        setIsLoginRef.current(true);
+
+        if (redirectTo) {
+          router.replace(decodeURIComponent(redirectTo));
+        } else {
+          router.push("/");
+        }
+      } else {
+        setError("يرجى إدخال رمز التحقق صحيح");
+      }
+    } catch (error) {
+      setError("حدث خطأ أثناء التحقق");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,6 +121,11 @@ const LoginForm = () => {
       if (_name) setName(_name);
     }
   }, [isLogin]);
+
+  useEffect(() => {
+    router.prefetch("/checkout");
+    router.prefetch("/");
+  }, [router]);
 
   if (isOtp)
     return (
@@ -116,7 +144,6 @@ const LoginForm = () => {
                 onChange={handleChange}
                 numInputs={6}
                 isInputNum={true}
-                // separator={<span className="m-1"></span>}
                 inputStyle={{
                   width: 48,
                   height: 48,
@@ -131,7 +158,6 @@ const LoginForm = () => {
                   gap: "8px",
                 }}
               />
-              {/* <OtpInputs onChange={handleChange} /> */}
             </div>
           </div>
         </Container>
@@ -150,7 +176,8 @@ const LoginForm = () => {
               <Ripples className="!grid w-full">
                 <button
                   onClick={handleVerify}
-                  className="flex items-center justify-center  h-[56px] rounded-[16px]  bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6"
+                  disabled={loading || otp?.length !== 6}
+                  className="flex items-center justify-center h-[56px] rounded-[16px] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] p-6 disabled:opacity-50"
                 >
                   <span className="ml-[8px] font-bold text-[18px]">
                     {loading ? "جار المصادقة..." : "تأكـــيد"}
@@ -161,7 +188,11 @@ const LoginForm = () => {
           </Container>
         </div>
         <div>
-          {error && <p className="text-red-500 flex items-center justify-center p-[16px]">{error}</p>}
+          {error && (
+            <p className="text-red-500 flex items-center justify-center p-[16px]">
+              {error}
+            </p>
+          )}
         </div>
       </div>
     );
@@ -170,9 +201,6 @@ const LoginForm = () => {
     <div className="pt-[60px]">
       <Container>
         <div className="mt-[26px]">
-          <div className="mb-[16px] text-center">
-            {/* <b className="text-[18px]">مرحباً بك.</b> */}
-          </div>
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -207,9 +235,7 @@ const LoginForm = () => {
           </div>
         </Container>
       </div>
-      <div>
-        {error && <p className="text-red-500 p-[16px] ">{error}</p>}
-      </div>
+      <div>{error && <p className="text-red-500 p-[16px] ">{error}</p>}</div>
     </div>
   );
 };

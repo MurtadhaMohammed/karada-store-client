@@ -7,6 +7,8 @@ import Image from "next/image";
 import { FaCheck } from "react-icons/fa6";
 import { useAppStore } from "@/lib/store";
 import Link from "next/link";
+import { GoChevronLeft } from "react-icons/go";
+import dayjs from "dayjs";
 
 const ImageGroup = ({ thumbnails }) => {
   return (
@@ -196,7 +198,7 @@ const OrderCard = ({ order }) => {
       color: "text-[#000]",
       bg: "",
       text: (
-        <div className="flex items-center items-center gap-4">
+        <div className="flex items-center gap-4">
           تم انهاء الطلب{" "}
           <FaCheck className="hidden sm:block w-6 h-6 text-violet-600" />
         </div>
@@ -216,10 +218,12 @@ const OrderCard = ({ order }) => {
     hour: "numeric",
     minute: "numeric",
   });
+
   return (
-    <div
-      className={`border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px]`}
+    <Link
+      className={`block border border-[#eee] rounded-[16px] overflow-hidden mt-[8px]  mb-[18px] bg-white active:opacity-45 transition-all`}
       style={{ boxShadow: "0px 5px 20px -10px #0000002b" }}
+      href={`/orderDetails/${order?.id}`}
     >
       <div className="flex p-[16px]">
         <ImageGroup thumbnails={thumbnails} />
@@ -236,7 +240,10 @@ const OrderCard = ({ order }) => {
           </b>
           <div className="flex items-center text-[14px] text-[#666]">
             <IoMdTime />
-            <p className="mr-[4px]">{formattedDate}</p>
+            <p className="mr-[4px] hidden sm:block">{formattedDate}</p>
+            <p className="mr-[4px] block sm:hidden">
+              {formattedDate}
+            </p>
           </div>
           <div className="flex items-center text-[14px] text-[#666]">
             <HiOutlineLocationMarker />
@@ -249,16 +256,17 @@ const OrderCard = ({ order }) => {
           </div>
         </div>
         <div>
-          <button className="bg-[#f6f6f6] px-[8px] py-[4px] text-[14px] flex items-center">
+          {/* <button className="bg-[#f6f6f6] px-[8px] py-[4px] text-[14px] flex items-center">
             <span className="flex items-center gap-2 font-bold">
               <Link href={`/orderDetails/${order.id}`}>
                 <p className="hidden sm:block">تفاصيل الطلب</p>
+                <GoChevronLeft className="block sm:hidden w-6 h-6" />
               </Link>
             </span>
-          </button>
+          </button> */}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

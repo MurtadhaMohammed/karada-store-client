@@ -6,7 +6,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "karadastore.eu-central-1.linodeobjects.com",
         port: "",
-        pathname: "/**",
+        pathname: "/karada-store/**",
       },
       {
         protocol: "https",
@@ -14,10 +14,17 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "karadastore.iq",
+        port: "",
+        pathname: "/image/**",
+      },
     ],
+    minimumCacheTTL: 31536000,
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
+  // experimental: {
+  //   missingSuspenseWithCSRBailout: false,
+  // },
 };
 export default nextConfig;
