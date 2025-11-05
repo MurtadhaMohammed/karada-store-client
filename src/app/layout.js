@@ -179,6 +179,14 @@ export default function RootLayout({ children }) {
             __html: `
               fbq('init', '1552395819444834');
               fbq('track', 'PageView');
+              
+              // Track when user clicks app store link
+              window.trackAppStoreClick = function() {
+                fbq('track', 'Lead', {
+                  content_name: 'App Store Click',
+                  content_category: 'App Download'
+                });
+              };
             `,
           }}
         />
