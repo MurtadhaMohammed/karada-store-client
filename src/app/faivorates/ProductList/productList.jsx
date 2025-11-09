@@ -36,13 +36,12 @@ const ProductList = () => {
       );
 
       return apiCall({
-        pathname: "/client/product/productsByIds",
-        data: { productIds: filteredFavorites },
-        method: "POST",
+        pathname: "/app/product/find?ids=" + filteredFavorites.join(","),
       });
     },
     enabled: favorites.length !== 0,
   });
+
 
   if (favorites?.length === 0)
     return (
@@ -64,7 +63,7 @@ const ProductList = () => {
         <Container>
           <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4  gap-4 overflow-x-auto no-scrollbar">
             {data &&
-              data?.products?.map((el, i) => (
+              data?.items?.map((el, i) => (
                 <DefaultCard
                   isFav
                   isGrid

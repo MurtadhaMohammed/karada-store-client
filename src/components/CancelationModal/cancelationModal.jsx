@@ -19,14 +19,15 @@ const CancelationModal = ({ orderId }) => {
 
   const queryClient = useQueryClient();
 
-  const { mutate: update, isPending: isUpdateLoading } = useMutation({
-    mutationFn: (data) =>
-      apiCall({
-        pathname: `/client/order/cancel-order/${orderId}`,
-        method: "PUT",
+  const { mutate: cancelOrder, isPending: isUpdateLoading } = useMutation({
+    mutationFn: async (data) => {
+      await apiCall({
+        pathname: `/app/order/cancel/${orderId}`,
+        method: "POST",
         auth: true,
         data,
-      }),
+      });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries("orders");
       closeModal();
@@ -65,7 +66,7 @@ const CancelationModal = ({ orderId }) => {
 
     if (!selectedReasonLabel) return;
 
-    update({ cancel_reason: selectedReasonLabel });
+    cancelOrder({ cancel_reason: selectedReasonLabel });
   };
 
   return (
@@ -138,7 +139,7 @@ const CancelationModal = ({ orderId }) => {
               }
               onClick={handleSubmit}
             >
-              <span>{isUpdateLoading ? "جارٍ الإرسال..." : "إرسال السبب"}</span>
+              <span>{isUpdateLoading ? "جارٍ الإرسال..." : "تأكيد"}</span>
             </button>
           </div>
         </div>

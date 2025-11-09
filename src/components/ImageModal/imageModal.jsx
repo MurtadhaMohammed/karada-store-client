@@ -103,7 +103,7 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
             >
               <Image
                 key={currentIndex}
-                src={images[currentIndex]}
+                src={images[currentIndex] || ""}
                 fill
                 style={{ objectFit: "contain" }}
                 alt="Product Image"
@@ -136,7 +136,7 @@ const ImageModal = ({ isOpen, initialIndex, images, onClose }) => {
                 }`}
               >
                 <Image
-                  src={img}
+                  src={img || ""}
                   fill
                   style={{ objectFit: "cover" }}
                   alt="Thumbnail"

@@ -55,7 +55,7 @@ const LoginFormWeb = () => {
       return setError("يرجى إدخال رقم هاتف صالح");
     setLoading(true);
     const resp = await apiCall({
-      pathname: `/client/auth/login`,
+      pathname: `/app/auth/login`,
       method: "POST",
       data: {
         name,
@@ -86,7 +86,7 @@ const LoginFormWeb = () => {
       const redirectTo = searchParams.get("redirect");
       
       const resp = await apiCall({
-        pathname: `/client/auth/verify`,
+        pathname: `/app/auth/verify`,
         method: "POST",
         data: {
           otp,

@@ -12,7 +12,7 @@ export const useCartStore = create((set, get) => ({
   addItem: (product) => {
     if (product?.l1) {
       product.price = product?.l1?.price;
-      product.endPrice = product?.l1?.endPrice; //TODO : handl endprice from BE -done
+      product.finalPrice = product?.l1?.finalPrice;
     }
     set((state) => ({
       cart: [...state.cart, { qt: 1, product }],
@@ -82,7 +82,7 @@ export const useCartStore = create((set, get) => ({
     return get()
       .cart.map(
         (item) =>
-          priceCalc(item?.product, item?.product?.l1)?.endPrice * item.qt
+          priceCalc(item?.product, item?.product?.l1)?.finalPrice * item.qt
       )
       .reduce((a, b) => a + b, 0);
   },
@@ -123,7 +123,7 @@ export const useCartStore = create((set, get) => ({
       applicableItems = cart;
       subtotalForDiscount = cart.reduce((total, item) => {
         const price =
-          priceCalc(item?.product, item?.product?.l1)?.endPrice || 0;
+          priceCalc(item?.product, item?.product?.l1)?.finalPrice || 0;
         return total + price * item.qt;
       }, 0);
     } else if (voucher.product_ids && voucher.product_ids.length > 0) {
@@ -133,7 +133,7 @@ export const useCartStore = create((set, get) => ({
       );
       subtotalForDiscount = applicableItems.reduce((total, item) => {
         const price =
-          priceCalc(item?.product, item?.product?.l1)?.endPrice || 0;
+          priceCalc(item?.product, item?.product?.l1)?.finalPrice || 0;
         return total + price * item.qt;
       }, 0);
     }

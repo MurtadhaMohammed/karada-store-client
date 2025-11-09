@@ -16,7 +16,7 @@ const ImageGroup = ({ thumbnails }) => {
       {thumbnails?.length === 1 && (
         <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] overflow-hidden relative">
           <Image
-            src={`${IMAGE_URL}/${thumbnails[0]}`}
+            src={thumbnails[0] || ""}
             fill
             style={{ objectFit: "cover" }}
             alt="Thumbnail"
@@ -28,7 +28,7 @@ const ImageGroup = ({ thumbnails }) => {
         <div className="relative h-full border border-[#eee] rounded-[8px] overflow-hidden">
           <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative">
             <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
+              src={thumbnails[0] || ""}
               fill
               style={{ objectFit: "cover" }}
               alt="Thumbnail 1"
@@ -48,7 +48,7 @@ const ImageGroup = ({ thumbnails }) => {
         >
           <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
             <Image
-              src={`${IMAGE_URL}/${thumbnails[0]}`}
+              src={thumbnails[0] || ""}
               fill
               style={{ objectFit: "cover" }}
               alt="Thumbnail 1"
@@ -56,7 +56,7 @@ const ImageGroup = ({ thumbnails }) => {
           </div>
           <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
             <Image
-              src={`${IMAGE_URL}/${thumbnails[1]}`}
+              src={thumbnails[1] || ""}
               fill
               style={{ objectFit: "cover" }}
               alt="Thumbnail 2"
@@ -64,7 +64,7 @@ const ImageGroup = ({ thumbnails }) => {
           </div>
           <div className="bg-[#f6f6f6] border border-[#eee] w-[100%] h-[100%] rounded-[8px] relative overflow-hidden">
             <Image
-              src={`${IMAGE_URL}/${thumbnails[2]}`}
+              src={thumbnails[2] || ""}
               fill
               style={{ objectFit: "cover" }}
               alt="Thumbnail 3"
@@ -84,7 +84,7 @@ const ImageGroup = ({ thumbnails }) => {
               className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative overflow-hidden"
             >
               <Image
-                src={`${IMAGE_URL}/${thumbnails[i]}`}
+                src={thumbnails[i] || ""}
                 fill
                 style={{ objectFit: "cover" }}
                 alt={`Thumbnail ${i + 1}`}
@@ -105,7 +105,7 @@ const ImageGroup = ({ thumbnails }) => {
               className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative"
             >
               <Image
-                src={`${IMAGE_URL}/${thumbnails[i]}`}
+                src={thumbnails[i] || ""}
                 fill
                 style={{ objectFit: "cover" }}
                 alt={`Thumbnail ${i + 1}`}
@@ -115,7 +115,7 @@ const ImageGroup = ({ thumbnails }) => {
           <div className="relative h-full rounded-[8px] overflow-hidden">
             <div className="bg-[#f6f6f6] border border-[#eee] aspect-1 rounded-[8px] relative">
               <Image
-                src={`${IMAGE_URL}/${thumbnails[3]}`}
+                src={thumbnails[3] || ""}
                 fill
                 style={{ objectFit: "cover" }}
                 alt="Thumbnail 4"
@@ -157,9 +157,7 @@ const ImageGroup = ({ thumbnails }) => {
 const OrderCard = ({ order }) => {
   const { order_status } = order || {};
 
-  const thumbnails = order?.items?.map((item) => item.thumbnail1);
-
-  const itemNames = order?.items?.map((item) => item.name).join(", ");
+  const thumbnails = order?.items?.map((item) => item.image);
 
   const address = order?.address;
 

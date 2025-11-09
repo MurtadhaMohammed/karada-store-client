@@ -22,11 +22,10 @@ const OrderDetails = ({ params }) => {
     queryKey: [`related-${params.id}`, params],
     queryFn: () =>
       apiCall({
-        pathname: `/client/order/getOrdersById/${params.id}`,
+        pathname: `/app/order/find/${params.id}`,
         auth: true,
       }),
     enabled: !!params.id,
-    select: (data) => data?.order,
   });
   const copyToClipboard = (trackId) => {
     navigator.clipboard.writeText(trackId);
@@ -38,13 +37,6 @@ const OrderDetails = ({ params }) => {
     if (!order?.id) return;
     setDiscounts(order?.discount);
     setCreatedAt(order?.created_at);
-  }, [order]);
-
-  const productId = useMemo(() => {
-    if (order && order.items && order.items.length > 0) {
-      const randomIndex = Math.floor(Math.random() * order.items.length);
-      return order.items[randomIndex]?.id;
-    }
   }, [order]);
 
   const handleDiscount = (id) => {
@@ -170,18 +162,6 @@ const OrderDetails = ({ params }) => {
 
             <div className="p-[16px]">
               {order?.items?.map((item, i) => {
-                const displayPrice =
-                  item?.endPrice || item.l1?.price || item.price;
-
-                const isDiscountValid =
-                  item?.endPrice &&
-                  item?.endPrice < item?.price &&
-                  item?.endPrice_date &&
-                  new Date(item.endPrice_date) > new Date();
-
-                const shouldStrikeThrough =
-                  displayPrice >
-                  displayPrice * handleDiscount(item?.discount_id || null);
                 return (
                   <div
                     key={i}
@@ -190,7 +170,7 @@ const OrderDetails = ({ params }) => {
                     <div className="flex item-center gap-4 w-full">
                       {/* Image */}
                       <Image
-                        src={`${IMAGE_URL}/${item.thumbnail1}`}
+                        src={item.image || ""}
                         width={40}
                         height={40}
                         alt="thumbnail"
@@ -200,10 +180,10 @@ const OrderDetails = ({ params }) => {
                       {/* Text Container */}
                       <div className="flex flex-col w-full overflow-hidden">
                         <p className="text-sm font-bold truncate max-w-[160px]">
-                          {item.name}
+                          {item.title}
                         </p>
                         <p className="text-xs text-gray-500 truncate max-w-[160px]">
-                          {item.shortDescription}
+                          {item.subtitle}
                         </p>
                       </div>
 
@@ -220,7 +200,7 @@ const OrderDetails = ({ params }) => {
                             <p className="text-[15px]">
                               {item?.qt > 1 && `${item?.qt} * `}
                               {Number(
-                                priceCalc(item, item?.l1)?.endPrice * item?.qt
+                                priceCalc(item, item?.l1)?.finalPrice * item?.qt
                               ).toLocaleString("en")}{" "}
                               د.ع
                             </p>
@@ -313,15 +293,17 @@ const OrderDetails = ({ params }) => {
                 </span>
                 <BiSupport className="text-violet-600 text-[22px]" />
               </Link>
-              {order_status !== "Canceled" && order_status === "Created" && (
-                <button
-                  onClick={() => setShowCancelConfirm(true)}
-                  className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-3 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
-                >
-                  <span className="text-red-600 font-bold">الغاء الطلب</span>
-                  <FcCancel className="text-red-600 text-[22px]" />
-                </button>
-              )}
+              {order_status !== "Canceled" &&
+                order_status === "Created" &&
+                order?.type !== "Instalment" && (
+                  <button
+                    onClick={() => setShowCancelConfirm(true)}
+                    className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-3 pl-5 pr-5 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
+                  >
+                    <span className="text-red-600 font-bold">الغاء الطلب</span>
+                    <FcCancel className="text-red-600 text-[22px]" />
+                  </button>
+                )}
               {/* <div
                 onClick={() => openModal("cancelationModal")}
                 className="cursor-pointer flex items-center justify-center w-full gap-4 border border-red-600 p-3 shadow-sm rounded-[12px] mt-[16px] active:opacity-45 transition-all"
@@ -336,7 +318,6 @@ const OrderDetails = ({ params }) => {
             isOpen={showCancelConfirm}
             onClose={() => setShowCancelConfirm(false)}
             orderId={order?.id}
-            installmentId={order?.installment_id}
           />
         </>
       </Container>

@@ -80,21 +80,21 @@ const ProductInfoWeb = ({ product }) => {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [price, setPrice] = useState(product?.price);
-  const [endPrice, setEndPrice] = useState(product?.endPrice);
+  const [finalPrice, setFinalPrice] = useState(product?.finalPrice);
   const [modalImageIndex, setModalImageIndex] = useState(0);
   const { toggleFav, favorites, settings } = useAppStore();
 
   useEffect(() => {
-    setActiveOption(product?.options?.[0] || null);
+    setActiveOption(product?.options[0] || null);
   }, [product?.options]);
 
   useEffect(() => {
-    if (activeOption?.price) {
+    if (activeOption) {
       setPrice(activeOption?.price);
-      setEndPrice(priceCalc(product, activeOption)?.endPrice);
+      setFinalPrice(priceCalc(product, activeOption)?.finalPrice);
     } else {
       setPrice(product?.price);
-      setEndPrice(priceCalc(product)?.endPrice);
+      setFinalPrice(priceCalc(product)?.finalPrice);
     }
   }, [activeOption]);
 
@@ -112,9 +112,8 @@ const ProductInfoWeb = ({ product }) => {
   // product.out_of_stock;
 
   const isAddToCartDisabled =
-  !!product?.out_of_stock ||
-  (activeOption != null && activeOption.in_stock === false);
-
+    !!product?.out_of_stock ||
+    (activeOption != null && activeOption.in_stock === false);
 
   const openModal = (index) => {
     setIsModalOpen(true);
@@ -149,7 +148,7 @@ const ProductInfoWeb = ({ product }) => {
                   }`}
                 >
                   <Image
-                    src={`${IMAGE_URL}/${img}`}
+                    src={img || ""}
                     fill
                     style={{ objectFit: "cover" }}
                     alt="Product Thumbnail"
@@ -173,7 +172,7 @@ const ProductInfoWeb = ({ product }) => {
             >
               {shownimages && shownimages?.length !== 0 ? (
                 <Image
-                  src={`${IMAGE_URL}/${shownimages[currentImageIndex]}`}
+                  src={shownimages[currentImageIndex] || ""}
                   fill
                   style={{ objectFit: "cover" }}
                   alt="Product Image"
@@ -185,7 +184,7 @@ const ProductInfoWeb = ({ product }) => {
           </section>
 
           <section className="border-r border-r-[#eee] pr-8">
-            <InstallmentBanner price={endPrice} />
+            <InstallmentBanner price={finalPrice} />
             <div className="flex items-center gap-2 mt-[16px] pb-4">
               <IconButton
                 rounded={"8px"}
@@ -227,9 +226,9 @@ const ProductInfoWeb = ({ product }) => {
               </a>
             </div>
             <h4 className="text-[18px]">{product?.name}</h4>
-            {!priceCalc(product)?.hasDiscount ? (
+            {!product?.onSale ? (
               <b className="text-[22px] block">
-                {Number(endPrice).toLocaleString("en")}{" "}
+                {Number(finalPrice).toLocaleString("en")}{" "}
                 <span className="text-[14px]">IQD</span>
               </b>
             ) : (
@@ -238,7 +237,7 @@ const ProductInfoWeb = ({ product }) => {
                   {Number(price).toLocaleString("en")}
                 </p>
                 <b className="text-[22px] block">
-                  {Number(endPrice).toLocaleString("en")}{" "}
+                  {Number(finalPrice).toLocaleString("en")}{" "}
                   <span className="text-[14px]">IQD</span>
                 </b>
               </div>
@@ -270,11 +269,11 @@ const ProductInfoWeb = ({ product }) => {
                 عادة مايتم توصيل المنتجات {settings?.time}
               </span>
             </div>
-            {product?.insurance && product?.insurance?.content && (
+            {product?.insurance && (
               <div className="flex items-center mt-[16px]">
                 <BsExclamation className="text-[19px]" />
                 <span className="mr-[8px] text-[14px]">
-                  {product?.insurance?.content}
+                  {product?.insurance}
                 </span>
               </div>
             )}
@@ -305,7 +304,7 @@ const ProductInfoWeb = ({ product }) => {
             )}
 
             <ProductCtaWeb
-              product={{ ...product, l1: activeOption }}
+              product={{ ...product, l1: { ...activeOption, finalPrice } }}
               isAddToCartDisabled={isAddToCartDisabled}
             />
           </section>
@@ -329,7 +328,7 @@ const ProductInfoWeb = ({ product }) => {
       <ImageModal
         isOpen={isModalOpen}
         initialIndex={modalImageIndex}
-        images={product?.image?.map((img) => `${IMAGE_URL}/${img?.url}`)}
+        images={product?.image}
         onClose={closeModal}
       />
     </div>

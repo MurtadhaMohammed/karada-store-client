@@ -11,7 +11,7 @@ import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 import BrandBanner from "@/components/brandBanner/brandBanner";
 import GridBanner from "@/components/GridBanner/gridBanner";
 async function getViews() {
-  const res = await fetch(`${URL}/client/view/homeView`, {
+  const res = await fetch(`${URL}/app/view/home`, {
     method: "GET",
     cache: "no-cache",
     // next: { revalidate: 3600 },
@@ -23,8 +23,7 @@ async function getViews() {
 export default async function Home() {
   try {
     const viewData = await getViews();
-
-    const banners = viewData.banners;
+    const banners = viewData;
 
     const renderBanner = (banner) => {
       const bannerContent = () => {

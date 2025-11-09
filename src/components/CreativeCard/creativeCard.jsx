@@ -44,7 +44,7 @@ const CreatviceCard = ({ index, item }) => {
           <div className="w-full h-full relative pure-skeleton">
             <Image
               // src={images[index]}
-              src={`${IMAGE_URL}/${item?.thumbnail2}`}
+              src={item?.thumbnail2 || item?.thumbnail || ""}
               fill
               style={{ objectFit: "cover" }}
               alt="image"
