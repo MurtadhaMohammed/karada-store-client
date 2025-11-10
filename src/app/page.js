@@ -23,7 +23,6 @@ export default async function Home() {
   try {
     const viewData = await getViews();
     const banners = viewData;
-
     const renderBanner = (banner) => {
       const bannerContent = () => {
         switch (banner.type) {
