@@ -10,7 +10,6 @@ import {
   TbHeart,
   TbHeartFilled,
 } from "react-icons/tb";
-import { IMAGE_URL } from "@/lib/api";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useAppStore } from "@/lib/store";
@@ -125,11 +124,14 @@ const ProductInfoWeb = ({ product }) => {
   };
 
   const shownimages =
-    activeOption?.images?.length > 0
-      ? activeOption.images
-      : product?.image
-          ?.sort((a, b) => Number(a.priority) - Number(b.priority))
-          .map((img) => img.url);
+    activeOption?.images?.length > 0 ? activeOption.images : product?.image;
+
+  // const shownimages =
+  //   activeOption?.images?.length > 0
+  //     ? activeOption.images
+  //     : product?.image
+  //         ?.sort((a, b) => Number(a.priority) - Number(b.priority))
+  //         .map((img) => img.url);
 
   return (
     <div className="mt-[48px] md:block hidden">

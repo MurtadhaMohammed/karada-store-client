@@ -117,12 +117,18 @@ const ProductInfo = ({ product }) => {
     !!product?.out_of_stock ||
     (activeOption != null && activeOption.in_stock === false);
 
+  // const shownimages =
+  //   activeOption?.images?.length > 0
+  //     ? activeOption.images
+  //     : product?.image
+  //         ?.sort((a, b) => Number(a.priority) - Number(b.priority))
+  //         .map((img) => img.url);
+
   const shownimages =
     activeOption?.images?.length > 0
       ? activeOption.images
       : product?.image
-          ?.sort((a, b) => Number(a.priority) - Number(b.priority))
-          .map((img) => img.url);
+
 
   return (
     <div className="md:hidden block">
