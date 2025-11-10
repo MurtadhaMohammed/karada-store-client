@@ -56,7 +56,7 @@ export default async function Home() {
                 bannerImage={banner?.img}
                 link={banner?.link || "/"}
                 grid={banner?.grid}
-                hasBanner={banner?.has_banner}
+                hasBanner={banner?.img ? true : false}
                 bannerAlignment={banner?.bannerAlignment}
               />
             );

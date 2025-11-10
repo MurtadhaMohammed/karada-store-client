@@ -36,7 +36,7 @@ const GridBanner = ({
                   }`}
                 >
                   <Image
-                    src={`${IMAGE_URL}/${bannerImage}`}
+                    src={bannerImage || ""}
                     className="w-full h-full object-cover "
                     alt=""
                     fill
@@ -58,7 +58,7 @@ const GridBanner = ({
               >
                 <Link href={_.link} className="pure-skeleton">
                   <Image
-                    src={`${IMAGE_URL}/${_.image}`}
+                    src={_.image || ""}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
                     fill
@@ -80,7 +80,7 @@ const GridBanner = ({
                   }`}
                 >
                   <Image
-                    src={`${IMAGE_URL}/${bannerImage}`}
+                    src={bannerImage || ""}
                     className="w-full h-full object-cover rounded-[12px]"
                     alt=""
                     fill
