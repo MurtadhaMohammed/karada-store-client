@@ -4,13 +4,12 @@ import DefaultCard from "@/components/DefaultCard/defaultCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Motion from "@/components/Motion/motion";
 import Container from "@/components/UI/Container/container";
-import { apiCall, URL } from "@/lib/api";
-import { useEffect, useState } from "react";
+import { apiCall } from "@/lib/api";
 import { useAppStore } from "@/lib/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import ListSkeleton from "./skeleton";
 
-const ProductList = () => {
+const CategoryProductList = () => {
   const { selectedCategoryId } = useAppStore();
   const limit = 12;
 
@@ -24,14 +23,14 @@ const ProductList = () => {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: [`products-${selectedCategoryId}`],
-    queryFn: ({ pageParam = 1 }) =>
+    queryFn: ({ pageParam = 0 }) =>
       apiCall({
-        pathname: `/client/product/product?category_id=${selectedCategoryId}&page=${pageParam}&limit=${limit}`,
+        pathname: `/app/product/search?categoryId=${selectedCategoryId}&cursor=${pageParam}&limit=${limit}`,
         method: "GET",
         cache: "no-store",
       }),
     getNextPageParam: (lastPage, pages) => {
-      return lastPage?.products?.length ? pages?.length + 1 : undefined;
+      return lastPage?.nextCursor || null;
     },
     enabled: !!selectedCategoryId,
   });
@@ -46,7 +45,7 @@ const ProductList = () => {
           <InfiniteScroll
             dataLength={
               data?.pages?.reduce(
-                (acc, page) => acc + page?.products?.length,
+                (acc, page) => acc + page?.items?.length,
                 0
               ) || 0
             }
@@ -55,7 +54,7 @@ const ProductList = () => {
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 overflow-x-auto no-scrollbar"
           >
             {data?.pages?.map((page) =>
-              page?.products?.map((el, i) => (
+              page?.items?.map((el, i) => (
                 <DefaultCard isGrid key={`${el.id}-${i}`} item={el} />
               ))
             )}
@@ -67,4 +66,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default CategoryProductList;

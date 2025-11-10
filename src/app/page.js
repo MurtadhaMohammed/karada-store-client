@@ -8,7 +8,6 @@ import Link from "next/link";
 
 import { URL } from "@/lib/api";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
-import BrandBanner from "@/components/brandBanner/brandBanner";
 import GridBanner from "@/components/GridBanner/gridBanner";
 async function getViews() {
   const res = await fetch(`${URL}/app/view/home`, {
@@ -32,8 +31,6 @@ export default async function Home() {
             return <SliderBanner banners={banner} />;
           case "SinglePure":
             return <SingleBannerPure banner={banner} />;
-          case "Brand":
-            return <BrandBanner list={banner.brand_ids} />;
           case "List":
             return (
               <ListBanner

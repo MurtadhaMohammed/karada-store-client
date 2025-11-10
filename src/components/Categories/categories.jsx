@@ -68,11 +68,11 @@ const Categories = ({ isBanner = true, list = [] }) => {
       } else {
         setShowCircleLeft(false);
       }
-        if(scrollLeft < 0) {
-          setShowCirlcRight(true);
-        } else {
-          setShowCirlcRight(false);
-        }
+      if (scrollLeft < 0) {
+        setShowCirlcRight(true);
+      } else {
+        setShowCirlcRight(false);
+      }
     }
   };
 
@@ -141,7 +141,7 @@ const Categories = ({ isBanner = true, list = [] }) => {
               >
                 <div className="md:w-[68px] md:h-[68px] w-[48px] h-[48px] relative overflow-hidden">
                   <Image
-                    src={`${IMAGE_URL}/${el?.img}`}
+                    src={el?.img || ""}
                     alt={el?.title}
                     fill
                     style={{ objectFit: "contain" }}
@@ -159,26 +159,26 @@ const Categories = ({ isBanner = true, list = [] }) => {
               </Wrapper>
             ))}
             {showCircleLeft && (
-             <>
-              <div
-                className={`absolute left-[6px] w-[48px] h-[48px] rounded-full bg-[#f6f6f6] z-10 flex items-center justify-center cursor-pointer shadow-md border-none animate-scaling transition-transform duration-400 ${
-                  isClicked ? "scale-75" : ""
-                } hidden md:flex`}
-                onClick={() => handleScrollToBothSides("left")}
-              >
-                <MdKeyboardArrowLeft size={30} />
-              </div>
-             </>
+              <>
+                <div
+                  className={`absolute left-[6px] w-[48px] h-[48px] rounded-full bg-[#f6f6f6] z-10 flex items-center justify-center cursor-pointer shadow-md border-none animate-scaling transition-transform duration-400 ${
+                    isClicked ? "scale-75" : ""
+                  } hidden md:flex`}
+                  onClick={() => handleScrollToBothSides("left")}
+                >
+                  <MdKeyboardArrowLeft size={30} />
+                </div>
+              </>
             )}
             {showCircleRight && (
-               <div
-               className={`absolute right-[6px] w-[48px] h-[48px] rounded-full bg-[#f6f6f6] z-10 flex items-center justify-center cursor-pointer shadow-md border-none animate-scaling transition-transform duration-400 ${
-                 isClicked ? "scale-75" : ""
-               } hidden md:flex`}
-               onClick={() => handleScrollToBothSides("right")}
-             >
-               <MdKeyboardArrowRight size={30} />
-             </div>
+              <div
+                className={`absolute right-[6px] w-[48px] h-[48px] rounded-full bg-[#f6f6f6] z-10 flex items-center justify-center cursor-pointer shadow-md border-none animate-scaling transition-transform duration-400 ${
+                  isClicked ? "scale-75" : ""
+                } hidden md:flex`}
+                onClick={() => handleScrollToBothSides("right")}
+              >
+                <MdKeyboardArrowRight size={30} />
+              </div>
             )}
           </div>
         </div>

@@ -12,7 +12,7 @@ export async function generateMetadata({ params }) {
         description: "Product description",
       };
     }
-    const response = await fetch(`${URL}/client/product/product/${params.id}`);
+    const response = await fetch(`${URL}/app/product/find/${params.id}`);
     const data = await response.json();
 
     let shortDescription = (data?.product?.description || "Product description")
@@ -53,9 +53,9 @@ export default async function ProductOne({ params }) {
     method: "GET",
     cache: "no-cache",
   });
+
   let product = await resp.json();
 
- console.log(product);
   return (
     <div className="pb-[100px]">
       <ProductInfo product={product} />

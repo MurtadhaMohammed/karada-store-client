@@ -5,22 +5,16 @@ import Button from "@/components/UI/Button/button";
 import { HiOutlineTicket } from "react-icons/hi";
 import { CiCircleCheck } from "react-icons/ci";
 import { apiCall } from "@/lib/api";
-// import { useAppStore } from "@/lib/store";
 import { useCartStore } from "@/lib/cartStore";
 
 const Voucher = () => {
   const [voucherCode, setVoucherCode] = useState("");
   const [error, setError] = useState("");
-  // const { userInfo } = useAppStore();
-  // const setVoucher = useCartStore((state) => state.setVoucher);
-  const cart = useCartStore((state) => state.cart);
-  const clearVoucher = useCartStore((state) => state.clearVoucher);
-  const [voucherApplied, setVoucherApplied] = useState(false);
+  const { clearVoucher, cart, setVoucher, voucher } = useCartStore();
   const [loading, setLoading] = useState(false);
-  const [voucherAmount, setVoucherAmount] = useState(0);
-  const [voucherMsg, setVoucherMsg] = useState("");
 
   const applyVoucher = async () => {
+    setVoucher(null);
     try {
       setLoading(true);
       const response = await apiCall({
@@ -46,9 +40,7 @@ const Voucher = () => {
       if (response && response.id) {
         setError("");
         setLoading(false);
-        setVoucherAmount(response.value);
-        setVoucherMsg(response.msg || "");
-        setVoucherApplied(true);
+        setVoucher(response);
       } else {
         setError("هذه القسيمة غير صالحة.");
       }
@@ -62,7 +54,7 @@ const Voucher = () => {
   const removeVoucher = () => {
     setVoucherCode("");
     clearVoucher();
-    setVoucherApplied(false);
+    setVoucher(null);
     setError("");
   };
 
@@ -75,7 +67,7 @@ const Voucher = () => {
 
       <div className="p-4 pt-0 relative">
         <div className="flex gap-2 items-center">
-          {!voucherApplied ? (
+          {!voucher?.id ? (
             <>
               <input
                 className="rounded-lg border border-gray-300 h-12 px-4 w-full bg-gray-100 text-gray-800 text-sm focus:outline-none focus:border-indigo-500"
@@ -102,14 +94,14 @@ const Voucher = () => {
                     <CiCircleCheck size={24} />
                   </div>
                   <div className="flex-1">
-                    {voucherMsg && voucherMsg.trim() !== "" ? (
+                    {voucher && voucher?.msg && voucher?.msg.trim() !== "" ? (
                       // Display message voucher
                       <div>
                         <span className="text-gray-500 text-sm">كود الخصم</span>
                         <span className="font-semibold text-indigo-600 p-1">
                           {voucherCode}
                         </span>
-                        <div className=" ">{voucherMsg}</div>
+                        <div>{voucher?.msg || "..."}</div>
                       </div>
                     ) : (
                       // Display regular discount voucher
@@ -123,22 +115,9 @@ const Voucher = () => {
                           </span>
                           <span className="text-gray-500 text-sm">بقيمة</span>
                           <span className="font-semibold text-indigo-600 p-1">
-                            {`${voucherAmount.toLocaleString("en")} IQD`}
+                            {`${voucher?.value?.toLocaleString("en")} د.ع`}
                           </span>
                         </div>
-                        {/* {!voucherDetails.apply_to_all && (
-                          <div className="text-xs text-gray-500 mt-1">
-                            يطبق على {getVoucherApplicableItems().length} من{" "}
-                            {cart.length} منتجات - خصم:{" "}
-                            {getVoucherDiscount().toLocaleString()} د.ع
-                          </div>
-                        )} */}
-                        {/* {voucherDetails.apply_to_all && (
-                          <div className="text-xs text-gray-500 mt-1">
-                            يطبق على جميع المنتجات - خصم:{" "}
-                            {getVoucherDiscount().toLocaleString()} د.ع
-                          </div>
-                        )} */}
                       </div>
                     )}
                   </div>

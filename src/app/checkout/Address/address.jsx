@@ -21,36 +21,35 @@ const Address = () => {
   const [name, setName] = useState(userInfo?.name || "");
   const [phoneError, setPhoneError] = useState(null);
   const [addressError, setAddressError] = useState(null);
-  const [nameError, setNameError] = useState(null);
-  
+  // const [nameError, setNameError] = useState(null);
+
   const [handelError, setHandelError] = useState(null);
-  
+
   useEffect(() => {
     const token = localStorage.getItem("karada-token");
     if (token) {
       setAddress(userInfo.address || "");
       setPhone(userInfo.phone || "");
-      setName(userInfo.name || "");
+      // setName(userInfo.name || "");
       const isValid = validateIraqiPhoneNumber(userInfo.phone || "");
       // setPhoneError(isValid ? null : "يرجى إدخال رقم هاتف صالح");
       setIsPhoneValidated(isValid);
     }
-    setUserCheckoutInfo({
-      address,
-      phone,
-      name,
-    });
+    // setUserCheckoutInfo({
+    //   address,
+    //   phone,
+    //   name,
+    // });
   }, []);
-  
-  useEffect(() => {
-    setUserCheckoutInfo({
-      address,
-      phone,
-      name,
-      
-    });
-  }, [address, phone, name]);
-  
+
+  // useEffect(() => {
+  //   setUserCheckoutInfo({
+  //     address,
+  //     phone,
+  //     name,
+  //   });
+  // }, [address, phone, name]);
+
   useEffect(() => {
     if (validateAddress) {
       setHandelError("يرجى ملء جميع الحقول");
@@ -64,7 +63,11 @@ const Address = () => {
     setPhone(value);
     const isValid = validateIraqiPhoneNumber(value);
     setIsPhoneValidated(isValid);
-    setPhoneError(isValid && value.length === 11 ? null : "يرجى إدخال رقم يبدأ بـ 07 و متكون 11 رقم");
+    setPhoneError(
+      isValid && value.length === 11
+        ? null
+        : "يرجى إدخال رقم يبدأ بـ 07 و متكون 11 رقم"
+    );
   };
 
   const handleAddressChange = (e) => {
@@ -112,20 +115,6 @@ const Address = () => {
           />
           {phoneError && (
             <p className="mt-2 text-red-600 text-sm mr-2">{phoneError}</p>
-          )}
-        </div>
-
-        <div className="h-[12px]"></div>
-
-        <div>
-          <Input
-            hint="الاسم الكامل"
-            value={name}
-            onChange={handleNameChange}
-            required
-          />
-          {nameError && (
-            <p className="mt-2 text-red-600 text-sm mr-2">{nameError}</p>
           )}
         </div>
 

@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
-import { apiCall, IMAGE_URL } from "@/lib/api";
+import React, { useEffect, useState } from "react";
+import { apiCall } from "@/lib/api";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import Container from "@/components/UI/Container/container";
@@ -321,7 +321,6 @@ const OrderDetails = ({ params }) => {
           />
         </>
       </Container>
-      {/* <RelatedList productId={productId} /> */}
     </div>
   );
 };

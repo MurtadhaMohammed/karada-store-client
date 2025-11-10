@@ -1,13 +1,10 @@
 "use client";
 import DefaultCard from "@/components/DefaultCard/defaultCard";
-import Button from "@/components/UI/Button/button";
 import Container from "@/components/UI/Container/container";
 import { apiCall } from "@/lib/api";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import ProductSkeleton from "../Skeleton/skeleton";
 import { useAppStore } from "@/lib/store";
-import Empty from "@/components/Empty/empty";
-import { VscSearchStop } from "react-icons/vsc";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import RandomProducts from "@/app/products/randomProducts/randomProducts";

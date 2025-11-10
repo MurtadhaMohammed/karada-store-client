@@ -6,10 +6,6 @@ import Ripples from "react-ripples";
 import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 import { useMemo, useState, useEffect } from "react";
-import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
-// import { InstallmentModal } from "../Payments/InstallmentModal/InstallmentModal";
-// import { OtpModal } from "../Payments/OtpModal/OtpModal";
-import { createOrder } from "../utils/orderUtils";
 import RedirectOrderCreation from "@/components/RedirectOrderCreation/redirectOrderCreaton";
 import { apiCall } from "@/lib/api";
 
@@ -18,52 +14,20 @@ const CheckoutCTA = () => {
   const router = useRouter();
   const {
     userCheckoutInfo,
-    userInfo,
-    setIsOtp,
-    setOtp,
-    isLogin,
     isPhoneValidated,
     setValidateAddress,
     setNote,
     note,
-    installmentId,
-    setInstallmentId,
     platform,
     setPlatform,
-    settings,
-    setInstallmentOrder,
     setErrorMessage,
   } = useAppStore();
-  const { cart, clearCart, getTotal } = useCartStore();
-  const voucher = useCartStore((state) => state.voucher);
-  const { closeModal } = useBottomSheetModal();
+  const { cart, voucher, clearCart } = useCartStore();
   const [loading, setLoading] = useState(false);
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
-  const [name, setName] = useState("");
   const { isInstallment } = useAppStore();
-  const [cardInfo, setCardInfo] = useState(null);
-  const [sessionId, setSessionId] = useState(null);
-  const [order_type, setOrderType] = useState();
   const [isDataProvided, setIsDataProvided] = useState(false);
   const [showRedirectModal, setShowRedirectModal] = useState(false);
-  const [order, setOrder] = useState(null);
-
-  const calculateTotalPrice = getTotal();
-
-  const deliveryCost = useMemo(() => {
-    return calculateTotalPrice >= 1000000
-      ? parseInt(settings?.extraDelivery) || 0
-      : parseInt(settings?.delivery) || 0;
-  }, [calculateTotalPrice, settings]);
-
-  useEffect(() => {
-    if (userCheckoutInfo) {
-      setAddress(userCheckoutInfo?.address);
-      setPhone(userCheckoutInfo?.phone);
-      setName(userCheckoutInfo?.name);
-    }
-  }, [userCheckoutInfo]);
+  const { name, phone, address } = userCheckoutInfo || {};
 
   const items = useMemo(() => {
     return cart?.map((item) => ({
@@ -87,8 +51,8 @@ const CheckoutCTA = () => {
         method: "POST",
         auth: true,
         data: {
-          address: userCheckoutInfo.address,
-          phone: userCheckoutInfo.phone,
+          address,
+          phone,
           note,
           items,
           voucher_id: voucher ? voucher.id : null,
@@ -100,10 +64,15 @@ const CheckoutCTA = () => {
       if (response?.track_id) {
         setLoading(false);
         setNote("");
+        clearCart();
         setShowRedirectModal(true);
       } else {
         setLoading(false);
-        setErrorMessage("حدث خطأ أثناء إنشاء الطلب. يرجى المحاولة مرة أخرى.");
+        setErrorMessage(
+          response?.error ||
+            response?.message ||
+            "حدث خطأ أثناء إنشاء الطلب. يرجى المحاولة مرة أخرى."
+        );
       }
     } catch (err) {
       setLoading(false);
@@ -122,7 +91,7 @@ const CheckoutCTA = () => {
     }
     if (isInstallment === true) {
       setErrorMessage("");
-      router.push("/installment");
+      router.push(`/installment?phone=${phone}&address=${address}`);
     } else createCashOrder();
   };
 
@@ -180,29 +149,6 @@ const CheckoutCTA = () => {
           </Ripples>
         </div>
       </Container>
-      {/* <InstallmentModal
-        onFinish={(value) => {
-          setCardInfo(value);
-          setSessionId(value.sessionId);
-        }}
-      />
-      <OtpModal
-        sessionId={sessionId}
-        cardNumber={cardInfo?.number}
-        onFinish={() => {
-          setCardInfo(null);
-          setSessionId(null);
-          setInstallmentId(null);
-          closeModal();
-        }}
-        order={order}
-        isLogin={isLogin}
-        setIsOtp={setIsOtp}
-        setOtp={setOtp}
-        clearCart={clearCart}
-        router={router}
-      /> */}
-
       {showRedirectModal && (
         <RedirectOrderCreation onClose={() => setShowRedirectModal(false)} />
       )}
