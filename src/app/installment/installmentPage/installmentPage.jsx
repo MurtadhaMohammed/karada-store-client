@@ -2,21 +2,19 @@
 
 import Container from "@/components/UI/Container/container";
 import Input from "@/components/UI/Input/input";
-import { useRouter } from "next/navigation";
 import { BsCreditCard2Front } from "react-icons/bs";
 import Ripples from "react-ripples";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCartStore } from "@/lib/cartStore";
 import { apiCall } from "@/lib/api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { MdSecurityUpdateGood } from "react-icons/md";
 import { useAppStore } from "@/lib/store";
-import { createOrder } from "@/app/checkout/utils/orderUtils";
 import { IoWarningOutline } from "react-icons/io5";
+import { useRouter } from "next/navigation";
 
 const InstallmentPage = () => {
-  const { getTotal, clearCart } = useCartStore();
-  const [cardInfo, setCardInfo] = useState(null);
+  const { getTotalWithVoucher, voucher, cart } = useCartStore();
   const [cardNumber, setCardNumber] = useState("");
   const [sessionId, setSessionId] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -24,24 +22,15 @@ const InstallmentPage = () => {
   const [loading, setLoading] = useState(false);
   const [OTP, setOTP] = useState("");
   const [showOTP, setShowOTP] = useState(false);
-  const { setInstallment } = useAppStore();
-  const {
-    isLogin,
-    setIsOtp,
-    setOtp,
-    installmentOrder,
-    setInstallmentOrder,
-    settings,
-    note,
-  } = useAppStore();
-  const router = useRouter();
-  const PlanId = 10;
-  const cartTotal = getTotal();
+  const { settings, note, platform } = useAppStore();
+  const cartTotal = getTotalWithVoucher();
   const noOfMonths = 10;
   const installment = (cartTotal * settings.installment) / noOfMonths;
   const total = installment * noOfMonths;
 
-  const handleInstallment = async () => {
+  const router = useRouter();
+
+  const getInstallmentInfo = async () => {
     if (cardNumber.length < 10) {
       setErrorMessage(" خطاء في رقم البطاقة");
       return;
@@ -49,23 +38,24 @@ const InstallmentPage = () => {
     setLoading(true);
     try {
       const result = await apiCall({
-        pathname: "/client/installment/",
+        pathname: "/app/order/qi-info",
         method: "POST",
+        auth: true,
         data: {
           Identity: cardNumber,
-          Amount: total,
-          countOfMonth: noOfMonths,
-          PlanId,
+          items: cart?.map((item) => ({
+            productId: item.product.id,
+            qty: item.qt,
+            l1: item.product.l1?.uuid,
+          })),
+          voucher_id: voucher ? voucher?.id : null,
         },
       });
 
-      if (result.succeeded == true) {
-        setCardInfo({ number: cardNumber, sessionId: result.sessionId });
+      if (result.succeeded) {
         setSessionId(result.sessionId);
         setMessage(result.message || "");
-        // closeModal("installmentModal");
         setTimeout(() => {
-          //   router.push("/checkout?OTPModal=true");
           setShowOTP(true);
         }, 800);
       } else {
@@ -79,49 +69,42 @@ const InstallmentPage = () => {
     }
   };
 
-  const handleInstallmentSetup = (installmentId) => {
-    if (installmentId) {
-      const delivery_cost =
-        total > 1000000
-          ? parseInt(settings?.extraDelivery) || 0
-          : parseInt(settings?.delivery) || 0;
-      createOrder({
-        order: installmentOrder,
-        isLogin,
-        setIsOtp,
-        setOtp,
-        clearCart,
-        router,
-        installmentId,
-        installmentPercentage: settings?.installment || 1,
-        delivery_cost,
-        // note,
-        cardNumber,
-      });
-      setInstallmentOrder({});
-    }
-  };
-
-  const handleInstallmentOtp = async () => {
+  const createInstallmentOrder = async () => {
     setLoading(true);
     try {
+      const queryParams = new URLSearchParams(window.location.search);
+      const phone = queryParams.get("phone");
+      const address = queryParams.get("address");
+
       const result = await apiCall({
-        pathname: "/client/installment/done",
+        pathname: "/app/order/create",
         method: "POST",
+        auth: true,
         data: {
           sessionId,
           OTP: parseInt(OTP, 10),
           note,
-          PaymentCard: cardNumber,
+          phone,
+          address,
+          platform,
+          order_type: "Installment",
+          voucher_id: voucher ? voucher?.id : null,
+          items: cart?.map((item) => ({
+            productId: item.product.id,
+            qty: item.qt,
+            l1: item.product.l1?.uuid,
+          })),
+          cardNumber,
         },
       });
 
       if (result.succeeded) {
-        handleInstallmentSetup(result.data.installmentId);
-        setInstallment(false);
-        onFinish();
+        setSessionId(null);
+        router.push("/orders");
       } else {
-        setErrorMessage(result.message || "حدث خطأ أثناء التحقق من الرمز.");
+        setErrorMessage(
+          result?.error || result?.message || "حدث خطأ أثناء التحقق من الرمز."
+        );
       }
     } catch (error) {
       console.error("OTP Verification Error:", error);
@@ -129,12 +112,6 @@ const InstallmentPage = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const onFinish = () => {
-    setCardInfo(null);
-    setSessionId(null);
-    router.push("/orders");
   };
 
   return (
@@ -181,9 +158,7 @@ const InstallmentPage = () => {
                 onChange={(e) => {
                   const value = e.target.value;
                   setCardNumber(value);
-                  if (value.length !== 10 && value.length !== 16) {
-                    setErrorMessage("ادخل رقم البطاقه او رقم الحساب");
-                  } else {
+                  if (value.length === 10 || value.length === 16) {
                     setErrorMessage("");
                   }
                 }}
@@ -219,7 +194,9 @@ const InstallmentPage = () => {
             >
               <Ripples className="!grid w-[100%]">
                 <button
-                  onClick={showOTP ? handleInstallmentOtp : handleInstallment}
+                  onClick={
+                    showOTP ? createInstallmentOrder : getInstallmentInfo
+                  }
                   className="flex items-center justify-center h-[56px] rounded-[16px] bg-gradient-to-r text-violet-600 p-6 border-2 border-violet-600"
                   disabled={loading}
                 >

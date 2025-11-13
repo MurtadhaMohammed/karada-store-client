@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import Container from "@/components/UI/Container/container";
-import { IMAGE_URL } from "@/lib/api";
 import Image from "next/image";
 
 export default function BrandList({ brands }) {
@@ -25,7 +24,7 @@ function BrandCard({ brand }) {
       <div className="aspect-1 overflow-hidden shadow-brand-custom relative rounded-lg bg-white">
         <div className="relative w-full h-full">
           <Image
-            src={`${IMAGE_URL}/${brand.img}`}
+            src={brand.img || ""}
             alt={brand.name}
             fill
             style={{ objectFit: "contain" }}

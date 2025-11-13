@@ -24,8 +24,7 @@ export const reNewToken = async () => {
     if (!refreshToken) {
       return;
     }
-    const resp = await fetch(`${URL}/client/auth/refresh`, {
-      pathname: "/client/auth/refresh",
+    const resp = await fetch(`${URL}/app/auth/refresh`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +34,6 @@ export const reNewToken = async () => {
       }),
     });
     const jsonResp = await resp.json();
-    
     if (jsonResp?.accessToken) {
       return jsonResp;
     }

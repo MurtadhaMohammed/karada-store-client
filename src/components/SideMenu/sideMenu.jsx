@@ -80,7 +80,7 @@ const SideMenu = () => {
     setLoading(true);
     try {
       const resp = await apiCall({
-        pathname: `/client/auth/deleteAccount`,
+        pathname: `/app/auth/deleteAccount`,
         method: "DELETE",
         data: {
           phone: userInfo.phone,

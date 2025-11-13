@@ -8,14 +8,14 @@ import { useAppStore } from "@/lib/store";
 import { useState, useEffect } from "react";
 import LoginBottomSheetMobile from "@/app/cart/login/loginButtomSheetMobile";
 import LoginDialogWeb from "@/app/cart/login/loginDialogWeb";
+import { priceCalc } from "@/helper/priceCalc";
 
 const CartCTA = ({ loading }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { getTotal, getItemsTotal } = useCartStore();
+  const { getItemsTotal , getTotal} = useCartStore();
   const { isLogin } = useAppStore();
   const { cart } = useCartStore();
-  const total = getTotal();
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -44,25 +44,6 @@ const CartCTA = ({ loading }) => {
 
   if (getItemsTotal() === 0) return;
 
-  const cartTotal = cart.reduce((total, item) => {
-    // Check if product has a valid discount (at product level)
-    const isValidProductDiscount =
-      item?.product?.endPrice &&
-      item?.product?.endPrice < item?.product?.price &&
-      item?.product?.endPrice_date &&
-      new Date(item?.product?.endPrice_date) > new Date();
-
-    // If product has valid discount, ignore l1 and use product endPrice
-    if (isValidProductDiscount) {
-      return total + item?.product?.endPrice * item.qt;
-    }
-
-    // If no discount, use l1 price if available, otherwise product price
-    const priceToUse = item?.product?.l1?.price || item?.product?.price;
-    return total + priceToUse * item.qt;
-  }, 0);
-
-  console.log("Cart Total:", cartTotal);
 
   const handleCheckout = () => {
     if (!isLogin) {
@@ -105,7 +86,7 @@ const CartCTA = ({ loading }) => {
                 ) : (
                   <div className="flex items-center justify-between w-full">
                     <span className="text-[18px] font-bold">
-                      {Number(cartTotal).toLocaleString("en")}{" "}
+                      {Number(getTotal()).toLocaleString("en")}{" "}
                       <span className="text-[14px]">د.ع</span>
                     </span>
 

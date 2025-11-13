@@ -62,21 +62,21 @@ const ProductInfo = ({ product }) => {
     product?.options?.[0] || null
   );
   const [price, setPrice] = useState(product?.price);
-  const [endPrice, setEndPrice] = useState(product?.endPrice);
+  const [finalPrice, setFinalPrice] = useState(product?.finalPrice);
   const swiperRef = useRef(null);
 
   useEffect(() => {
     if (activeOption?.price) {
       setPrice(activeOption?.price);
-      setEndPrice(priceCalc(product, activeOption)?.endPrice);
+      setFinalPrice(priceCalc(product, activeOption)?.finalPrice);
     } else {
       setPrice(product?.price);
-      setEndPrice(priceCalc(product)?.endPrice);
+      setFinalPrice(priceCalc(product)?.finalPrice);
     }
   }, [activeOption]);
 
   useEffect(() => {
-    setActiveOption(product?.options?.[0] || null);
+    setActiveOption(product?.options[0] || null);
   }, [product?.options]);
 
   const handleOptionClick = (option, index) => {
@@ -117,12 +117,18 @@ const ProductInfo = ({ product }) => {
     !!product?.out_of_stock ||
     (activeOption != null && activeOption.in_stock === false);
 
+  // const shownimages =
+  //   activeOption?.images?.length > 0
+  //     ? activeOption.images
+  //     : product?.image
+  //         ?.sort((a, b) => Number(a.priority) - Number(b.priority))
+  //         .map((img) => img.url);
+
   const shownimages =
     activeOption?.images?.length > 0
       ? activeOption.images
       : product?.image
-          ?.sort((a, b) => Number(a.priority) - Number(b.priority))
-          .map((img) => img.url);
+
 
   return (
     <div className="md:hidden block">
@@ -141,7 +147,7 @@ const ProductInfo = ({ product }) => {
               {shownimages.map((img, index) => (
                 <SwiperSlide key={index}>
                   <Image
-                    src={`${IMAGE_URL}/${img}`}
+                    src={img || ""}
                     fill
                     style={{ objectFit: "cover" }}
                     alt={`product-image-${index}`}
@@ -154,7 +160,7 @@ const ProductInfo = ({ product }) => {
             <Container>
               <div className="flex items-center justify-start">
                 <div className="flex items-center gap-[4px] mr-1">
-                  {shownimages?.map((images, i) => (
+                  {shownimages?.map((_, i) => (
                     <span
                       key={i}
                       className="block h-[8px] rounded-[24px] transition-all"
@@ -173,15 +179,15 @@ const ProductInfo = ({ product }) => {
               </div>
             </Container>
           </div>
-          {product?.brand?.img && (
+          {product?.brandImg && (
             <div
               onClick={() =>
-                router.push(`/products/brand/${product?.brand.id}`)
+                router.push(`/products/brand/${product?.brand_id}`)
               }
               className="w-[68px] h-[68px] bg-white border border-[#eeee] rounded-[8px] absolute left-[16px] -bottom-[32px] z-10 shadow-md overflow-hidden active:opacity-40 transition-all"
             >
               <Image
-                src={`${IMAGE_URL}/${product?.brand?.img}`}
+                src={product?.brandImg || ""}
                 fill
                 objectFit="contain"
                 alt="brand"
@@ -215,7 +221,7 @@ const ProductInfo = ({ product }) => {
                   }}
                   className="mt-1 mr-[8px] text-[18px]  overflow-hidden text-ellipsis whitespace-nowrap "
                   style={{
-                   maxWidth: "calc(80% - 15px)",
+                    maxWidth: "calc(80% - 15px)",
                     visibility: scrollPosition > 200 ? "visible" : "hidden",
                   }}
                 >
@@ -261,7 +267,7 @@ const ProductInfo = ({ product }) => {
       </div>
       <Container>
         <h4 className="text-[18px] mt-[16px] max-w-[84%]">{product?.name}</h4>
-        {!priceCalc(product)?.hasDiscount ? (
+        {!product?.onSale ? (
           <b className="text-[22px] block">
             {Number(price).toLocaleString("en")}{" "}
             <span className="text-[14px]">د.ع</span>
@@ -269,7 +275,7 @@ const ProductInfo = ({ product }) => {
         ) : (
           <div className="flex items-end">
             <b className="text-[22px] block">
-              {Number(endPrice).toLocaleString("en")}{" "}
+              {Number(finalPrice).toLocaleString("en")}{" "}
               <span className="text-[14px]">د.ع</span>
             </b>
             <p className="text-[18px] block mr-[16px] line-through text-[#a5a5a5] italic">
@@ -295,7 +301,7 @@ const ProductInfo = ({ product }) => {
           </div>
         )}
         <div className="mt-[16px]">
-          <InstallmentBanner price={endPrice} />
+          <InstallmentBanner price={finalPrice} />
         </div>
         <div className="flex items-center mt-[16px]">
           <TbTruckDelivery className="text-[16px]" />
@@ -303,12 +309,10 @@ const ProductInfo = ({ product }) => {
             عادة مايتم توصيل المنتجات {settings?.time}
           </span>
         </div>
-        {product?.insurance && product?.insurance?.content && (
+        {product?.insurance && (
           <div className="flex items-center mt-[16px]">
             <BsExclamation className="text-[16px]" />
-            <span className="mr-[8px] text-[14px]">
-              {product?.insurance?.content}
-            </span>
+            <span className="mr-[8px] text-[14px]">{product?.insurance}</span>
           </div>
         )}
 
@@ -373,7 +377,7 @@ const ProductInfo = ({ product }) => {
         {/* <ProductCTA product={product} /> */}
       </Container>
       <ProductCTA
-        product={{ ...product, l1: activeOption }}
+        product={{ ...product, l1: { ...activeOption, finalPrice } }}
         disabled={isAddToCartDisabled}
       />
     </div>

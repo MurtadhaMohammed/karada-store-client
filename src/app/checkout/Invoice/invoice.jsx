@@ -4,7 +4,7 @@ import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 
 const Invoice = () => {
-  const { voucher, getTotal, getSubTotal, getVoucherDiscount } = useCartStore();
+  const { voucher, getTotal, getSubTotal } = useCartStore();
   const { settings } = useAppStore();
   const total = getTotal();
   const subTotal = getSubTotal();
@@ -15,9 +15,7 @@ const Invoice = () => {
       ? parseInt(settings?.extraDelivery) || 0
       : parseInt(settings?.delivery) || 0;
 
-  const voucherDiscount = getVoucherDiscount();
-
-  const totalAfterVoucher = total - voucherDiscount;
+  const totalAfterVoucher = total - (voucher?.value || 0);
   const realTotal = totalAfterVoucher + delivery_cost;
 
   const roundToNearest250 = (num) => {
@@ -47,11 +45,11 @@ const Invoice = () => {
               </p>
             </div>
           )}
-          {voucherDiscount > 0 && (
+          {voucher && voucher?.value > 0 && (
             <div className="flex items-center justify-between mt-[8px]">
               <p>خصم القسيمة</p>
               <p className="text-green-600">
-                {voucherDiscount?.toLocaleString("en")}- د.ع
+                {voucher?.value?.toLocaleString("en")}- د.ع
               </p>
             </div>
           )}

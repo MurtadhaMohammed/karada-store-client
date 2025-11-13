@@ -2,7 +2,6 @@ import SearchBar from "@/components/SearchBar/searchBar";
 import Categories from "@/components/Categories/categories";
 import SliderBanner from "@/components/SliderBanner/sliderBanner";
 import ListBanner from "@/components/ListBanner/listBanner";
-import SingleBanner from "@/components/SingleBanner/singleBanner";
 import OffersBanner from "@/components/offersBanner/offersBanner";
 import SingleBannerPure from "@/components/SingleBannerPure/singleBannerPure";
 
@@ -10,7 +9,7 @@ import { URL } from "@/lib/api";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 
 async function getViews(id) {
-  const res = await fetch(`${URL}/client/view/viewById/${id}`, {
+  const res = await fetch(`${URL}/app/view/home?viewId${id}`, {
     method: "GET",
     cache: "no-cache",
   });
@@ -24,7 +23,7 @@ export default async function DynamicHomePage({ params }) {
   try {
     const viewData = await getViews(id);
 
-    const banners = viewData.banners;
+    const banners = viewData;
     const title = viewData.title;
     const renderBanner = (banner) => {
       switch (banner.type) {
@@ -36,8 +35,6 @@ export default async function DynamicHomePage({ params }) {
           return (
             <SingleBannerPure key={banner.id} banner={banner} title={title} />
           );
-        // case "Single":
-        //   return <SingleBanner key={banner.id} banner={banner} title={title} />;
         case "List":
           return (
             <ListBanner
@@ -79,7 +76,9 @@ export default async function DynamicHomePage({ params }) {
         {banners && banners.length > 0 ? (
           banners.map((banner) => renderBanner(banner))
         ) : (
-          <div><ErrorBoundary /></div>
+          <div>
+            <ErrorBoundary />
+          </div>
         )}
       </div>
     );

@@ -8,7 +8,7 @@ const RelatedList = ({ productId }) => {
     queryKey: [`related-${productId}`, productId],
     queryFn: () =>
       apiCall({
-        pathname: `/client/product/product/${productId}/related`,
+        pathname: `/app/product/related/${productId}`,
       }),
     enabled: !!productId,
   });
@@ -20,7 +20,7 @@ const RelatedList = ({ productId }) => {
       isRelated
       noMore
       title={"قد يعجبك ايضاً"}
-      list={data?.relatedProducts || []}
+      list={data?.list || []}
     />
   );
 };

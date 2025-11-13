@@ -66,7 +66,7 @@ export default function SliderBanner({ banners, title }) {
                   classNameProp="w-[100%] md:aspect-[3.5] aspect-[2.5] relative rounded-[16px] overflow-hidden pb-[20px] inline-block shadow-md active:opacity-50 transition-all pure-skeleton"
                 >
                   <Image
-                    src={`${IMAGE_URL}/${el?.img}`}
+                    src={el?.img || ""}
                     fill
                     alt={el?.title || "Banner"}
                     style={{ objectFit: "cover" }}

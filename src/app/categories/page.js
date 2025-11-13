@@ -1,11 +1,11 @@
 import SearchBar from "@/components/SearchBar/searchBar";
-import ProductList from "./ProductsList/productsList";
+import CategoryProductList from "./ProductsList/productsList";
 import Categories from "@/components/Categories/categories";
 import { URL } from "@/lib/api";
 import ErrorBoundary from "@/components/ErrorBoundry/errorBoundry";
 
 async function getCategories() {
-  const res = await fetch(`${URL}/client/category/category?limit=100`, {
+  const res = await fetch(`${URL}/app/category/all`, {
     cache: "no-cache",
   });
   if (!res.ok) throw new Error("Failed to fetch data");
@@ -19,8 +19,8 @@ const Category = async () => {
   return (
     <div className="pb-[100px]">
       <SearchBar />
-      <Categories isBanner={false} list={category?.categories} />
-      <ProductList />
+      <Categories isBanner={false} list={category} />
+      <CategoryProductList />
     </div>
   );
   }

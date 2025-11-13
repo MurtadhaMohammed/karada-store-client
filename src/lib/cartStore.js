@@ -12,7 +12,7 @@ export const useCartStore = create((set, get) => ({
   addItem: (product) => {
     if (product?.l1) {
       product.price = product?.l1?.price;
-      product.endPrice = product?.l1?.endPrice; //TODO : handl endprice from BE -done
+      product.finalPrice = product?.l1?.finalPrice;
     }
     set((state) => ({
       cart: [...state.cart, { qt: 1, product }],
@@ -82,7 +82,7 @@ export const useCartStore = create((set, get) => ({
     return get()
       .cart.map(
         (item) =>
-          priceCalc(item?.product, item?.product?.l1)?.endPrice * item.qt
+          priceCalc(item?.product, item?.product?.l1)?.finalPrice * item.qt
       )
       .reduce((a, b) => a + b, 0);
   },
@@ -108,78 +108,78 @@ export const useCartStore = create((set, get) => ({
     // Optionally, recalculate totalPrice here if needed
   },
 
-  getVoucherDiscount: () => {
-    const { cart, voucher } = get();
+  // getVoucherDiscount: () => {
+  //   const { cart, voucher } = get();
 
-    if (!voucher || !cart || cart.length === 0) {
-      return 0;
-    }
+  //   if (!voucher || !cart || cart.length === 0) {
+  //     return 0;
+  //   }
 
-    let applicableItems = [];
-    let subtotalForDiscount = 0;
+  //   let applicableItems = [];
+  //   let subtotalForDiscount = 0;
 
-    if (voucher.apply_to_all) {
-      // Apply to all items
-      applicableItems = cart;
-      subtotalForDiscount = cart.reduce((total, item) => {
-        const price =
-          priceCalc(item?.product, item?.product?.l1)?.endPrice || 0;
-        return total + price * item.qt;
-      }, 0);
-    } else if (voucher.product_ids && voucher.product_ids.length > 0) {
-      // Apply only to specific products
-      applicableItems = cart.filter((item) =>
-        voucher.product_ids.includes(item.product?.id)
-      );
-      subtotalForDiscount = applicableItems.reduce((total, item) => {
-        const price =
-          priceCalc(item?.product, item?.product?.l1)?.endPrice || 0;
-        return total + price * item.qt;
-      }, 0);
-    }
+  //   if (voucher.apply_to_all) {
+  //     // Apply to all items
+  //     applicableItems = cart;
+  //     subtotalForDiscount = cart.reduce((total, item) => {
+  //       const price =
+  //         priceCalc(item?.product, item?.product?.l1)?.finalPrice || 0;
+  //       return total + price * item.qt;
+  //     }, 0);
+  //   } else if (voucher.product_ids && voucher.product_ids.length > 0) {
+  //     // Apply only to specific products
+  //     applicableItems = cart.filter((item) =>
+  //       voucher.product_ids.includes(item.product?.id)
+  //     );
+  //     subtotalForDiscount = applicableItems.reduce((total, item) => {
+  //       const price =
+  //         priceCalc(item?.product, item?.product?.l1)?.finalPrice || 0;
+  //       return total + price * item.qt;
+  //     }, 0);
+  //   }
 
-    if (subtotalForDiscount === 0) {
-      return 0;
-    }
+  //   if (subtotalForDiscount === 0) {
+  //     return 0;
+  //   }
 
-    let discount = 0;
-    if (voucher.type === "%") {
-      discount = (voucher.value / 100) * subtotalForDiscount;
-    } else {
-      discount = Math.min(voucher.value, subtotalForDiscount);
-    }
+  //   let discount = 0;
+  //   if (voucher.type === "%") {
+  //     discount = (voucher.value / 100) * subtotalForDiscount;
+  //   } else {
+  //     discount = Math.min(voucher.value, subtotalForDiscount);
+  //   }
 
-    // Apply max_amount limit if specified
-    if (voucher.max_amount && discount > voucher.max_amount) {
-      discount = voucher.max_amount;
-    }
+  //   // Apply max_amount limit if specified
+  //   if (voucher.max_amount && discount > voucher.max_amount) {
+  //     discount = voucher.max_amount;
+  //   }
 
-    return discount;
-  },
+  //   return discount;
+  // },
 
   getTotalWithVoucher: () => {
     const total = get().getTotal();
-    const discount = get().getVoucherDiscount();
+    const discount = get().voucher?.value || 0;
     return Math.max(0, total - discount);
   },
 
-  getVoucherApplicableItems: () => {
-    const { cart, voucher } = get();
+  // getVoucherApplicableItems: () => {
+  //   const { cart, voucher } = get();
 
-    if (!voucher || !cart || cart.length === 0) {
-      return [];
-    }
+  //   if (!voucher || !cart || cart.length === 0) {
+  //     return [];
+  //   }
 
-    if (voucher.apply_to_all) {
-      return cart;
-    } else if (voucher.product_ids && voucher.product_ids.length > 0) {
-      return cart.filter((item) =>
-        voucher.product_ids.includes(item.product?.id)
-      );
-    }
+  //   if (voucher.apply_to_all) {
+  //     return cart;
+  //   } else if (voucher.product_ids && voucher.product_ids.length > 0) {
+  //     return cart.filter((item) =>
+  //       voucher.product_ids.includes(item.product?.id)
+  //     );
+  //   }
 
-    return [];
-  },
+  //   return [];
+  // },
 }));
 
 useCartStore.subscribe(({ cart, voucher }) => {

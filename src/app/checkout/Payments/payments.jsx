@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { MasterCardModal } from "./MasterCardModal/masterCardModal";
 import { useBottomSheetModal } from "@/components/UI/BottomSheetModal/bottomSheetModal";
 import { useAppStore } from "@/lib/store";
-import { InstallmentModal } from "./InstallmentModal/InstallmentModal";
 
 const Payments = () => {
   const [selected, setSelected] = useState("cash");
@@ -100,13 +99,6 @@ const Payments = () => {
         onFinish={(value) => {
           setCardInfo(value);
           setSelected("master");
-          closeModal();
-        }}
-      />
-      <InstallmentModal
-        onFinish={(value) => {
-          setCardInfo(value);
-          setSelected("installment");
           closeModal();
         }}
       />

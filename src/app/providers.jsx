@@ -49,7 +49,7 @@ export function ReactQueryProvider({ fontStyle, children }) {
 
   const initSettings = async () => {
     try {
-      const resp = await apiCall({ pathname: "/client/settings" });
+      const resp = await apiCall({ pathname: "/app/setting" });
       let obj = {};
       resp.map((el) => {
         obj[el?.type] = el.value;

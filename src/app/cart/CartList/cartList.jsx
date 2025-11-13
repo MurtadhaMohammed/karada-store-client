@@ -8,7 +8,7 @@ import CartCTA from "../CartCTA/cartCta";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useCartStore } from "@/lib/cartStore";
-import { apiCall, IMAGE_URL } from "@/lib/api";
+import { apiCall } from "@/lib/api";
 import RelatedList from "../RelatedList/relatedList";
 import Empty from "@/components/Empty/empty";
 import { TbShoppingCartExclamation } from "react-icons/tb";
@@ -47,7 +47,7 @@ const CartItem = ({ item, outOfStock = false }) => {
   const loadImageUrl = () => {
     let image = item?.product?.thumbnail1;
     if (item?.product?.l1?.uuid) image = item?.product?.l1?.images[0];
-    return image;
+    return image || "";
   };
 
   return (
@@ -55,7 +55,7 @@ const CartItem = ({ item, outOfStock = false }) => {
       <Container>
         <div className="flex gap-4">
           <Image
-            src={`${IMAGE_URL}/${loadImageUrl()}`}
+            src={loadImageUrl()}
             width={80}
             height={80}
             style={{ objectFit: "cover" }}
@@ -91,7 +91,7 @@ const CartItem = ({ item, outOfStock = false }) => {
                     </p>
                     <b className="text-[16px]">
                       {Number(
-                        priceCalc(item?.product, item?.product?.l1)?.endPrice
+                        priceCalc(item?.product, item?.product?.l1)?.finalPrice
                       ).toLocaleString("en")}{" "}
                       <span className="text-[14px]">د.ع</span>
                     </b>
@@ -119,8 +119,7 @@ const CartItem = ({ item, outOfStock = false }) => {
 const CartList = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { cart, setCart, getItemsTotal, getTotal } = useCartStore();
-  const total = getTotal();
+  const { cart, setCart, getItemsTotal } = useCartStore();
 
   const hasCheckedRef = useRef(false);
 
@@ -140,7 +139,7 @@ const CartList = () => {
       setLoading(true);
 
       const result = await apiCall({
-        pathname: "/client/order/cart-check",
+        pathname: "/app/order/cart-check",
         method: "POST",
         data: itemsId,
       });

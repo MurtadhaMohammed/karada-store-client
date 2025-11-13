@@ -15,8 +15,9 @@ const OrderList = () => {
     queryKey: [`orders-${userInfo?.id}`],
     queryFn: () =>
       apiCall({
-        pathname: `/client/order/getOrdersByUserId/${userInfo?.id}`,
+        pathname: `/app/order/list?limit=100`,
         method: "GET",
+        auth: true,
       }),
     enabled: !!userInfo?.id,
   });

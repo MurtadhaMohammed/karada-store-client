@@ -3,12 +3,8 @@ import Image from "next/image";
 import { CgClose } from "react-icons/cg";
 import IconButton from "../UI/IconButton/iconButton";
 import Link from "next/link";
-import { IMAGE_URL } from "@/lib/api";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { useAppStore } from "@/lib/store";
-import dayjs from "dayjs";
-import { priceCalc } from "@/helper/priceCalc";
-// import { isEnglish } from "@/helper/isEnglish";
 
 const DefaultCard = ({
   item,
@@ -41,9 +37,14 @@ const DefaultCard = ({
         </div>
       )}
 
-      {priceCalc(item)?.hasDiscount && (
+      {item?.onSale && (
         <div className="absolute top-3 right-3 z-10 p-[6px] pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#0004ff41] bg-gradient-to-r from-indigo-600 to-violet-600 text-[#fff] text-[14px] discount-effect">
-          خصم {Number(priceCalc(item)?.discountValue).toLocaleString("en")} د.ع
+          خصم {Number(item?.discountValue).toLocaleString("en")} د.ع
+        </div>
+      )}
+      {item?.isNew && !item?.onSale && (
+        <div className="absolute top-3 right-3 z-10 p-[6px] pt-1 pb-1 rounded-[8px] shadow-lg shadow-[#ffb30041] bg-gradient-to-r from-[#fcae06] to-[#f5be34] text-[#fff] text-[14px] discount-effect">
+          جديد
         </div>
       )}
 
@@ -95,7 +96,7 @@ const DefaultCard = ({
           )}
           <div className={`w-full relative ${"aspect-w-1 aspect-h-1"}`}>
             <Image
-              src={`${IMAGE_URL}/${item?.thumbnail1}`}
+              src={item?.thumbnail ?? ""}
               fill
               style={{ objectFit: "cover" }}
               alt="image"
@@ -118,17 +119,16 @@ const DefaultCard = ({
             </p>
           </div>
           <div className="mt-[2px]">
-            {priceCalc(item).hasDiscount && (
+            {item?.onSale && (
               <h4 className="text-[14px] font-normal text-[#a5a5a5] line-through">
                 {Number(item?.price).toLocaleString("en")}
                 <span className="text-[12px]"> د.ع </span>
               </h4>
             )}
             <h4 className="text-[16px] font-extrabold -mt-1">
-              {Number(priceCalc(item)?.endPrice).toLocaleString("en")}
+              {Number(item?.finalPrice).toLocaleString("en")}
               <span className="text-[12px]"> د.ع </span>
             </h4>
-           
           </div>
         </div>
       </Link>

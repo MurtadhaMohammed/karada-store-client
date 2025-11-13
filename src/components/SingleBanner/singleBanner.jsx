@@ -4,7 +4,6 @@ import Image from "next/image";
 import Container from "../UI/Container/container";
 import Button from "../UI/Button/button";
 import { FaArrowLeft } from "react-icons/fa6";
-import { IMAGE_URL } from "@/lib/api";
 import { useAppStore } from "@/lib/store";
 
 const SingleBanner = ({ banner, title }) => {
@@ -13,13 +12,14 @@ const SingleBanner = ({ banner, title }) => {
   useEffect(() => {
     setPageTitle(title);
   }, []);
+
   return (
     <div className="md:mt-[24px] md:mb-[24px] mt-[16px] mb-[16px]">
       <Container>
         <div className="w-[100%] bg-white relative rounded-[16px] overflow-hidden inline-block shadow-md">
           <div className="w-[100%] md:aspect-4 aspect-3  relative">
             <Image
-              src={`${IMAGE_URL}/${banner?.img}`}
+              src={banner?.img || ""}
               fill
               alt={banner.title || "Single Banner"}
               style={{ objectFit: "cover" }}
