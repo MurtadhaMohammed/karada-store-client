@@ -30,25 +30,19 @@ const Address = () => {
     if (token) {
       setAddress(userInfo.address || "");
       setPhone(userInfo.phone || "");
-      // setName(userInfo.name || "");
+      setName(userInfo.name || "");
       const isValid = validateIraqiPhoneNumber(userInfo.phone || "");
-      // setPhoneError(isValid ? null : "يرجى إدخال رقم هاتف صالح");
       setIsPhoneValidated(isValid);
     }
-    // setUserCheckoutInfo({
-    //   address,
-    //   phone,
-    //   name,
-    // });
   }, []);
 
-  // useEffect(() => {
-  //   setUserCheckoutInfo({
-  //     address,
-  //     phone,
-  //     name,
-  //   });
-  // }, [address, phone, name]);
+  useEffect(() => {
+    setUserCheckoutInfo({
+      address,
+      phone,
+      name,
+    });
+  }, [address, phone, name, setUserCheckoutInfo]);
 
   useEffect(() => {
     if (validateAddress) {
