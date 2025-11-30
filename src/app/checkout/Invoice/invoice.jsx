@@ -4,16 +4,31 @@ import { useCartStore } from "@/lib/cartStore";
 import { useAppStore } from "@/lib/store";
 
 const Invoice = () => {
-  const { voucher, getTotal, getSubTotal } = useCartStore();
+  const { voucher, getTotal, getSubTotal, cart } = useCartStore();
   const { settings } = useAppStore();
   const total = getTotal();
   const subTotal = getSubTotal();
   const totalDiscount = subTotal - total;
 
-  const delivery_cost =
+  // Calculate old delivery_cost as fallback
+  const oldDeliveryCost =
     subTotal > 1000000
       ? parseInt(settings?.extraDelivery) || 0
       : parseInt(settings?.delivery) || 0;
+
+  // Find the highest delivery value from products
+  const productDeliveries = cart
+    .map((item) => item.product?.delivery)
+    .filter((delivery) => delivery != null && delivery !== "");
+
+  const highestDelivery =
+    productDeliveries.length > 0
+      ? Math.max(...productDeliveries.map((d) => parseInt(d) || 0))
+      : null;
+
+  // Use highest delivery if available, otherwise use old delivery_cost
+  const delivery_cost =
+    highestDelivery !== null ? highestDelivery : oldDeliveryCost;
 
   const totalAfterVoucher = total - (voucher?.value || 0);
   const realTotal = totalAfterVoucher + delivery_cost;
